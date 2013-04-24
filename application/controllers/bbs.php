@@ -7,8 +7,13 @@ class Bbs extends CI_Controller {
     }
 
     public function index() {
+        $this->load->model('users_model');
+        $this->users_model->get_userinfo();
         //echo 'Hello World!';
-        var_dump( $this->db);die;
+        //$this->load->library('someclass');
+        //$this->someclass->test();  // 对象的实例名永远都是小写的 
+        //$this->load->library('email');
+        die;
     }
 
     public function comments($e = "My Real Title") {
