@@ -5,7 +5,7 @@
   <li><b>提示: </b></li>
   <li>双击版块名称可编辑版块标题</li>
 </ul>
-<form method="post" action="http://localhost/phpwind/admin.php?m=bbs&amp;c=setforum&amp;a=dorun" onsubmit="return doSubmit();">
+<form method="post" action="<?=base_url()?>index.php/admin/forums" >
   <div class="table_list">
     <table width="100%" style="table-layout:fixed;" class="table" id="act_table">
       <colgroup>
@@ -29,11 +29,11 @@
           <tbody>
             <tr id="tr_<?php echo $val['id']?>">
               <td><span ></span></td>
-              <td><input type="text" name="old[<?php echo $val['id']?>]['order']" style="width:20px;" value="<?php echo $val['display_order']?>" class="inp_txt2">
+              <td><input type="text" name="old[<?php echo $val['id']?>][order]" style="width:20px;" value="<?php echo $val['display_order']?>" class="inp_txt2">
                 <span><?php echo $val['name']?></span> 
                 <a class="link_add" href="#" style="display: none;" fid="<?php echo $val['id']?>" ftype="1">添加新版块</a></td>
               <td class="tar"><?php echo $val['id']?></td>
-              <td><input type="text" name="old[<?php echo $val['id']?>]['manager']" value="<?php echo $val['manager']?>" class="inp_txt2"></td>
+              <td><input type="text" name="old[<?php echo $val['id']?>][manager]" value="<?php echo $val['manager']?>" class="inp_txt2"></td>
               <td><a target="_blank" href="#">[访问]</a> <a href="#">[编辑]</a> <a href="#">[删除]</a></td>
             </tr>
           <?php if(!empty($val['sub'])){ $total = count($val['sub']);?>
@@ -41,11 +41,11 @@
             <tr id="tr_<?php echo $v['id']?>">
               <td></td>
               <td><span class="plus_icon <?php if($k+1 == $total){?>plus_end_icon <?php }?>"></span>
-                <input type="text" name="old[<?php echo $v['id']?>]['order']" style="width:20px;" value="<?php echo $v['display_order']?>" class="inp_txt2">
+                <input type="text" name="old[<?php echo $v['id']?>][order]" style="width:20px;" value="<?php echo $v['display_order']?>" class="inp_txt2">
                 <span><?php echo $v['name']?></span>
                 <a class="link_add" href="#" style="display: none;" fid="<?php echo $v['id']?>" ftype="2">添加二级版块</a></td>
               <td class="tar"><?php echo $v['id']?></td>
-              <td><input type="text" name="old[<?php echo $v['id']?>]['manager']" value="<?php echo $v['manager']?>" class="inp_txt2"></td>
+              <td><input type="text" name="old[<?php echo $v['id']?>][manager]" value="<?php echo $v['manager']?>" class="inp_txt2"></td>
               <td><a target="_blank" href="#">[访问]</a> <a href="#">[编辑]</a> <a href="#">[删除]</a></td>
             </tr>
                 <?php if(!empty($v['sub'])){
@@ -57,10 +57,10 @@
                       <td></td>
                       <td><span class="plus_icon plus_none_icon"></span>
                       <span class="plus_icon <?php if($sk+1 == $num){?>plus_end_icon <?php }?>"></span>
-                        <input type="text" name="old[<?php echo $sv['id']?>]['order']" style="width:20px;" value="<?php echo $sv['display_order']?>" class="inp_txt2">
+                        <input type="text" name="old[<?php echo $sv['id']?>][order]" style="width:20px;" value="<?php echo $sv['display_order']?>" class="inp_txt2">
                         <span><?php echo $sv['name']?></span></td>
                       <td class="tar"><?php echo $sv['id']?></td>
-                      <td><input type="text" value="<?php echo $sv['manager']?>" name="old[<?php echo $sv['id']?>]['manager']" class="inp_txt2"></td>
+                      <td><input type="text" value="<?php echo $sv['manager']?>" name="old[<?php echo $sv['id']?>][manager]" class="inp_txt2"></td>
                       <td><a target="_blank" href="#">[访问]</a> <a href="#">[编辑]</a> <a href="#">[删除]</a></td>
                     </tr>
                     <?php }?>
@@ -84,7 +84,7 @@
 </form>
 <script type="text/javascript">
 $(document).ready(function() {
-	var global_id = 1;
+	var global_id = 0;
 	$('#act_table').find('tr').live('mouseover', function() {
 		$(this).addClass("hover");
 		$(".link_add",this).show();
@@ -136,18 +136,18 @@ $(document).ready(function() {
 		
 		return '<tr id="tr_'+new_id+'"><td></td>\
 					<td>'+ plus_icon +'\
-						<input type="text" name="order['+ new_id +']" class="inp_txt2" style="width:20px;" value="0" >\
-						<input type="text" name="name['+ new_id +']"  class="inp_txt2" value="">\
-						<input type="hidden" name="pid['+ new_id +']" value="'+parent_id+'">\
+						<input type="text" name="new['+ new_id +'][order]" class="inp_txt2" style="width:20px;" value="0" >\
+						<input type="text" name="new['+ new_id +'][name]"  class="inp_txt2" value="">\
+						<input type="hidden" name="new['+ new_id +'][pid]" value="'+parent_id+'">\
+                                                <input type="hidden" name="new['+ new_id +'][type]" value="'+forum_level+'">\
 						'+ forum_text +'\
 					</td>\
 					<td class="tar"></td>\
-					<td><input type="text" name="manager['+ new_id +']" class="inp_txt2"></td>\
+					<td><input type="text" name="new['+ new_id +'][manager]" class="inp_txt2"></td>\
 					<td><a href="">[删除]</a></td>\
 				</tr>';
 	}
-		
-		
+
 	//版块_新添加的行可直接删除
 	$('#J_table_list').on('click', 'a.J_new_forum_del', function (e) {
 		e.preventDefault();

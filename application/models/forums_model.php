@@ -3,7 +3,8 @@
 class Forums_model extends CI_Model {
 
     public $forums;
-
+    private $table = 'forums';
+    
     function __construct() {
         parent::__construct();
     }
@@ -29,7 +30,7 @@ class Forums_model extends CI_Model {
             return $this->forums;
         }
         $this->db->order_by("display_order");
-        $query = $this->db->get('forums');
+        $query = $this->db->get($this->table);
         $forums = $query->result_array();
         if (!empty($forums)) {
             $forums = $this->format($forums);
@@ -49,7 +50,7 @@ class Forums_model extends CI_Model {
         //最多三级分类
         $new_forums = $tmp[0];
         unset($tmp[0]);
-        foreach ($new_forums as $key => $value) {
+        foreach ($new_forums as $key => $value) {//最多三级分类
             if(isset($tmp[$value['id']])){
                 $new_forums[$key]['sub'] = $tmp[$value['id']];
                 unset($tmp[$value['id']]);
@@ -62,7 +63,55 @@ class Forums_model extends CI_Model {
         }
         return $new_forums;
     }
-
+    public function update_old($data){
+        foreach ($data as $key=>$val){
+            if($val['type']==$type){
+                $name = trim($val['name']);
+                if(!empty($name)){
+                    $insert_data['display_order'] = intval($val['order']);
+                    $insert_data['name'] = $name;
+                    $insert_data['parent_id'] = is_numeric($val['pid'])?$val['pid']:$tmp_pids[$val['pid']];
+                    $insert_data['type'] = $type_arr[$val['type']];
+                    $insert_data['manager'] = trim(preg_replace('/[,;\s]+/', ',', $val['manager']),',');
+                    if($this->db->insert($this->table, $insert_data)){
+                        $id = $this->db->insert_id();
+                        $tmp_pids[$key] = $id;
+                    }else{
+                        return FALSE;
+                    }
+                }
+                unset($data[$key]);
+            }
+        }
+        return TRUE;
+    }
+    
+    public function insert_new($data){
+        $type_arr = array(1=>'group', 2=> 'forum', 3=> 'sub');
+        $tmp_pids = array();
+        for($type=1;$type<=3;$type++){
+            foreach ($data as $key=>$val){
+                if($val['type']==$type){
+                    $name = trim($val['name']);
+                    if(!empty($name)){
+                        $insert_data['display_order'] = intval($val['order']);
+                        $insert_data['name'] = $name;
+                        $insert_data['parent_id'] = is_numeric($val['pid'])?$val['pid']:$tmp_pids[$val['pid']];
+                        $insert_data['type'] = $type_arr[$val['type']];
+                        $insert_data['manager'] = trim(preg_replace('/[,;\s]+/', ',', $val['manager']),',');
+                        if($this->db->insert($this->table, $insert_data)){
+                            $id = $this->db->insert_id();
+                            $tmp_pids[$key] = $id;
+                        }else{
+                            return FALSE;
+                        }
+                    }
+                    unset($data[$key]);
+                }
+            }
+        }
+        return TRUE;
+    }
 }
 
 ?>

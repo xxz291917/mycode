@@ -2,16 +2,26 @@
 
 class Forums extends Admin_Controller {
 
+    private $table = 'forums_model';
+    
     function __construct() {
         parent::__construct();
     }
 
     public function index() {
-        //获取论坛版块内容
         $this->load->model('forums_model');
-        $forums = $this->forums_model->get_forums();
-        $var['forums'] = $forums;
-        $this->view('admin_forums',$var);
+        if ($posts = $this->input->post()) {
+            if ($this->forums_model->update_old($posts['old']) && $this->forums_model->insert_new($posts['new'])) {
+                $this->message('操作成功');
+            } else {
+                $this->message('操作失败');
+            }
+        } else {
+            //获取论坛版块内容
+            $forums = $this->forums_model->get_forums();
+            $var['forums'] = $forums;
+            $this->view('admin_forums', $var);
+        }
     }
     
     public function admin_index() {

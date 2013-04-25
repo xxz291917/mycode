@@ -1,6 +1,6 @@
 jQuery.extend(jQuery, {
   // jQuery UI alert弹出提示
-  jqalert: function(text, title, fn) {
+  jAlert: function(text, title, fn) {
     var html =
     '<div class="dialog" id="dialog-message">' +
     '  <p>' +
@@ -25,7 +25,7 @@ jQuery.extend(jQuery, {
     });
   },
   // jQuery UI alert弹出提示,一定间隔之后自动关闭
-  jqtimeralert: function(text, title, fn, timerMax) {
+  jTimerAlert: function(text, title, fn, timerMax) {
     var dd = $(
     '<div class="dialog" id="dialog-message">' +
     '  <p>' +
@@ -69,7 +69,7 @@ jQuery.extend(jQuery, {
     });
   },
   // jQuery UI confirm弹出确认提示
-  jqconfirm: function(text, title, fn1, fn2) {
+  jConfirm: function(text, title, fn1, fn2) {
     var html =
     '<div class="dialog" id="dialog-confirm">' +
     '  <p>' +
@@ -98,7 +98,7 @@ jQuery.extend(jQuery, {
     });
   },
   // jQuery UI 弹出iframe窗口
-  jqopen: function(url, options) {
+  jOpen: function(url, options) {
     var html =
     '<div class="dialog" id="dialog-window" title="提示信息">' +
     ' <iframe src="' + url + '" frameBorder="0" style="border: 0; " scrolling="auto" width="100%" height="100%"></iframe>' +
@@ -121,7 +121,7 @@ jQuery.extend(jQuery, {
       me.confirmResult = false;
       return true;
     }
-    jQuery.jqconfirm(text, title, function(e) {
+    jQuery.jConfirm(text, title, function(e) {
       me.confirmResult = true;
       if (e) {
         if (me.href && $.trim(me.href).indexOf("javascript:") == 0) {
