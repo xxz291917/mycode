@@ -1,5 +1,8 @@
 <?php
+
 class Forums_model extends CI_Model {
+
+    public $forums;
 
     function __construct() {
         parent::__construct();
@@ -20,16 +23,44 @@ class Forums_model extends CI_Model {
 ////        var_dump($user);die;
         return TRUE;
     }
-    
-    function get_forums() {
-        $query = $this->db->get('forums');
-        $forums = $query->row_array();
-        if (!empty($forums['group_id'])) {
-            $query = $this->db->get_where('groups', array('id'=>$forums['group_id']), 1, 0);
-            $user_group = $query->row_array();
-            $forums['group'] = $user_group;
+
+    function get_forums($cache = TRUE) {
+        if ($cache && !empty($this->forums)) {
+            return $this->forums;
         }
+        $this->db->order_by("display_order");
+        $query = $this->db->get('forums');
+        $forums = $query->result_array();
+        if (!empty($forums)) {
+            $forums = $this->format($forums);
+        }
+        $this->forums = $forums;
         return $forums;
+    }
+
+    private function format($forums) {
+        if (empty($forums)) {
+            return array();
+        }
+        $new_forums = $tmp = array();
+        foreach ($forums as $key => $value) {
+            $tmp[$value['parent_id']][] = $value;
+        }
+        //最多三级分类
+        $new_forums = $tmp[0];
+        unset($tmp[0]);
+        foreach ($new_forums as $key => $value) {
+            if(isset($tmp[$value['id']])){
+                $new_forums[$key]['sub'] = $tmp[$value['id']];
+                unset($tmp[$value['id']]);
+                foreach ($new_forums[$key]['sub'] as $k => $v) {
+                    if(isset($tmp[$v['id']])){
+                        $new_forums[$key]['sub'][$k]['sub'] = $tmp[$v['id']];
+                    }
+                }
+            }
+        }
+        return $new_forums;
     }
 
 }

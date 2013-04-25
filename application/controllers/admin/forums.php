@@ -8,10 +8,10 @@ class Forums extends Admin_Controller {
 
     public function index() {
         //获取论坛版块内容
-        
-        
-        
-        $this->view('admin_forums');
+        $this->load->model('forums_model');
+        $forums = $this->forums_model->get_forums();
+        $var['forums'] = $forums;
+        $this->view('admin_forums',$var);
     }
     
     public function admin_index() {

@@ -57,7 +57,7 @@ html,body{height:100%;position:relative;overflow:hidden;}
 		</td>
 	</tr>
 	<tr>
-		<td width="160" valign="top" bgcolor="#F2F9FD">
+		<td width="160" valign="top" class="admin_bg">
 			<div class="left">
             
             	<div class="sidebar">

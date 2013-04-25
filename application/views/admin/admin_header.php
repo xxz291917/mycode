@@ -5,5 +5,84 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title>后台管理中心</title>
 <link rel="stylesheet" type="text/css" href="<?=base_url()?>css/style.css" />
+<link rel="stylesheet" type="text/css" href="<?=base_url()?>js/jquery-ui/jquery-ui.min.css" />
 <script type="text/javascript" src="<?=base_url()?>js/jquery-1.7.2.min.js"></script>
-</head><body style='margin:5px 0 0 10px'>
+<script type="text/javascript" src="<?=base_url()?>js/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="<?=base_url()?>js/dialog-ex.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//弹出框A链接扩展
+		$("a[target=dialog]").each(function(){
+			$(this).click(function(event){
+				var $this = $(this);
+				var title = $this.attr("title") || $this.text();
+				var rel = $this.attr("rel") || "_blank";
+				var options = {
+					title: title,
+					modal: true,
+					resizable: false,
+					close: function(event, ui) {
+							$(this).dialog("destroy"); // 关闭时销毁
+						}
+					};
+				var position = $this.attr("position"),
+				 width = $this.attr("width"),
+				 height = $this.attr("height"),
+				 maxHeight = $this.attr("maxHeight"),
+				 minHeight = $this.attr("minHeight"),
+				 maxWidth = $this.attr("maxWidth"),
+				 minWidth = $this.attr("minWidth");
+				
+				if(position) options.position = position;
+				if(width)    options.width = width;
+				if(height)   options.height = height;
+				if(maxHeight)options.maxHeight = maxHeight;
+
+				if(minHeight)options.minHeight = minHeight;
+				if(maxWidth) options.maxWidth = maxWidth;
+				if(minWidth) options.minWidth = minWidth;
+				var url = unescape($this.attr("href"));
+				var html =
+				'<div class="dialog" id="'+rel+'" title="提示信息">' +
+				' <iframe src="' + url + '" frameBorder="0" style="border: 0; " scrolling="auto" width="100%" height="100%"></iframe>' +
+				'</div>';
+				$(html).dialog(options);
+				return false;
+			});
+		});
+		
+		//ajaxA链接扩展
+		$("a[target=ajax]").each(function(){
+			$(this).click(function(event){
+				var $this = $(this);
+				var rel = $this.attr("rel");
+				if (rel) {
+					var $rel = $("#"+rel);
+					$rel.loadUrl($this.attr("href"), {}, function(){
+						$rel.find("[layoutH]").layoutH();
+					});
+				}
+				event.preventDefault();
+			});
+		});
+		$("a[target=ajaxTodo]").each(function(){
+			  $(this).click(function(event){
+					var $this = $(this);
+					var title = $this.attr("title");
+					if (title) {
+						  alertMsg.confirm(title, {
+								okCall: function(){
+									  ajaxTodo($this.attr("href"));
+								}
+						  });
+					} else {
+						  ajaxTodo($this.attr("href"));
+					}
+					event.preventDefault();
+			  });
+		});
+	});
+
+</script>
+</head>
+<body style='margin:5px 0 0 10px'>

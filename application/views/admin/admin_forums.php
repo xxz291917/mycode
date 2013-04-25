@@ -2,162 +2,198 @@
 
 <h3 class="col-h3">版块管理</h3>
 <ul class="col-ul tips">
-	<li class="bold">提示: </li>
-	<li>可以通过鼠标上下拖动来实现分类的排序!</li>
-	<li class="m-t10"><input id="switchDrag" type="button" class="inp_btn2" value="{lang offSortable}" onclick="drag()"/></li>
+  <li><b>提示: </b></li>
+  <li>双击版块名称可编辑版块标题</li>
 </ul>
-
-<H3 class="col-h4 m-t10">分类 : <a href="index.php?admin_category-list">{lang msgCatContents}</a> <!--{if is_array($catnavi)}--><!--{loop $catnavi $tid $tcat}-->
-	&gt;&gt; <a href="index.php?admin_category-list-{$tcat[cid]}">{$tcat[name]}</a> <!--{/loop}--><!--{/if}-->
-</H3>
-<form name="orderlist" method="POST" action="index.php?admin_category-batchedit" onsubmit="return doSubmit();">
-	<input type="hidden" name="hiddencid" value="{$pid}" />
-	<table class="table" style="margin:0px;padding:0px;">
-		<colgroup>
-			<col  style="width:160px;"></col>
-			<col  style="width:120px;"></col>
-			<col  style="width:120px;"></col>
-			<col  style="width:120px;"></col>
-			<col></col>
-		</colgroup>
-		<thead>
-		<tr>
-			<td>{lang magCatName}</td>
-			<td >{lang msgViewChildCat}</td>
-			<td>{lang magCatAdd}</td>
-			<td>{lang magCatDel}</td>
-			<td>移动分类</td>
-		</tr>
-		</thead>
-	</table>
-	<ul id="list" style="cursor: hand; cursor: pointer;margin:0px;padding:0px;">
-		{if is_array($cats)}
-		{loop $cats $cid $cat}
-		<li style="list-style:none;margin:0px;padding:0px;line-height:22px;">
-			<table class="table" style="margin:0px;padding:0px;">
-			<colgroup>
-				<col style="width:160px;"></col>
-				<col style="width:120px;"></col>
-				<col style="width:120px;"></col>
-				<col style="width:120px;"></col>
-				<col></col>
-			</colgroup>
-				<tr>
-					<td style="width:120px;"><input name="order[]" type="hidden" value="{$cat[cid]}"/>
-						<input class="inp_txt2" size="20" name="cateid[{$cat[cid]}-{$cat[pid]}]" value="{$cat[name]}"></td>
-					<td style="width:80px;"><a href="index.php?admin_category-list-{$cat[cid]}">{lang msgViewChildCat}</a></td>
-					<td style="width:80px;" ><a href="index.php?admin_category-add-{$cat[cid]}">{lang magAddChildCat}</a></td>
-					<td style="width:80px;" ><a href="#" onclick="doDelCat('{$cat[cid]}');">{lang magCatDel}</a></td>
-					<td><a href="#" onclick="doEditCat('{$cat[cid]}','{$cat[pid]}');">移动分类</a></td>
-				</tr>
-			</table>
-		</li>
-		{/loop}
-		{else}
-		<table class="table">
-			<tr>
-				<td colspan="5">{lang magHaveNoCat}<a href="index.php?admin_category-add">{lang magAddCat}</a></td>
-			</tr>
-		</table>
-		{/if}
-	</ul>
-	<table class="table" id="catblock">
-		<colgroup>
-			<col style="width:300px;"></col>
-			<col></col>
-		</colgroup>
-
-		<tr>
-			<td >
-				<input name="catname[]" class="inp_txt2" type="text" size="20" maxlength="40" value=""/>&nbsp;&nbsp;<input name="Submit1"  type="button" onclick="javascript:addInput()" value="+添加当前分类" class="inp_btn2 m-r10"/>&nbsp;&nbsp;
-			</td>
-			<td></td>
-		</tr>
-		<tfoot>
-			<tr>
-				<td colspan="2"><input name="Submit1" type="submit" value="提 交"  class="inp_btn m-r10"/><span id="box-show" align="left" style="color:red;display:inline;font-weight:normal;"></span></td>
-			</tr>
-		</tfoot>
-	</table>
+<form method="post" action="http://localhost/phpwind/admin.php?m=bbs&amp;c=setforum&amp;a=dorun" onsubmit="return doSubmit();">
+  <div class="table_list">
+    <table width="100%" style="table-layout:fixed;" class="table" id="act_table">
+      <colgroup>
+      <col width="30">
+      <col width="400">
+      <col width="60">
+      <col width="210">
+      <col>
+      </colgroup>
+      <thead>
+        <tr>
+          <td></td>
+          <td><span >[顺序]</span>版块名称</td>
+          <td class="tar">fid</td>
+          <td>版主</td>
+          <td>操作</td>
+        </tr>
+      </thead>
+      
+      <?php foreach($forums as $key=>$val){?>
+          <tbody>
+            <tr id="tr_<?php echo $val['id']?>">
+              <td><span ></span></td>
+              <td><input type="text" name="old[<?php echo $val['id']?>]['order']" style="width:20px;" value="<?php echo $val['display_order']?>" class="inp_txt2">
+                <span><?php echo $val['name']?></span> 
+                <a class="link_add" href="#" style="display: none;" fid="<?php echo $val['id']?>" ftype="1">添加新版块</a></td>
+              <td class="tar"><?php echo $val['id']?></td>
+              <td><input type="text" name="old[<?php echo $val['id']?>]['manager']" value="<?php echo $val['manager']?>" class="inp_txt2"></td>
+              <td><a target="_blank" href="#">[访问]</a> <a href="#">[编辑]</a> <a href="#">[删除]</a></td>
+            </tr>
+          <?php if(!empty($val['sub'])){ $total = count($val['sub']);?>
+            <?php	foreach($val['sub'] as $k=>$v){?>
+            <tr id="tr_<?php echo $v['id']?>">
+              <td></td>
+              <td><span class="plus_icon <?php if($k+1 == $total){?>plus_end_icon <?php }?>"></span>
+                <input type="text" name="old[<?php echo $v['id']?>]['order']" style="width:20px;" value="<?php echo $v['display_order']?>" class="inp_txt2">
+                <span><?php echo $v['name']?></span>
+                <a class="link_add" href="#" style="display: none;" fid="<?php echo $v['id']?>" ftype="2">添加二级版块</a></td>
+              <td class="tar"><?php echo $v['id']?></td>
+              <td><input type="text" name="old[<?php echo $v['id']?>]['manager']" value="<?php echo $v['manager']?>" class="inp_txt2"></td>
+              <td><a target="_blank" href="#">[访问]</a> <a href="#">[编辑]</a> <a href="#">[删除]</a></td>
+            </tr>
+                <?php if(!empty($v['sub'])){
+					$num = count($v['sub']);
+					?>
+                	
+					<?php foreach($v['sub'] as $sk=>$sv){?>
+                    <tr id="tr_<?php echo $sv['id']?>">
+                      <td></td>
+                      <td><span class="plus_icon plus_none_icon"></span>
+                      <span class="plus_icon <?php if($sk+1 == $num){?>plus_end_icon <?php }?>"></span>
+                        <input type="text" name="old[<?php echo $sv['id']?>]['order']" style="width:20px;" value="<?php echo $sv['display_order']?>" class="inp_txt2">
+                        <span><?php echo $sv['name']?></span></td>
+                      <td class="tar"><?php echo $sv['id']?></td>
+                      <td><input type="text" value="<?php echo $sv['manager']?>" name="old[<?php echo $sv['id']?>]['manager']" class="inp_txt2"></td>
+                      <td><a target="_blank" href="#">[访问]</a> <a href="#">[编辑]</a> <a href="#">[删除]</a></td>
+                    </tr>
+                    <?php }?>
+                <?php }?>
+            <?php }?>
+          
+          <?php }?>
+          </tbody>
+      <?php }?>
+      
+      <tbody id="line_group">
+        <tr>
+          <td style="padding-left:38px;" colspan="5"><input type="button" id="add_group" value="+添加新分类" class="inp_btn2 m-r10"/></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="margin-top:20px;">
+    <button class="inp_btn m-r10" type="submit">提交</button>
+  </div>
 </form>
-
-
-
 <script type="text/javascript">
-var beginMoving=false;
-var isDrag = true;
-function doSubmit(){
-	if(confirm('{lang msgJsRefreshCatSeq}')==false){
-		return false;
-	}
-}
-
-function doEditCat(catid,pcid){
-	var catname=$("input[name=cateid\["+catid+"-"+pcid+"\]]").val();
-	window.location="index.php?admin_category-edit-"+catid+"-"+pcid;
-}
-
-function doDelCat(catid){
-	if(confirm('{lang msgJsDelCat}')==false){
-		return false;
-	}else{
-		window.location="index.php?admin_category-remove-"+catid;
-	}
-}
-
-function drag(){
-	isDrag = !isDrag;
-	if (isDrag){
-		$('#list').sortable('enable');
-		$('#switchDrag').val("{lang offSortable}");
-	}else{
-		$('#list').sortable('disable');
-		$('#switchDrag').val("{lang openSortable}");
-	}
-}
-
 $(document).ready(function() {
-	$("#list").sortable({
-		update : function () {
-			var reorderid="";
-			var numValue=$("input[name='order[]']");
-			for(var i=0;i<numValue.length;i++){
-				reorderid+=$(numValue[i]).val()+",";
-			}
-			hiddencid=$("input[name='hiddencid']").val();
-			$.post("index.php?admin_category-reorder",{order:reorderid,hiddencid:hiddencid});
-		}
+	var global_id = 1;
+	$('#act_table').find('tr').live('mouseover', function() {
+		$(this).addClass("hover");
+		$(".link_add",this).show();
+	}).live('mouseout', function () {
+		$(this).removeClass("hover");
+		$(".link_add",this).hide();
 	});
-});
 
-	function doSubmit(){
-		var tag=0;
-		$("input[name^='cateid']").each(function(){
-			var catname = $(this).val();
-			catname=$.trim(catname.replace(/<script(.*)>(.*)<\/script>/ig,''));
-			$(this).val(catname);
-			if(""==catname){
-				$(this).attr("style","border:1px #f30 solid;");
-				tag=1;
-			}else{
-				$(this).removeAttr("style");
-			}
-		});
-		if(tag==1){
-			$("#box-show").text('红框区域分类不能为空');
-			$("#box-show").fadeOut(100).fadeIn(100);
-			return false;
-		}else{
-			return true;
+	$(".link_add").live('click',function(){
+		//得到点击者以及点击者的fid和级别。
+		var fid = $(this).attr('fid'),ttr = $("#tr_"+fid),level = $(this).attr('ftype');
+		var html = forumChild(+level+1,fid);
+		ttr.after(html);
+		return false;
+	});
+	
+	$("#add_group").live('click',function(){
+		//得到点击者以及点击者的fid和级别。
+		var ttr = $("#line_group");
+		var html = forumChild(1,0);
+		html = '<tbody>'+html+'</tbody>';
+		ttr.before(html);
+		return false;
+	});
+
+	//返回一~三级版块添加的html
+	function forumChild(forum_level, parent_id){
+		global_id++;
+		var forum_text, plus_icon='',plus_none_icon_arr = [], new_id = 'new_'+global_id;
+		
+		if (forum_level === 1) {
+			forum_text = '添加新版块';
+		} else if (forum_level === 2) {
+			forum_text = '添加二级版块';
+		} else {
+			forum_text = '';
+		} 
+		if(forum_text!=''){
+			forum_text = '<a style="display:none" href="#" class="link_add" ftype="'+forum_level+'" fid="'+new_id+'">'+ forum_text +'</a>';
+		}
+		//不同级别html差异
+		for (var i=2; i < forum_level; i++){
+			plus_none_icon_arr.push('<span class="plus_icon plus_none_icon"></span>');
+		};
+		plus_icon = plus_none_icon_arr.join('');
+		if(forum_level>1){
+			plus_icon += '<span class="plus_icon plus_end_icon"></span>';
 		}
 		
+		return '<tr id="tr_'+new_id+'"><td></td>\
+					<td>'+ plus_icon +'\
+						<input type="text" name="order['+ new_id +']" class="inp_txt2" style="width:20px;" value="0" >\
+						<input type="text" name="name['+ new_id +']"  class="inp_txt2" value="">\
+						<input type="hidden" name="pid['+ new_id +']" value="'+parent_id+'">\
+						'+ forum_text +'\
+					</td>\
+					<td class="tar"></td>\
+					<td><input type="text" name="manager['+ new_id +']" class="inp_txt2"></td>\
+					<td><a href="">[删除]</a></td>\
+				</tr>';
 	}
-	function addInput(){
-		$('#catblock').append("<tr><td><input name=\"catname[]\" class=\"inp_txt2\" type=\"text\" size=\"20\" maxlength=\"40\" />&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"javascript:delInput(this)\">{lang commonDel}</a></td></tr>");
-	}
-
-	function delInput(obj){
-	//	j[0].removeChild(obj.parentNode);
-		$(obj).parent().parent().remove();
-	}
+		
+		
+	//版块_新添加的行可直接删除
+	$('#J_table_list').on('click', 'a.J_new_forum_del', function (e) {
+		e.preventDefault();
+		var $this = $(this), tr = $this.parents('tr');
+		
+		//跟当前行比较"del-level"的值，含子版不删除
+		if(tr.data('del_level') < tr.next().data('del_level')) {
+			Wind.use('dialog', function(){
+				Wind.dialog.alert('该版块含有子版块，请先删除所有子版块，再进行此操作！', function(){
+					$this.focus();
+				});
+			});
+		}else{
+			tr.remove();
+		}
+	});
+		
+	
+	//双击编辑版块名称
+	var org_val;
+	$('#J_table_list').on('dblclick', '.J_forum_names', function() {
+		var $this = $(this), $input = $('<input type="text" value="'+ $this.text() +'" data-id="'+  $this.data('id') +'" class="input mr5 J_forum_names_input" name="name">');
+		org_val = $this.text(); //原始版块名
+		$input.insertAfter($this).focus();
+		$this.remove();
+	});
+	
+	//版块名称input失焦ajax提交
+	$('#J_table_list').on('blur', '.J_forum_names_input', function() {
+		var $this = $(this),
+			restore = function() { //版块取消编辑状态
+				$this.hide().after('<span class="mr10 J_forum_names" data-id="'+ $this.data('id') +'">'+ $this.val() +'</span>');
+				$this.remove();
+			};
+			
+		//判断版块名是否修改过
+		if($this.val() !== org_val) {
+			$.post("http://localhost/phpwind/admin.php?m=bbs&c=setforum&a=editname", {fid: $this.data('id'), name: $this.val() }, function(data){
+				if(data.state === 'success') {
+					restore();
+				}
+			});
+		}else{
+			restore();
+		}
+		
+	});
+});
 </script>
