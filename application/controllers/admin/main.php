@@ -10,10 +10,6 @@ class Main extends Admin_Controller {
         $this->load->view($this->admin_dir.'/admin_main');
     }
     
-    public function admin_index() {
-        echo '测试信息';die;
-    }
-
     public function login() {
         $post = $this->input->post(NULL, TRUE);
         if ($post['opt'] == 'ajax') {

@@ -3,46 +3,62 @@
 class Forums extends Admin_Controller {
 
     private $table = 'forums_model';
-    
+
     function __construct() {
         parent::__construct();
+        $this->load->model('forums_model');
     }
 
     public function index() {
-        $this->load->model('forums_model');
         if ($posts = $this->input->post()) {
-            if ($this->forums_model->update_old($posts['old']) && $this->forums_model->insert_new($posts['new'])) {
+            $is_update = $this->forums_model->update_old($this->input->post('old'));
+            $is_insert = $this->forums_model->insert_new($this->input->post('new'));
+            if ($is_update && $is_insert) {
                 $this->message('操作成功');
             } else {
                 $this->message('操作失败');
             }
         } else {
             //获取论坛版块内容
-            $forums = $this->forums_model->get_forums();
+            $forums = $this->forums_model->get_format_forums();
             $var['forums'] = $forums;
-            $this->view('admin_forums', $var);
+            $this->view('forums', $var);
         }
-    }
-    
-    public function admin_index() {
-        echo '测试信息';die;
     }
 
-    public function login() {
-        $post = $this->input->post(NULL, TRUE);
-        if ($post['opt'] == 'ajax') {
-            $this->load->model('User_model');
-            $username = trim($post['user_name']);
-            $userpass = trim($post['user_pass']);
-            if ($this->User_model->login($username, $userpass)) {
-                echo 'ok';
-                exit;
+    public function delete() {
+        $id = intval($this->input->post('id'));
+        if ($id > 0) {
+            //检查此版块下是否有帖子、
+            $this->load->model('topics_model');
+            if (!$this->topics_model->exist_in_forum($id)) {
+                $message = $this->ajax_json(0, '此版块下面存在主题，不允许被删除！');
             } else {
-                echo 'error';
-                exit;
+                if ($this->db->delete('forums', array('id' => $id))) {
+                    $message = $this->ajax_json(1);
+                } else {
+                    $message = $this->ajax_json(0, '操作数据库失败！');
+                }
             }
+        } else {
+            $message = $this->ajax_json(1);
         }
-        $this->load->view('login.php');
+        echo $message;
+        die;
+    }
+
+    public function edit($id='') {
+        if (empty($id)) {
+            $this->message('参数错误！');
+        } else {
+            $this->load->helper('form');
+            $forums = $this->forums_model->get_by_id($id);
+            $var['forums'] = $forums;
+            
+            
+            
+            $this->view('forums_edit', $var);
+        }
     }
 
     public function logout() {

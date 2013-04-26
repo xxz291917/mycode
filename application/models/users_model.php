@@ -1,13 +1,14 @@
 <?php
-class Users_model extends CI_Model {
+class Users_model extends MY_Model {
 
     function __construct() {
         parent::__construct();
+        $this->table='users';
     }
 
     function get_userinfo() {
         $user_id = '1';
-        $query = $this->db->query("select u.* from users u left join users_extra ex on ex.user_id=u.id where u.id=$user_id limit 0,1");
+        $query = $this->db->query("select u.* from {$this->table} u left join users_extra ex on ex.user_id=u.id where u.id=$user_id limit 0,1");
 //        $this->db->select('id,email');
 //        $query = $this->db->get('users',2,0);
 //        $this->db->from('id');

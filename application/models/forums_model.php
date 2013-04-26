@@ -1,42 +1,46 @@
 <?php
 
-class Forums_model extends CI_Model {
+class Forums_model extends MY_Model {
 
     public $forums;
-    private $table = 'forums';
-    
+    public $format_forums;
+
     function __construct() {
         parent::__construct();
+        $this->table='forums';
     }
 
     function initialize() {
-//        $query = $this->db->query("select u.* from users u left join users_extra ex on ex.user_id=u.id where u.id=$user_id limit 0,1");
-////        $this->db->select('id,email');
-////        $query = $this->db->get('users',2,0);
-////        $this->db->from('id');
-////        var_dump($this->db->call_function('get_client_info'));
-//        $user = $query->row_array();
-//        if (!empty($user['group_id'])) {
-//            $query = $this->db->get_where('groups', array('id'=>$user['group_id']), 1, 0);
-//            $user_group = $query->row_array();
-//            $user['group'] = $user_group;
-//        }
-////        var_dump($user);die;
         return TRUE;
     }
 
-    function get_forums($cache = TRUE) {
-        if ($cache && !empty($this->forums)) {
-            return $this->forums;
+    public function get_format_forums($cache = TRUE) {
+        if (!$cache || empty($this->format_forums)) {
+            $forums = $this->get_forums();
+            if (!empty($forums)) {
+                $forums = $this->format($forums);
+            }
+            $this->format_forums = $forums;
         }
-        $this->db->order_by("display_order");
-        $query = $this->db->get($this->table);
-        $forums = $query->result_array();
-        if (!empty($forums)) {
-            $forums = $this->format($forums);
+        return $this->format_forums;
+    }
+
+    public function get_forums() {
+        if (empty($this->forums)) {
+            $this->db->order_by("display_order");
+            $query = $this->db->get($this->table);
+            $this->forums = $query->result_array();
         }
-        $this->forums = $forums;
-        return $forums;
+        return $this->forums;
+    }
+
+    private function get_key_forums($key = 'id') {
+        $forums = $this->get_forums();
+        $key_forums = array();
+        foreach ($forums as $v) {
+            $key_forums[$v[$key]] = $v;
+        }
+        return $key_forums;
     }
 
     private function format($forums) {
@@ -51,11 +55,11 @@ class Forums_model extends CI_Model {
         $new_forums = $tmp[0];
         unset($tmp[0]);
         foreach ($new_forums as $key => $value) {//最多三级分类
-            if(isset($tmp[$value['id']])){
+            if (isset($tmp[$value['id']])) {
                 $new_forums[$key]['sub'] = $tmp[$value['id']];
                 unset($tmp[$value['id']]);
                 foreach ($new_forums[$key]['sub'] as $k => $v) {
-                    if(isset($tmp[$v['id']])){
+                    if (isset($tmp[$v['id']])) {
                         $new_forums[$key]['sub'][$k]['sub'] = $tmp[$v['id']];
                     }
                 }
@@ -63,46 +67,59 @@ class Forums_model extends CI_Model {
         }
         return $new_forums;
     }
-    public function update_old($data){
-        foreach ($data as $key=>$val){
-            if($val['type']==$type){
-                $name = trim($val['name']);
-                if(!empty($name)){
-                    $insert_data['display_order'] = intval($val['order']);
-                    $insert_data['name'] = $name;
-                    $insert_data['parent_id'] = is_numeric($val['pid'])?$val['pid']:$tmp_pids[$val['pid']];
-                    $insert_data['type'] = $type_arr[$val['type']];
-                    $insert_data['manager'] = trim(preg_replace('/[,;\s]+/', ',', $val['manager']),',');
-                    if($this->db->insert($this->table, $insert_data)){
-                        $id = $this->db->insert_id();
-                        $tmp_pids[$key] = $id;
-                    }else{
-                        return FALSE;
-                    }
+
+    private function format_manager($manager) {
+        return trim(preg_replace('/[,;\s]+/', ',', $manager), ',');
+    }
+
+    public function update_old($data) {
+        if (!is_array($data))
+            return TRUE;
+        //得到当前的forums
+        $forums = $this->get_key_forums('id');
+        foreach ($data as $key => $val) {
+            $is_update = FALSE;
+            $tmp = array();
+            $name = isset($val['name']) ? trim($val['name']) : '';
+            $manager = $this->format_manager($val['manager']);
+            !empty($name) && $tmp['name'] = $name;
+            !empty($manager) && $tmp['manager'] = $manager;
+            $tmp['display_order'] = intval($val['order']);
+            foreach ($tmp as $k => $v) {
+                if ($forums[$key][$k] != $v) {
+                    $is_update = TRUE;
+                    break;
                 }
-                unset($data[$key]);
+            }
+            if ($is_update) {
+                $this->db->where('id', $key);
+                if (!$this->db->update($this->table, $tmp)) {
+                    return FALSE;
+                }
             }
         }
         return TRUE;
     }
-    
-    public function insert_new($data){
-        $type_arr = array(1=>'group', 2=> 'forum', 3=> 'sub');
+
+    public function insert_new($data) {
+        if (!is_array($data))
+            return TRUE;
+        $type_arr = array(1 => 'group', 2 => 'forum', 3 => 'sub');
         $tmp_pids = array();
-        for($type=1;$type<=3;$type++){
-            foreach ($data as $key=>$val){
-                if($val['type']==$type){
+        for ($type = 1; $type <= 3; $type++) {
+            foreach ($data as $key => $val) {
+                if ($val['type'] == $type) {
                     $name = trim($val['name']);
-                    if(!empty($name)){
+                    if (!empty($name)) {
                         $insert_data['display_order'] = intval($val['order']);
                         $insert_data['name'] = $name;
-                        $insert_data['parent_id'] = is_numeric($val['pid'])?$val['pid']:$tmp_pids[$val['pid']];
+                        $insert_data['parent_id'] = is_numeric($val['pid']) ? $val['pid'] : $tmp_pids[$val['pid']];
                         $insert_data['type'] = $type_arr[$val['type']];
-                        $insert_data['manager'] = trim(preg_replace('/[,;\s]+/', ',', $val['manager']),',');
-                        if($this->db->insert($this->table, $insert_data)){
+                        $insert_data['manager'] = $this->format_manager($val['manager']);
+                        if ($this->db->insert($this->table, $insert_data)) {
                             $id = $this->db->insert_id();
                             $tmp_pids[$key] = $id;
-                        }else{
+                        } else {
                             return FALSE;
                         }
                     }
@@ -112,6 +129,7 @@ class Forums_model extends CI_Model {
         }
         return TRUE;
     }
+
 }
 
 ?>

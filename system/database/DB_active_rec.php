@@ -1390,7 +1390,7 @@ class CI_DB_active_record extends CI_DB_driver {
 		{
 			// @todo error
 		}
-
+                var_dump($index);die;
 		foreach ($key as $k => $v)
 		{
 			$index_set = FALSE;

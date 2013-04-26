@@ -1,25 +1,20 @@
 jQuery.extend(jQuery, {
   // jQuery UI alert弹出提示
-  jAlert: function(text, title, fn) {
-    var html =
-    '<div class="dialog" id="dialog-message">' +
-    '  <p>' +
-    '    <span class="ui-icon ui-icon-circle-check" style="float: left; margin: 0 7px 0 0;"></span>' + text +
-    '  </p>' +
-    '</div>';
-    return $(html).dialog({
-      //autoOpen: false,
+  jAlert: function(text, title) {
+	var icon = '<span class="ui-icon ui-icon-circle-check" style="float: left; margin: 0 7px 0 0;"></span>';
+	icon = '';
+    if($("#dialog-message").length>0){
+		var html = $("#dialog-message").html(icon+text);
+	}else{
+		var html = $('<div id="dialog-message">' +icon+text +'</div>');
+	}
+    return html.dialog({
       resizable: false,
       modal: true,
-      show: {
-        effect: 'fade',
-        duration: 300
-      },
       title: title || "提示信息",
       buttons: {
         "确定": function() {
-          var dlg = $(this).dialog("close");
-          fn && fn.call(dlg);
+          $(this).dialog("close");
         }
       }      
     });

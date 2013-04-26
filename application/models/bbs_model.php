@@ -1,6 +1,6 @@
 <?php
 
-class Bbsmodel extends CI_Model {
+class Bbsmodel extends MY_Model {
 
     var $title   = '';
     var $content = '';

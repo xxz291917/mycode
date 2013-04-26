@@ -10,6 +10,7 @@
 <script type="text/javascript" src="<?=base_url()?>js/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?=base_url()?>js/dialog-ex.js"></script>
 <script type="text/javascript">
+	var base_url = '<?=base_url()?>';
 	$(function(){
 		//弹出框A链接扩展
 		$("a[target=dialog]").each(function(){
