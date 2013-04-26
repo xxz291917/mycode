@@ -48,17 +48,19 @@ class Forums extends Admin_Controller {
     }
 
     public function edit($id='') {
-        if (empty($id)) {
+        if (empty($id) && !$this->input->post('submit')) {
             $this->message('参数错误！');
-        } else {
-            $this->load->helper('form');
-            $forums = $this->forums_model->get_by_id($id);
-            $var['forums'] = $forums;
-            
-            
-            
-            $this->view('forums_edit', $var);
+        } else if($this->input->post('submit')){
+            $forums = $this->input->post();
+            if(1){
+               $this->message('参数错误！'); 
+            }
+            $this->message('参数错误！');
         }
+        $this->load->helper('form');
+        $forums = $this->forums_model->get_by_id($id);
+        $var['data'] = $forums;
+        $this->view('forums_edit', $var);
     }
 
     public function logout() {
