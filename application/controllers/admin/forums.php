@@ -6,7 +6,7 @@ class Forums extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model(array('forums_model','forums_setting_model'));
+        $this->load->model(array('forums_model'));
     }
 
     public function index() {
@@ -64,10 +64,17 @@ class Forums extends Admin_Controller {
             $forums = $this->forums_model->form_filter($forums, 'de');
             $var['data'] = $forums;
             //如果是权限设置，还要获取用户组信息。
-            if($type == 'access'){
+            if ($type == 'access') {
                 $this->load->model('groups_model');
                 $var['groups'] = $this->groups_model->get_all();
-                $var['group_names'] = array('system'=>'系统用户组','member'=>'会员用户组','special'=>'特殊用户组');
+                $var['group_names'] = array('system' => '系统用户组', 'member' => '会员用户组', 'special' => '特殊用户组');
+            } elseif ($type == 'credit') {
+                //获取启用的积分名称
+                $this->load->model('credit_name_model');
+                $var['credit_names'] =$this->credit_name_model->get_all();
+                $this->load->model('credit_rule_model');
+                $var['credit_rules'] =$this->credit_rule_model->get_all();
+                $var['cycle_names'] = array(0 => '一次', 1 => '一天', 2 => '整点',3=>'间隔时间',4=>'不限');
             }
             $this->view('forums_' . $type, $var);
         }

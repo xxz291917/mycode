@@ -155,6 +155,9 @@ class Forums_model extends MY_Model {
                     case 'allow_download':
                         $forums[$key] = join(',', $value);
                         break;
+                    case 'credit_setting':
+                        $forums[$key] = json_encode($value);
+                        break;
                     default:
                         $forums[$key] = trim($value);
                         break;
@@ -170,6 +173,9 @@ class Forums_model extends MY_Model {
                     case 'allow_download':
                         //权限存取的规则都是，以逗号分隔的用户组id。
                         $forums[$key] = explode(',', $value);
+                        break;
+                    case 'credit_setting':
+                        $forums[$key] = json_decode($value, TRUE);
                         break;
                 }
             }

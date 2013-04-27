@@ -23,7 +23,7 @@
     <th ><input type="checkbox" class="checkbox" set="allow_post">发布主题</th>
     <th ><input type="checkbox" class="checkbox" set="allow_reply">主题回复</th>
     <th ><input type="checkbox" class="checkbox" set="allow_upload">上传附件</th>
-    <th ><input type="checkbox" class="checkbox" set="allow_hownload">下载附件</th>
+    <th ><input type="checkbox" class="checkbox" set="allow_download">下载附件</th>
   </tr>
   <?php
   	$current_type = '';
