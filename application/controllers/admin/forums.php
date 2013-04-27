@@ -1,4 +1,4 @@
-<?php
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Forums extends Admin_Controller {
 
@@ -6,7 +6,7 @@ class Forums extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model('forums_model');
+        $this->load->model(array('forums_model','forums_setting_model'));
     }
 
     public function index() {
@@ -47,22 +47,61 @@ class Forums extends Admin_Controller {
         die;
     }
 
-    public function edit($id='') {
-        if (empty($id) && !$this->input->post('submit')) {
+    public function edit($id = '', $type = 'basic') {
+        if (empty($id)) {
             $this->message('参数错误！');
-        } else if($this->input->post('submit')){
+        } elseif ($this->input->post('submit')) {
             $forums = $this->input->post();
-            if(1){
-               $this->message('参数错误！'); 
+            $forums = $this->forums_model->form_filter($forums, 'en');
+            if ($this->forums_model->update($forums, array('id' => $id))) {
+                $this->message('修改成功！');
+            } else {
+                $this->message('修改失败！');
             }
-            $this->message('参数错误！');
+        } else {
+            $this->load->helper('form');
+            $forums = $this->forums_model->get_by_id($id);
+            $forums = $this->forums_model->form_filter($forums, 'de');
+            $var['data'] = $forums;
+            //如果是权限设置，还要获取用户组信息。
+            if($type == 'access'){
+                $this->load->model('groups_model');
+                $var['groups'] = $this->groups_model->get_all();
+                $var['group_names'] = array('system'=>'系统用户组','member'=>'会员用户组','special'=>'特殊用户组');
+            }
+            $this->view('forums_' . $type, $var);
         }
-        $this->load->helper('form');
-        $forums = $this->forums_model->get_by_id($id);
-        $var['data'] = $forums;
-        $this->view('forums_edit', $var);
     }
 
+    public function credit_edit($id = '') {
+        if (empty($id)) {
+            $this->message('参数错误！');
+        } elseif ($this->input->post('submit')) {
+            $forums = $this->input->post();
+            $forums = $this->forums_model->form_filter($forums, 'en');
+            if ($this->forums_model->update($forums, array('id' => $id))) {
+                $this->message('修改成功！');
+            } else {
+                $this->message('修改失败！');
+            }
+        } else {
+            $this->load->helper('form');
+            //获取版块积分设置
+            $forums = $this->forums_model->get_by_id($id);
+            $forums_setting = $this->forums_setting_model->get_by_id($id);
+            $forums_setting['credit_setting'];
+            //获取积分规则
+            
+            //获取启用的积分名称
+//            credit_name
+            
+            $forums = $this->forums_model->form_filter($forums, 'de');
+            $var['data'] = $forums;
+            $this->view('forums_' . $type, $var);
+        }
+    }
+    
+    
     public function logout() {
         $this->load->model('User_model');
         $this->User_model->logout();

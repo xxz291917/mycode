@@ -37,18 +37,13 @@ if (!function_exists('set_checkbox')) {
  */
 if (!function_exists('set_radio')) {
     function set_radio($field = '', $value = '', $data = array()) {
+        echo $field;
         if (!isset($data[$field])) {
             return '';
         }
         $field = $data[$field];
-        if (is_array($field)) {
-            if (!in_array($value, $field)) {
-                return '';
-            }
-        } else {
-            if (($field == '' OR $value == '') OR ($field != $value)) {
-                return '';
-            }
+        if ($field != $value) {
+            return '';
         }
         return ' checked="checked"';
     }

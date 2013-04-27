@@ -1,5 +1,8 @@
 <?php
 
+if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
+
 class Forums_model extends MY_Model {
 
     public $forums;
@@ -7,7 +10,7 @@ class Forums_model extends MY_Model {
 
     function __construct() {
         parent::__construct();
-        $this->table='forums';
+        $this->table = 'forums';
     }
 
     function initialize() {
@@ -116,7 +119,7 @@ class Forums_model extends MY_Model {
                         $insert_data['parent_id'] = is_numeric($val['pid']) ? $val['pid'] : $tmp_pids[$val['pid']];
                         $insert_data['type'] = $type_arr[$val['type']];
                         $insert_data['manager'] = $this->format_manager($val['manager']);
-                        if ($this->db->insert($this->table, $insert_data)) {
+                        if ($this->insert($insert_data)) {
                             $id = $this->db->insert_id();
                             $tmp_pids[$key] = $id;
                         } else {
@@ -128,6 +131,50 @@ class Forums_model extends MY_Model {
             }
         }
         return TRUE;
+    }
+
+    public function form_filter($forums, $type = 'en') {
+        foreach ($forums as $key => $value) {
+            if ($type == 'en') {
+                switch ($key) {
+                    case 'submit':
+                        unset($forums[$key]);
+                        break;
+                    case 'manager':
+                        $forums[$key] = $this->format_manager($value);
+                        break;
+                    case 'display_order':
+                        $forums[$key] = intval($value);
+                        break;
+                    case 'allow_special':
+                    case 'allow_visit':
+                    case 'allow_read':
+                    case 'allow_post':
+                    case 'allow_reply':
+                    case 'allow_upload':
+                    case 'allow_download':
+                        $forums[$key] = join(',', $value);
+                        break;
+                    default:
+                        $forums[$key] = trim($value);
+                        break;
+                }
+            } else {
+                switch ($key) {
+                    case 'allow_special':
+                    case 'allow_visit':
+                    case 'allow_read':
+                    case 'allow_post':
+                    case 'allow_reply':
+                    case 'allow_upload':
+                    case 'allow_download':
+                        //权限存取的规则都是，以逗号分隔的用户组id。
+                        $forums[$key] = explode(',', $value);
+                        break;
+                }
+            }
+        }
+        return $forums;
     }
 
 }
