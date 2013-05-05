@@ -28,7 +28,7 @@
     <!--td ><?=$rules['cycle_time']?></td-->
     <td ><?=$rules['reward_num']?></td>
     <?php foreach ($credit_names as $key => $value){ ?>
-    <td ><input type="text" style="width:20px" class="inp_txt" value="<?php if(isset($data['credit_setting'][$rules['action']][$value['credit_x']])) echo $data['credit_setting'][$rules['action']][$value['credit_x']];?>" name="<?php echo 'credit_setting'.'['.$rules['action'].']'.'['.$value['credit_x'].']'?>"></td>
+    <td ><input type="text" class="inp_txt inp_num" value="<?php if(isset($data['credit_setting'][$rules['action']][$value['credit_x']])) echo $data['credit_setting'][$rules['action']][$value['credit_x']];?>" name="<?php echo 'credit_setting'.'['.$rules['action'].']'.'['.$value['credit_x'].']'?>"></td>
     <?php }?>
   </tr>
   <?php }?>

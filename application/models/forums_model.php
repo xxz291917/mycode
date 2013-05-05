@@ -119,6 +119,9 @@ class Forums_model extends MY_Model {
                         $insert_data['parent_id'] = is_numeric($val['pid']) ? $val['pid'] : $tmp_pids[$val['pid']];
                         $insert_data['type'] = $type_arr[$val['type']];
                         $insert_data['manager'] = $this->format_manager($val['manager']);
+                        $insert_data['create_user'] = $this->user['username'];
+                        $insert_data['create_user_id'] = $this->user['id'];
+                        $insert_data['create_time'] = time();
                         if ($this->insert($insert_data)) {
                             $id = $this->db->insert_id();
                             $tmp_pids[$key] = $id;

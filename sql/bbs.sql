@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2013 年 04 月 27 日 18:09
+-- 生成日期: 2013 年 05 月 05 日 17:43
 -- 服务器版本: 5.5.16
 -- PHP 版本: 5.3.8
 
@@ -193,7 +193,7 @@ CREATE TABLE IF NOT EXISTS `forums` (
   KEY `forum` (`status`,`type`,`display_order`),
   KEY `fup_type` (`parent_id`,`type`,`display_order`),
   KEY `fup` (`parent_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='论坛版块' AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='论坛版块' AUTO_INCREMENT=11 ;
 
 --
 -- 转存表中的数据 `forums`
@@ -204,9 +204,7 @@ INSERT INTO `forums` (`id`, `parent_id`, `type`, `name`, `description`, `icon`, 
 (2, 1, 'forum', 'test版', '测试默认版块', '', 'admin', 2, '', 0, 0, '1,2', 0, 1, 1, 0, 0, 0, '1', '1', '1', '1', '1', '1', '', '', '', '{"post":{"extcredits1":"","extcredits2":"","extcredits3":""},"reply":{"extcredits1":"","extcredits2":"","extcredits3":""},"digest":{"extcredits1":"","extcredits2":"","extcredits3":""},"postattach":{"extcredits1":"","extcredits2":"","extcredits3":""},"getattach":{"extcredits1":"0","extcredits2":"5","extcredits3":"4"},"daylogin":{"extcredits1":"","extcredits2":"","extcredits3":""},"search":{"extcredits1":"","extcredits2":"","extcredits3":""}}', 0),
 (4, 0, 'group', 'test545', '测试版块内容哦测试版块内容哦测试版块内容哦测试版块内容哦测试版块内容哦测试版块内容哦测试版块内容哦', '', 'admin', 5, '', 0, 0, '2,3', 0, 1, 1, 1, 1, 2, '', '', '', '', '', '', '论坛seo', '论坛seo 论坛seo', '论坛seo论坛seo论坛seo论坛seo论坛seo论坛seo', '', 1),
 (6, 2, 'sub', '学智测试版块', '', '', 'admin', 0, '', 0, 0, '', 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', 0),
-(7, 4, 'forum', '学智测试二级', '', '', '', 0, '', 0, 0, '', 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', 0),
-(10, 0, 'group', '子版块测试', '', '', '', 2, '', 0, 0, '', 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', 0),
-(11, 2, 'sub', '子版块测试', '', '', '', 0, '', 0, 0, '', 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', 0);
+(10, 0, 'group', '子版块测试', '', '', '', 2, '', 0, 0, '', 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', 0);
 
 -- --------------------------------------------------------
 
@@ -233,11 +231,11 @@ CREATE TABLE IF NOT EXISTS `forums_statistics` (
 --
 
 CREATE TABLE IF NOT EXISTS `groups` (
-  `id` int(10) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `type` enum('system','special','member') NOT NULL,
   `name` varchar(80) NOT NULL COMMENT '用户组名称',
   `icon` varchar(30) NOT NULL COMMENT '等级图片号',
-  `credits` int(11) unsigned NOT NULL COMMENT '升级所需积分',
+  `credits` int(11) NOT NULL COMMENT '升级所需积分',
   `stars` tinyint(3) unsigned NOT NULL COMMENT '星星的数量',
   `is_sign` tinyint(1) NOT NULL COMMENT '是否允许签名',
   `is_anonymous` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否允许匿名发帖子',
@@ -253,7 +251,7 @@ CREATE TABLE IF NOT EXISTS `groups` (
   `is_upload` tinyint(1) NOT NULL COMMENT '是否允许上传附件',
   `is_download` tinyint(1) NOT NULL COMMENT '是否允许下载附件',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
 --
 -- 转存表中的数据 `groups`
@@ -268,7 +266,7 @@ INSERT INTO `groups` (`id`, `type`, `name`, `icon`, `credits`, `stars`, `is_sign
 (6, 'system', '禁止 IP', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
 (7, 'system', '游客', '', 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0),
 (8, 'system', '等待验证会员', '', 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0),
-(9, 'member', '限制会员', '', 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0),
+(9, 'member', '限制会员', '', -99999, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0),
 (10, 'member', '新手上路', '', 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0),
 (11, 'member', '注册会员', '', 50, 2, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0),
 (12, 'member', '中级会员', '', 200, 3, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0),
@@ -283,12 +281,96 @@ INSERT INTO `groups` (`id`, `type`, `name`, `icon`, `credits`, `stars`, `is_sign
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `groups_admin`
+--
+
+CREATE TABLE IF NOT EXISTS `groups_admin` (
+  `group_id` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '关联用户组id',
+  `alloweditpost` tinyint(1) NOT NULL DEFAULT '0',
+  `alloweditpoll` tinyint(1) NOT NULL DEFAULT '0',
+  `allowstickthread` tinyint(1) NOT NULL DEFAULT '0',
+  `allowmodpost` tinyint(1) NOT NULL DEFAULT '0',
+  `allowdelpost` tinyint(1) NOT NULL DEFAULT '0',
+  `allowmassprune` tinyint(1) NOT NULL DEFAULT '0',
+  `allowrefund` tinyint(1) NOT NULL DEFAULT '0',
+  `allowcensorword` tinyint(1) NOT NULL DEFAULT '0',
+  `allowviewip` tinyint(1) NOT NULL DEFAULT '0',
+  `allowbanip` tinyint(1) NOT NULL DEFAULT '0',
+  `allowedituser` tinyint(1) NOT NULL DEFAULT '0',
+  `allowmoduser` tinyint(1) NOT NULL DEFAULT '0',
+  `allowbanuser` tinyint(1) NOT NULL DEFAULT '0',
+  `allowbanvisituser` tinyint(1) NOT NULL DEFAULT '0',
+  `allowpostannounce` tinyint(1) NOT NULL DEFAULT '0',
+  `allowviewlog` tinyint(1) NOT NULL DEFAULT '0',
+  `allowbanpost` tinyint(1) NOT NULL DEFAULT '0',
+  `supe_allowpushthread` tinyint(1) NOT NULL DEFAULT '0',
+  `allowhighlightthread` tinyint(1) NOT NULL DEFAULT '0',
+  `allowdigestthread` tinyint(1) NOT NULL DEFAULT '0',
+  `allowrecommendthread` tinyint(1) NOT NULL DEFAULT '0',
+  `allowbumpthread` tinyint(1) NOT NULL DEFAULT '0',
+  `allowclosethread` tinyint(1) NOT NULL DEFAULT '0',
+  `allowmovethread` tinyint(1) NOT NULL DEFAULT '0',
+  `allowedittypethread` tinyint(1) NOT NULL DEFAULT '0',
+  `allowstampthread` tinyint(1) NOT NULL DEFAULT '0',
+  `allowstamplist` tinyint(1) NOT NULL DEFAULT '0',
+  `allowcopythread` tinyint(1) NOT NULL DEFAULT '0',
+  `allowmergethread` tinyint(1) NOT NULL DEFAULT '0',
+  `allowsplitthread` tinyint(1) NOT NULL DEFAULT '0',
+  `allowrepairthread` tinyint(1) NOT NULL DEFAULT '0',
+  `allowwarnpost` tinyint(1) NOT NULL DEFAULT '0',
+  `allowviewreport` tinyint(1) NOT NULL DEFAULT '0',
+  `alloweditforum` tinyint(1) NOT NULL DEFAULT '0',
+  `allowremovereward` tinyint(1) NOT NULL DEFAULT '0',
+  `allowedittrade` tinyint(1) NOT NULL DEFAULT '0',
+  `alloweditactivity` tinyint(1) NOT NULL DEFAULT '0',
+  `allowstickreply` tinyint(1) NOT NULL DEFAULT '0',
+  `allowmanagearticle` tinyint(1) NOT NULL DEFAULT '0',
+  `allowaddtopic` tinyint(1) NOT NULL DEFAULT '0',
+  `allowmanagetopic` tinyint(1) NOT NULL DEFAULT '0',
+  `allowdiy` tinyint(1) NOT NULL DEFAULT '0',
+  `allowclearrecycle` tinyint(1) NOT NULL DEFAULT '0',
+  `allowmanagetag` tinyint(1) NOT NULL DEFAULT '0',
+  `alloweditusertag` tinyint(1) NOT NULL DEFAULT '0',
+  `managefeed` tinyint(1) NOT NULL DEFAULT '0',
+  `managedoing` tinyint(1) NOT NULL DEFAULT '0',
+  `manageshare` tinyint(1) NOT NULL DEFAULT '0',
+  `manageblog` tinyint(1) NOT NULL DEFAULT '0',
+  `managealbum` tinyint(1) NOT NULL DEFAULT '0',
+  `managecomment` tinyint(1) NOT NULL DEFAULT '0',
+  `managemagiclog` tinyint(1) NOT NULL DEFAULT '0',
+  `managereport` tinyint(1) NOT NULL DEFAULT '0',
+  `managehotuser` tinyint(1) NOT NULL DEFAULT '0',
+  `managedefaultuser` tinyint(1) NOT NULL DEFAULT '0',
+  `managevideophoto` tinyint(1) NOT NULL DEFAULT '0',
+  `managemagic` tinyint(1) NOT NULL DEFAULT '0',
+  `manageclick` tinyint(1) NOT NULL DEFAULT '0',
+  `allowmanagecollection` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `groups_admin`
+--
+
+INSERT INTO `groups_admin` (`group_id`, `alloweditpost`, `alloweditpoll`, `allowstickthread`, `allowmodpost`, `allowdelpost`, `allowmassprune`, `allowrefund`, `allowcensorword`, `allowviewip`, `allowbanip`, `allowedituser`, `allowmoduser`, `allowbanuser`, `allowbanvisituser`, `allowpostannounce`, `allowviewlog`, `allowbanpost`, `supe_allowpushthread`, `allowhighlightthread`, `allowdigestthread`, `allowrecommendthread`, `allowbumpthread`, `allowclosethread`, `allowmovethread`, `allowedittypethread`, `allowstampthread`, `allowstamplist`, `allowcopythread`, `allowmergethread`, `allowsplitthread`, `allowrepairthread`, `allowwarnpost`, `allowviewreport`, `alloweditforum`, `allowremovereward`, `allowedittrade`, `alloweditactivity`, `allowstickreply`, `allowmanagearticle`, `allowaddtopic`, `allowmanagetopic`, `allowdiy`, `allowclearrecycle`, `allowmanagetag`, `alloweditusertag`, `managefeed`, `managedoing`, `manageshare`, `manageblog`, `managealbum`, `managecomment`, `managemagiclog`, `managereport`, `managehotuser`, `managedefaultuser`, `managevideophoto`, `managemagic`, `manageclick`, `allowmanagecollection`) VALUES
+(1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+(2, 1, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+(3, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(16, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(17, 1, 0, 2, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 3, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(18, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(19, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `groups_setting`
 --
 
 CREATE TABLE IF NOT EXISTS `groups_setting` (
   `group_id` smallint(5) unsigned NOT NULL COMMENT '版块id',
-  `basic_setting` mediumtext NOT NULL COMMENT '未在groups表中基本设置'
+  `basic_setting` mediumtext NOT NULL COMMENT '未在groups表中基本设置',
+  PRIMARY KEY (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -407,6 +489,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` char(32) NOT NULL COMMENT '基本上不需要这个字段（passport登陆）',
   `credits` int(10) unsigned NOT NULL COMMENT '用户总积分',
   `group_id` smallint(5) unsigned NOT NULL COMMENT '所属用户组id',
+  `admin_id` smallint(5) unsigned NOT NULL COMMENT '管理组id',
   `icon` varchar(255) NOT NULL COMMENT '用户头像',
   `gender` tinyint(4) NOT NULL COMMENT '性别',
   `signature` varchar(500) NOT NULL COMMENT '个性签名',
@@ -419,9 +502,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- 转存表中的数据 `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `username`, `password`, `credits`, `group_id`, `icon`, `gender`, `signature`, `regdate`, `status`) VALUES
-(1, 'xxz291917@163.com', 'xxz291917', '', 108, 1, '', 1, '<font color=''red''>签名测试</font>', 1298763453, 1),
-(2, 'xxz5291917@163.com', 'xxz5291917', '', 108, 1, '', 1, '<font color=''green''>签名测试</font>', 1298543453, 1);
+INSERT INTO `users` (`id`, `email`, `username`, `password`, `credits`, `group_id`, `admin_id`, `icon`, `gender`, `signature`, `regdate`, `status`) VALUES
+(1, 'xxz291917@163.com', 'xxz291917', '', 108, 1, 0, '', 1, '<font color=''red''>签名测试</font>', 1298763453, 1),
+(2, 'xxz5291917@163.com', 'xxz5291917', '', 108, 1, 0, '', 1, '<font color=''green''>签名测试</font>', 1298543453, 1);
 
 -- --------------------------------------------------------
 

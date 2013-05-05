@@ -22,7 +22,14 @@ class Users_model extends MY_Model {
 //        var_dump($user);die;
         return $user;
     }
-
+    
+    public function exist_in_group($group_id=0) {
+        $sql = 'SELECT id FROM ' . $this->table . ' WHERE group_id = \'' . $group_id . '\' or admin_id = \'' . $group_id . '\' AND status!=2 LIMIT 1';
+        $query = $this->db->query($sql);
+        $id = $query->row_array();
+        return empty($id) ? TRUE : FALSE;
+    }
+    
 }
 
 ?>

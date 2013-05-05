@@ -77,10 +77,10 @@ html, body {
           </div>
           <div id='users'>
             <ul>
-              <li><a href="index.php?admin_setting-baseregister" target="main" >注册设置</a></li>
-              <li><a href="index.php?admin_user" target="main" >管理用户</a></li>
-              <li><a href="index.php?admin_regular-groupset" target="main">管理权限</a></li>
-              <li><a href="index.php?admin_usergroup" target="main">管理用户组</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/forums/merge" target="main" >注册设置</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/forums/merge" target="main" >管理用户</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/forums/merge" target="main">管理权限</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/groups" target="main">管理用户组</a></li>
             </ul>
           </div>
           <div id='content'>

@@ -17,11 +17,11 @@
       </colgroup>
       <thead>
         <tr>
-          <td></td>
-          <td><span >[顺序]</span>版块名称</td>
-          <td class="tar">fid</td>
-          <td>版主</td>
-          <td>操作</td>
+          <th></th>
+          <th><span >[顺序]</span>版块名称</th>
+          <th>fid</th>
+          <th>版主</th>
+          <th>操作</th>
         </tr>
       </thead>
       
@@ -29,7 +29,7 @@
           <tbody>
             <tr id="tr_<?php echo $val['id']?>" fid="<?php echo $val['id']?>" ftype="1">
               <td><span ></span></td>
-              <td><input type="text" name="old[<?php echo $val['id']?>][order]" style="width:20px;" value="<?php echo $val['display_order']?>" class="inp_txt">
+              <td><input type="text" name="old[<?php echo $val['id']?>][order]" value="<?php echo $val['display_order']?>" class="inp_txt inp_num">
                 <span fid="<?php echo $val['id']?>"><?php echo $val['name']?></span> 
                 <a class="link_add" href="#" style="display: none;">添加新版块</a></td>
               <td class="tar"><?php echo $val['id']?></td>
@@ -41,7 +41,7 @@
             <tr id="tr_<?php echo $v['id']?>" fid="<?php echo $v['id']?>" ftype="2">
               <td></td>
               <td><span class="plus_icon <?php if($k+1 == $total){?>plus_end_icon <?php }?>"></span>
-                <input type="text" name="old[<?php echo $v['id']?>][order]" style="width:20px;" value="<?php echo $v['display_order']?>" class="inp_txt">
+                <input type="text" name="old[<?php echo $v['id']?>][order]" value="<?php echo $v['display_order']?>" class="inp_txt inp_num">
                 <span fid="<?php echo $v['id']?>"><?php echo $v['name']?></span>
                 <a class="link_add" href="#" style="display: none;">添加二级版块</a></td>
               <td class="tar"><?php echo $v['id']?></td>
@@ -55,7 +55,7 @@
                       <td></td>
                       <td><span class="plus_icon plus_none_icon"></span>
                       <span class="plus_icon <?php if($sk+1 == $num){?>plus_end_icon <?php }?>"></span>
-                        <input type="text" name="old[<?php echo $sv['id']?>][order]" style="width:20px;" value="<?php echo $sv['display_order']?>" class="inp_txt">
+                        <input type="text" name="old[<?php echo $sv['id']?>][order]" value="<?php echo $sv['display_order']?>" class="inp_txt inp_num">
                         <span fid="<?php echo $sv['id']?>"><?php echo $sv['name']?></span></td>
                       <td class="tar"><?php echo $sv['id']?></td>
                       <td><input type="text" value="<?php echo $sv['manager']?>" name="old[<?php echo $sv['id']?>][manager]" class="inp_txt"></td>
@@ -71,7 +71,7 @@
       
       <tbody id="line_group">
         <tr>
-          <td style="padding-left:38px;" colspan="5"><input type="button" id="add_group" value="+添加新分类" class="inp_btn2 m-r10"/></td>
+          <td style="padding-left:38px;" colspan="5"><input type="button" id="add_group" value="+添加新分类" class="inp_btn2"/></td>
         </tr>
       </tbody>
     </table>
@@ -84,10 +84,10 @@
 $(document).ready(function() {
 	var global_id = 0;
 	$('#act_table').find('tr').live('mouseover', function() {
-		$(this).addClass("hover");
+//		$(this).addClass("hover");
 		$(".link_add",this).show();
 	}).live('mouseout', function () {
-		$(this).removeClass("hover");
+//		$(this).removeClass("hover");
 		$(".link_add",this).hide();
 	});
 
@@ -134,7 +134,7 @@ $(document).ready(function() {
 		
 		return '<tr id="tr_'+new_id+'" ftype="'+forum_level+'" fid="'+new_id+'"><td></td>\
 					<td>'+ plus_icon +'\
-						<input type="text" name="new['+ new_id +'][order]" class="inp_txt" style="width:20px;" value="0" >\
+						<input type="text" name="new['+ new_id +'][order]" class="inp_txt inp_num" value="0" >\
 						<input type="text" name="new['+ new_id +'][name]"  class="inp_txt" value="">\
 						<input type="hidden" name="new['+ new_id +'][pid]" value="'+parent_id+'">\
                         <input type="hidden" name="new['+ new_id +'][type]" value="'+forum_level+'">\
@@ -158,29 +158,30 @@ $(document).ready(function() {
 	//版块删除
 	$('.del',$('#act_table')).live('click',function (e) {
 		e.preventDefault();
-		if(confirm('确定要删除此版块么？')){
-			var currentTr = $(this).parents('tr'),
-				fid = currentTr.attr('fid'),
-				level = currentTr.attr('ftype'),
-				nextTr = currentTr.next(),
-				nextFid = nextTr.attr('fid'),
-				nextLevel = nextTr.attr('ftype');
-			if(nextLevel==undefined) nextLevel = 0;
-			//含子版不删除
-			if(level < nextLevel) {
-				$.jAlert('该版块含有子版块，请先删除所有子版块，再进行此操作！','删除版块提示');
-			}else{
-				//ajax发送请求，判断是否删除
-				$.post(base_url+"index.php/admin/forums/delete", { "id": fid },
-					function(data){
-						if(data.success==1){
-							currentTr.remove();
-						}else{
-							$.jAlert(data.data,'删除版块提示');
-						}
-					}, "json");
-			}
-		}
+                var that = this;
+		$.Confirm('确定要删除此版块么？','',function(){
+                    var currentTr = $(that).parents('tr'),
+                        fid = currentTr.attr('fid'),
+                        level = currentTr.attr('ftype'),
+                        nextTr = currentTr.next(),
+                        nextFid = nextTr.attr('fid'),
+                        nextLevel = nextTr.attr('ftype');
+                    if(nextLevel==undefined) nextLevel = 0;
+                    //含子版不删除
+                    if(level < nextLevel) {
+                            $.Alert('该版块含有子版块，请先删除所有子版块，再进行此操作！','删除版块提示');
+                    }else{
+                        //ajax发送请求，判断是否删除
+                        $.post(base_url+"index.php/admin/forums/delete", { "id": fid },
+                                function(data){
+                                        if(data.success==1){
+                                                currentTr.remove();
+                                        }else{
+                                                $.Alert(data.data,'删除版块提示');
+                                        }
+                                }, "json");
+                    }
+                });
 	});
 });
 </script>

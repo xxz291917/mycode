@@ -32,6 +32,13 @@ class MY_Model extends CI_Model {
             return FALSE;
         }
     }
+    public function delete($where){
+        if(!empty($this->table) && !empty($where)){
+            return $this->db->delete($this->table, $where);
+        }else{
+            return FALSE;
+        }
+    }
     
    public function get_all(){
         $query = $this->db->get($this->table);

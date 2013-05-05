@@ -1,27 +1,35 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 
-class Base_Controller extends CI_Controller{
-    function __construct() {
-        parent::__construct();
-    }
-    
-    protected function ajax_json($success=1,$data=array()){
-        return json_encode(array('success'=>$success,'data'=>$data));
-    }
-}
+if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
 
-class MY_Controller extends Base_Controller {
+class Base_Controller extends CI_Controller {
 
-    protected $user;
-    protected $forums;
+    public $user;
 
     function __construct() {
         parent::__construct();
         $this->load->model(array('users_model', 'forums_model'));
-        $this->load->helper(array());
-        $this->load->library(array('user_agent'));
         //初始化用户信息（包括所属用户组）
         $this->user = $this->users_model->get_userinfo();
+//        var_dump($this->user);die;
+    }
+
+    protected function ajax_json($success = 1, $data = array()) {
+        return json_encode(array('success' => $success, 'data' => $data));
+    }
+
+}
+
+class MY_Controller extends Base_Controller {
+
+    public $forums;
+
+    function __construct() {
+        parent::__construct();
+        $this->load->model();
+        $this->load->helper(array());
+        $this->load->library(array('user_agent'));
         //初始化版块信息
         $this->forums = $this->forums_model->initialize();
         //echo $this->agent->referrer();die;
@@ -35,6 +43,7 @@ class Admin_Controller extends Base_Controller {
 
     public function __construct() {
         parent::__construct();
+        $this->load->helper('form');
     }
 
     public function view($view, $vars = array(), $string = false) {
@@ -56,7 +65,7 @@ class Admin_Controller extends Base_Controller {
     protected function message($message, $redirect = 'BACK') {
         $vars['message'] = $message;
         $vars['redirect'] = $redirect;
-        $this->view('message',$vars);
+        $this->view('message', $vars);
     }
 
 }
