@@ -23,7 +23,7 @@
             <th>头衔</th>
             <th>星星数</th>
             <?php if($type=='member'){?>
-            <th width="200">升级点数需求</th>
+            <th width="200">管理级别</th>
             <?php }?>
             <th>操作</th>
         </tr>

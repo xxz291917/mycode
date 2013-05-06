@@ -1,10 +1,12 @@
+
+<h3>编辑版块：<?=$data['name']?></h3>
 <p class="sec_nav">
 <a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/basic" class="on"><span>基本设置</span></a>
 <a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/seo"><span>SEO设置</span></a>
 <a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/post"><span>帖子相关</span></a>
 <a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/access"><span>权限设置</span></a>
-<a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/credit"><span>积分设置</span></a> </p>
-<h3>基本设置</h3>
+<a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/credit"><span>积分设置</span></a>
+</p>
 <!--<ul class="col-ul tips">
   <li><b>提示: </b></li>
   <li>双击版块名称可编辑版块标题</li>
@@ -12,7 +14,7 @@
 <?php echo form_open_multipart(base_url().'index.php/admin/forums/edit/'.$data['id'])?>
   <table class="table fspan">
     <colgroup>
-    <col style="width:280px;">
+    <col style="width:380px;">
       </col>
     <col>
       </col>
@@ -38,13 +40,13 @@
       <td class="v-t" ><p>页面底部可以显示第三方统计</p></td>
     </tr>
     <tr>
-      <td><span>版块简介</span>
+      <td valign="top"><span>版块简介</span>
         <textarea cols="45" name="description" rows="3" class="textarea"><?php echo set_value('description', $data)?></textarea></td>
       <td class="v" ><p>支持HTML代码<br/>
         </p></td>
     </tr>
     <tr>
-      <td><span>关闭版块</span><label>
+      <td><span class="span">关闭版块</span><label>
           <input type="radio"  name="status" value="0" <?php echo set_radio('status', 0, $data)?>/>
           是</label>
         <label>

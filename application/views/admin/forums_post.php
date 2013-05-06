@@ -1,14 +1,16 @@
+
+<h3>编辑版块：<?=$data['name']?></h3>
 <p class="sec_nav">
 <a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/basic"><span>基本设置</span></a>
 <a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/seo"><span>SEO设置</span></a>
 <a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/post" class="on"><span>帖子相关</span></a>
 <a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/access"><span>权限设置</span></a>
-<a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/credit"><span>积分设置</span></a> </p>
-<h3>帖子相关设置</h3>
+<a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/credit"><span>积分设置</span></a>
+</p>
 <?php echo form_open(base_url().'index.php/admin/forums/edit/'.$data['id'])?>
   <table class="table fspan">
     <colgroup>
-    <col style="width:280px;">
+    <col style="width:380px;">
       </col>
     <col>
       </col>
@@ -38,7 +40,7 @@
     </tr>
     
     <tr>
-      <td><span>允许匿名发帖</span>
+      <td><span class="span">允许匿名发帖</span>
         <label>
           <input type="radio"  name="is_anonymous" value="1" <?php echo set_radio('is_anonymous', 1, $data)?>/>
           是</label>
@@ -48,7 +50,7 @@
       <td></td>
     </tr>
     <tr>
-      <td><span>允许html</span>
+      <td><span class="span">允许html</span>
         <label>
           <input type="radio"  name="is_html" value="1" <?php echo set_radio('is_html', 1, $data)?>/>
           是</label>
@@ -58,7 +60,7 @@
       <td></td>
     </tr>
     <tr>
-      <td><span>允许bbcode</span>
+      <td><span class="span">允许bbcode</span>
         <label>
           <input type="radio"  name="is_bbcode" value="1" <?php echo set_radio('is_bbcode', 1, $data)?>/>
           是</label>
@@ -68,7 +70,7 @@
       <td></td>
     </tr>
     <tr>
-      <td><span>允许图标</span>
+      <td><span class="span">允许图标</span>
         <label>
           <input type="radio"  name="is_smilies" value="1" <?php echo set_radio('is_smilies', 1, $data)?>/>
           是</label>
@@ -78,7 +80,7 @@
       <td></td>
     </tr>
     <tr>
-      <td><span>允许多媒体</span>
+      <td><span class="span">允许多媒体</span>
         <label>
           <input type="radio"  name="is_media" value="1" <?php echo set_radio('is_media', 1, $data)?>/>
           是</label>

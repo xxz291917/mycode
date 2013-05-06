@@ -44,6 +44,10 @@ html, body {
 </head>
 <body scrolling="no">
 <table width="100%" height="100%">
+<colgroup>
+<col width="150">
+<col>
+</colgroup>
   <tr>
     <td colspan="2" height="56px"><div class="head">
         <p class="r a-r t-tips"> <a href="index.php" target="_blank">前台首页</a>|<a href="index.php?admin_main-logout">退出管理中心</a> </p>
@@ -57,7 +61,7 @@ html, body {
       </div></td>
   </tr>
   <tr>
-    <td width="160" valign="top" class="admin_bg"><div class="left">
+    <td valign="top" class="admin_bg">
         <div class="sidebar">
           <div id='menu'> </div>
         </div>
@@ -77,10 +81,10 @@ html, body {
           </div>
           <div id='users'>
             <ul>
-              <li><a href="<?=base_url()?>index.php/admin/forums/merge" target="main" >注册设置</a></li>
-              <li><a href="<?=base_url()?>index.php/admin/forums/merge" target="main" >管理用户</a></li>
-              <li><a href="<?=base_url()?>index.php/admin/forums/merge" target="main">管理权限</a></li>
-              <li><a href="<?=base_url()?>index.php/admin/groups" target="main">管理用户组</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/users/merge" target="main" >注册设置</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/users/merge" target="main" >用户管理</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/groups/groups_admin" target="main">管理组设置</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/groups" target="main">用户组管理</a></li>
             </ul>
           </div>
           <div id='content'>
@@ -99,9 +103,8 @@ html, body {
               <li><a href="<?=base_url()?>index.php/admin/forums/merge" target="main">版块合并</a></li>
             </ul>
           </div>
-        </div>
-      </div></td>
-    <td width="90%" height="90%"  valign="top"><iframe name="main" id="main" marginheight="0" marginwidth="0" frameborder="0" scrolling="yes"  style="width:100%; height:100%; overflow:visible;" src="index.php?{$admin_mainframe}"></iframe></td>
+        </div></td>
+    <td height="95%"  valign="top"><iframe name="main" id="main" marginheight="0" marginwidth="0" frameborder="0" scrolling="yes"  style="width:100%; height:100%; overflow:visible;" src="index.php?{$admin_mainframe}"></iframe></td>
   </tr>
 </table>
 </body>

@@ -77,6 +77,37 @@ class Groups_model extends MY_Model {
         return TRUE;
     }
     
+    public function form_filter($forums, $type = 'en') {
+        foreach ($forums as $key => $value) {
+            if ($type == 'en') {
+                switch ($key) {
+                    case 'submit':
+                        unset($forums[$key]);
+                        break;
+                    case 'allow_special':
+                        $forums[$key] = join(',', $value);
+                        break;
+                    case 'extra_setting':
+                        $forums[$key] = json_encode($value);
+                        break;
+                    default:
+                        $forums[$key] = trim($value);
+                        break;
+                }
+            } else {
+                switch ($key) {
+                    case 'allow_special':
+                        //权限存取的规则都是，以逗号分隔的用户组id。
+                        $forums[$key] = explode(',', $value);
+                        break;
+                    case 'extra_setting':
+                        $forums[$key] = json_decode($value, TRUE);
+                        break;
+                }
+            }
+        }
+        return $forums;
+    }
 }
 
 ?>

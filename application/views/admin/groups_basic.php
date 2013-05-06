@@ -1,58 +1,79 @@
+<h3>设置用户组：<?=$data['name']?></h3>
 <p class="sec_nav">
-<a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/basic" class="on"><span>基本设置</span></a>
-<a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/seo"><span>SEO设置</span></a>
-<a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/post"><span>帖子相关</span></a>
-<a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/access"><span>权限设置</span></a>
-<a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/credit"><span>积分设置</span></a> </p>
-<h3>基本设置</h3>
-<!--<ul class="col-ul tips">
+<a href="<?=base_url()?>index.php/admin/groups/edit/<?=$data['id']?>/basic" class="on"><span>基本设置</span></a>
+<a href="<?=base_url()?>index.php/admin/groups/edit/<?=$data['id']?>/access"><span>论坛权限</span></a>
+</p>
+<!--<ul class="tips">
   <li><b>提示: </b></li>
   <li>双击版块名称可编辑版块标题</li>
 </ul>-->
-<?php echo form_open_multipart(base_url().'index.php/admin/forums/edit/'.$data['id'])?>
+<?php echo form_open_multipart(base_url().'index.php/admin/groups/edit/'.$data['id'])?>
   <table class="table fspan">
     <colgroup>
-    <col style="width:280px;">
+    <col style="width:380px;">
       </col>
     <col>
       </col>
     </colgroup>
     <tr>
-      <td><span>版块名称</span>
+      <td><span>用户组名称</span>
           <input maxlength="30" class="inp_txt" name="name" type="text" value="<?php echo set_value('name', $data)?>" /></td>
       <td class="v-b" >&nbsp;</td>
     </tr>
     <tr>
-      <td><span>版主列表</span>
-        <input maxlength="120" class="inp_txt" name="manager" type="text" value="<?php echo set_value('manager', $data)?>" /></td>
-      <td class="v-b" ><p>多个版主请用英文的逗号、分号或者空格来分隔。</p></td>
-    </tr>
-    <tr>
-      <td><span>排列顺序</span>
-        <input class="inp_txt inp_num" name="display_order" type="text" value="<?php echo set_value('display_order', $data)?>" /></td>
-      <td class="v-b" ><p>&nbsp;</p></td>
-    </tr>
-    <tr>
-      <td><span>版块图标</span>
+      <td><span>用户组图标</span>
         <input type="file" value="<?php echo set_value('icon', $data)?>" name="icon"></td>
-      <td class="v-t" ><p>页面底部可以显示第三方统计</p></td>
+      <td class="v-t" ><p>用户组图标</p></td>
     </tr>
     <tr>
-      <td><span>版块简介</span>
-        <textarea cols="45" name="description" rows="3" class="textarea"><?php echo set_value('description', $data)?></textarea></td>
-      <td class="v" ><p>支持HTML代码<br/>
-        </p></td>
-    </tr>
-    <tr>
-      <td><span>关闭版块</span><label>
-          <input type="radio"  name="status" value="0" <?php echo set_radio('status', 0, $data)?>/>
+      <td><span class="span">允许签名</span>
+        <label>
+          <input type="radio"  name="is_sign" value="1" <?php echo set_radio('is_sign', 1, $data)?>/>
           是</label>
         <label>
-          <input type="radio"  name="status" value="1" <?php echo set_radio('status', 1, $data)?>/>
-          否</label>
-        </td>
-      <td>
-      暂时将站点关闭，其他人无法访问，但不影响管理员访问。</td>
+          <input type="radio"  name="is_sign" value="0" <?php echo set_radio('is_sign', 0, $data)?>/>
+          否</label></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><span class="span">允许html</span>
+        <label>
+          <input type="radio"  name="is_html" value="1" <?php echo set_radio('is_html', 1, $data)?>/>
+          是</label>
+        <label>
+          <input type="radio"  name="is_html" value="0" <?php echo set_radio('is_html', 0, $data)?>/>
+          否</label></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><span class="span">允许bbcode</span>
+        <label>
+          <input type="radio"  name="is_bbcode" value="1" <?php echo set_radio('is_bbcode', 1, $data)?>/>
+          是</label>
+        <label>
+          <input type="radio"  name="is_bbcode" value="0" <?php echo set_radio('is_bbcode', 0, $data)?>/>
+          否</label></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><span class="span">允许图标</span>
+        <label>
+          <input type="radio"  name="is_smilies" value="1" <?php echo set_radio('is_smilies', 1, $data)?>/>
+          是</label>
+        <label>
+          <input type="radio"  name="is_smilies" value="0" <?php echo set_radio('is_smilies', 0, $data)?>/>
+          否</label></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><span class="span">允许多媒体</span>
+        <label>
+          <input type="radio"  name="is_media" value="1" <?php echo set_radio('is_media', 1, $data)?>/>
+          是</label>
+        <label>
+          <input type="radio"  name="is_media" value="0" <?php echo set_radio('is_media', 0, $data)?>/>
+          否</label></td>
+      <td></td>
     </tr>
   </table>
   <p class="submit">

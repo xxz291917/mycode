@@ -6,7 +6,7 @@ class Groups extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model(array('groups_model'));
+        $this->load->model(array('groups_model','groups_admin_model'));
     }
 
     //'system', 'special', 'member'
@@ -52,31 +52,18 @@ class Groups extends Admin_Controller {
         if (empty($id)) {
             $this->message('参数错误！');
         } elseif ($this->input->post('submit')) {
-            $forums = $this->input->post();
-            $forums = $this->forums_model->form_filter($forums, 'en');
-            if ($this->forums_model->update($forums, array('id' => $id))) {
+            $groups = $this->input->post();
+            $groups = $this->groups_model->form_filter($groups, 'en');
+            if ($this->groups_model->update($groups, array('id' => $id))) {
                 $this->message('修改成功！');
             } else {
                 $this->message('修改失败！');
             }
         } else {
             $this->load->helper('form');
-            $forums = $this->forums_model->get_by_id($id);
-            $forums = $this->forums_model->form_filter($forums, 'de');
-            $var['data'] = $forums;
-            //如果是权限设置，还要获取用户组信息。
-            if ($type == 'access') {
-                $this->load->model('groups_model');
-                $var['groups'] = $this->groups_model->get_all();
-                $var['group_names'] = array('system' => '系统用户组', 'member' => '会员用户组', 'special' => '特殊用户组');
-            } elseif ($type == 'credit') {
-                //获取启用的积分名称
-                $this->load->model('credit_name_model');
-                $var['credit_names'] =$this->credit_name_model->get_all();
-                $this->load->model('credit_rule_model');
-                $var['credit_rules'] =$this->credit_rule_model->get_all();
-                $var['cycle_names'] = array(0 => '一次', 1 => '一天', 2 => '整点',3=>'间隔时间',4=>'不限');
-            }
+            $groups = $this->groups_model->get_by_id($id);
+            $groups = $this->groups_model->form_filter($groups, 'de');
+            $var['data'] = $groups;
             $this->view('groups_' . $type, $var);
         }
     }
@@ -110,10 +97,21 @@ class Groups extends Admin_Controller {
     }
     
     
-    public function logout() {
-        $this->load->model('User_model');
-        $this->User_model->logout();
-        redirect(site_aurl('login'));
+    public function groups_admin() {
+        if ($posts = $this->input->post()) {
+            $is_update = $this->groups_model->update_old($this->input->post('old'),$type);
+            $is_insert = $this->groups_model->insert_new($this->input->post('new'),$type);
+            if ($is_update && $is_insert) {
+                $this->message('操作成功');
+            } else {
+                $this->message('操作失败');
+            }
+        } else {
+            //获取某个类别的用户组信息
+            $groups = $this->groups_admin_model->get_groups();
+            $var['groups'] = $groups;
+            $this->view('groups_admin', $var);
+        }
     }
 
 }
