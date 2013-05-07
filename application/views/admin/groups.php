@@ -68,7 +68,7 @@
     </tbody>
     <?php }?>
 </table>
-<p class="submit">
+<p class="div_bottom">
     <input class="inp_btn" name="submit" type="submit" value="提交" />
 </p>
 <?php echo form_close() ?>

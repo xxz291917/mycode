@@ -98,7 +98,6 @@
     <th>每日最多发帖数</th>
     <td><input maxlength="30" class="inp_txt inp_num" name="max_post_num" type="text" value="<?php echo set_value('max_post_num', $data)?>" /></td>
     <td class="v-b" >"0"为不限制</td>
-    <td></td>
   </tr>
   <tr>
     <th>每日最多附件</th>
@@ -172,7 +171,7 @@
     <td></td>
   </tr>
 </table>
-<p class="submit">
+<p class="div_bottom">
   <input class="inp_btn" name="submit" type="submit" value="提交" />
 </p>
 <?php echo form_close() ?>

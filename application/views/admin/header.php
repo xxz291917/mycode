@@ -86,4 +86,4 @@
 
 </script>
 </head>
-<body style='margin:5px 0 0 10px'>
+<body>

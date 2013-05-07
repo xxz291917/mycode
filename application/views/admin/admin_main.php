@@ -81,8 +81,7 @@ html, body {
           </div>
           <div id='users'>
             <ul>
-              <li><a href="<?=base_url()?>index.php/admin/users/merge" target="main" >注册设置</a></li>
-              <li><a href="<?=base_url()?>index.php/admin/users/merge" target="main" >用户管理</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/users" target="main" >用户管理</a></li>
               <li><a href="<?=base_url()?>index.php/admin/groups" target="main">用户组管理</a></li>
             </ul>
           </div>

@@ -2,8 +2,6 @@
 
 class Forums extends Admin_Controller {
 
-    private $table = 'forums_model';
-
     function __construct() {
         parent::__construct();
         $this->load->model(array('forums_model'));
@@ -96,22 +94,10 @@ class Forums extends Admin_Controller {
             $forums = $this->forums_model->get_by_id($id);
             $forums_setting = $this->forums_setting_model->get_by_id($id);
             $forums_setting['credit_setting'];
-            //获取积分规则
-            
-            //获取启用的积分名称
-//            credit_name
-            
             $forums = $this->forums_model->form_filter($forums, 'de');
             $var['data'] = $forums;
             $this->view('forums_' . $type, $var);
         }
-    }
-    
-    
-    public function logout() {
-        $this->load->model('User_model');
-        $this->User_model->logout();
-        redirect(site_aurl('login'));
     }
 
 }

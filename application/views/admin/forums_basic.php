@@ -52,7 +52,7 @@
     <td> 暂时将站点关闭，其他人无法访问，但不影响管理员访问。</td>
   </tr>
 </table>
-<p class="submit">
+<p class="div_bottom">
   <input class="inp_btn" name="submit" type="submit" value="提交" />
 </p>
 <?php echo form_close() ?>

@@ -19,7 +19,6 @@ class Users_model extends MY_Model {
             $user_group = $query->row_array();
             $user['group'] = $user_group;
         }
-//        var_dump($user);die;
         return $user;
     }
     
@@ -29,6 +28,9 @@ class Users_model extends MY_Model {
         $id = $query->row_array();
         return empty($id) ? TRUE : FALSE;
     }
+    
+    
+    
     
 }
 

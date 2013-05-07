@@ -71,7 +71,7 @@
       </tbody>
     </table>
   </div>
-  <div style="margin-top:20px;">
+  <div class="div_bottom">
     <button class="inp_btn m-r10" type="submit">提交</button>
   </div>
 </form>

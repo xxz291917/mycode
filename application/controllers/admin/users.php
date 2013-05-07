@@ -3,15 +3,15 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Groups extends Admin_Controller {
+class Users extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model(array('groups_model', 'groups_admin_model'));
+        $this->load->model(array('users_model', 'groups_model','groups_model'));
     }
 
     //'system', 'special', 'member'
-    public function index($type = 'member') {
+    public function index() {
         if ($posts = $this->input->post()) {
             $is_update = $this->groups_model->update_old($this->input->post('old'), $type);
             $is_insert = $this->groups_model->insert_new($this->input->post('new'), $type);
@@ -22,16 +22,10 @@ class Groups extends Admin_Controller {
             }
         } else {
             //获取某个类别的用户组信息
-            $groups = $this->groups_model->get_groups($type);
-            $groups_admin = $this->groups_admin_model->get_groups('group_id');
-            $admin_ids = array();
-            foreach ($groups_admin as $key => $val) {
-                $admin_ids[] = $val['group_id'];
-            }
+            $groups = $this->groups_model->get_groups();
             $var['groups'] = $groups;
-            $var['type'] = $type;
-            $var['admin_ids'] = $admin_ids;
-            $this->view('groups', $var);
+            $var['data'] = array();
+            $this->view('users', $var);
         }
     }
 

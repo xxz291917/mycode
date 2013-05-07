@@ -70,7 +70,7 @@
 		</td>
 	</tr>
 </table>
-<p class="submit">
+<p class="div_bottom">
 	<input class="inp_btn" name="settingsubmit" type="submit" value="{lang commonSave}" />&nbsp;&nbsp;
 	<input class="inp_btn" type="reset" value="{lang commonReset}" />
 </p>
