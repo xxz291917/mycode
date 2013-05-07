@@ -1,132 +1,155 @@
-
-<h3>用户组管理</h3>
-<p class="sec_nav">
-    <a href="<?= base_url() ?>index.php/admin/groups/index/member" <?php if($type=='member'){?>class="on"<?php }?>><span>会员组</span></a>
-    <a href="<?= base_url() ?>index.php/admin/groups/index/system" <?php if($type=='system'){?>class="on"<?php }?>><span>系统组</span></a>
-    <a href="<?= base_url() ?>index.php/admin/groups/index/special" <?php if($type=='special'){?>class="on"<?php }?>><span>自定义组</span></a>
+<h3>管理设置：<?=$data['name']?></h3>
+<!--<p class="sec_nav">
+<a href="<?=base_url()?>index.php/admin/groups/edit/<?=$data['group_id']?>/basic"><span>基本设置</span></a>
+<a href="<?=base_url()?>index.php/admin/groups/edit/<?=$data['group_id']?>/access"><span>论坛权限</span></a>
+<a href="<?=base_url()?>index.php/admin/groups/admin_edit/<?=$data['group_id']?>" class="on"><span>管理设置</span></a>
 </p>
-<!--<ul class="col-ul tips">
+<ul class="tips">
   <li><b>提示: </b></li>
   <li>双击版块名称可编辑版块标题</li>
 </ul>-->
-<?php echo form_open(base_url() . 'index.php/admin/groups/index/' . $type) ?>
-<?php //echo set_value('seo_title', $data) ?>
-
-<table class="table fspan">
-    <colgroup><col width="50">
-        <col width="210">
-        <col width="90">
+<?php echo form_open_multipart(base_url().'index.php/admin/groups/admin_edit/'.$data['group_id'])?>
+<table class="table2">
+    <colgroup>
+    <col class="th">
+    <col width="500">
+    <col>
     </colgroup>
-    <thead>
-        <tr>
-            <th>编号</th>
-            <th>头衔</th>
-            <th>星星数</th>
-            <?php if($type=='member'){?>
-            <th width="200">管理级别</th>
-            <?php }?>
-            <th>操作</th>
-        </tr>
-    </thead>
-    <tbody id="groups_view">
-        <?php
-        foreach ($groups as $key => $group) {
-            $next_stars = isset($groups[$key + 1]['credits']) ? $groups[$key + 1]['credits'] : 99999;
-            ?>
-            <tr>
-                <td><?= $group['id'] ?></td>
-                <td><input type="text" value="<?= $group['name'] ?>" name="old[<?=$group['id']?>][name]" class="inp_txt"></td>
-                <td>
-                    <input type="text" value="<?= $group['stars'] ?>" name="old[<?=$group['id']?>][stars]" class="inp_txt inp_num">
-                </td>
-                <?php if($type=='member'){?>
-                <td><input type="text" value="<?= $group['credits'] ?>" name="old[<?=$group['id']?>][credits]" class="inp_txt inp_long_num"> ~ <?php echo $next_stars ?></td>
-                <?php }?>
-                <td>
-                    <a href="<?= base_url() ?>index.php/admin/groups/edit/<?= $group['id'] ?>">[编辑]</a>
-                    <?php if($type=='member' || $type=='special'){?>
-                    <a href="#" class = "del" gid="<?= $group['id'] ?>">[删除]</a>
-                    <?php }?>
-                </td>
-            </tr>
-<?php } ?>
-    </tbody>
-    <?php if($type!=='system'){?>
-    <tbody>
-        <tr>
-            <td></td>
-            <td><input type="text" name="newname" class="inp_txt"></td>
-            <td><input type="text" name="newstars"  class="inp_txt inp_num"></td>
-            <?php if($type=='member'){?>
-            <td><input type="text" name="newcredits" class="inp_txt inp_long_num"></td>
-            <?php }?>
-            <td><input type="button" id="add_new" value="添加" class="inp_btn2"/></td>
-        </tr>
-    </tbody>
-    <?php }?>
+    <tr class="split">
+    	<td colspan="3">帖子相关</td>
+    </tr>
+    <tr>
+      <th>操作权限</th>
+      <td>
+      <ul class="list_box">
+      <li><input type="checkbox" value="1" name="is_editpost" <?php echo set_checkbox('is_editpost', '1',$data); ?> class="checkbox">编辑</li>
+      <li><input type="checkbox" value="1" name="is_checkpost" <?php echo set_checkbox('is_checkpost', '1',$data); ?> class="checkbox">审核</li>
+      <li><input type="checkbox" value="1" name="is_copythread" <?php echo set_checkbox('is_copythread', '1',$data); ?> class="checkbox">复制</li>
+      <li><input type="checkbox" value="1" name="is_mergethread" <?php echo set_checkbox('is_mergethread', '1',$data); ?> class="checkbox">合并</li>
+      <li><input type="checkbox" value="1" name="is_splitthread" <?php echo set_checkbox('is_splitthread', '1',$data); ?> class="checkbox">切分</li>
+      <li><input type="checkbox" value="1" name="is_movethread" <?php echo set_checkbox('is_movethread', '1',$data); ?> class="checkbox">移动</li>
+      <li><input type="checkbox" value="1" name="is_delpost" <?php echo set_checkbox('is_delpost', '1',$data); ?> class="checkbox">删除</li>
+      <li><input type="checkbox" value="1" name="is_banpost" <?php echo set_checkbox('is_banpost', '1',$data); ?> class="checkbox">屏蔽</li>
+      <li><input type="checkbox" value="1" name="is_highlight" <?php echo set_checkbox('is_highlight', '1',$data); ?> class="checkbox">高亮</li>
+      <li><input type="checkbox" value="1" name="is_recommend" <?php echo set_checkbox('is_recommend', '1',$data); ?> class="checkbox">推荐</li>
+      <li><input type="checkbox" value="1" name="is_bump" <?php echo set_checkbox('is_bump', '1',$data); ?> class="checkbox">提升</li>
+      <li><input type="checkbox" value="1" name="is_closethread" <?php echo set_checkbox('is_closethread', '1',$data); ?> class="checkbox">关闭</li>
+      </ul>
+      </td>
+      <td></td>
+  </tr>
+ 
+    <tr>
+      <th>置顶类型</th>
+      <td><label>
+          <input type="radio"  name="allow_topthread" value="0" <?php echo set_radio('allow_topthread', 0, $data)?> />
+          不允许置顶</label>
+        <label>
+          <input type="radio"  name="allow_topthread" value="1" <?php echo set_radio('allow_topthread', 1, $data)?> />
+          允许置顶 I</label>
+        <label>
+          <input type="radio"  name="allow_topthread" value="2" <?php echo set_radio('allow_topthread', 2, $data)?> />
+          允许置顶 I/II</label>
+          <input type="radio"  name="allow_topthread" value="3" <?php echo set_radio('allow_topthread', 3, $data)?> />
+          允许置顶 I/II/III</label>
+          </td>
+          <td>设置是否允许置顶管理范围内主题的级别。I 版块置顶、II 分类置顶、III 全站置顶。</td>
+    </tr>
+    <tr>
+      <th>加精类型</th>
+      <td><label>
+          <input type="radio"  name="allow_digest" value="0" <?php echo set_radio('allow_digest', 0, $data)?> />
+          不允许精华</label>
+        <label>
+          <input type="radio"  name="allow_digest" value="1" <?php echo set_radio('allow_digest', 1, $data)?> />
+          允许精华 I</label>
+        <label>
+          <input type="radio"  name="allow_digest" value="2" <?php echo set_radio('allow_digest', 2, $data)?> />
+          允许精华 I/II</label>
+          <input type="radio"  name="allow_digest" value="3" <?php echo set_radio('allow_digest', 3, $data)?> />
+          允许精华 I/II/III</label></td>
+      <td>设置是否允许精华管理范围内主题的级别。I 版块精华、II 分类精华、III 全站精华。</td>
+    </tr>
+    <tr>
+      <th>回复置顶</th>
+      <td><label>
+          <input type="radio"  name="is_topreply" value="1" <?php echo set_radio('is_topreply', 1, $data)?>/>
+          是</label>
+        <label>
+          <input type="radio"  name="is_topreply" value="0" <?php echo set_radio('is_topreply', 0, $data)?>/>
+          否</label></td>
+       <td></td>
+    </tr>
+    <tr>
+      <th>编辑主题分类</th>
+      <td><label>
+          <input type="radio"  name="is_edittype" value="1" <?php echo set_radio('is_edittype', 1, $data)?>/>
+          是</label>
+        <label>
+          <input type="radio"  name="is_edittype" value="0" <?php echo set_radio('is_edittype', 0, $data)?>/>
+          否</label></td>
+       <td></td>
+    </tr>
+    <tr class="split">
+    	<td colspan="3">用户相关</td>
+    </tr>
+    <tr>
+      <th>编辑用户</th>
+      <td><label>
+          <input type="radio"  name="is_edituser" value="1" <?php echo set_radio('is_edituser', 1, $data)?>/>
+          是</label>
+        <label>
+          <input type="radio"  name="is_edituser" value="0" <?php echo set_radio('is_edituser', 0, $data)?>/>
+          否</label></td>
+       <td></td>
+    </tr>
+    <tr>
+      <th>禁止用户</th>
+      <td><label>
+          <input type="radio"  name="is_banuser" value="1" <?php echo set_radio('is_banuser', 1, $data)?>/>
+          是</label>
+        <label>
+          <input type="radio"  name="is_banuser" value="0" <?php echo set_radio('is_banuser', 0, $data)?>/>
+          否</label></td>
+       <td></td>
+    </tr>
+    <tr>
+      <th>查看IP</th>
+      <td><label>
+          <input type="radio"  name="is_viewip" value="1" <?php echo set_radio('is_viewip', 1, $data)?>/>
+          是</label>
+        <label>
+          <input type="radio"  name="is_viewip" value="0" <?php echo set_radio('is_viewip', 0, $data)?>/>
+          否</label></td>
+       <td></td>
+    </tr>
+    <tr>
+      <th>禁止IP</th>
+      <td><label>
+          <input type="radio"  name="is_banip" value="1" <?php echo set_radio('is_banip', 1, $data)?>/>
+          是</label>
+        <label>
+          <input type="radio"  name="is_banip" value="0" <?php echo set_radio('is_banip', 0, $data)?>/>
+          否</label></td>
+       <td></td>
+    </tr>
+    <tr class="split">
+    	<td colspan="3">其他</td>
+    </tr>
+    <tr>
+      <th>查看管理日志</th>
+      <td><label>
+          <input type="radio"  name="is_viewlog" value="1" <?php echo set_radio('is_viewlog', 1, $data)?>/>
+          是</label>
+        <label>
+          <input type="radio"  name="is_viewlog" value="0" <?php echo set_radio('is_viewlog', 0, $data)?>/>
+          否</label></td>
+       <td></td>
+    </tr>
+    
+    
 </table>
-<p class="submit">
+  <p class="submit">
     <input class="inp_btn" name="submit" type="submit" value="提交" />
-</p>
+  </p>
 <?php echo form_close() ?>
-
-<script type="text/javascript">
-$(document).ready(function() {
-        var global_id = 0,type='<?php echo $type;?>';
-	$("#add_new").click(function(){
-                var groupsView = $("#groups_view"),
-                    newName = $("input[name='newname']"),
-                    newstars = $("input[name='newstars']"),
-                    newcredits = $("input[name='newcredits']"),
-                    checkArr = type=='member'?[newName,newstars,newcredits]:[newName,newstars],
-                    isCheck = true;
-		//得到点击者以及点击者的fid和级别。
-                $.each(checkArr, function(i, n){
-                    if($.trim(n.val())==''){
-                        n.focus();
-                        isCheck = false;
-                        return false;
-                    }
-                });
-                if(isCheck){
-                    var html = '<tr><td></td>\
-                    <td><input type="text" value="'+newName.val()+'" name="new['+global_id+'][name]" class="inp_txt"></td>\
-                    <td><input type="text" value="'+newstars.val()+'" name="new['+global_id+'][stars]" class="inp_txt inp_num"></td>';
-                    if(type=='member'){
-                        html += '<td><input type="text" value="'+newcredits.val()+'" name="new['+global_id+'][credits]" class="inp_txt inp_long_num"></td>';
-                    }
-                    html += '<td><a href="#" class = "del" gid="0" >[删除]</a></td></tr>';
-                    groupsView.append(html);
-                    $.each(checkArr, function(i, n){
-                        n.val('');
-                    });
-                    global_id++;
-                }
-		return false;
-	});
-	
-	//版块删除
-	$('.del',$('#groups_view')).live('click',function (e) {
-		e.preventDefault();
-                var that = this;
-		$.Confirm('确定要删除此用户组么？','',function(){
-                    var currentTr = $(that).parents('tr'),
-                        gid = $(that).attr('gid');
-                    //含子版不删除
-                    if(gid != 0) {
-                        //ajax发送请求，判断是否删除
-                        $.post(base_url+"index.php/admin/groups/delete", { "id": gid },
-                                function(data){
-                                        if(data.success==1){
-                                                currentTr.remove();
-                                        }else{
-                                                $.Alert(data.data,'删除用户组提示');
-                                        }
-                                }, "json");
-                    }else{
-                        currentTr.remove();
-                    }
-                });
-	});
-});
-</script>

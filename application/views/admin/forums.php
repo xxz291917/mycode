@@ -7,17 +7,15 @@
 </ul>
 <form method="post" action="<?=base_url()?>index.php/admin/forums" >
   <div class="table_list">
-    <table width="100%" style="table-layout:fixed;" class="table" id="act_table">
+    <table  class="table" id="act_table">
       <colgroup>
-      <col width="30">
-      <col width="400">
-      <col width="60">
-      <col width="210">
-      <col>
+      <col width="430" />
+      <col width="70" />
+      <col width="210" />
+      <col />
       </colgroup>
       <thead>
         <tr>
-          <th></th>
           <th><span >[顺序]</span>版块名称</th>
           <th>fid</th>
           <th>版主</th>
@@ -28,7 +26,6 @@
       <?php foreach($forums as $key=>$val){?>
           <tbody>
             <tr id="tr_<?php echo $val['id']?>" fid="<?php echo $val['id']?>" ftype="1">
-              <td><span ></span></td>
               <td><input type="text" name="old[<?php echo $val['id']?>][order]" value="<?php echo $val['display_order']?>" class="inp_txt inp_num">
                 <span fid="<?php echo $val['id']?>"><?php echo $val['name']?></span> 
                 <a class="link_add" href="#" style="display: none;">添加新版块</a></td>
@@ -39,7 +36,6 @@
           <?php if(!empty($val['sub'])){ $total = count($val['sub']);?>
             <?php	foreach($val['sub'] as $k=>$v){?>
             <tr id="tr_<?php echo $v['id']?>" fid="<?php echo $v['id']?>" ftype="2">
-              <td></td>
               <td><span class="plus_icon <?php if($k+1 == $total){?>plus_end_icon <?php }?>"></span>
                 <input type="text" name="old[<?php echo $v['id']?>][order]" value="<?php echo $v['display_order']?>" class="inp_txt inp_num">
                 <span fid="<?php echo $v['id']?>"><?php echo $v['name']?></span>
@@ -52,7 +48,6 @@
 					$num = count($v['sub']);?>
 					<?php foreach($v['sub'] as $sk=>$sv){?>
                     <tr id="tr_<?php echo $sv['id']?>" fid="<?php echo $sv['id']?>" ftype="3">
-                      <td></td>
                       <td><span class="plus_icon plus_none_icon"></span>
                       <span class="plus_icon <?php if($sk+1 == $num){?>plus_end_icon <?php }?>"></span>
                         <input type="text" name="old[<?php echo $sv['id']?>][order]" value="<?php echo $sv['display_order']?>" class="inp_txt inp_num">
@@ -71,7 +66,7 @@
       
       <tbody id="line_group">
         <tr>
-          <td style="padding-left:38px;" colspan="5"><input type="button" id="add_group" value="+添加新分类" class="inp_btn2"/></td>
+          <td style="padding-left:38px;" colspan="4"><input type="button" id="add_group" value="+添加新分类" class="inp_btn2"/></td>
         </tr>
       </tbody>
     </table>
@@ -132,7 +127,7 @@ $(document).ready(function() {
 			plus_icon += '<span class="plus_icon plus_end_icon"></span>';
 		}
 		
-		return '<tr id="tr_'+new_id+'" ftype="'+forum_level+'" fid="'+new_id+'"><td></td>\
+		return '<tr id="tr_'+new_id+'" ftype="'+forum_level+'" fid="'+new_id+'">\
 					<td>'+ plus_icon +'\
 						<input type="text" name="new['+ new_id +'][order]" class="inp_txt inp_num" value="0" >\
 						<input type="text" name="new['+ new_id +'][name]"  class="inp_txt" value="">\

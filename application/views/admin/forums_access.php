@@ -17,6 +17,7 @@
   <col></col>
   <col></col>
   </colgroup>
+  <thead>
   <tr>
   	<th >用户组</th>
     <th ><input type="checkbox" class="checkbox" set="allow_visit">浏览版块</th>
@@ -26,13 +27,14 @@
     <th ><input type="checkbox" class="checkbox" set="allow_upload">上传附件</th>
     <th ><input type="checkbox" class="checkbox" set="allow_download">下载附件</th>
   </tr>
+  </thead>
   <?php
   	$current_type = '';
 	foreach($groups as $group){
 		if($group['type']!=$current_type){
 			$current_type = $group['type'];
 	  ?>
-  <tr style="background-color:#FFFEEE">
+  <tr class="split">
     <td colspan="7"><?=$group_names[$current_type]?> </td>
   </tr>
   <?php }?>

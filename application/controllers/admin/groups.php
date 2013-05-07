@@ -1,4 +1,7 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
 
 class Groups extends Admin_Controller {
 
@@ -6,14 +9,14 @@ class Groups extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model(array('groups_model','groups_admin_model'));
+        $this->load->model(array('groups_model', 'groups_admin_model'));
     }
 
     //'system', 'special', 'member'
-    public function index($type='member') {
+    public function index($type = 'member') {
         if ($posts = $this->input->post()) {
-            $is_update = $this->groups_model->update_old($this->input->post('old'),$type);
-            $is_insert = $this->groups_model->insert_new($this->input->post('new'),$type);
+            $is_update = $this->groups_model->update_old($this->input->post('old'), $type);
+            $is_insert = $this->groups_model->insert_new($this->input->post('new'), $type);
             if ($is_update && $is_insert) {
                 $this->message('操作成功');
             } else {
@@ -22,8 +25,14 @@ class Groups extends Admin_Controller {
         } else {
             //获取某个类别的用户组信息
             $groups = $this->groups_model->get_groups($type);
+            $groups_admin = $this->groups_admin_model->get_groups('group_id');
+            $admin_ids = array();
+            foreach ($groups_admin as $key => $val) {
+                $admin_ids[] = $val['group_id'];
+            }
             $var['groups'] = $groups;
             $var['type'] = $type;
+            $var['admin_ids'] = $admin_ids;
             $this->view('groups', $var);
         }
     }
@@ -35,7 +44,7 @@ class Groups extends Admin_Controller {
             if (!$this->users_model->exist_in_group($id)) {
                 $message = $this->ajax_json(0, '此用户组下面存在用户，不允许被删除！');
             } else {
-                if ($this->groups_model->delete(array('id'=>$id))) {
+                if ($this->groups_model->delete(array('id' => $id))) {
                     $message = $this->ajax_json(1);
                 } else {
                     $message = $this->ajax_json(0, '操作数据库失败！');
@@ -68,48 +77,21 @@ class Groups extends Admin_Controller {
         }
     }
 
-    public function credit_edit($id = '') {
+    public function admin_edit($id = '') {
         if (empty($id)) {
             $this->message('参数错误！');
         } elseif ($this->input->post('submit')) {
-            $forums = $this->input->post();
-            $forums = $this->forums_model->form_filter($forums, 'en');
-            if ($this->forums_model->update($forums, array('id' => $id))) {
+            $groups = $this->input->post();
+            $groups = $this->groups_admin_model->form_filter($groups);
+            if ($this->groups_admin_model->update($groups, array('group_id' => $id))) {
                 $this->message('修改成功！');
             } else {
                 $this->message('修改失败！');
             }
         } else {
-            $this->load->helper('form');
-            //获取版块积分设置
-            $forums = $this->forums_model->get_by_id($id);
-            $forums_setting = $this->forums_setting_model->get_by_id($id);
-            $forums_setting['credit_setting'];
-            //获取积分规则
-            
-            //获取启用的积分名称
-//            credit_name
-            
-            $forums = $this->forums_model->form_filter($forums, 'de');
-            $var['data'] = $forums;
-            $this->view('forums_' . $type, $var);
-        }
-    }
-    
-    
-    public function groups_admin() {
-        if ($posts = $this->input->post()) {
-            $is_update = $this->groups_model->update_old($this->input->post('old'),$type);
-            $is_insert = $this->groups_model->insert_new($this->input->post('new'),$type);
-            if ($is_update && $is_insert) {
-                $this->message('操作成功');
-            } else {
-                $this->message('操作失败');
-            }
-        } else {
             //获取某个类别的用户组信息
-            $groups = $this->groups_admin_model->get_groups();
-            $var['groups'] = $groups;
+            $groups = $this->groups_admin_model->get_by_id($id);
+            $var['data'] = $groups;
             $this->view('groups_admin', $var);
         }
     }

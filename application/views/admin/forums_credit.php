@@ -12,6 +12,7 @@
 </ul>-->
 <?php echo form_open(base_url().'index.php/admin/forums/edit/'.$data['id'])?>
 <table class="table fspan">
+<thead>
   <tr>
     <th >用户行为</th>
     <th >周期</th>
@@ -22,6 +23,7 @@
     }
     ?>
   </tr>
+</thead>
   <?php foreach($credit_rules as $rules){ ?>
   <tr>
     <td ><?=$rules['name']?></td>

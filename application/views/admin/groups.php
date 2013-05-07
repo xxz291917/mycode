@@ -43,7 +43,10 @@
                 <td><input type="text" value="<?= $group['credits'] ?>" name="old[<?=$group['id']?>][credits]" class="inp_txt inp_long_num"> ~ <?php echo $next_stars ?></td>
                 <?php }?>
                 <td>
-                    <a href="<?= base_url() ?>index.php/admin/groups/edit/<?= $group['id'] ?>">[编辑]</a>
+                    <a href="<?= base_url() ?>index.php/admin/groups/edit/<?= $group['id'] ?>">[基本设置]</a>
+                    <?php if(in_array($group['id'],$admin_ids)){?>
+                    <a href="<?= base_url() ?>index.php/admin/groups/admin_edit/<?= $group['id'] ?>">[管理设置]</a>
+                    <?php }?>
                     <?php if($type=='member' || $type=='special'){?>
                     <a href="#" class = "del" gid="<?= $group['id'] ?>">[删除]</a>
                     <?php }?>
