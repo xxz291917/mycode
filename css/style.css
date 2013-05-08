@@ -7,10 +7,11 @@ h4 {line-height:24px; font-size:13px; font-weight:bold;padding:0 10px;background
 a {color:#0068b6;	text-decoration:none;}
 img {border:0;}
 
-select {width:155px; overflow:hidden;}
+
 label {margin:0 10px 0 2px;}
-.inp_txt,select{padding:5px 5px 3px;border:1px #ccc solid;width:180px;}
-.textarea {width:240px;	padding:2px 4px;	border:1px #ccc solid;}
+.inp_txt{padding:4px;border:1px #ccc solid;width:160px;}
+.select {padding:4px;border:1px #ccc solid;width:170px; overflow:hidden;}
+.textarea {width:220px;	padding:2px 4px;	border:1px #ccc solid;}
 .inp_num {width: 30px;}
 .inp_long_num {width: 60px;}
 .inp_txt:hover, .textarea:hover {border:1px #69c solid;}
@@ -54,9 +55,9 @@ table {text-align:left;	border-collapse:collapse;empty-cells:show;}
 .tips {padding:5px 15px;color:#ff9b38;}
 
 /*搜索表单*/
-.form {font-size: 12px;background-color:#f0f0f0;}
+.form {background-color:#f0f0f0;}
 .form fieldset{ border:none;}
-.form div {position: relative;width: 100%;padding: 0.4em 0;clear: both;}
+.form div {position:relative;padding:3px 0;clear: both;}
 .form label {float:left;clear:left;width:100px; font-weight:bold; text-align:right; line-height:20px;}
 .form label .feedback {
 	position: absolute;
@@ -97,9 +98,20 @@ table {text-align:left;	border-collapse:collapse;empty-cells:show;}
 .sec_nav a:hover span label, .sec_nav a.on span label {display:none;	cursor:none;	width:0;	height:0;	overflow:hidden;}
 
 /*分页*/
-.fenye {height:28px;}
-.fenye a, .fenye span {text-align:center;	padding:4px 8px;	line-height:18px;	display:inline-block;	border:1px #ccc solid;	background:#f7f7f7;	margin-right:2px;}
-.fenye span {border:0;}
+.pagination{ margin:5px 0; text-align:left;}
+.pagination a,.pagination span {
+	background-color:#e7e7e7;
+	border:1px solid #f0f0f0;
+    display: inline-block;
+    margin: 0 2px;
+    padding: 2px 6px;
+	color:#555;
+}
+.pagination a:hover,.pagination span{
+    background: none repeat scroll 0 0 #0068b6;
+    color: #FFFFFF;
+}
+
 
 /*错误提示*/
 .error {margin:100px;	padding:20px;	border:1px #ccc solid;}

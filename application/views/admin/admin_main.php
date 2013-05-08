@@ -55,8 +55,8 @@ html, body {
           <li onclick="getMenu('index',this)" id="indexmenu" ><a href="javascript:void(0);"><span>首页</span></a></li>
           <li onclick="getMenu('global',this)" id="globalmenu"><a href="javascript:void(0);"><span>全局</span></a></li>
           <li onclick="getMenu('users',this)" id="usermenu"><a href="javascript:void(0);"><span>用户</span></a></li>
-          <li onclick="getMenu('content',this)"  id="contentmenu"><a href="javascript:void(0);"><span>内容</span></a></li>
           <li onclick="getMenu('forums',this)" id="plugmenu"><a href="javascript:void(0);"><span>版块管理</span></a></li>
+          <li onclick="getMenu('content',this)"  id="contentmenu"><a href="javascript:void(0);"><span>内容</span></a></li>
         </ul>
       </div></td>
   </tr>

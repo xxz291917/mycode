@@ -7,84 +7,67 @@ class Users extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model(array('users_model', 'groups_model','groups_model'));
+        $this->load->model(array('users_model', 'groups_model','users_extra_model'));
     }
 
-    //'system', 'special', 'member'
     public function index() {
-        if ($posts = $this->input->post()) {
-            $is_update = $this->groups_model->update_old($this->input->post('old'), $type);
-            $is_insert = $this->groups_model->insert_new($this->input->post('new'), $type);
-            if ($is_update && $is_insert) {
-                $this->message('操作成功');
-            } else {
-                $this->message('操作失败');
-            }
-        } else {
-            //获取某个类别的用户组信息
-            $groups = $this->groups_model->get_groups();
-            $var['groups'] = $groups;
-            $var['data'] = array();
-            $this->view('users', $var);
+        $search = $this->input->get(null,TRUE);
+        $where = '1 ';
+        if(!empty($search['groups'])){
+            $group_ids = join(',', $search['groups']);
+            $where .= "and (group_id in($group_ids) or member_id in($group_ids)) ";
         }
-    }
-
-    public function delete() {
-        $id = intval($this->input->post('id'));
-        if ($id > 0) {
-            //检查此用户组下是否有用户。
-            if (!$this->users_model->exist_in_group($id)) {
-                $message = $this->ajax_json(0, '此用户组下面存在用户，不允许被删除！');
-            } else {
-                if ($this->groups_model->delete(array('id' => $id))) {
-                    $message = $this->ajax_json(1);
-                } else {
-                    $message = $this->ajax_json(0, '操作数据库失败！');
-                }
-            }
-        } else {
-            $message = $this->ajax_json(1);
+        if(!empty($search['username'])){
+            $search['username'] = trim($search['username']);
+            $where .= "and username = '{$search['username']}' ";
         }
-        echo $message;
-        die;
+        if(!empty($search['email'])){
+            $search['email'] = trim($search['email']);
+            $where .= "and email = '{$search['email']}' ";
+        }
+        $per_page = $this->get_per_page();
+        $users = $this->users_model->get_list('*',$where,'',$per_page);
+        //生成分页字符串
+        $total_num = $this->users_model->get_count($where);
+        unset($search['submit'],$search['per_page']);
+        $query_str = !empty($search)?http_build_query($search, '', '&'):'';
+        $base_url = current_url().'?'.$query_str;
+        $page = $this->create_page($base_url,$total_num);
+        
+        //得到用户组选项
+        $default_groups = !empty($search['groups'])?$search['groups']:array();
+        $var['groups_option'] = $this->groups_model->create_options($default_groups);
+        $var['data'] = $search;
+        $var['users'] = $users;
+        $var['page'] = $page;
+        $this->view('users', $var);
     }
 
     public function edit($id = '', $type = 'basic') {
         if (empty($id)) {
             $this->message('参数错误！');
         } elseif ($this->input->post('submit')) {
-            $groups = $this->input->post();
-            $groups = $this->groups_model->form_filter($groups, 'en');
-            if ($this->groups_model->update($groups, array('id' => $id))) {
+            $users = $this->input->post();
+            $users = $this->users_model->form_filter($users, 'en');
+            $this_model = $type!=='credit'?$this->users_model:$this->users_extra_model;
+            $this_id = $type!=='credit'?'id':'user_id';
+            if ($this_model->update($users, array($this_id => $id))) {
                 $this->message('修改成功！');
             } else {
                 $this->message('修改失败！');
             }
         } else {
             $this->load->helper('form');
-            $groups = $this->groups_model->get_by_id($id);
-            $groups = $this->groups_model->form_filter($groups, 'de');
-            $var['data'] = $groups;
-            $this->view('groups_' . $type, $var);
-        }
-    }
-
-    public function admin_edit($id = '') {
-        if (empty($id)) {
-            $this->message('参数错误！');
-        } elseif ($this->input->post('submit')) {
-            $groups = $this->input->post();
-            $groups = $this->groups_admin_model->form_filter($groups);
-            if ($this->groups_admin_model->update($groups, array('group_id' => $id))) {
-                $this->message('修改成功！');
-            } else {
-                $this->message('修改失败！');
+            $users = $this->users_model->get_by_id($id);
+            $users = $this->users_model->form_filter($users, 'de');
+            $var['data'] = $users;
+            $var['users_extra'] =$this->users_extra_model->get_by_id($id);
+            if ($type == 'credit') {
+                //获取启用的积分名称
+                $this->load->model('credit_name_model');
+                $var['credit_names'] =$this->credit_name_model->get_all();
             }
-        } else {
-            //获取某个类别的用户组信息
-            $groups = $this->groups_admin_model->get_by_id($id);
-            $var['data'] = $groups;
-            $this->view('groups_admin', $var);
+            $this->view('users_' . $type, $var);
         }
     }
 

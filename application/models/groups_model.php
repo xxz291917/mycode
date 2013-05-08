@@ -108,6 +108,32 @@ class Groups_model extends MY_Model {
         }
         return $datas;
     }
+    
+//        <optgroup label="会员用户组">
+//        <option value="9">限制会员</option>
+//        </optgroup>
+    public function create_options($check_arr=array()){
+        $option = '';
+        $type_names = array('system'=>'系统用户组','special'=>'特殊用户组','member'=>'会员用户组');
+        $groups = $this->get_groups();
+        $current_type = '';
+        foreach ($groups as $key => $group) {
+            if($group['type']!=$current_type){
+                if(empty($current_type)){
+                    $option .= '<optgroup label="'.$type_names[$group['type']].'">';
+                }else{
+                    $option .= '</optgroup><optgroup label="'.$type_names[$group['type']].'">';
+                }
+                $current_type = $group['type'];
+            }
+            $checked = in_array($group['id'], $check_arr)?' selected="selected"':'';
+            $option .= '<option value="'.$group['id'].'"'.$checked.'>'.$group['name'].'</option>';
+        }
+        $option .= '</optgroup>';
+        return $option;
+    }
+    
+    
 }
 
 ?>

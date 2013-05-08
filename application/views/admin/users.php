@@ -6,38 +6,38 @@
 </ul>-->
 
 <h4>搜索用户</h4>
-<form name="search" method="POST" action="<?=current_url()?>" class="form">
-<fieldset>
-	<div>
-	<label for="author">用户名：</label>
-	<input name="author" class="inp_txt" type="text" />
-	</div>
-	<div>
-	<label for="email">email：<em class="feedback"></em></label>
-	<input name="email" class="inp_txt" type="text" />
-	</div>
-	<div>
-	<label for="url">用户组：</label>
-    <select>
-      <option value="1">选项一</option>
-    
-    </select>
-	</div>
+<form name="search" method="get" action="<?=current_url()?>" class="form row">
+  <fieldset>
     <div>
-	<label>&nbsp;</label>
-	<input class="inp_btn" name="submit" type="submit" value="搜索" />
-	</div>
-</fieldset>
+      <label for="url">用户组：</label>
+      <select name="groups[]" size="5" multiple="multiple" class="select">
+        <?=$groups_option?>
+      </select>
+    </div>
+    <div>
+      <label for="username">用户名：</label>
+      <input name="username" type="text" class="inp_txt" value="<?php echo set_value('username',$data);?>" />
+    </div>
+    <div>
+      <label for="email">email：<em class="feedback"></em></label>
+      <input name="email" class="inp_txt" type="text" value="<?php echo set_value('email',$data);?>" />
+    </div>
+    <div>
+      <label>&nbsp;</label>
+      <input class="inp_btn" name="submit" type="submit" value="搜索" />
+    </div>
+  </fieldset>
 </form>
-
-
 <?php echo form_open(base_url() . 'index.php/admin/groups/index/') ?>
 <?php //echo set_value('seo_title', $data) ?>
 <table class="table">
   <colgroup>
-  <col width="50">
-  <col width="210">
-  <col width="90">
+  <col width="100">
+  <col width="150">
+  <col width="200">
+  <col width="200">
+  <col width="200">
+  <col>
   </colgroup>
   <thead>
     <tr>
@@ -57,19 +57,18 @@
       <td><?= $user['id'] ?></td>
       <td><?= $user['username'] ?></td>
       <td><?= $user['email'] ?></td>
-      <td><?= date('Y-m-d H:i:s',$user['regdate']) ?></td>
-      <td><?= $user['id'] ?></td>
-      <td>
-        <a href="<?= base_url() ?>index.php/admin/groups/edit/<?= $group['id'] ?>">[基本设置]</a>
-        <a href="<?= base_url() ?>index.php/admin/groups/admin_edit/<?= $group['id'] ?>">[管理设置]</a>
-        <a href="#" class = "del" gid="<?= $group['id'] ?>">[删除]</a></td>
+      <td><?= date($date_format,$user['regdate']) ?></td>
+      <td><?= date($date_format,$user['regdate']) ?></td>
+      <td><a href="<?= base_url() ?>index.php/admin/users/edit/<?= $user['id'] ?>">[编辑]</a> <a href="<?= base_url() ?>index.php/admin/groups/admin_edit/<?= $user['id'] ?>">[禁止]</a> <a href="#" class = "del" gid="<?= $user['id'] ?>">[清理]</a></td>
     </tr>
     <?php } ?>
   </tbody>
 </table>
 
+<?php echo $page;?>
 
 <?php echo form_close() ?> 
+
 <script type="text/javascript">
 $(document).ready(function() {
         var global_id = 0;

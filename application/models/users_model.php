@@ -23,13 +23,46 @@ class Users_model extends MY_Model {
     }
     
     public function exist_in_group($group_id=0) {
-        $sql = 'SELECT id FROM ' . $this->table . ' WHERE group_id = \'' . $group_id . '\' or admin_id = \'' . $group_id . '\' AND status!=2 LIMIT 1';
+        $sql = 'SELECT id FROM ' . $this->table . ' WHERE group_id = \'' . $group_id . '\' or member_id = \'' . $group_id . '\' AND status!=2 LIMIT 1';
         $query = $this->db->query($sql);
         $id = $query->row_array();
         return empty($id) ? TRUE : FALSE;
     }
     
-    
+    public function form_filter($datas, $type = 'en') {
+        foreach ($datas as $key => $value) {
+            if ($type == 'en') {
+                switch ($key) {
+                    case 'submit':
+                        unset($datas[$key]);
+                        break;
+                    case 'groups':
+                        $datas[$key] = join(',', $value);
+                        break;
+                    case 'extra_setting':
+                        $datas[$key] = json_encode($value);
+                        break;
+                    default:
+                        $datas[$key] = trim($value);
+                        break;
+                }
+                if(in_array($key, array('posts','digests','today_posts','today_uploads','extcredits1','extcredits2','extcredits3','extcredits4','extcredits5','extcredits6','extcredits7','extcredits8'))){
+                    $datas[$key] = intval($value);
+                }
+            } else {
+                switch ($key) {
+                    case 'groups':
+                        //权限存取的规则都是，以逗号分隔的用户组id。
+                        $datas[$key] = explode(',', $value);
+                        break;
+                    case 'extra_setting':
+                        $datas[$key] = json_decode($value, TRUE);
+                        break;
+                }
+            }
+        }
+        return $datas;
+    }
     
     
 }
