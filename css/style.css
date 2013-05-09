@@ -128,3 +128,14 @@ table {text-align:left;	border-collapse:collapse;empty-cells:show;}
 .plus_on_icon {background-position: 0 -100px;	cursor: default;}
 .plus_none_icon {background-position: 999px 999px;	cursor: default;}
 .link_add {background: url("../images/admin/link_add.png") no-repeat scroll 3px 9px transparent;	display: inline-block;	padding-left: 20px;}
+
+/*--所属用户组-*/
+.cross {overflow: hidden;width: 390px;}
+.cross ul {}
+.cross li {height: 25px;line-height: 25px;overflow: hidden;padding: 5px 0 5px;}
+.cross img {vertical-align: middle;}
+.cross li span { display:inline-block;}
+.cross li .span_1 {width: 30px;}
+.cross li .span_2 {width: 80px;}
+.cross li .span_3 {width: 120px;}
+.cross li .span_4 {width: 180px;}

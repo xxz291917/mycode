@@ -83,11 +83,10 @@ if (!function_exists('set_value')) {
 
 if (!function_exists('set_date')) {
 
-    function set_date($field = '', $data = array()) {
+    function set_date($field = '', $data = array(),$date_format='Y-m-d H:i:s') {
         if (!isset($data[$field])) {
             return '';
         }
-        $date_format = 'Y-m-d H:i:s';
         return date($date_format,$data[$field]);
     }
 

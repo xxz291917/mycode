@@ -133,7 +133,14 @@ class Groups_model extends MY_Model {
         return $option;
     }
     
-    
+    public function rank_by_credits($credits){
+        $where = "credits <=$credits";
+        $group = $this->get_one($where,$field = 'id', 'credits desc');
+        if($group){
+            return $group['id'];
+        }
+        return FALSE;
+    }
 }
 
 ?>

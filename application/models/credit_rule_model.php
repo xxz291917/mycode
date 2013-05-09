@@ -6,6 +6,8 @@ class Credit_rule_model extends MY_Model {
         parent::__construct();
         $this->table='credit_rule';
     }
+    
+    
 }
 
 ?>
