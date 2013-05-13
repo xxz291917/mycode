@@ -16,11 +16,11 @@
     </div>
     <div>
       <label for="username">用户名：</label>
-      <input name="username" type="text" class="inp_txt" value="<?php echo set_value('username',$data);?>" />
+      <input name="username" type="text" class="inp_txt" value="<?php echo my_set_value('username',$data);?>" />
     </div>
     <div>
       <label for="email">email：<em class="feedback"></em></label>
-      <input name="email" class="inp_txt" type="text" value="<?php echo set_value('email',$data);?>" />
+      <input name="email" class="inp_txt" type="text" value="<?php echo my_set_value('email',$data);?>" />
     </div>
     <div>
       <label>&nbsp;</label>

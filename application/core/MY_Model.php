@@ -5,13 +5,11 @@ if (!defined('BASEPATH'))
 
 class MY_Model extends CI_Model {
     
-    public    $time;
     protected $table;
     protected $id = 'id';
             
     function __construct() {
         parent::__construct();
-        $this->time = time();
     }
 
     public function insert($data) {

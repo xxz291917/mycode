@@ -17,8 +17,9 @@ label {margin:0 10px 0 2px;}
 .inp_long {width: 240px;}
 .inp_txt:hover, .textarea:hover {border:1px #69c solid;}
 .inp_txt:focus, textarea:focus {background-color: #FFFBDE;	border-color: #7BBFF2;	outline: 2px solid #99D8F5;}
-.inp_btn {padding:4px 8px 6px 8px;	text-align:center;	background:#0068b6;	color:#fff;	border:0;	font-size:14px;	font-weight:bold;	cursor:pointer;}
-.inp_btn2 { height:25px;	padding:0 5px 4px 5px;*padding:4px 0;	background:#deeffa;	color:#555;	border:1px #4294d0 solid;	font-size:12px;	cursor:pointer;}
+.inp_btn {padding:4px 8px;	text-align:center;	background:#0068b6;	color:#fff;	border:0;	font-size:14px;	font-weight:bold;	cursor:pointer;}
+.inp_btn2 {padding: 2px 4px; background:#deeffa;	color:#555;	border:1px #4294d0 solid;	font-size:12px;	cursor:pointer;}
+.inp_btn3 {padding:4px 8px;	text-align:center;	background:#999;	color:#fff;	border:0;	font-size:14px;	font-weight:bold;	cursor:pointer;}
 .checkbox {margin:0 10px 0 2px;}
 
 .l {float:left;}
@@ -53,7 +54,8 @@ table {text-align:left;	border-collapse:collapse;empty-cells:show;}
 .table2 .list_box{width:240px;}
 .table2 .list_box li{ float:left; width:80px;}
 .div_bottom{ padding-left:20px;}
-.tips {padding:5px 15px;color:#ff9b38;}
+.tips {padding:5px 15px;}
+.tips li{color:#ff9b38;}
 
 /*搜索表单*/
 .form {background-color:#f0f0f0;}
@@ -85,7 +87,7 @@ table {text-align:left;	border-collapse:collapse;empty-cells:show;}
 .sidebar {margin-top:5px;}
 .sidebar ul {background:#fefefe;position:relative;border-top:1px #dfdfdf solid;}
 .sidebar li {}
-.sidebar li a {display:block;font-weight: bold;line-height:25px; padding: 5px 30px 5px 0px; text-align: right;color:#888;border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;}
+.sidebar li a {display:block;font-weight: bold;line-height:25px; padding: 4px 30px 3px 0px; text-align: right;color:#888;border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;}
 .sidebar li a:hover, .sidebar li a.on {background:#f8f8f8;color:#0068b6;font-weight:bold;border-right-color:#f8f8f8;}
 
 .admin_bg {background: url("../images/admin/admin_bg.png") repeat-y scroll right top #f2f9fd;}

@@ -22,17 +22,17 @@
   </tr>
   <tr>
     <th>UID</th>
-    <td><?php echo set_value('id',$data);?></td>
+    <td><?php echo my_set_value('id',$data);?></td>
     <td>&nbsp;</td>
   </tr>
   <tr>
     <th>用户名</th>
-    <td><?php echo set_value('username',$data);?></td>
+    <td><?php echo my_set_value('username',$data);?></td>
     <td>&nbsp;</td>
   </tr>
   <tr>
     <th>email</th>
-    <td><?php echo set_value('email',$data);?></td>
+    <td><?php echo my_set_value('email',$data);?></td>
     <td>&nbsp;</td>
   </tr>
   <tr>
@@ -43,36 +43,36 @@
   <tr>
     <th>用户签名</th>
     <td>
-	<textarea cols="45" name="signature" rows="3" class="textarea"><?php echo set_value('signature', $data)?></textarea>
+	<textarea cols="45" name="signature" rows="3" class="textarea"><?php echo my_set_value('signature', $data)?></textarea>
     </td>
     <td></td>
   </tr>
   <tr>
     <th>性别</th>
     <td><label>
-        <input type="radio"  name="gender" value="1" <?php echo set_radio('gender', 1, $data)?>/>
+        <input type="radio"  name="gender" value="1" <?php echo my_set_radio('gender', 1, $data)?>/>
         男</label>
       <label>
-        <input type="radio"  name="gender" value="0" <?php echo set_radio('gender', 0, $data)?>/>
+        <input type="radio"  name="gender" value="0" <?php echo my_set_radio('gender', 0, $data)?>/>
         女</label></td>
     <td></td>
   </tr>
   <tr>
     <th>用户状态</th>
     <td><label>
-        <input type="radio"  name="status" value="1" <?php echo set_radio('status', 1, $data)?>/>
+        <input type="radio"  name="status" value="1" <?php echo my_set_radio('status', 1, $data)?>/>
         正常</label>
       <label>
-        <input type="radio"  name="status" value="2" <?php echo set_radio('status', 2, $data)?>/>
+        <input type="radio"  name="status" value="2" <?php echo my_set_radio('status', 2, $data)?>/>
         删除</label>
         <label>
-        <input type="radio"  name="status" value="3" <?php echo set_radio('status', 3, $data)?>/>
+        <input type="radio"  name="status" value="3" <?php echo my_set_radio('status', 3, $data)?>/>
         锁定</label></td>
     <td></td>
   </tr>
   <tr>
     <th>最后登录时间</th>
-    <td><?php echo set_date('regdate',$data);?></td>
+    <td><?php echo my_set_date('regdate',$data);?></td>
     <td></td>
   </tr>
 

@@ -18,36 +18,36 @@
   </tr>
   <tr>
     <th>版块名称</th>
-    <td><input maxlength="30" class="inp_txt" name="name" type="text" value="<?php echo set_value('name', $data)?>" /></td>
+    <td><input maxlength="30" class="inp_txt" name="name" type="text" value="<?php echo my_set_value('name', $data)?>" /></td>
     <td >&nbsp;</td>
   </tr>
   <tr>
     <th >版主列表</th>
-    <td><input maxlength="120" class="inp_txt" name="manager" type="text" value="<?php echo set_value('manager', $data)?>" /></td>
+    <td><input maxlength="120" class="inp_txt" name="manager" type="text" value="<?php echo my_set_value('manager', $data)?>" /></td>
     <td >多个版主请用英文的逗号、分号或者空格来分隔。</td>
   </tr>
   <tr>
     <th >排列顺序</th>
-    <td><input class="inp_txt inp_num" name="display_order" type="text" value="<?php echo set_value('display_order', $data)?>" /></td>
+    <td><input class="inp_txt inp_num" name="display_order" type="text" value="<?php echo my_set_value('display_order', $data)?>" /></td>
     <td >&nbsp;</td>
   </tr>
   <tr>
     <th >版块图标</th>
-    <td><input type="file" value="<?php echo set_value('icon', $data)?>" name="icon"></td>
+    <td><input type="file" value="<?php echo my_set_value('icon', $data)?>" name="icon"></td>
     <td ></td>
   </tr>
   <tr>
     <th >版块简介</th>
-    <td><textarea cols="45" name="description" rows="3" class="textarea"><?php echo set_value('description', $data)?></textarea></td>
+    <td><textarea cols="45" name="description" rows="3" class="textarea"><?php echo my_set_value('description', $data)?></textarea></td>
     <td >支持HTML代码<br/></td>
   </tr>
   <tr>
     <th >关闭版块</th>
     <td><label>
-        <input type="radio"  name="status" value="0" <?php echo set_radio('status', 0, $data)?>/>
+        <input type="radio"  name="status" value="0" <?php echo my_set_radio('status', 0, $data)?>/>
         是</label>
       <label>
-        <input type="radio"  name="status" value="1" <?php echo set_radio('status', 1, $data)?>/>
+        <input type="radio"  name="status" value="1" <?php echo my_set_radio('status', 1, $data)?>/>
         否</label></td>
     <td> 暂时将站点关闭，其他人无法访问，但不影响管理员访问。</td>
   </tr>

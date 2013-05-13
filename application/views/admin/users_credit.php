@@ -22,12 +22,12 @@
   </tr>
   <tr>
     <th>用户名</th>
-    <td><?php echo set_value('username',$data);?></td>
+    <td><?php echo my_set_value('username',$data);?></td>
     <td>&nbsp;</td>
   </tr>
   <tr>
     <th>总积分</th>
-    <td><?php echo set_value('credits',$data);?></td>
+    <td><?php echo my_set_value('credits',$data);?></td>
     <td></td>
   </tr>
   <?php foreach($credit_names as $credit){?>

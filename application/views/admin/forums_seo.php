@@ -17,18 +17,18 @@
   </tr>
   <tr>
     <th>title</th>
-    <td><input class="inp_txt" name="seo_title" type="text" value="<?php echo set_value('seo_title', $data)?>" /></td>
+    <td><input class="inp_txt" name="seo_title" type="text" value="<?php echo my_set_value('seo_title', $data)?>" /></td>
     <td></td>
   </tr>
   <tr>
     <th>keywords</th>
-    <td><input class="inp_txt" name="seo_keywords" type="text" value="<?php echo set_value('seo_keywords', $data)?>" /></td>
+    <td><input class="inp_txt" name="seo_keywords" type="text" value="<?php echo my_set_value('seo_keywords', $data)?>" /></td>
     <td>
     <td></td>
   </tr>
   <tr>
     <th>description</th>
-    <td><textarea cols="45" name="seo_description" rows="3" class="textarea"><?php echo set_value('seo_description', $data)?></textarea></td>
+    <td><textarea cols="45" name="seo_description" rows="3" class="textarea"><?php echo my_set_value('seo_description', $data)?></textarea></td>
     <td>
     <td></td>
   </tr>

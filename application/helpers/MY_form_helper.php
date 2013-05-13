@@ -1,8 +1,8 @@
 <?php
 
-if (!function_exists('set_checkbox')) {
+if (!function_exists('my_set_checkbox')) {
 
-    function set_checkbox($field = '', $value = '', $data = array()) {
+    function my_set_checkbox($field = '', $value = '', $data = array()) {
             if (!isset($data[$field])) {
                 return '';
             }
@@ -35,8 +35,8 @@ if (!function_exists('set_checkbox')) {
  * @param	bool
  * @return	string
  */
-if (!function_exists('set_radio')) {
-    function set_radio($field = '', $value = '', $data = array()) {
+if (!function_exists('my_set_radio')) {
+    function my_set_radio($field = '', $value = '', $data = array()) {
         echo $field;
         if (!isset($data[$field])) {
             return '';
@@ -50,8 +50,8 @@ if (!function_exists('set_radio')) {
 
 }
 
-if (!function_exists('set_select')) {
-    function set_select($field = '', $value = '', $data = array()) {
+if (!function_exists('my_set_select')) {
+    function my_set_select($field = '', $value = '', $data = array()) {
         if (!isset($data[$field])) {
             return '';
         }
@@ -70,9 +70,9 @@ if (!function_exists('set_select')) {
 
 }
 
-if (!function_exists('set_value')) {
+if (!function_exists('my_set_value')) {
 
-    function set_value($field = '', $data = array()) {
+    function my_set_value($field = '', $data = array()) {
         if (!isset($data[$field])) {
             return '';
         }
@@ -83,8 +83,8 @@ if (!function_exists('set_value')) {
 
 if (!function_exists('set_date')) {
 
-    function set_date($field = '', $data = array(),$date_format='Y-m-d H:i:s') {
-        if (!isset($data[$field])) {
+    function my_set_date($field = '', $data = array(),$date_format='Y-m-d H:i:s') {
+        if (!isset($data[$field]) || empty($data[$field])) {
             return '';
         }
         return date($date_format,$data[$field]);

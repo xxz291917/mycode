@@ -40,12 +40,12 @@
   <?php }?>
   <tr>
     <td ><input type="checkbox" class="checkbox" set="<?=$group['id']?>" ><?=$group['name']?></td>
-    <td ><input type="checkbox" class="checkbox" value="<?=$group['id']?>" <?php echo set_checkbox('allow_visit', $group['id'], $data)?> name="allow_visit[]"></td>
-    <td ><input type="checkbox" class="checkbox" value="<?=$group['id']?>" <?php echo set_checkbox('allow_read', $group['id'], $data)?> name="allow_read[]"></td>
-	<td ><input type="checkbox" class="checkbox" value="<?=$group['id']?>" <?php echo set_checkbox('allow_post', $group['id'], $data)?> name="allow_post[]"></td>
-	<td ><input type="checkbox" class="checkbox" value="<?=$group['id']?>" <?php echo set_checkbox('allow_reply', $group['id'], $data)?> name="allow_reply[]"></td>
-    <td ><input type="checkbox" class="checkbox" value="<?=$group['id']?>" <?php echo set_checkbox('allow_upload', $group['id'], $data)?> name="allow_upload[]"></td>
-    <td ><input type="checkbox" class="checkbox" value="<?=$group['id']?>" <?php echo set_checkbox('allow_download', $group['id'], $data)?> name="allow_download[]"></td>
+    <td ><input type="checkbox" class="checkbox" value="<?=$group['id']?>" <?php echo my_set_checkbox('allow_visit', $group['id'], $data)?> name="allow_visit[]"></td>
+    <td ><input type="checkbox" class="checkbox" value="<?=$group['id']?>" <?php echo my_set_checkbox('allow_read', $group['id'], $data)?> name="allow_read[]"></td>
+	<td ><input type="checkbox" class="checkbox" value="<?=$group['id']?>" <?php echo my_set_checkbox('allow_post', $group['id'], $data)?> name="allow_post[]"></td>
+	<td ><input type="checkbox" class="checkbox" value="<?=$group['id']?>" <?php echo my_set_checkbox('allow_reply', $group['id'], $data)?> name="allow_reply[]"></td>
+    <td ><input type="checkbox" class="checkbox" value="<?=$group['id']?>" <?php echo my_set_checkbox('allow_upload', $group['id'], $data)?> name="allow_upload[]"></td>
+    <td ><input type="checkbox" class="checkbox" value="<?=$group['id']?>" <?php echo my_set_checkbox('allow_download', $group['id'], $data)?> name="allow_download[]"></td>
   </tr>
   <?php }?>
 </table>

@@ -18,7 +18,7 @@
   </tr>
   <tr>
     <th>用户名</th>
-    <td><?php echo set_value('username',$data);?></td>
+    <td><?php echo my_set_value('username',$data);?></td>
     <td>&nbsp;</td>
   </tr>
   <tr>
@@ -39,7 +39,7 @@
             <input type="checkbox" value="<?=$group['group_id']?>" name="groups[]" <?php if(in_array($group['group_id'],$data['groups'])){echo 'checked="checked"';} ?> class="checkbox">
               <?=$group['name']?></label>
             </span>
-            <input type="text" value="<?php echo set_date($group['group_id'],$users_belong,'Y-m-d');?>" class="inp_txt" name="endtime[<?=$group['group_id']?>]">
+            <input type="text" value="<?php echo my_set_date($group['group_id'],$users_belong,'Y-m-d');?>" class="inp_txt" name="endtime[<?=$group['group_id']?>]">
             </li>
             <?php }?>
         </ul>

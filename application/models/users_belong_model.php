@@ -2,8 +2,6 @@
 
 class Users_belong_model extends MY_Model {
 
-    public $credit_expression = 'extcredits1*3+extcredits2*2+extcredits3';
-
     function __construct() {
         parent::__construct();
         $this->table = 'users_belong';

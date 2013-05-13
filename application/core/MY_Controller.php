@@ -6,13 +6,18 @@ if (!defined('BASEPATH'))
 class Base_Controller extends CI_Controller {
 
     public $user;
-
-    function __construct() {
+    public $ip;
+    public $time;
+    
+    public function __construct() {
         parent::__construct();
+        //aotoload.php中自动加载了$autoload['libraries'] = array('database');$autoload['helper'] = array('url','form');
         $this->load->model(array('users_model', 'forums_model'));
-        $this->load->helper('form');
+        $this->load->driver('cache', array('adapter' => 'file', 'backup' => 'apc'));
         //初始化用户信息（包括所属用户组）
         $this->user = $this->users_model->get_userinfo();
+        $this->ip = $this->input->ip_address();
+        $this->time = time();
 //        var_dump($this->user);die;
     }
 
@@ -26,7 +31,7 @@ class MY_Controller extends Base_Controller {
 
     public $forums;
 
-    function __construct() {
+    public function __construct() {
         parent::__construct();
         $this->load->model(array());
         $this->load->helper(array());
@@ -50,6 +55,12 @@ class MY_Controller extends Base_Controller {
             $this->load->view($view, $vars);
             $this->load->view($footer, $vars);
         }
+    }
+    
+    protected function message($message, $redirect = 'BACK') {
+        $vars['message'] = $message;
+        $vars['redirect'] = $redirect;
+        $this->view('message', $vars);
     }
 
 }
