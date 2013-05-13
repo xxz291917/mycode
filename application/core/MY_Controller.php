@@ -10,12 +10,13 @@ class Base_Controller extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model(array('users_model', 'forums_model'));
+        $this->load->helper('form');
         //初始化用户信息（包括所属用户组）
         $this->user = $this->users_model->get_userinfo();
 //        var_dump($this->user);die;
     }
 
-    protected function ajax_json($success = 1, $data = array()) {
+    protected function echo_ajax($success = 1, $data = array()) {
         return json_encode(array('success' => $success, 'data' => $data));
     }
 
@@ -27,12 +28,28 @@ class MY_Controller extends Base_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model();
+        $this->load->model(array());
         $this->load->helper(array());
         $this->load->library(array('user_agent'));
         //初始化版块信息
         $this->forums = $this->forums_model->initialize();
         //echo $this->agent->referrer();die;
+    }
+    
+    public function view($view, $vars = array(), $string = false) {
+        $view = $view;
+        $header = 'header';
+        $footer = 'footer';
+        if ($string) {
+            $result = $this->load->view($header, $vars, true);
+            $result .= $this->load->view($view, $vars, true);
+            $result .= $this->load->view($footer, $vars, true);
+            return $result;
+        } else {
+            $this->load->view($header, $vars);
+            $this->load->view($view, $vars);
+            $this->load->view($footer, $vars);
+        }
     }
 
 }
@@ -45,7 +62,7 @@ class Admin_Controller extends Base_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->helper('form');
+
         $this->load->vars('date_format',  $this->date_format);
 //        $this->config->load('admin');
 //        var_dump($this->config->item('query_string_segment'));die;

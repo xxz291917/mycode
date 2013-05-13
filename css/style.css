@@ -14,6 +14,7 @@ label {margin:0 10px 0 2px;}
 .textarea {width:220px;	padding:2px 4px;	border:1px #ccc solid;}
 .inp_num {width: 30px;}
 .inp_long_num {width: 60px;}
+.inp_long {width: 240px;}
 .inp_txt:hover, .textarea:hover {border:1px #69c solid;}
 .inp_txt:focus, textarea:focus {background-color: #FFFBDE;	border-color: #7BBFF2;	outline: 2px solid #99D8F5;}
 .inp_btn {padding:4px 8px 6px 8px;	text-align:center;	background:#0068b6;	color:#fff;	border:0;	font-size:14px;	font-weight:bold;	cursor:pointer;}
@@ -71,7 +72,7 @@ table {text-align:left;	border-collapse:collapse;empty-cells:show;}
 
 
 /*顶部导航*/
-.head {height:66px;	overflow:hidden;background:#F2F9FD}
+.head {overflow:hidden;background:#F2F9FD}
 #nav {height:31px;	border-bottom:3px #0068b6 solid;	color:#239fe3;	margin-top:30px;	padding:0 0 0 160px;}
 #nav li {line-height:31px;}
 #nav li a {cursor:pointer;	float:left;	margin:0 2px;}
@@ -82,10 +83,11 @@ table {text-align:left;	border-collapse:collapse;empty-cells:show;}
 
 /*侧边栏*/
 .sidebar {margin-top:5px;}
-.sidebar ul {background:#fefefe;	position:relative;	border-top:1px #dfdfdf solid;}
-.sidebar li {line-height:25px;}
-.sidebar li a {display:block; padding:5px 0 0 35px;	color:#666;	border-bottom:1px #dfdfdf solid;	border-right:1px #dfdfdf solid;}
-.sidebar li a:hover, .sidebar li a.on {background:#f8f8f8;	color:#0068b6;	font-weight:bold;	border-right-color:#f8f8f8;}
+.sidebar ul {background:#fefefe;position:relative;border-top:1px #dfdfdf solid;}
+.sidebar li {}
+.sidebar li a {display:block;font-weight: bold;line-height:25px; padding: 5px 30px 5px 0px; text-align: right;color:#888;border-bottom:1px #dfdfdf solid;border-right:1px #dfdfdf solid;}
+.sidebar li a:hover, .sidebar li a.on {background:#f8f8f8;color:#0068b6;font-weight:bold;border-right-color:#f8f8f8;}
+
 .admin_bg {background: url("../images/admin/admin_bg.png") repeat-y scroll right top #f2f9fd;}
 
 /*页内导航*/

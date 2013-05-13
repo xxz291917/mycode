@@ -40,16 +40,16 @@ class Groups extends Admin_Controller {
         if ($id > 0) {
             //检查此用户组下是否有用户。
             if (!$this->users_model->exist_in_group($id)) {
-                $message = $this->ajax_json(0, '此用户组下面存在用户，不允许被删除！');
+                $message = $this->echo_ajax(0, '此用户组下面存在用户，不允许被删除！');
             } else {
                 if ($this->groups_model->delete(array('id' => $id))) {
-                    $message = $this->ajax_json(1);
+                    $message = $this->echo_ajax(1);
                 } else {
-                    $message = $this->ajax_json(0, '操作数据库失败！');
+                    $message = $this->echo_ajax(0, '操作数据库失败！');
                 }
             }
         } else {
-            $message = $this->ajax_json(1);
+            $message = $this->echo_ajax(1);
         }
         echo $message;
         die;

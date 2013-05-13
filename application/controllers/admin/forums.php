@@ -30,16 +30,16 @@ class Forums extends Admin_Controller {
             //检查此版块下是否有帖子、
             $this->load->model('topics_model');
             if (!$this->topics_model->exist_in_forum($id)) {
-                $message = $this->ajax_json(0, '此版块下面存在主题，不允许被删除！');
+                $message = $this->echo_ajax(0, '此版块下面存在主题，不允许被删除！');
             } else {
                 if ($this->db->delete('forums', array('id' => $id))) {
-                    $message = $this->ajax_json(1);
+                    $message = $this->echo_ajax(1);
                 } else {
-                    $message = $this->ajax_json(0, '操作数据库失败！');
+                    $message = $this->echo_ajax(0, '操作数据库失败！');
                 }
             }
         } else {
-            $message = $this->ajax_json(1);
+            $message = $this->echo_ajax(1);
         }
         echo $message;
         die;

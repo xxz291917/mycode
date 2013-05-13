@@ -42,7 +42,7 @@ html, body {
 	}
 </script>
 </head>
-<body scrolling="no">
+<body scrolling="no" style="margin:0">
 <table width="100%" height="100%">
 <colgroup>
 <col width="150">

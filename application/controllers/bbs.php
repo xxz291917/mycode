@@ -10,6 +10,19 @@ class Bbs extends MY_Controller {
         var_dump($this->user);
         die;
     }
+    
+    
+    public function post() {
+        $post = $this->input->post(null, TRUE);
+        if($post){
+            var_dump($post);die;
+            
+            
+            
+        }else{
+            $this->view('post');
+        }
+    }
 
     public function comments($e = "My Real Title") {
         $data['title'] = $e;
@@ -18,7 +31,7 @@ class Bbs extends MY_Controller {
     }
 
     public function _output($output) {
-        echo 333;
+        //echo 333;
         echo $output;
     }
 
