@@ -27,7 +27,7 @@ class Credit_log_model extends MY_Model {
         $data['time']= $this->time;
         
         foreach ($credits as $key => $value) {
-            if (!preg_match('/extcredits[1-8]/', $key))
+            if ($value==0 || !preg_match('/extcredits[1-8]/', $key))
                 continue;
             $data['type'] = $key;
             $data['affect'] = intval($value);

@@ -107,7 +107,7 @@
   <tr>
     <th>最小发帖间隔</th>
     <td><input maxlength="30" class="inp_txt inp_num" name="min_pertime" type="text" value="<?php echo my_set_value('min_pertime', $data)?>" />
-      分</td>
+      秒</td>
     <td class="v-b" >"0"为不限制</td>
   </tr>
   <tr>

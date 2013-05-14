@@ -186,6 +186,100 @@ class Forums_model extends MY_Model {
         return $forums;
     }
 
+    /**
+     * 传入版块id和动作,检测当前用户有没有相应的权限
+     * @param int $id 版块id
+     * @param string $action 相应的动作比如（'report','visit','read','post','reply','upload','download'）
+     * @return boolean
+     */
+    public function check_permission( $action,$id='') {
+        $actions = array('report', 'visit', 'read', 'post', 'reply', 'upload', 'download');
+        if (in_array($action, $actions)) {
+            $group_key = 'is_' . $action;
+            if ($this->user['group'][$group_key] == 1) {
+                if ('report' == $action) {
+                    return TRUE;
+                }
+                if(!empty($id)){
+                    $forum = $this->get_by_id($id);
+                    $forum_key = 'allow_' . $action;
+                    $permission = $forum[$forum_key];
+                    if (empty($permission)) {
+                        return TRUE;
+                    } else {
+                        $permission = explode(',', $permission);
+                        if (in_array($this->user['group']['id'], $permission)) {
+                            return TRUE;
+                        }
+                    }
+                }else{
+                    return TRUE;
+                }
+            }
+        }
+        return FALSE;
+    }
+
+    /**
+     * 用户组的审核机制和版块自己的审核机制，取较严厉者。
+     * @param type $id
+     * @return type
+     */
+    public function get_check($id) {
+        $forum = $this->get_by_id($id);
+        $forum_check = $forum['check'];
+        $group_check = $this->user['group']['check'];
+        return max($forum_check, $group_check);
+    }
+
+    public function get_is($type,$id='') {
+        $types = array('bbcode', 'smilies', 'media', 'html','anonymous','hide','sign','permission');
+        if (in_array($type, $types)) {
+            $group_key = 'is_' . $type;
+            if ($this->user['group'][$group_key] == 1) {
+                if(!empty($id)){
+                    $forum = $this->get_by_id($id);
+                    $forum_key = 'is_' . $type;
+                    if (empty($forum[$forum_key])) {
+                        return 1;
+                    } else {
+                        return $forum[$forum_key];
+                    }
+                }else{
+                    return 1;
+                }
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * 用户组的审核机制和版块自己的审核机制，取较严厉者。
+     * post,reply,digest,postattach ,getattach ,daylogin ,search
+     * 
+     * @param type $id
+     * @return type
+     */
+    public function get_credit($id, $rule = '') {
+        //有些积分规则是需要判断条件的，比如登录。
+        if ($rule == 'daylogin') {
+            if (date('Ymd', $this->user['last_visit_time']) == date('Ymd', $this->time)) {
+                return FALSE;
+            }
+        }
+        $this->load->model('credit_rule_model');
+        $rules = $this->credit_rule_model->get_one("action = '$rule'");
+        if (!empty($rules)) {
+            $forum = $this->get_by_id($id);
+            $credit_setting = $forum['credit_setting'];
+            $credit_setting = json_decode($credit_setting, TRUE);
+            if (!empty($credit_setting[$rule])) {
+                $rules = array_merge($rules, $credit_setting[$rule]);
+            }
+        }
+        return $rules;
+    }
+
 }
 
 ?>

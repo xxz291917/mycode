@@ -4,10 +4,11 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 class MY_Model extends CI_Model {
-    
+
     protected $table;
     protected $id = 'id';
-            
+    protected $list = array();
+
     function __construct() {
         parent::__construct();
     }
@@ -28,6 +29,22 @@ class MY_Model extends CI_Model {
         }
     }
 
+    protected function update_increment($data, $where) {
+        $sql = "UPDATE $this->table SET  ";
+        $sql_tmp = '';
+        foreach ($data as $key => $value) {
+            if (':' !== $value[0]) {
+                $sql_tmp .= "$key='$value',";
+            } else {
+                $value = substr($value, 1);
+                $sql_tmp .= "$key=$key" . ($value > 0 ? '+' : '') . "$value,";
+            }
+        }
+        $sql .= trim($sql_tmp, ',') . ' ';
+        $sql .= $this->create_where($where);
+        return $this->db->query($sql);
+    }
+
     public function delete($where) {
         if (!empty($this->table) && !empty($where)) {
             return $this->db->delete($this->table, $where);
@@ -37,13 +54,16 @@ class MY_Model extends CI_Model {
     }
 
     public function get_by_id($id) {
-        if (!empty($this->table)) {
-            $sql = 'select * from ' . $this->table . ' where ' . $this->id . '=' . $id;
-            $query = $this->db->query($sql);
-            return $query->row_array();
-        } else {
-            return array();
+        if (!isset($this->list[$id])) {
+            if (!empty($this->table)) {
+                $sql = 'select * from ' . $this->table . ' where ' . $this->id . '=' . $id;
+                $query = $this->db->query($sql);
+                $this->list[$id] = $query->row_array();
+            } else {
+                return array();
+            }
         }
+        return $this->list[$id];
     }
 
     public function get_one($where = '', $field = '*', $orderby = '') {
@@ -93,6 +113,10 @@ class MY_Model extends CI_Model {
             $where_str .= "AND $key='$value' ";
         }
         return $where_str;
+    }
+
+    public function is_today($this_time) {
+        return date('Ymd', $this_time) == date('Ymd', $this->time);
     }
 
     protected function upload() {

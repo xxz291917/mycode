@@ -1,4 +1,4 @@
-<?php echo form_open_multipart(base_url().'index.php/bbs/post')?>
+<?php echo form_open(current_url())?>
 <table class="table2">
   <colgroup>
   <col class="th">

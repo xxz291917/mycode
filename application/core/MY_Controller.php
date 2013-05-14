@@ -13,12 +13,14 @@ class Base_Controller extends CI_Controller {
         parent::__construct();
         //aotoload.php中自动加载了$autoload['libraries'] = array('database');$autoload['helper'] = array('url','form');
         $this->load->model(array('users_model', 'forums_model'));
+        $this->load->library(array('user_agent'));
         $this->load->driver('cache', array('adapter' => 'file', 'backup' => 'apc'));
         //初始化用户信息（包括所属用户组）
         $this->user = $this->users_model->get_userinfo();
         $this->ip = $this->input->ip_address();
         $this->time = time();
 //        var_dump($this->user);die;
+        //$this->output->enable_profiler(TRUE);是否开启profiler。
     }
 
     protected function echo_ajax($success = 1, $data = array()) {
@@ -35,7 +37,7 @@ class MY_Controller extends Base_Controller {
         parent::__construct();
         $this->load->model(array());
         $this->load->helper(array());
-        $this->load->library(array('user_agent'));
+        $this->load->library(array());
         //初始化版块信息
         $this->forums = $this->forums_model->initialize();
         //echo $this->agent->referrer();die;
@@ -58,9 +60,11 @@ class MY_Controller extends Base_Controller {
     }
     
     protected function message($message, $redirect = 'BACK') {
+        global $OUT;
         $vars['message'] = $message;
         $vars['redirect'] = $redirect;
         $this->view('message', $vars);
+        $OUT->_display();die;
     }
 
 }
