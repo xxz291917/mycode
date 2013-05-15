@@ -8,6 +8,7 @@ class Forum extends MY_Controller {
     }
 
     public function show($id) {
+        $this->forums_model->get_admin_permission($id);die;
         if (empty($id) || !is_numeric($id)) {
             $this->message('参数错误，请指定要展示的版块！');
         }

@@ -31,7 +31,7 @@
                 <a class="link_add" href="#" style="display: none;">添加新版块</a></td>
               <td class="tar"><?php echo $val['id']?></td>
               <td><input type="text" name="old[<?php echo $val['id']?>][manager]" value="<?php echo $val['manager']?>" class="inp_txt"></td>
-              <td><a target="_blank" href="#">[访问]</a> <a href="<?=base_url()?>index.php/admin/forums/edit/<?php echo $val['id']?>">[编辑]</a> <a href="#" class = "del">[删除]</a></td>
+              <td><a target="_blank" href="<?=base_url('index.php/forum/show/'.$val['id'])?>">[访问]</a> <a href="<?=base_url()?>index.php/admin/forums/edit/<?php echo $val['id']?>">[编辑]</a> <a href="#" class = "del">[删除]</a></td>
             </tr>
           <?php if(!empty($val['sub'])){ $total = count($val['sub']);?>
             <?php	foreach($val['sub'] as $k=>$v){?>
@@ -42,19 +42,18 @@
                 <a class="link_add" href="#" style="display: none;">添加二级版块</a></td>
               <td class="tar"><?php echo $v['id']?></td>
               <td><input type="text" name="old[<?php echo $v['id']?>][manager]" value="<?php echo $v['manager']?>" class="inp_txt"></td>
-              <td><a target="_blank" href="#">[访问]</a> <a href="<?=base_url()?>index.php/admin/forums/edit/<?php echo $v['id']?>">[编辑]</a> <a href="#" class = "del">[删除]</a></td>
+              <td><a target="_blank" href="<?=base_url('index.php/forum/show/'.$v['id'])?>">[访问]</a> <a href="<?=base_url()?>index.php/admin/forums/edit/<?php echo $v['id']?>">[编辑]</a> <a href="#" class = "del">[删除]</a></td>
             </tr>
                 <?php if(!empty($v['sub'])){
 					$num = count($v['sub']);?>
 					<?php foreach($v['sub'] as $sk=>$sv){?>
                     <tr id="tr_<?php echo $sv['id']?>" fid="<?php echo $sv['id']?>" ftype="3">
-                      <td><span class="plus_icon plus_none_icon"></span>
-                      <span class="plus_icon <?php if($sk+1 == $num){?>plus_end_icon <?php }?>"></span>
+                      <td><span class="plus_icon plus_none_icon"></span><span class="plus_icon <?php if($sk+1 == $num){?>plus_end_icon <?php }?>"></span>
                         <input type="text" name="old[<?php echo $sv['id']?>][order]" value="<?php echo $sv['display_order']?>" class="inp_txt inp_num">
                         <span fid="<?php echo $sv['id']?>"><?php echo $sv['name']?></span></td>
                       <td class="tar"><?php echo $sv['id']?></td>
                       <td><input type="text" value="<?php echo $sv['manager']?>" name="old[<?php echo $sv['id']?>][manager]" class="inp_txt"></td>
-                      <td><a target="_blank" href="#">[访问]</a> <a href="<?=base_url()?>index.php/admin/forums/edit/<?php echo $sv['id']?>">[编辑]</a> <a href="#" class = "del">[删除]</a></td>
+                      <td><a target="_blank" href="<?=base_url('index.php/forum/show/'.$sv['id'])?>">[访问]</a> <a href="<?=base_url()?>index.php/admin/forums/edit/<?php echo $sv['id']?>">[编辑]</a> <a href="#" class = "del">[删除]</a></td>
                     </tr>
                     <?php }?>
                 <?php }?>

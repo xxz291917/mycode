@@ -85,7 +85,7 @@ class Forums_model extends MY_Model {
             $name = isset($val['name']) ? trim($val['name']) : '';
             $manager = $this->format_manager($val['manager']);
             !empty($name) && $tmp['name'] = $name;
-            !empty($manager) && $tmp['manager'] = $manager;
+            $tmp['manager'] = $manager;
             $tmp['display_order'] = intval($val['order']);
             foreach ($tmp as $k => $v) {
                 if ($forums[$key][$k] != $v) {
@@ -278,7 +278,35 @@ class Forums_model extends MY_Model {
         }
         return $rules;
     }
+    
+    private function get_manager_by_id($id){
+        $forum = $this->get_by_id($id);
+        return array_filter(explode(',', $forum['manager']));
+    }
 
+    
+
+    /**
+     * 传入forum_id获取当前用户的在此版块下的管理权限。
+     * @param type $id
+     */
+    public function get_admin_permission($id) {
+        $current_groups = array_unique(array_merge((array)$this->user['group_id'], (array)$this->user['groups']));
+        if(empty($current_groups)){
+            return null;
+        }
+        $managers = $this->get_manager_by_id($id);
+        if(in_array($this->user['username'],$managers)){
+            if(!in_array(Groups_model::$moderators_id, $current_groups)){
+                $current_groups[] = Groups_model::$moderators_id;
+            }
+        }else{
+            $current_groups = array_filter($current_groups, create_function('$var', 'return $var != Groups_model::$moderators_id;'));
+        }
+        var_dump($current_groups);die;
+    }
+    
+    
 }
 
 ?>
