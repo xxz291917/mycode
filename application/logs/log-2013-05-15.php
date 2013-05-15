@@ -79,3 +79,5 @@ ERROR - 2013-05-15 12:06:18 --> 404 Page Not Found --> forum/show22
 ERROR - 2013-05-15 12:06:45 --> Severity: Notice  --> Undefined index: id D:\www\mycode\application\views\forum_show.php 42
 ERROR - 2013-05-15 12:07:45 --> Severity: Notice  --> Undefined variable: forum_id D:\www\mycode\application\controllers\forum.php 14
 ERROR - 2013-05-15 12:07:45 --> Query error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+ERROR - 2013-05-15 12:11:16 --> 404 Page Not Found --> forums/merge
+ERROR - 2013-05-15 12:12:16 --> 404 Page Not Found --> topic
