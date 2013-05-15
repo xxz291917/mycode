@@ -15,6 +15,11 @@ class Posts extends MY_Controller {
         if (empty($forum_id) || !is_numeric($forum_id)) {
             $this->message('参数错误，请指定要发布的版块！', base_url());
         }
+        $forum_show_url = base_url('index.php/forum/show/'.$forum_id);
+        $forum = $this->forums_model->get_by_id($forum_id);
+        if(empty($forum) || $forum['type']=='system'){
+            $this->message('参数错误，发布的版块不存在或者不是子版块', $forum_show_url);
+        }
         if ($this->check_posts() && $post = $this->input->post(null)) {
             //检测权限。
             $is_post = $this->forums_model->check_permission('post', $forum_id);
@@ -27,9 +32,9 @@ class Posts extends MY_Controller {
             }
             $post = array_merge($post, array('forum_id' => $forum_id, 'special' => $special));
             if ($this->_post($post)) {
-                $this->message('发帖成功。');
+                $this->message('发帖成功。', $forum_show_url);
             } else {
-                $this->message('发帖失败。');
+                $this->message('发帖失败。', $forum_show_url);
             }
         } else {
             $this->view('posts_post');
@@ -105,6 +110,7 @@ class Posts extends MY_Controller {
             ),
         );
         $this->form_validation->set_rules($config);
+        $this->form_validation->set_error_delimiters('','');
         return $this->form_validation->run();
     }
 

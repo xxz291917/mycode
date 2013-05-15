@@ -1,8 +1,7 @@
 <?php echo form_open(current_url())?>
 <table class="table2">
   <colgroup>
-  <col class="th">
-  <col width="300">
+  <col >
   <col style="color:#F00;">
   </colgroup>
   <tr class="split">
@@ -10,11 +9,11 @@
   </tr>
     <tr>
     <td><input type="text" value="<?php echo set_value('subject', '输入标题'); ?>" name="subject" class="inp_txt inp_long"></td>
-    <td><?php echo form_error('subject'); ?></td>
+    <td style="color:#F00;"><?php echo form_error('subject'); ?></td>
   </tr>
   <tr>
     <td><textarea name="content" style="width:700px;height:200px;visibility:hidden;"><?php echo set_value('content', '填写帖子内容'); ?></textarea></td>
-    <td><?php echo form_error('content'); ?></td>
+    <td style="color:#F00;"><?php echo form_error('content'); ?></td>
   </tr>
 </table>
 <p class="div_bottom">
