@@ -20,3 +20,4 @@ ERROR - 2013-05-14 14:26:49 --> Severity: Notice  --> Undefined property: Bbs::$
 ERROR - 2013-05-14 14:46:54 --> Query error: Unknown column 'extcredits40' in 'field list'
 ERROR - 2013-05-14 15:00:13 --> Severity: Notice  --> Undefined index: last_post_time D:\www\mycode\application\models\forums_statistics_model.php 26
 ERROR - 2013-05-14 15:00:13 --> Query error: Unknown column 'forum_id' in 'where clause'
+ERROR - 2013-05-14 15:04:17 --> 404 Page Not Found --> forums/merge

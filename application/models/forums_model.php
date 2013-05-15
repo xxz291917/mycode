@@ -6,7 +6,6 @@ if (!defined('BASEPATH'))
 class Forums_model extends MY_Model {
 
     public $forums;
-    public $format_forums;
 
     function __construct() {
         parent::__construct();
@@ -17,15 +16,11 @@ class Forums_model extends MY_Model {
         return TRUE;
     }
 
-    public function get_format_forums($cache = TRUE) {
-        if (!$cache || empty($this->format_forums)) {
+    public function get_format_forums($forums=array()) {
+        if(empty($forums)){
             $forums = $this->get_forums();
-            if (!empty($forums)) {
-                $forums = $this->format($forums);
-            }
-            $this->format_forums = $forums;
         }
-        return $this->format_forums;
+        return $this->format($forums);
     }
 
     public function get_forums() {
@@ -35,6 +30,10 @@ class Forums_model extends MY_Model {
             $this->forums = $query->result_array();
         }
         return $this->forums;
+    }
+    
+    public function get_sub_forums($id){
+        return $this->get_list(array('parent_id'=>$id),'*', '', 0, 100);
     }
 
     private function get_key_forums($key = 'id') {

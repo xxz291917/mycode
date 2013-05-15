@@ -8,7 +8,7 @@ class Users_extra_model extends MY_Model {
         parent::__construct();
         $this->table = 'users_extra';
         $this->id = 'user_id';
-        $this->load->model(array('credit_log_model', 'users_model', 'groups_model'));
+        $this->load->model(array('credit_log_model', 'users_model', 'groups_model','permission'));
     }
 
     public function admin_credits($credits, $uid) {
@@ -59,7 +59,7 @@ class Users_extra_model extends MY_Model {
             //echo $sql;die;
             $extra_succ = $this->db->query($sql);
             //更新log表
-            $log_succ = $this->credit_log_model->insert_credits($credits, $uid, $action);
+            $log_succ = $this->credit_log_model->insert_log($credits, $uid, $action);
             //根据当前公式刷新总积分
             $user_credits_succ = $this->refresh_credits($uid);
             if ($extra_succ && $log_succ && $user_credits_succ) {
@@ -91,7 +91,7 @@ class Users_extra_model extends MY_Model {
 
     public function post_increment() {
         $extra_data['posts'] = ':1';
-        $extra_data['today_posts'] = $this->is_today($this->user['last_post_time'])?':1':0;
+        $extra_data['today_posts'] = $this->permission->is_today($this->user['last_post_time'])?':1':1;
         $extra_data['today_uploads'] = ':1';
         $extra_data['last_post_time'] = $this->time;
         $extra_data['last_active_time'] = $this->time;
@@ -100,7 +100,7 @@ class Users_extra_model extends MY_Model {
     
     public function reply_increment() {
         $extra_data['posts'] = ':1';
-        $extra_data['today_posts'] = $this->is_today($this->user['last_post_time'])?':1':0;
+        $extra_data['today_posts'] = $this->permission->is_today($this->user['last_post_time'])?':1':1;
         $extra_data['today_uploads'] = ':1';
         $extra_data['last_post_time'] = $this->time;
         $extra_data['last_active_time'] = $this->time;

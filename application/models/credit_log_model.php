@@ -13,7 +13,7 @@ class Credit_log_model extends MY_Model {
         $this->load->model(array('credit_rule_model'));
     }
 
-    public function insert_credits($credits, $uid, $action = 'admin_set') {
+    public function insert_log($credits, $uid, $action = 'admin_set') {
         if(array_key_exists($action,  $this->credit_log_action)){
             $credit_rule['name'] = $this->credit_log_action[$action];
         }else{

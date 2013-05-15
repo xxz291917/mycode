@@ -8,7 +8,7 @@ class Base_Controller extends CI_Controller {
     public $user;
     public $ip;
     public $time;
-    
+
     public function __construct() {
         parent::__construct();
         //aotoload.php中自动加载了$autoload['libraries'] = array('database');$autoload['helper'] = array('url','form');
@@ -20,11 +20,15 @@ class Base_Controller extends CI_Controller {
         $this->ip = $this->input->ip_address();
         $this->time = time();
 //        var_dump($this->user);die;
-        //$this->output->enable_profiler(TRUE);是否开启profiler。
+//        $this->output->enable_profiler(TRUE); //是否开启profiler。
     }
 
     protected function echo_ajax($success = 1, $data = array()) {
         return json_encode(array('success' => $success, 'data' => $data));
+    }
+
+    protected function get_current_url() {
+        return base_url("index.php/{$this->uri->segment(1)}/{$this->uri->segment(2)}");
     }
 
 }
@@ -42,7 +46,7 @@ class MY_Controller extends Base_Controller {
         $this->forums = $this->forums_model->initialize();
         //echo $this->agent->referrer();die;
     }
-    
+
     public function view($view, $vars = array(), $string = false) {
         $view = $view;
         $header = 'header';
@@ -58,13 +62,52 @@ class MY_Controller extends Base_Controller {
             $this->load->view($footer, $vars);
         }
     }
-    
+
     protected function message($message, $redirect = 'BACK') {
         global $OUT;
         $vars['message'] = $message;
         $vars['redirect'] = $redirect;
         $this->view('message', $vars);
-        $OUT->_display();die;
+        $OUT->_display();
+        die;
+    }
+
+    /**
+      <p class="pagination">
+      &nbsp;共32条&nbsp;
+      <span class="gray">1</span>
+      <a href="index.php?admin_doc-search----0-0--2">2</a>
+      <a href="index.php?admin_doc-search----0-0--2">››</a>
+      </p>
+     */
+    protected function init_page($base_url = '', $total_rows, $per_page = 20, $my_config = array()) {
+        $this->load->library('pagination');
+        $config['base_url'] = !empty($base_url) ? $base_url : current_url();
+        $config['total_rows'] = $total_rows;
+        $config['per_page'] = !empty($per_page) ? $per_page : 20;
+        
+        //结构和样式
+        $config['num_links'] = 4;
+        $config['full_tag_open'] = '<p class="pagination">';
+        $config['full_tag_close'] = '</p>';
+        $config['cur_tag_open'] = '<span>';
+        $config['cur_tag_close'] = '</span>';
+        $config['next_tag_open'] = '';
+        $config['next_tag_close'] = '';
+        $config['prev_tag_open'] = '';
+        $config['prev_tag_close'] = '';
+        $config['num_tag_open'] = '';
+        $config['num_tag_close'] = '';
+        $config['first_link'] = '第一页';
+        $config['next_link'] = '&gt;';
+        $config['prev_link'] = '&lt;';
+        $config['last_link'] = '最后一页';
+        $config['query_string_segment'] = 'per_page';
+        if (!empty($my_config)) {
+            $config = array_merge($config, $my_config);
+        }
+        $this->pagination->initialize($config);
+        return $this->pagination;
     }
 
 }
@@ -72,13 +115,11 @@ class MY_Controller extends Base_Controller {
 class Admin_Controller extends Base_Controller {
 
     protected $admin_dir = 'admin';
-    protected $query_string_segment = 'per_page';
     protected $date_format = 'Y-m-d H:i:s';
 
     public function __construct() {
         parent::__construct();
-
-        $this->load->vars('date_format',  $this->date_format);
+        $this->load->vars('date_format', $this->date_format);
 //        $this->config->load('admin');
 //        var_dump($this->config->item('query_string_segment'));die;
     }
@@ -113,12 +154,11 @@ class Admin_Controller extends Base_Controller {
       <a href="index.php?admin_doc-search----0-0--2">››</a>
       </p>
      */
-    protected function create_page($base_url = '', $total_rows, $per_page = 20) {
+    protected function init_page($base_url = '', $total_rows, $per_page = 20, $my_config = array()) {
         $this->load->library('pagination');
         $config['base_url'] = !empty($base_url) ? $base_url : current_url();
         $config['total_rows'] = $total_rows;
         $config['per_page'] = !empty($per_page) ? $per_page : 20;
-        $config['uri_segment'] = 3;
         $config['page_query_string'] = true;
         //结构和样式
         $config['num_links'] = 4;
@@ -136,15 +176,12 @@ class Admin_Controller extends Base_Controller {
         $config['next_link'] = '&gt;';
         $config['prev_link'] = '&lt;';
         $config['last_link'] = '最后一页';
-        $config['query_string_segment'] = $this->query_string_segment;
+        $config['query_string_segment'] = 'per_page';
+        if (!empty($my_config)) {
+            $config = array_merge($config, $my_config);
+        }
         $this->pagination->initialize($config);
-        return $this->pagination->create_links();
+        return $this->pagination;
     }
 
-    protected function get_per_page($default = 0) {
-        $per_page = $this->input->get($this->query_string_segment, TRUE);
-        empty($per_page) && $per_page = $default;
-        return $per_page;
-    }
-    
 }

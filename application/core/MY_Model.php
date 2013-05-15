@@ -81,6 +81,15 @@ class MY_Model extends CI_Model {
         $query = $this->db->get($this->table);
         return $query->result_array();
     }
+    
+    public function key_list($list,$key='') {
+        empty($key) && $key = $this->id;
+        $return = array();
+        foreach ($list as $value) {
+            $return[$value[$key]] = $value;
+        }
+        return $return;
+    }
 
     public function get_count($where = '') {
         $num = $this->get_one($where, 'count(*) num');
@@ -103,6 +112,9 @@ class MY_Model extends CI_Model {
     public function create_where($where = '') {
         if (!is_array($where)) {
             $where = trim($where);
+            if(empty($where)){
+                return '';
+            }
             if (strncasecmp('WHERE ', $where, 6) != 0) {
                 $where = 'WHERE ' . $where;
             }
@@ -113,10 +125,6 @@ class MY_Model extends CI_Model {
             $where_str .= "AND $key='$value' ";
         }
         return $where_str;
-    }
-
-    public function is_today($this_time) {
-        return date('Ymd', $this_time) == date('Ymd', $this->time);
     }
 
     protected function upload() {

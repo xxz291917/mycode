@@ -13,6 +13,13 @@ class Topics_model extends MY_Model {
         $id = $query->row_array();
         return empty($id) ? TRUE : FALSE;
     }
+    
+    public function get_subject_by_id($id) {
+        $topic = $this->get_by_id($id);
+        empty($topic['subject']) && $topic['subject']='';
+        return $topic['subject'];
+    }
+    
 }
 
 ?>

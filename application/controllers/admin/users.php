@@ -25,21 +25,25 @@ class Users extends Admin_Controller {
             $search['email'] = trim($search['email']);
             $where .= "and email = '{$search['email']}' ";
         }
-        $per_page = $this->get_per_page();
-        $users = $this->users_model->get_list($where, '*', '', $per_page);
+        
         //生成分页字符串
         $total_num = $this->users_model->get_count($where);
         unset($search['submit'], $search['per_page']);
         $query_str = !empty($search) ? http_build_query($search, '', '&') : '';
         $base_url = current_url() . '?' . $query_str;
-        $page = $this->create_page($base_url, $total_num);
-
+        $per_num = 20;
+        $page_obj = $this->init_page($base_url, $total_num,$per_num);
+        $page_str = $page_obj->create_links();
+        //获取用户
+        $start = max(0,($page_obj->cur_page-1)*$per_num);
+        $users = $this->users_model->get_list($where, '*', '', $start,$per_num);
+        
         //得到用户组选项
         $default_groups = !empty($search['groups']) ? $search['groups'] : array();
         $var['groups_option'] = $this->groups_model->create_options($default_groups);
         $var['data'] = $search;
         $var['users'] = $users;
-        $var['page'] = $page;
+        $var['page'] = $page_str;
         $this->view('users', $var);
     }
 
