@@ -39,6 +39,7 @@
     <td>标题：<?php echo $post['subject'];?><br/>
         <?php echo "发表于：".timespan($post['post_time']);?><br/>
         内容：<?php echo $post['content'];?><br/>
+        签名：<?php echo $user['signature'];?><br/>
     </td>
   </tr>
   <?php  

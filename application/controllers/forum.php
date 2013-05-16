@@ -2,6 +2,8 @@
 
 class Forum extends MY_Controller {
 
+    static $per_num = 10;
+    
     function __construct() {
         parent::__construct();
         $this->load->model(array('index','forums_statistics_model'));
@@ -29,7 +31,7 @@ class Forum extends MY_Controller {
         
         //获取本版块下的主题
         if(!empty($var['forum']['topics'])){
-            $per_num = 2;
+            $per_num = self::$per_num;
             $total_num = $var['forum']['topics'];
             //生成分页字符串
             $base_url = $this->get_current_url()."/$id";

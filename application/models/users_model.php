@@ -15,6 +15,10 @@ class Users_model extends MY_Model {
     function get_userinfo() {
         $user_id = '1';
         $user = $this->get_users_by_ids($user_id);
+        if($user){
+            //插入用户的操作在这里哦。
+        }
+        
         $current_groups = array(empty($user['group_id']) ? $user['member_id'] : $user['group_id']);
 
         //检测是否有过期的扩展组，更新。
@@ -29,8 +33,8 @@ class Users_model extends MY_Model {
             //根据扩展组信息，得出合并后的用户组。
             $current_groups = array_unique(array_merge($current_groups, $user['groups']));
         }
+        $user['groups'] = $current_groups;//用户所属的用户组
         $user['group'] = $this->groups_model->get_user_group($current_groups);
-//        var_dump($user);die;
         return $user;
     }
 

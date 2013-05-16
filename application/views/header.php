@@ -108,3 +108,11 @@
 </script>
 </head>
 <body style="margin: 0 auto; width: 960px;">
+
+<table class="table2">
+  <tr class="split">
+    <td>
+     <a href="<?php echo base_url();?>">首页</a>
+    </td>
+  </tr>
+</table>

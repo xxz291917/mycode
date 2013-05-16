@@ -2,6 +2,8 @@
 
 class Topic extends MY_Controller {
 
+    static $per_num = 10;
+    
     function __construct() {
         parent::__construct();
         $this->load->model(array('index','forums_statistics_model','posts_model','credit_name_model'));
@@ -19,8 +21,8 @@ class Topic extends MY_Controller {
         $var['admin_permission'] = $this->groups_model->get_admin_permission($topic['forum_id']);
         
         //获取本主题下的回复
-        $per_num = 2;
-        $total_num = $var['topic']['replies'];
+        $per_num = self::$per_num;
+        $total_num = $var['topic']['replies']+1;
         //生成分页字符串
         $base_url = $this->get_current_url()."/$id";
         $config['uri_segment'] = 4;

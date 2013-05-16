@@ -4,7 +4,7 @@ class Posts extends MY_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model(array('permission','topics_model', 'posts_model','users_extra_model','forums_statistics_model'));
+        $this->load->model(array('permission','topics_model','topics_posted_model', 'posts_model','users_extra_model','forums_statistics_model'));
     }
 
     public function index() {
@@ -61,8 +61,8 @@ class Posts extends MY_Controller {
             if (!$is_post) {
                 $this->message('您发帖太快或者是发帖数太多。');
             }
-            $post = array_merge($post, array('topic_id' => $topic_id,'forum_id' => $topic['forum_id']));
-            if ($this->_post($post,'reply')) {
+            $post = array_merge($post, array('topic_id' => $topic_id, 'forum_id' => $topic['forum_id'], 'topic_author_id' => $topic['author_id']));
+            if ($this->_post($post, 'reply')) {
                 $this->message('发帖成功。', $forum_show_url);
             } else {
                 $this->message('发帖失败。', $forum_show_url);
@@ -88,7 +88,7 @@ class Posts extends MY_Controller {
             $topics_data['post_time'] = $this->time;
             $topics_data['subject'] = $post['subject'];
             $topics_data['special'] = $post['special'];
-            $topics_data['replies'] = 1;
+            $topics_data['replies'] = 0;
             $topics_data['status'] = $this->forums_model->get_check($forum_id) > 0 ? 4 : 1;
             $this->topics_model->insert($topics_data);
             $tid = $this->db->insert_id();
@@ -103,6 +103,10 @@ class Posts extends MY_Controller {
             $topics_data['last_post_time'] = $this->time;
             $tid = $post['topic_id'];
             $this->topics_model->update_increment($topics_data,array('id'=>$tid));
+            //如果回复的帖子不是我发起的，则更新topics_posted表，记录我参与过的帖子。
+            if($this->user['id'] != $post['topic_author_id']){
+                $this->topics_posted_model->insert();
+            }
         }
         //插入posts表
         $posts_data['topic_id'] = $tid;
@@ -164,6 +168,21 @@ class Posts extends MY_Controller {
         return $this->form_validation->run();
     }
 
+    /**
+     * 删除主题，接收post过来的topic_id,填写删除原因，然后删除帖子。
+     */
+    public function del() {
+        
+    }
+    
+    /**
+     * 置顶主题，接收post过来的topic_id,填写删除原因，然后删除帖子。
+     */
+    public function del2() {
+        
+    }
+    
+    
 }
 
 ?>

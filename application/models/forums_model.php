@@ -207,7 +207,8 @@ class Forums_model extends MY_Model {
                         return TRUE;
                     } else {
                         $permission = explode(',', $permission);
-                        if (in_array($this->user['group']['id'], $permission)) {
+                        $tmp = array_intersect($this->user['groups'], $permission);
+                        if (!empty($tmp)) {
                             return TRUE;
                         }
                     }
