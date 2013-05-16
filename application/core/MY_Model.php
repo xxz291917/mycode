@@ -29,7 +29,7 @@ class MY_Model extends CI_Model {
         }
     }
 
-    protected function update_increment($data, $where) {
+    public function update_increment($data, $where) {
         $sql = "UPDATE $this->table SET  ";
         $sql_tmp = '';
         foreach ($data as $key => $value) {
@@ -85,6 +85,9 @@ class MY_Model extends CI_Model {
     public function key_list($list,$key='') {
         empty($key) && $key = $this->id;
         $return = array();
+        if(empty($list)){
+            return $return;
+        }
         foreach ($list as $value) {
             $return[$value[$key]] = $value;
         }

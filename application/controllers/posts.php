@@ -20,7 +20,7 @@ class Posts extends MY_Controller {
         if(empty($forum) || $forum['type']=='system'){
             $this->message('参数错误，发布的版块不存在或者不是子版块', $forum_show_url);
         }
-        if ($this->check_posts() && $post = $this->input->post(null)) {
+        if ($this->check_posts('post') && $post = $this->input->post(null)) {
             //检测权限。
             $is_post = $this->forums_model->check_permission('post', $forum_id);
             if (!$is_post) {
@@ -40,21 +40,69 @@ class Posts extends MY_Controller {
             $this->view('posts_post');
         }
     }
+    
+    public function reply($topic_id = '') {
+        if (empty($topic_id) || !is_numeric($topic_id)) {
+            $this->message('参数错误，请指定要发布的主题！', base_url());
+        }
+        
+        $forum_show_url = base_url("index.php/topic/show/$topic_id");//回复完成跳转到帖子的最后一页。
+        $topic = $this->topics_model->get_by_id($topic_id);
+        if(empty($topic)){
+            $this->message('参数错误，发布的主题不存在', $forum_show_url);
+        }
+        if ($this->check_posts('reply') && $post = $this->input->post(null)) {
+            //检测权限。
+            $is_post = $this->forums_model->check_permission('reply', $topic['forum_id']);
+            if (!$is_post) {
+                $this->message('您没有权限回复帖子');
+            }
+            $is_post = $this->permission->check_post_num();
+            if (!$is_post) {
+                $this->message('您发帖太快或者是发帖数太多。');
+            }
+            $post = array_merge($post, array('topic_id' => $topic_id,'forum_id' => $topic['forum_id']));
+            if ($this->_post($post,'reply')) {
+                $this->message('发帖成功。', $forum_show_url);
+            } else {
+                $this->message('发帖失败。', $forum_show_url);
+            }
+        } else {
+            $this->view('posts_post');
+        }
+    }
 
-    private function _post($post) {
+    /**
+     * 接受参数，完成发帖或者回复的数据库操作。
+     * @param type $post
+     * @param type $type
+     * @return boolean
+     */
+    private function _post($post,$type='post') {
         $forum_id = $post['forum_id'];
-        //插入topics表
-        $topics_data['forum_id'] = $forum_id;
-        $topics_data['author'] = $this->user['username'];
-        $topics_data['author_id'] = $this->user['id'];
-        $topics_data['post_time'] = $this->time;
-        $topics_data['subject'] = $post['subject'];
-        $topics_data['special'] = $post['special'];
-        $topics_data['status'] = $this->forums_model->get_check($forum_id) > 0 ? 4 : 1;
-        $this->topics_model->insert($topics_data);
-        $tid = $this->db->insert_id();
-        if (empty($tid)) {
-            $this->message('发帖topics失败。');
+        if('post'==$type){
+            //插入topics表
+            $topics_data['forum_id'] = $forum_id;
+            $topics_data['author'] = $this->user['username'];
+            $topics_data['author_id'] = $this->user['id'];
+            $topics_data['post_time'] = $this->time;
+            $topics_data['subject'] = $post['subject'];
+            $topics_data['special'] = $post['special'];
+            $topics_data['replies'] = 1;
+            $topics_data['status'] = $this->forums_model->get_check($forum_id) > 0 ? 4 : 1;
+            $this->topics_model->insert($topics_data);
+            $tid = $this->db->insert_id();
+            if (empty($tid)) {
+                $this->message('发帖topics失败。');
+            }
+        } elseif ('reply'==$type) {
+            //更新topics表
+            $topics_data['replies'] = ':1';
+            $topics_data['last_author'] = $this->user['username'];
+            $topics_data['last_author_id'] = $this->user['id'];
+            $topics_data['last_post_time'] = $this->time;
+            $tid = $post['topic_id'];
+            $this->topics_model->update_increment($topics_data,array('id'=>$tid));
         }
         //插入posts表
         $posts_data['topic_id'] = $tid;
@@ -66,7 +114,7 @@ class Posts extends MY_Controller {
         $posts_data['subject'] = $post['subject'];
         $posts_data['content'] = $post['content'];
         $posts_data['attachment'] = 0;
-        $posts_data['is_first'] = 1;
+        $posts_data['is_first'] = 'post' == $type ? 1 : 0;
         $posts_data['is_bbcode'] = $this->forums_model->get_is('bbcode', $forum_id);
         $posts_data['is_smilies'] = $this->forums_model->get_is('smilies', $forum_id);
         $posts_data['is_media'] = $this->forums_model->get_is('media', $forum_id);
@@ -82,48 +130,40 @@ class Posts extends MY_Controller {
             $this->message('发帖posts失败。');
         }
         //更新用户积分
-        $credit = $this->forums_model->get_credit($forum_id, 'post');
-        $update_credit = $this->users_extra_model->update_credits($credit,$this->user['id'],'post');
+        $credit = $this->forums_model->get_credit($forum_id, $type);
+        $update_credit = $this->users_extra_model->update_credits($credit,$this->user['id'],$type);
         if(!$update_credit){
             $this->message('更新用户积分失败。');
         }
         //更新用户user_extra信息
         $this->users_extra_model->post_increment();
         //更新用户forums_statistics信息
-        $this->forums_statistics_model->post_increment($forum_id,$tid);
+        $this->forums_statistics_model->post_increment($forum_id,$tid,$type);
         //$this->users_extra_model->update_for_post();
         return TRUE;
     }
 
-    private function check_posts() {
+    private function check_posts($type='post') {
         $this->load->library('form_validation');
         $config = array(
-            array(
-                'field' => 'subject',
-                'label' => '标题',
-                'rules' => 'trim|required|min_length[5]|max_length[80]'
-            ),
             array(
                 'field' => 'content',
                 'label' => '帖子内容',
                 'rules' => 'trim|required'
-            ),
+            )
         );
+        if('post'==$type){
+            $config[] = array(
+                'field' => 'subject',
+                'label' => '标题',
+                'rules' => 'trim|required|min_length[5]|max_length[80]'
+            );
+        }
         $this->form_validation->set_rules($config);
         $this->form_validation->set_error_delimiters('','');
         return $this->form_validation->run();
     }
 
-    public function comments($e = "My Real Title") {
-        $data['title'] = $e;
-        $data['heading'] = "My Real Heading";
-        $this->load->view('bbsview', $data);
-    }
-
-//    public function _output($output) {
-//        //echo 333;
-//        echo $output;
-//    }
 }
 
 ?>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <title>前台测试页面</title>
-<link rel="stylesheet" type="text/css" href="<?=base_url()?>css/style.css" />
+<link rel="stylesheet" type="text/css" href="<?=base_url()?>css/front_style.css" />
 <link rel="stylesheet" type="text/css" href="<?=base_url()?>js/jquery-ui/jquery-ui.min.css" />
 <script type="text/javascript" src="<?=base_url()?>js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="<?=base_url()?>js/jquery-ui/jquery-ui.min.js"></script>

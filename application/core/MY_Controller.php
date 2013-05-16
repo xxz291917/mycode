@@ -12,7 +12,7 @@ class Base_Controller extends CI_Controller {
     public function __construct() {
         parent::__construct();
         //aotoload.php中自动加载了$autoload['libraries'] = array('database');$autoload['helper'] = array('url','form');
-        $this->load->model(array('users_model', 'forums_model'));
+        $this->load->model(array('users_model', 'groups_model', 'forums_model'));
         $this->load->library(array('user_agent'));
         $this->load->driver('cache', array('adapter' => 'file', 'backup' => 'apc'));
         //初始化用户信息（包括所属用户组）

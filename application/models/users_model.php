@@ -14,13 +14,7 @@ class Users_model extends MY_Model {
      */
     function get_userinfo() {
         $user_id = '1';
-
-        $u = 'id,email,username,credits,group_id,member_id,groups,icon,gender,signature,regdate,';
-        $ex = 'posts,digests,today_posts,today_uploads,last_visit_time,last_login_ip,last_post_time,last_active_time,online_time,extcredits1,extcredits2,extcredits3,extcredits4,extcredits5,extcredits6,extcredits7,extcredits8';
-        $sql = "SELECT $u $ex FROM {$this->table} u LEFT JOIN users_extra ex ON ex.user_id=u.id WHERE u.id=$user_id LIMIT 0,1";
-        $query = $this->db->query($sql);
-        $user = $query->row_array();
-
+        $user = $this->get_users_by_ids($user_id);
         $current_groups = array(empty($user['group_id']) ? $user['member_id'] : $user['group_id']);
 
         //检测是否有过期的扩展组，更新。
@@ -103,6 +97,24 @@ class Users_model extends MY_Model {
             }
         }
         return $datas;
+    }
+    
+    public function get_users_by_ids($ids){
+        $u = 'id,email,username,credits,group_id,member_id,groups,icon,gender,signature,regdate,';
+        $ex = 'posts,digests,today_posts,today_uploads,last_visit_time,last_login_ip,last_post_time,last_active_time,online_time,extcredits1,extcredits2,extcredits3,extcredits4,extcredits5,extcredits6,extcredits7,extcredits8';
+        if(is_array($ids) && !empty($ids)){
+            $ids = join (',', $ids);
+            $where = "u.id in($ids)";
+            $result_fun = 'result_array';
+        }elseif(is_numeric($ids)){
+            $where = "u.id = $ids LIMIT 0,1";
+            $result_fun = 'row_array';
+        }else{
+            return FALSE;
+        }
+        $sql = "SELECT $u $ex FROM {$this->table} u LEFT JOIN users_extra ex ON ex.user_id=u.id WHERE $where";
+        $query = $this->db->query($sql);
+        return $query->$result_fun();
     }
 
 }

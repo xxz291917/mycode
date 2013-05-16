@@ -208,6 +208,53 @@ class Groups_model extends MY_Model {
         }
     }
 
+    /**
+     * 传入forum_id获取当前用户的在此版块下的管理权限。
+     * @param type $forum_id
+     */
+    public function get_admin_permission($forum_id) {
+        $current_groups = array_unique(array_merge((array) $this->user['group_id'], (array) $this->user['groups']));
+        if (empty($current_groups)) {
+            return null;
+        }
+        $this->load->model(array('groups_admin_model'));
+        $managers = $this->forums_model->get_manager_by_id($forum_id);
+        if (in_array($this->user['username'], $managers)) {
+            if (!in_array(Groups_model::$moderators_id, $current_groups)) {
+                $current_groups[] = Groups_model::$moderators_id;
+            }
+        } else {
+            $current_groups = array_filter($current_groups, create_function('$var', 'return $var != Groups_model::$moderators_id;'));
+        }
+        //当前的管理组权限合并
+        //var_dump($current_groups);
+        $return_group = array();
+        if (!empty($current_groups)) {
+            $current_groups = join(',', $current_groups);
+            $groups = $this->groups_admin_model->get_list('group_id in (' . $current_groups . ')');
+            $max_arr = array('allow_digest', 'allow_topthread');
+            foreach ($groups as $group) {
+                foreach ($group as $key => $val) {
+                    if($key == 'group_id'){
+                        continue;
+                    }
+                    if (!isset($return_group[$key])) {
+                        $return_group[$key] = $val;
+                        continue;
+                    }
+                    if (in_array($key, $max_arr)) {
+                        $return_group[$key] = max($return_group[$key], $val);
+                    } else {
+                        if ($return_group[$key] == 1)
+                            continue;
+                        $return_group[$key] = $val;
+                    }
+                }
+            }
+        }
+        return ($return_group);
+    }
+
 }
 
 ?>
