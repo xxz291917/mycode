@@ -74,7 +74,7 @@ class Users_extra_model extends MY_Model {
 
     public function refresh_credits($uid) {
         //获取扩展积分
-        $extra = $this->get_by_id($uid);
+        $extra = $this->get_by_id($uid,false);
         //根据总分计算公式，计算得出总积分$credits
         extract($extra);
         $expression = $this->credit_expression;

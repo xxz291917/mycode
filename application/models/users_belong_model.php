@@ -12,13 +12,15 @@ class Users_belong_model extends MY_Model {
         //删除所有
         if($this->delete(array($this->id=>$uid))){
             //添加批量
-            $insert_data = array();
-            foreach ($data as $gid => $end_time) {
-                $insert_data[$gid][$this->id]=$uid;
-                $insert_data[$gid]['group_id']=$gid;
-                $insert_data[$gid]['end_time']=strtotime($end_time);
+            if(!empty($data)){
+               $insert_data = array();
+                foreach ($data as $gid => $end_time) {
+                    $insert_data[$gid][$this->id]=$uid;
+                    $insert_data[$gid]['group_id']=$gid;
+                    $insert_data[$gid]['end_time']=strtotime($end_time);
+                }
+                return $this->db->insert_batch($this->table, $insert_data); 
             }
-            return $this->db->insert_batch($this->table, $insert_data);
         }
         return FALSE;
     }

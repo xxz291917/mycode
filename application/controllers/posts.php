@@ -4,7 +4,7 @@ class Posts extends MY_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model(array('permission','topics_model','topics_posted_model', 'posts_model','users_extra_model','forums_statistics_model'));
+        $this->load->model(array('permission', 'topics_model', 'topics_posted_model', 'posts_model', 'users_extra_model', 'forums_statistics_model'));
     }
 
     public function index() {
@@ -15,9 +15,9 @@ class Posts extends MY_Controller {
         if (empty($forum_id) || !is_numeric($forum_id)) {
             $this->message('参数错误，请指定要发布的版块！', base_url());
         }
-        $forum_show_url = base_url('index.php/forum/show/'.$forum_id);
+        $forum_show_url = base_url('index.php/forum/show/' . $forum_id);
         $forum = $this->forums_model->get_by_id($forum_id);
-        if(empty($forum) || $forum['type']=='system'){
+        if (empty($forum) || $forum['type'] == 'group') {
             $this->message('参数错误，发布的版块不存在或者不是子版块', $forum_show_url);
         }
         if ($this->check_posts('post') && $post = $this->input->post(null)) {
@@ -40,15 +40,15 @@ class Posts extends MY_Controller {
             $this->view('posts_post');
         }
     }
-    
+
     public function reply($topic_id = '') {
         if (empty($topic_id) || !is_numeric($topic_id)) {
             $this->message('参数错误，请指定要发布的主题！', base_url());
         }
-        
-        $forum_show_url = base_url("index.php/topic/show/$topic_id");//回复完成跳转到帖子的最后一页。
+
+        $forum_show_url = base_url("index.php/topic/show/$topic_id"); //回复完成跳转到帖子的最后一页。
         $topic = $this->topics_model->get_by_id($topic_id);
-        if(empty($topic)){
+        if (empty($topic)) {
             $this->message('参数错误，发布的主题不存在', $forum_show_url);
         }
         if ($this->check_posts('reply') && $post = $this->input->post(null)) {
@@ -78,9 +78,9 @@ class Posts extends MY_Controller {
      * @param type $type
      * @return boolean
      */
-    private function _post($post,$type='post') {
+    private function _post($post, $type = 'post') {
         $forum_id = $post['forum_id'];
-        if('post'==$type){
+        if ('post' == $type) {
             //插入topics表
             $topics_data['forum_id'] = $forum_id;
             $topics_data['author'] = $this->user['username'];
@@ -95,17 +95,20 @@ class Posts extends MY_Controller {
             if (empty($tid)) {
                 $this->message('发帖topics失败。');
             }
-        } elseif ('reply'==$type) {
+        } elseif ('reply' == $type) {
             //更新topics表
             $topics_data['replies'] = ':1';
             $topics_data['last_author'] = $this->user['username'];
             $topics_data['last_author_id'] = $this->user['id'];
             $topics_data['last_post_time'] = $this->time;
             $tid = $post['topic_id'];
-            $this->topics_model->update_increment($topics_data,array('id'=>$tid));
+            $this->topics_model->update_increment($topics_data, array('id' => $tid));
             //如果回复的帖子不是我发起的，则更新topics_posted表，记录我参与过的帖子。
-            if($this->user['id'] != $post['topic_author_id']){
-                $this->topics_posted_model->insert();
+            if ($this->user['id'] != $post['topic_author_id']) {
+                $topic_id = $this->topics_posted_model->get_one(array('user_id' => $this->user['id'], 'topic_id' => $tid));
+                if (empty($topic_id)) {
+                    $this->topics_posted_model->insert(array('user_id' => $this->user['id'], 'topic_id' => $tid));
+                }
             }
         }
         //插入posts表
@@ -135,19 +138,19 @@ class Posts extends MY_Controller {
         }
         //更新用户积分
         $credit = $this->forums_model->get_credit($forum_id, $type);
-        $update_credit = $this->users_extra_model->update_credits($credit,$this->user['id'],$type);
-        if(!$update_credit){
+        $update_credit = $this->users_extra_model->update_credits($credit, $this->user['id'], $type);
+        if (!$update_credit) {
             $this->message('更新用户积分失败。');
         }
         //更新用户user_extra信息
         $this->users_extra_model->post_increment();
         //更新用户forums_statistics信息
-        $this->forums_statistics_model->post_increment($forum_id,$tid,$type);
+        $this->forums_statistics_model->post_increment($forum_id, $tid, $type);
         //$this->users_extra_model->update_for_post();
         return TRUE;
     }
 
-    private function check_posts($type='post') {
+    private function check_posts($type = 'post') {
         $this->load->library('form_validation');
         $config = array(
             array(
@@ -156,7 +159,7 @@ class Posts extends MY_Controller {
                 'rules' => 'trim|required'
             )
         );
-        if('post'==$type){
+        if ('post' == $type) {
             $config[] = array(
                 'field' => 'subject',
                 'label' => '标题',
@@ -164,25 +167,10 @@ class Posts extends MY_Controller {
             );
         }
         $this->form_validation->set_rules($config);
-        $this->form_validation->set_error_delimiters('','');
+        $this->form_validation->set_error_delimiters('', '');
         return $this->form_validation->run();
     }
 
-    /**
-     * 删除主题，接收post过来的topic_id,填写删除原因，然后删除帖子。
-     */
-    public function del() {
-        
-    }
-    
-    /**
-     * 置顶主题，接收post过来的topic_id,填写删除原因，然后删除帖子。
-     */
-    public function del2() {
-        
-    }
-    
-    
 }
 
 ?>

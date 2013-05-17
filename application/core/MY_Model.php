@@ -53,8 +53,8 @@ class MY_Model extends CI_Model {
         }
     }
 
-    public function get_by_id($id) {
-        if (!isset($this->list[$id])) {
+    public function get_by_id($id, $cache = true) {
+        if (!isset($this->list[$id]) || !$cache) {
             if (!empty($this->table)) {
                 $sql = 'select * from ' . $this->table . ' where ' . $this->id . '=' . $id;
                 $query = $this->db->query($sql);

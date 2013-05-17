@@ -24,7 +24,7 @@ class Groups_model extends MY_Model {
         return $query->result_array();
     }
 
-    private function get_key_groups($key = 'id', $type = '') {
+    public function get_key_groups($key = 'id', $type = '') {
         $groups = $this->get_groups($type);
         $key_groups = array();
         foreach ($groups as $v) {

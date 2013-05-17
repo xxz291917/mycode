@@ -26,7 +26,7 @@ class Groups_admin_model extends MY_Model {
     }
     
     public function form_filter($datas) {
-        $checkbox_arr = array('is_editpost','is_checkpost','is_copythread','is_mergethread','is_splitthread','is_movethread','is_delpost','is_banpost','is_highlight','is_recommend','is_bump','is_closethread');
+        $checkbox_arr = array('is_edit','is_check','is_copy','is_merge','is_split','is_move','is_del','is_ban','is_highlight','is_recommend','is_bump','is_close');
         foreach ($datas as $key => $value) {
             if(in_array($key, $checkbox_arr)){ 
                 continue;

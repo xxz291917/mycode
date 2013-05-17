@@ -36,7 +36,7 @@ class Forums_model extends MY_Model {
         return $this->get_list(array('parent_id'=>$id),'*', '', 0, 100);
     }
 
-    private function get_key_forums($key = 'id') {
+    public function get_key_forums($key = 'id') {
         $forums = $this->get_forums();
         $key_forums = array();
         foreach ($forums as $v) {
@@ -195,7 +195,7 @@ class Forums_model extends MY_Model {
         $actions = array('report', 'visit', 'read', 'post', 'reply', 'upload', 'download');
         if (in_array($action, $actions)) {
             $group_key = 'is_' . $action;
-            if ($this->user['group'][$group_key] == 1) {
+            if (isset($this->user['group'][$group_key]) && $this->user['group'][$group_key] == 1) {
                 if ('report' == $action) {
                     return TRUE;
                 }

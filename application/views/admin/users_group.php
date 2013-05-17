@@ -24,6 +24,7 @@
   <tr>
     <th>所属用户组</th>
     <td><select name="group_id" class="select">
+    	<option value="0">默认组</option>
         <?=$options?>
       </select></td>
     <td></td>

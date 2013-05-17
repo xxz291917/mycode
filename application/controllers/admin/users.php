@@ -54,8 +54,9 @@ class Users extends Admin_Controller {
             $users = $this->input->post();
             
             if($type == 'group'){
+                !isset($users['groups']) && $users['groups'] = array();
                 foreach ($users['endtime'] as $key => $value) {
-                    if(!in_array($key, $users['groups']))
+                    if (!in_array($key, $users['groups']))
                         unset($users['endtime'][$key]);
                 }
                 $this->users_belong_model->update_batch($users['endtime'], $id);
@@ -83,7 +84,7 @@ class Users extends Admin_Controller {
                 $this->load->model('credit_name_model');
                 $var['credit_names'] = $this->credit_name_model->get_all();
             }elseif($type == 'group') {
-                $default = $users['group_id']!=0?array($users['group_id']):array($users['member_id']);
+                $default = $users['group_id']!=0?array($users['group_id']):array(0);
                 $var['options'] = $this->groups_model->create_options($default);
                 $var['groups'] = $this->groups_admin_model->get_groups();
                 $users_belong = $this->users_belong_model->get_list(array('user_id'=>$id));

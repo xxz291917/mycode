@@ -50,7 +50,7 @@ html, body {
 </colgroup>
   <tr>
     <td colspan="2" height="56px"><div class="head">
-        <p class="r a-r t-tips"> <a href="index.php" target="_blank">前台首页</a>|<a href="index.php?admin_main-logout">退出管理中心</a> </p>
+        <p class="r a-r t-tips"> <a href="<?php echo base_url()?>" target="_blank">前台首页</a>|<a href="index.php?admin_main-logout">退出管理中心</a> </p>
         <ul id="nav">
           <li onclick="getMenu('index',this)" id="indexmenu" ><a href="javascript:void(0);"><span>首页</span></a></li>
           <li onclick="getMenu('global',this)" id="globalmenu"><a href="javascript:void(0);"><span>全局</span></a></li>

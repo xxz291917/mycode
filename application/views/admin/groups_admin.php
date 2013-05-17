@@ -22,18 +22,18 @@
       <th>操作权限</th>
       <td>
       <ul class="list_box">
-      <li><input type="checkbox" value="1" name="is_editpost" <?php echo my_set_checkbox('is_editpost', '1',$data); ?> class="checkbox">编辑</li>
-      <li><input type="checkbox" value="1" name="is_checkpost" <?php echo my_set_checkbox('is_checkpost', '1',$data); ?> class="checkbox">审核</li>
-      <li><input type="checkbox" value="1" name="is_copythread" <?php echo my_set_checkbox('is_copythread', '1',$data); ?> class="checkbox">复制</li>
-      <li><input type="checkbox" value="1" name="is_mergethread" <?php echo my_set_checkbox('is_mergethread', '1',$data); ?> class="checkbox">合并</li>
-      <li><input type="checkbox" value="1" name="is_splitthread" <?php echo my_set_checkbox('is_splitthread', '1',$data); ?> class="checkbox">切分</li>
-      <li><input type="checkbox" value="1" name="is_movethread" <?php echo my_set_checkbox('is_movethread', '1',$data); ?> class="checkbox">移动</li>
-      <li><input type="checkbox" value="1" name="is_delpost" <?php echo my_set_checkbox('is_delpost', '1',$data); ?> class="checkbox">删除</li>
-      <li><input type="checkbox" value="1" name="is_banpost" <?php echo my_set_checkbox('is_banpost', '1',$data); ?> class="checkbox">屏蔽</li>
+      <li><input type="checkbox" value="1" name="is_edit" <?php echo my_set_checkbox('is_edit', '1',$data); ?> class="checkbox">编辑</li>
+      <li><input type="checkbox" value="1" name="is_check" <?php echo my_set_checkbox('is_check', '1',$data); ?> class="checkbox">审核</li>
+      <li><input type="checkbox" value="1" name="is_copy" <?php echo my_set_checkbox('is_copy', '1',$data); ?> class="checkbox">复制</li>
+      <li><input type="checkbox" value="1" name="is_merge" <?php echo my_set_checkbox('is_merge', '1',$data); ?> class="checkbox">合并</li>
+      <li><input type="checkbox" value="1" name="is_split" <?php echo my_set_checkbox('is_split', '1',$data); ?> class="checkbox">切分</li>
       <li><input type="checkbox" value="1" name="is_highlight" <?php echo my_set_checkbox('is_highlight', '1',$data); ?> class="checkbox">高亮</li>
       <li><input type="checkbox" value="1" name="is_recommend" <?php echo my_set_checkbox('is_recommend', '1',$data); ?> class="checkbox">推荐</li>
       <li><input type="checkbox" value="1" name="is_bump" <?php echo my_set_checkbox('is_bump', '1',$data); ?> class="checkbox">提升</li>
-      <li><input type="checkbox" value="1" name="is_closethread" <?php echo my_set_checkbox('is_closethread', '1',$data); ?> class="checkbox">关闭</li>
+      <li><input type="checkbox" value="1" name="is_move" <?php echo my_set_checkbox('is_move', '1',$data); ?> class="checkbox">移动</li>
+      <li><input type="checkbox" value="1" name="is_del" <?php echo my_set_checkbox('is_del', '1',$data); ?> class="checkbox">删除</li>
+      <li><input type="checkbox" value="1" name="is_ban" <?php echo my_set_checkbox('is_ban', '1',$data); ?> class="checkbox">屏蔽</li>
+      <li><input type="checkbox" value="1" name="is_close" <?php echo my_set_checkbox('is_close', '1',$data); ?> class="checkbox">关闭</li>
       </ul>
       </td>
       <td></td>
@@ -42,15 +42,15 @@
     <tr>
       <th>置顶类型</th>
       <td><label>
-          <input type="radio"  name="allow_topthread" value="0" <?php echo my_set_radio('allow_topthread', 0, $data)?> />
+          <input type="radio"  name="allow_top" value="0" <?php echo my_set_radio('allow_top', 0, $data)?> />
           不允许置顶</label>
         <label>
-          <input type="radio"  name="allow_topthread" value="1" <?php echo my_set_radio('allow_topthread', 1, $data)?> />
+          <input type="radio"  name="allow_top" value="1" <?php echo my_set_radio('allow_top', 1, $data)?> />
           允许置顶 I</label>
         <label>
-          <input type="radio"  name="allow_topthread" value="2" <?php echo my_set_radio('allow_topthread', 2, $data)?> />
+          <input type="radio"  name="allow_top" value="2" <?php echo my_set_radio('allow_top', 2, $data)?> />
           允许置顶 I/II</label>
-          <input type="radio"  name="allow_topthread" value="3" <?php echo my_set_radio('allow_topthread', 3, $data)?> />
+          <input type="radio"  name="allow_top" value="3" <?php echo my_set_radio('allow_top', 3, $data)?> />
           允许置顶 I/II/III</label>
           </td>
           <td>设置是否允许置顶管理范围内主题的级别。I 版块置顶、II 分类置顶、III 全站置顶。</td>
@@ -73,20 +73,20 @@
     <tr>
       <th>回复置顶</th>
       <td><label>
-          <input type="radio"  name="is_topreply" value="1" <?php echo my_set_radio('is_topreply', 1, $data)?>/>
+          <input type="radio"  name="is_toppost" value="1" <?php echo my_set_radio('is_toppost', 1, $data)?>/>
           是</label>
         <label>
-          <input type="radio"  name="is_topreply" value="0" <?php echo my_set_radio('is_topreply', 0, $data)?>/>
+          <input type="radio"  name="is_toppost" value="0" <?php echo my_set_radio('is_toppost', 0, $data)?>/>
           否</label></td>
        <td></td>
     </tr>
     <tr>
       <th>编辑主题分类</th>
       <td><label>
-          <input type="radio"  name="is_edittype" value="1" <?php echo my_set_radio('is_edittype', 1, $data)?>/>
+          <input type="radio"  name="is_editcategory" value="1" <?php echo my_set_radio('is_editcategory', 1, $data)?>/>
           是</label>
         <label>
-          <input type="radio"  name="is_edittype" value="0" <?php echo my_set_radio('is_edittype', 0, $data)?>/>
+          <input type="radio"  name="is_editcategory" value="0" <?php echo my_set_radio('is_editcategory', 0, $data)?>/>
           否</label></td>
        <td></td>
     </tr>

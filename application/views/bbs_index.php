@@ -27,7 +27,7 @@
                 <td>
                     <?php
                     if (isset($sub['topics'])) {
-                        echo "<a href=\"".base_url()."index.php/topics/show\">{$sub['subject']}</a> <br/>{$sub['last_post_time']} {$sub['last_author']}";
+                        echo "<a href=\"".base_url()."index.php/topic/show/{$sub['id']}\">{$sub['subject']}</a> <br/>{$sub['last_post_time']} {$sub['last_author']}";
                     } else {
                         echo '从未';
                     }

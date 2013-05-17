@@ -2,26 +2,16 @@
 <table class="table2">
   <tr class="split">
     <td>
-     <a href="">删除主题</a>
-     <a href="">升降</a>
-     <a href="">置顶</a>
-     <a href="">高亮</a>
-     <a href="">精华</a>
-     <a href="">关闭</a>
-     <a href="">移动</a>
-     <a href="">分类</a>
-     <a href="">复制</a>
-     <a href="">合并</a>
-     <a href="">切分</a>
-     <a href="">屏蔽</a>
-     <a href="">标签</a>
+    <?php foreach($manage_arr as $key=>$val){?>
+    <a target="dialog" href="<?php echo base_url('index.php/topic/manage/'.$val[0].'/'.$topic['id']);?>"><?=$val[1]?></a>
+    <?php }?>
     </td>
   </tr>
 </table>
 
 <table class="table">
   <colgroup>
-  <col style="background-color: #cecece;" width="150">
+  <col style="background-color: #8cd5ff;" width="150">
   <col >
   </colgroup>
   <?php foreach ($posts as $post) { 
@@ -30,6 +20,7 @@
   <tr>
     <td>
         <?php echo $user['username'];?><br/>
+        <?php echo $user['group']['name'];?><br/>
         总分：<?php echo $user['credits'];?><br/>
         <?php foreach ($credit_name as $key => $val) {
                 echo $val['view_name'].'：'.$user[$key].'<br/>';
