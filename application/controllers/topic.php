@@ -106,6 +106,7 @@ class Topic extends MY_Controller {
         $post = $this->input->post(null);
         $var['count'] = 1;
         if (isset($post['submit']) && $this->check_manage($action)) {
+            echo 123;die;
             //检测权限。
             $admin_permission = $this->groups_model->get_admin_permission($topic['forum_id']);
             
@@ -129,6 +130,10 @@ class Topic extends MY_Controller {
             $this->load->view('topic_manage',$var);
             //$this->load->view('footer',$var);
         }
+    }
+    
+    private function check_manage($action) {
+        return TRUE;
     }
     
 }

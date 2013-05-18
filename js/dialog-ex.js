@@ -82,22 +82,6 @@ jQuery.extend(jQuery, {
         window.clearInterval(this.timer); // 清除计时器
       }
     });
-  },
-  // jQuery UI 弹出iframe窗口
-  jOpen: function(url, options) {
-    var html =
-    '<div class="dialog" id="dialog-window" title="提示信息">' +
-    ' <iframe src="' + url + '" frameBorder="0" style="border: 0; " scrolling="auto" width="100%" height="100%"></iframe>' +
-    '</div>';
-    return $(html).dialog($.extend({
-      modal: true,
-      closeOnEscape: false,
-      draggable: false,
-      resizable: false,
-      close: function(event, ui) {
-        $(this).dialog("destroy"); // 关闭时销毁
-      }
-    }, options));
   }
 });
 
@@ -149,60 +133,34 @@ $(function(){
 			*/
 			var html = '<div id="'+rel+'" title="提示信息"></div>';
 			html = $(html);
-			html.dialog(options);
-			html.load(url,function(){
-					var form = $('#my_dialog').find("form");
-					form.submit(function(){
-						alert(123);
-						return false;
-					});
-				});
-			return false;
+                        html.load(url, function() {
+                            //为一个表单添加ajax提交。
+                            var form = $('#' + rel).find("form");
+                            if(form.length>0){
+                                form.submit(function() {
+                                    var action = form.attr('action'),
+                                        method = form.attr('method'),
+                                        fields = form.serialize(),
+                                        ajaxFun = method=='post'?$.post:$.get;
+                                    ajaxFun(action,fields,function(data){
+                                        alert(data);
+                                    });
+                                    return false;
+                                });
+                            }
+                        });
+                        html.dialog(options);
+                        event.preventDefault();
 		});
 	});
-	
-	//为一个表单添加ajax提交。
-	var ajaxForm = {
-		init:function(id){
-			var form = $('#my_dialog');
-			alert(form.html());
-			form.submit(function(){
-				alert(123);
-				return false;
-				});
-			},
-		};
-	
-	
-	
 	//ajaxA链接扩展
 	$("a[target=ajax]").each(function(){
 		$(this).click(function(event){
 			var $this = $(this);
-			var rel = $this.attr("rel");
-			if (rel) {
-				var $rel = $("#"+rel);
-				$rel.loadUrl($this.attr("href"), {}, function(){
-					$rel.find("[layoutH]").layoutH();
-				});
-			}
+                        $.get($this.attr("href"), function(data){
+                            alert("Data Loaded: " + data);
+                        });
 			event.preventDefault();
 		});
-	});
-	$("a[target=ajaxTodo]").each(function(){
-		  $(this).click(function(event){
-				var $this = $(this);
-				var title = $this.attr("title");
-				if (title) {
-					  alertMsg.confirm(title, {
-							okCall: function(){
-								  ajaxTodo($this.attr("href"));
-							}
-					  });
-				} else {
-					  ajaxTodo($this.attr("href"));
-				}
-				event.preventDefault();
-		  });
 	});
 });
