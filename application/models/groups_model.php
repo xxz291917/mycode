@@ -232,7 +232,7 @@ class Groups_model extends MY_Model {
         if (!empty($current_groups)) {
             $current_groups = join(',', $current_groups);
             $groups = $this->groups_admin_model->get_list('group_id in (' . $current_groups . ')');
-            $max_arr = array('allow_digest', 'allow_topthread');
+            $max_arr = array('allow_digest', 'allow_top');
             foreach ($groups as $group) {
                 foreach ($group as $key => $val) {
                     if($key == 'group_id'){

@@ -40,7 +40,7 @@
             <input type="checkbox" value="<?=$group['group_id']?>" name="groups[]" <?php if(in_array($group['group_id'],$data['groups'])){echo 'checked="checked"';} ?> class="checkbox">
               <?=$group['name']?></label>
             </span>
-            <input type="text" value="<?php echo my_set_date($group['group_id'],$users_belong,'Y-m-d');?>" class="inp_txt" name="endtime[<?=$group['group_id']?>]">
+            <input type="text" value="<?php echo my_set_date($group['group_id'],$users_belong,'Y-m-d');?>" class="inp_txt" name="end_time[<?=$group['group_id']?>]">
             </li>
             <?php }?>
         </ul>
@@ -53,7 +53,7 @@
 </p>
 <?php echo form_close() ?>
 <script type="text/javascript">
-$("input[name^='endtime']").datepicker({
+$("input[name^='end_time']").datepicker({
 	dateFormat:'yy-mm-dd'
 	});
 </script>

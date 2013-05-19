@@ -123,7 +123,7 @@ $(document).ready(function() {
                                         if(data.success==1){
                                                 currentTr.remove();
                                         }else{
-                                                $.Alert(data.data,'删除用户组提示');
+                                                $.Alert(data.message,'删除用户组提示');
                                         }
                                 }, "json");
                     }else{

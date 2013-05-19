@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: 127.0.0.1
--- 生成日期: 2013 年 05 月 17 日 13:11
+-- 生成日期: 2013 年 05 月 19 日 12:45
 -- 服务器版本: 5.5.27
 -- PHP 版本: 5.4.7
 
@@ -570,6 +570,21 @@ INSERT INTO `posts` (`id`, `topic_id`, `forum_id`, `author`, `author_id`, `autho
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `posts_top`
+--
+
+CREATE TABLE IF NOT EXISTS `posts_top` (
+  `topic_id` mediumint(8) unsigned NOT NULL,
+  `post_id` int(10) unsigned NOT NULL,
+  `position` int(10) unsigned NOT NULL,
+  `end_time` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`topic_id`,`post_id`),
+  KEY `end_time` (`topic_id`,`end_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='回复帖子置顶表';
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `reports`
 --
 
@@ -605,10 +620,10 @@ CREATE TABLE IF NOT EXISTS `topics` (
   `views` int(10) unsigned NOT NULL COMMENT '浏览次数',
   `replies` int(10) unsigned NOT NULL COMMENT '回复次数',
   `favors` int(10) unsigned NOT NULL COMMENT '收藏次数',
-  `is_top` tinyint(1) NOT NULL COMMENT '是否置顶',
-  `is_digest` tinyint(1) NOT NULL COMMENT '是否高亮',
-  `is_hightlight` tinyint(1) NOT NULL COMMENT '是否精华',
-  `is_recommend` int(11) NOT NULL COMMENT '是否推荐主题',
+  `top` tinyint(1) NOT NULL COMMENT '是否置顶,置顶类型',
+  `hightlight` varchar(30) NOT NULL COMMENT '高亮样式用'',''分隔',
+  `digest` tinyint(1) NOT NULL COMMENT '是否精华，精华类型',
+  `recommend` int(11) NOT NULL COMMENT '推荐主题',
   `special` tinyint(1) unsigned NOT NULL COMMENT '特殊主题（1正常，2问答，3投票）',
   `status` tinyint(1) unsigned NOT NULL COMMENT '状态（1正常，2删除，3被锁定, 4待审核）',
   PRIMARY KEY (`id`),
@@ -620,19 +635,86 @@ CREATE TABLE IF NOT EXISTS `topics` (
 -- 转存表中的数据 `topics`
 --
 
-INSERT INTO `topics` (`id`, `forum_id`, `author`, `author_id`, `post_time`, `subject`, `last_author`, `last_author_id`, `last_post_time`, `views`, `replies`, `favors`, `is_top`, `is_digest`, `is_hightlight`, `is_recommend`, `special`, `status`) VALUES
-(1, 6, 'admin', 1, 0, 'xuezhiceshi', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-(6, 2, 'xxz291917', 1, 1368531645, '输入标题r', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1),
-(7, 2, 'xxz291917', 1, 1368583217, '夏学智测试', '', 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1),
-(8, 2, 'xxz291917', 1, 1368588882, '发帖测试123', 'xxz5291917', 2, 1368772292, 7, 2, 0, 0, 0, 0, 0, 1, 1),
-(9, 2, 'xxz291917', 1, 1368609926, '输入标题二二', 'xxz291917', 1, 1368702719, 7, 1, 0, 0, 0, 0, 0, 1, 1),
-(10, 2, 'xxz291917', 1, 1368610003, '输入标题二二', 'xxz5291917', 2, 1368774131, 112, 5, 0, 0, 0, 0, 0, 1, 1),
-(11, 12, 'xxz291917', 1, 1368611640, '输入标题人人', 'xxz5291917', 2, 1368774662, 60, 11, 0, 0, 0, 0, 0, 1, 1),
-(12, 11, 'xxz291917', 1, 1368612732, 'gdgdfgdgdfg', '', 0, 0, 11, 0, 0, 0, 0, 0, 0, 1, 1),
-(13, 11, 'xxz291917', 1, 1368696809, '输入标题大大大', 'xxz5291917', 2, 1368773339, 62, 8, 0, 0, 0, 0, 0, 1, 1),
-(14, 6, 'xxz291917', 1, 1368699427, '红星闪闪放光芒', 'xxz291917', 1, 1368701675, 4, 4, 0, 0, 0, 0, 0, 1, 1),
-(15, 6, 'xxz5291917', 2, 1368772328, '输入标题yy', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1),
-(16, 12, 'xxz5291917', 2, 1368774681, '输入标题凤飞飞', '', 0, 0, 14, 0, 0, 0, 0, 0, 0, 1, 4);
+INSERT INTO `topics` (`id`, `forum_id`, `author`, `author_id`, `post_time`, `subject`, `last_author`, `last_author_id`, `last_post_time`, `views`, `replies`, `favors`, `top`, `hightlight`, `digest`, `recommend`, `special`, `status`) VALUES
+(1, 6, 'admin', 1, 0, 'xuezhiceshi', '', 0, 0, 0, 0, 0, 0, '0', 0, 0, 0, 0),
+(6, 2, 'xxz291917', 1, 1368531645, '输入标题r', '', 0, 0, 0, 0, 0, 0, '0', 0, 0, 1, 1),
+(7, 2, 'xxz291917', 1, 1368583217, '夏学智测试', '', 0, 0, 1, 0, 0, 0, '0', 0, 0, 1, 1),
+(8, 2, 'xxz291917', 1, 1368588882, '发帖测试123', 'xxz5291917', 2, 1368772292, 7, 2, 0, 0, '0', 0, 0, 1, 1),
+(9, 2, 'xxz291917', 1, 1368609926, '输入标题二二', 'xxz291917', 1, 1368702719, 7, 1, 0, 0, '0', 0, 0, 1, 1),
+(10, 2, 'xxz291917', 1, 1368610003, '输入标题二二', 'xxz5291917', 2, 1368774131, 112, 5, 0, 0, '0', 0, 0, 1, 1),
+(11, 12, 'xxz291917', 1, 1368611640, '输入标题人人', 'xxz5291917', 2, 1368774662, 60, 11, 0, 0, '0', 0, 0, 1, 1),
+(12, 11, 'xxz291917', 1, 1368612732, 'gdgdfgdgdfg', '', 0, 0, 11, 0, 0, 0, '0', 0, 0, 1, 1),
+(13, 11, 'xxz291917', 1, 1368696809, '输入标题大大大', 'xxz5291917', 2, 1368773339, 156, 8, 0, 2, '0', 0, 0, 1, 1),
+(14, 6, 'xxz291917', 1, 1368699427, '红星闪闪放光芒', 'xxz291917', 1, 1368701675, 4, 4, 0, 0, '0', 0, 0, 1, 1),
+(15, 6, 'xxz5291917', 2, 1368772328, '输入标题yy', '', 0, 0, 0, 0, 0, 0, '0', 0, 0, 1, 1),
+(16, 12, 'xxz5291917', 2, 1368774681, '输入标题凤飞飞', '', 0, 0, 14, 0, 0, 0, '0', 0, 0, 1, 4);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `topics_category`
+--
+
+CREATE TABLE IF NOT EXISTS `topics_category` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `forum_id` mediumint(8) unsigned NOT NULL,
+  `name` varchar(255) CHARACTER SET latin1 NOT NULL,
+  `display_order` mediumint(9) NOT NULL,
+  `icon` varchar(255) CHARACTER SET latin1 NOT NULL,
+  `moderators` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `fid` (`forum_id`,`display_order`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='主题分类' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `topics_endtime`
+--
+
+CREATE TABLE IF NOT EXISTS `topics_endtime` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `topic_id` int(10) unsigned NOT NULL,
+  `action` varchar(20) NOT NULL,
+  `end_time` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `topic_id` (`topic_id`,`action`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='主题置顶、高亮、精华、推荐的有效时间表' AUTO_INCREMENT=3 ;
+
+--
+-- 转存表中的数据 `topics_endtime`
+--
+
+INSERT INTO `topics_endtime` (`id`, `topic_id`, `action`, `end_time`) VALUES
+(2, 13, 'top', 0);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `topics_log`
+--
+
+CREATE TABLE IF NOT EXISTS `topics_log` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `topic_id` int(10) unsigned NOT NULL COMMENT '主题id',
+  `user_id` int(10) unsigned NOT NULL,
+  `username` varchar(50) CHARACTER SET latin1 NOT NULL,
+  `time` int(10) unsigned NOT NULL COMMENT '操作时间',
+  `action` varchar(20) CHARACTER SET latin1 NOT NULL COMMENT '操作标识符',
+  `data` varchar(1000) CHARACTER SET latin1 NOT NULL COMMENT '操作相关json数据。',
+  `reason` varchar(255) CHARACTER SET latin1 NOT NULL COMMENT '操作原因',
+  PRIMARY KEY (`id`),
+  KEY `topic_id` (`topic_id`,`time`),
+  KEY `topic_id_2` (`topic_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='前台管理日志表' AUTO_INCREMENT=3 ;
+
+--
+-- 转存表中的数据 `topics_log`
+--
+
+INSERT INTO `topics_log` (`id`, `topic_id`, `user_id`, `username`, `time`, `action`, `data`, `reason`) VALUES
+(1, 13, 1, 'xxz291917', 1368959568, 'top', '{"submit":"1","topic_id":"13","top":"1","end_time":1369692000,"reason":"ddddddddddddddd"}', 'ddddddddddddddd'),
+(2, 13, 1, 'xxz291917', 1368959812, 'top', '{"submit":"1","topic_id":"13","top":"2","end_time":1369692000,"reason":"uiyiyuiyuiyuiy ui"}', 'uiyiyuiyuiyuiy ui');
 
 -- --------------------------------------------------------
 
@@ -658,6 +740,18 @@ INSERT INTO `topics_posted` (`user_id`, `topic_id`, `time`) VALUES
 (2, 10, 0),
 (2, 11, 0),
 (2, 13, 0);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `topics_views`
+--
+
+CREATE TABLE IF NOT EXISTS `topics_views` (
+  `topic_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '主题id',
+  `views` int(10) unsigned DEFAULT NULL COMMENT '查看数',
+  PRIMARY KEY (`topic_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='主题查看数缓存表';
 
 -- --------------------------------------------------------
 

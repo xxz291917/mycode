@@ -55,12 +55,12 @@ class Users extends Admin_Controller {
             
             if($type == 'group'){
                 !isset($users['groups']) && $users['groups'] = array();
-                foreach ($users['endtime'] as $key => $value) {
+                foreach ($users['end_time'] as $key => $value) {
                     if (!in_array($key, $users['groups']))
-                        unset($users['endtime'][$key]);
+                        unset($users['end_time'][$key]);
                 }
-                $this->users_belong_model->update_batch($users['endtime'], $id);
-                unset($users['endtime']);
+                $this->users_belong_model->update_batch($users['end_time'], $id);
+                unset($users['end_time']);
             }
             $users = $this->users_model->form_filter($users, 'en');
             if ($type !== 'credit') {

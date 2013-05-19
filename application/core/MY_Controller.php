@@ -23,8 +23,15 @@ class Base_Controller extends CI_Controller {
 //        $this->output->enable_profiler(TRUE); //是否开启profiler。
     }
 
-    protected function echo_ajax($success = 1, $data = array()) {
-        return json_encode(array('success' => $success, 'data' => $data));
+    protected function echo_ajax($success = 1, $message = '', $data = array()) {
+        $ajax_arr = array(
+            'success' => $success,
+            'message' => $message,
+        );
+        if (!empty($data)) {
+            $ajax_arr['data'] = $data;
+        }
+        return json_encode($ajax_arr);
     }
 
     protected function get_current_url() {
@@ -64,11 +71,16 @@ class MY_Controller extends Base_Controller {
     }
 
     protected function message($message, $redirect = 'BACK') {
-        global $OUT;
-        $vars['message'] = $message;
-        $vars['redirect'] = $redirect;
-        $this->view('message', $vars);
-        $OUT->_display();
+        //判断是否是ajax提交
+        if($this->input->is_ajax_request()){
+            echo $this->echo_ajax($redirect,$message);
+        }else{
+            global $OUT;
+            $vars['message'] = $message;
+            $vars['redirect'] = $redirect;
+            $this->view('message', $vars);
+            $OUT->_display();
+        }
         die;
     }
 

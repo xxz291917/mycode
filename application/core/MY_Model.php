@@ -20,6 +20,15 @@ class MY_Model extends CI_Model {
             return FALSE;
         }
     }
+    
+    public function insert_batch($data) {
+        if (!empty($this->table) && !empty($data)) {
+            return $this->db->insert_batch($this->table, $data);
+        } else {
+            return FALSE;
+        }
+    }    
+    
 
     public function update($data, $where) {
         if (!empty($this->table) && !empty($data) && !empty($where)) {

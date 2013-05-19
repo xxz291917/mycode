@@ -171,7 +171,7 @@ $(document).ready(function() {
                                         if(data.success==1){
                                                 currentTr.remove();
                                         }else{
-                                                $.Alert(data.data,'删除版块提示');
+                                                $.Alert(data.message,'删除版块提示');
                                         }
                                 }, "json");
                     }

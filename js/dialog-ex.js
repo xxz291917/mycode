@@ -93,7 +93,7 @@ $(function(){
 			var $this = $(this);
 			var title = $this.attr("title") || $this.text();
 			var rel = $this.attr("rel") || "my_dialog";
-			var fresh = $this.attr("fresh") || false;
+			var refresh = $this.attr("refresh") || false;
 			var options = {
 				title: title,
 				modal: true,
@@ -102,19 +102,18 @@ $(function(){
 				close: function(event, ui) {
 						// 关闭时销毁
 						$(this).dialog("destroy");
-						if(fresh){//是否需要刷新窗口？
-							alert(fresh);
+						if(refresh){//是否需要刷新窗口？
 							window.location.reload();
 						}
 					}
 				};
 			var position = $this.attr("position"),
-			 width = $this.attr("width"),
-			 height = $this.attr("height"),
-			 maxHeight = $this.attr("maxHeight"),
-			 minHeight = $this.attr("minHeight"),
-			 maxWidth = $this.attr("maxWidth"),
-			 minWidth = $this.attr("minWidth");
+				width = $this.attr("width"),
+				height = $this.attr("height"),
+				maxHeight = $this.attr("maxHeight"),
+				minHeight = $this.attr("minHeight"),
+				maxWidth = $this.attr("maxWidth"),
+				minWidth = $this.attr("minWidth");
 			
 			if(position) options.position = position;
 			if(width)    options.width = width;
@@ -125,41 +124,45 @@ $(function(){
 			if(maxWidth) options.maxWidth = maxWidth;
 			if(minWidth) options.minWidth = minWidth;
 			var url = unescape($this.attr("href"));
-			/*
-			var html =
-			'<div id="'+rel+'" title="提示信息">' +
-			' <iframe src="' + url + '" frameBorder="0" style="border: 0; " scrolling="auto" width="100%" height="100%"></iframe>' +
-			'</div>';
-			*/
 			var html = '<div id="'+rel+'" title="提示信息"></div>';
 			html = $(html);
-                        html.load(url, function() {
-                            //为一个表单添加ajax提交。
-                            var form = $('#' + rel).find("form");
-                            if(form.length>0){
-                                form.submit(function() {
-                                    var action = form.attr('action'),
-                                        method = form.attr('method'),
-                                        fields = form.serialize(),
-                                        ajaxFun = method=='post'?$.post:$.get;
-                                    ajaxFun(action,fields,function(data){
-                                        alert(data);
-                                    });
-                                    return false;
-                                });
-                            }
-                        });
-                        html.dialog(options);
-                        event.preventDefault();
+			html.load(url, function() {
+				//为一个表单添加ajax提交。
+				var form = $('#' + rel).find("form");
+				if(form.length>0){
+					form.submit(function() {
+						var action = form.attr('action'),
+							method = form.attr('method'),
+							fields = form.serialize(),
+							ajaxFun = method=='post'?$.post:$.get;
+						ajaxFun(action,fields,function(data){
+							if(!data.success){
+								alert(data.message);
+							}else{
+								alert(data.message);
+								html.dialog("close");
+							}
+						},'json');
+						return false;
+					});
+				}
+			});
+			html.dialog(options);
+			event.preventDefault();
 		});
 	});
 	//ajaxA链接扩展
 	$("a[target=ajax]").each(function(){
 		$(this).click(function(event){
 			var $this = $(this);
-                        $.get($this.attr("href"), function(data){
-                            alert("Data Loaded: " + data);
-                        });
+			$.get($this.attr("href"), function(data){
+				if(!data.success){
+					alert(data.message);
+				}else{
+					alert(data.message);
+					html.dialog("close");
+				}
+			},'json');
 			event.preventDefault();
 		});
 	});
