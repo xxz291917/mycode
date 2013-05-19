@@ -117,7 +117,8 @@ class Topic extends MY_Controller {
         $this->load->library('form_validation');
         switch ($action) {
             case 'top'://置顶
-                $this->form_validation->set_rules('top', '置顶类型', 'required|less_than[4]');
+            case 'digest'://置顶
+                $this->form_validation->set_rules($action, $action.'类型', 'required|less_than[4]');
                 $this->form_validation->set_rules('end_time', '有效时间', 'required|trim|is_strtotime|strtotime|greater_than[' . time() . ']');
                 $this->form_validation->set_message('is_strtotime', '选择的时间格式不正确。');
                 $this->form_validation->set_message('greater_than', '选择的时间必须小于当前时间。');

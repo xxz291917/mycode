@@ -27,3 +27,9 @@ ERROR - 2013-05-19 12:24:45 --> Severity: Notice  --> Undefined index: end_time 
 ERROR - 2013-05-19 12:24:45 --> Query error: Unknown column 'end_time' in 'field list'
 ERROR - 2013-05-19 12:30:53 --> Query error: Unknown column 'end_time' in 'field list'
 ERROR - 2013-05-19 12:31:41 --> Severity: Notice  --> Undefined variable: insert_data D:\www\mycode\application\models\topic_manage.php 137
+ERROR - 2013-05-19 16:39:13 --> Severity: Notice  --> Undefined variable: action D:\xampp\htdocs\www\mycode\application\views\header.php 30
+ERROR - 2013-05-19 16:39:21 --> 404 Page Not Found --> admin/index.php
+ERROR - 2013-05-19 16:39:25 --> Severity: Notice  --> Undefined variable: action D:\xampp\htdocs\www\mycode\application\views\header.php 30
+ERROR - 2013-05-19 16:40:28 --> 404 Page Not Found --> admin/index.php
+ERROR - 2013-05-19 16:40:35 --> 404 Page Not Found --> admin/index.php
+ERROR - 2013-05-19 16:40:42 --> 404 Page Not Found --> admin/index.php
