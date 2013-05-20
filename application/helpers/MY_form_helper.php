@@ -72,9 +72,9 @@ if (!function_exists('my_set_select')) {
 
 if (!function_exists('my_set_value')) {
 
-    function my_set_value($field = '', $data = array()) {
-        if (!isset($data[$field])) {
-            return '';
+    function my_set_value($field = '', $data = array(),$default='') {
+        if (!isset($data[$field]) || $data[$field]=='') {
+            return $default;
         }
         return form_prep($data[$field]);
     }

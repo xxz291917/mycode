@@ -146,3 +146,53 @@ border-right:1px #e7e7e7 solid;
 .cross li .span_2 {width: 80px;}
 .cross li .span_3 {width: 120px;}
 .cross li .span_4 {width: 180px;}
+
+/*前台取色*/
+.dopt a {
+    float: left;
+    height: 21px;
+    line-height: 21px;
+    margin-right: 3px;
+    text-align: center;
+    width: 21px !important;
+}
+.dopt_a{
+    border: 1px solid #F1F5FA;
+    outline: medium none;
+}
+.dopt .cnt {
+    background-color: #E7E7E7;
+    border: 1px solid #999999;
+}
+.colorwd {
+    background-color: #666666;
+    background-image: url("../images/pn_color.png") !important;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    margin-left: 3px;
+    width: 23px !important;
+}
+.colorwd:active {
+    background-position: 0 0;
+}
+.ie6 .colorwd, .ie7 .colorwd {
+    background-position: -1px -1px;
+}
+.ie6 a.colorwd, .ie7 a.colorwd {
+    background-position: 0 0;
+}
+.colorpx {
+    border-right: medium none;
+    margin: 0 -3px 0 3px;
+}
+
+.pn {
+    border: 1px solid #999999;
+    box-shadow: 0 1px 0 #E5E5E5;
+    cursor: pointer;
+    height: 23px;
+    margin-right: 3px;
+    overflow: hidden;
+    padding: 0;
+    vertical-align: middle;
+}

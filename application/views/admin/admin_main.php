@@ -15,13 +15,13 @@ html, body {
 <script type="text/javascript" src="<?=base_url()?>js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript">
 	$(function() {
-		initMenu();
+		initMenu('index.php/admin/users');
 	});
 	function getMenu(id,obj){
 		$("#nav li").removeClass("on");
 		$(obj).addClass("on");
 		changeMenu(id);
-		//$("#main").attr("src",$("#"+id+" .on").attr("href"));
+		$("#main").attr("src",$("#"+id+" .on").attr("href"));
 	}
 	function changeMenu(id){
 		$("#menu").html($("#"+id).html());
@@ -30,12 +30,13 @@ html, body {
 	function initMenu(url){
 		var url = url || "main/admin_index";
 		$("#menulist").find('a').each(function(i){
-			if(url.indexOf($(this).attr('href')) >=0){
+			if($(this).attr('href').indexOf(url) >=0){
 				var menuId=$(this).parent().parent().parent().attr("id");
 				$("#nav li").removeClass("on");
 				$("#"+menuId+"menu").addClass("on");
 				$("#"+menuId+" a").removeClass("on");
 				$(this).addClass("on");
+				$("#main").attr("src",$(this).attr('href'));
 				changeMenu(menuId);
 			}
 		})
@@ -81,7 +82,7 @@ html, body {
           </div>
           <div id='users'>
             <ul>
-              <li><a href="<?=base_url()?>index.php/admin/users" target="main" >用户管理</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/users" class="on" target="main" >用户管理</a></li>
               <li><a href="<?=base_url()?>index.php/admin/groups" target="main">用户组管理</a></li>
             </ul>
           </div>
@@ -97,7 +98,7 @@ html, body {
           </div>
           <div id='forums'>
             <ul>
-              <li><a href="<?=base_url()?>index.php/admin/forums" target="main">版块管理</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/forums" class="on" target="main">版块管理</a></li>
               <li><a href="<?=base_url()?>index.php/admin/forums/merge" target="main">版块合并</a></li>
             </ul>
           </div>

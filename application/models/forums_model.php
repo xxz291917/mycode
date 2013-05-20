@@ -22,7 +22,32 @@ class Forums_model extends MY_Model {
         }
         return $this->format($forums);
     }
-
+    
+    public static function create_options($forums,$check_arr = array()) {
+        $option = '';
+        $current_type = '';
+        foreach ($forums as $key => $forum) {
+            empty($current_type) && $current_type = $forum['type'];
+            if ($forum['type'] == 'group') {
+                if(!empty($option)){
+                    $option .= '</optgroup>';
+                }
+                $option .= '<optgroup label="' . $forum['name'] . '">';
+            } else {
+                $prefix = $forum['type'] == 'forum'?'|- ':'&nbsp;&nbsp;|- ';
+                $checked = in_array($forum['id'], $check_arr) ? ' selected="selected"' : '';
+                $option .= '<option value="' . $forum['id'] . '"' . $checked . '>' . $prefix.$forum['name'] . '</option>';
+            }
+            if(!empty($forum['sub'])){
+                $option .= self::create_options($forum['sub'],$check_arr);
+            }
+        }
+        if($current_type == 'group'){
+            $option .= '</optgroup>';
+        }
+        return $option;
+    }
+    
     public function get_forums() {
         if (empty($this->forums)) {
             $this->db->order_by("display_order");

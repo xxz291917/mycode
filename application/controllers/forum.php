@@ -40,7 +40,7 @@ class Forum extends MY_Controller {
             
             $page_str = $page_obj->create_links();
             $start = max(0,($page_obj->cur_page-1)*$per_num);
-            $topics = $this->topics_model->get_list(array('forum_id'=>$id), '*', 'post_time DESC', $start,$per_num);
+            $topics = $this->topics_model->get_list(array('forum_id'=>$id), '*', 'last_post_time DESC', $start,$per_num);
             
             $var['topics'] = $topics;
             $var['page'] = $page_str;

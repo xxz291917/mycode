@@ -103,6 +103,27 @@ class Topic extends MY_Controller {
             $var['action'] = $action;
             $var['topic_id'] = join(',', $topic_id);
             $var['count'] = count($topic_id);
+            
+            //取出第一个id的参数来。
+            $topic = $this->topics_model->get_by_id($topic_id[0]);
+            if(in_array($action, array('top','digest','highlight'))){//置顶、精华、高亮
+                $this->load->model('topics_endtime_model');
+                $end_time = $this->topics_endtime_model->get_one(array('topic_id'=>$topic_id[0],'action'=>$action),'end_time');
+                $topic['end_time'] = empty($end_time)?0:$end_time['end_time'];
+            }elseif(in_array($action, array('ban','close','del'))){//屏蔽、关闭、删除
+                $topic[$action] = $topic['status']==Topic_manage::$status[$action]?1:0;
+            }elseif($action=='move'){//移动版块
+                $forums = $this->forums_model->get_format_forums();
+                $forums_option = $this->forums_model->create_options($forums,array($topic['forum_id']));
+                $var['forums_option'] = $forums_option;
+            }elseif($action=='editcategory'){//移动分类
+                $this->load->model('topics_category_model');
+                $category_option = $this->topics_category_model->create_options(array($topic['category_id']));
+                $var['category_option'] = $category_option;
+            }elseif(in_array($action, array('copy','merge','split'))){
+                echo '暂未开发';die;
+            }
+            $var['topic'] = $topic;
             $this->load->view('topic_manage', $var);
         }
     }
@@ -117,25 +138,40 @@ class Topic extends MY_Controller {
         $this->load->library('form_validation');
         switch ($action) {
             case 'top'://置顶
-            case 'digest'://置顶
+            case 'digest'://加精
                 $this->form_validation->set_rules($action, $action.'类型', 'required|less_than[4]');
-                $this->form_validation->set_rules('end_time', '有效时间', 'required|trim|is_strtotime|strtotime|greater_than[' . time() . ']');
-                $this->form_validation->set_message('is_strtotime', '选择的时间格式不正确。');
-                $this->form_validation->set_message('greater_than', '选择的时间必须小于当前时间。');
                 break;
-
+            case 'highlight'://高亮
+                $this->form_validation->set_rules('highlight[0]', '高亮颜色', 'required|color');
+                $this->form_validation->set_rules('highlight[1]', '粗体', 'regex_match[/[01]/]');
+                $this->form_validation->set_rules('highlight[2]', '斜体', 'regex_match[/[01]/]');
+                $this->form_validation->set_rules('highlight[3]', '下划线', 'regex_match[/[01]/]');
+                $this->form_validation->set_message('regex_match', '%s参数不正确。');
+                $this->form_validation->set_message('color', '%s不是正确的颜色值。');
+                break;
+            case 'bump'://提升
+            case 'ban'://屏蔽
+            case 'close'://关闭
+            case 'del'://删除
+                $this->form_validation->set_rules($action, '类型', 'regex_match[/[01]/]');
+                $this->form_validation->set_message('regex_match', '%s参数不正确。');
+                break;
+            case 'move'://移动
+                $this->form_validation->set_rules($action, '版块id', 'required|is_natural_no_zero');
+                $this->form_validation->set_message('is_natural_no_zero', '%s参数不正确。');
+                break;
+            case 'editcategory'://分类
+                $this->form_validation->set_rules($action, '主题分类id', 'required|is_natural_no_zero');
+                $this->form_validation->set_message('is_natural_no_zero', '%s参数不正确。');
+                break;
             default:
                 break;
         }
-//'top' => '置顶',
-//'digest' => '推荐精华',
-//'highlight' => '高亮',
-//'bump' => '提升',
-//'move' => '移动',
-//'editcategory' => '分类',
-//'ban' => '屏蔽',
-//'close' => '关闭',
-//'del' => '删除',
+        if(in_array($action, array('top', 'digest', 'highlight')) && $this->input->post('end_time')!=0  ){
+            $this->form_validation->set_rules('end_time', '有效时间', 'required|trim|is_strtotime|strtotime|greater_than[' . time() . ']');
+            $this->form_validation->set_message('is_strtotime', '选择的时间格式不正确。');
+            $this->form_validation->set_message('greater_than', '选择的时间不能小于当前时间。');
+        }
 //'copy' => '复制',
 //'merge' => '合并',
 //'split' => '切分',);

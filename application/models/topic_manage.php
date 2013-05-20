@@ -9,7 +9,7 @@ class Topic_manage extends CI_Model {
     private $manage_arr = array('allow_top' => '置顶',
         'allow_digest' => '推荐精华',
         'is_highlight' => '高亮',
-        'is_bump' => '提升',
+        'is_bump' => '升降',
         'is_move' => '移动',
         'is_editcategory' => '分类',
         'is_ban' => '屏蔽',
@@ -18,6 +18,7 @@ class Topic_manage extends CI_Model {
         'is_copy' => '复制',
         'is_merge' => '合并',
         'is_split' => '切分',);
+    public static $status = array('ban' => 3, 'close' => 5, 'del' => 2);
 
     function __construct() {
         parent::__construct();
@@ -92,7 +93,7 @@ class Topic_manage extends CI_Model {
         empty($post) && $post = $this->input->post();
         
         //置顶、高亮、推荐精华
-        if (in_array($action, array('top', 'hightlight', 'digest'))) {
+        if (in_array($action, array('top', 'highlight', 'digest'))) {
             //需要更新topics表
             if (is_array($post[$action])) {
                 $post[$action] = join(',', $post[$action]);
@@ -112,10 +113,25 @@ class Topic_manage extends CI_Model {
                 );
             }
             $this->topics_endtime_model->insert_batch($topics_endtime);
-        }elseif(1){
-            
-            
+        }elseif($action == 'bump'){
+            //更新当前帖子的最后回复时间。
+            $last_post_time = $post[$action]==1?$this->time:strtotime('-1 year');
+            $topics_update = array('last_post_time' => $last_post_time);
+            $this->topics_model->update($topics_update, 'id in(' . join(',', $topic_ids) . ')');
+        }elseif(in_array($action, array('ban','close','del'))){
+            $tmp_stasus = $post[$action]==1?self::$status[$action]:1;
+            $topics_update = array('status' => $tmp_stasus);
+            $this->topics_model->update($topics_update, 'id in(' . join(',', $topic_ids) . ')');
+        }elseif($action == 'move'){
+            //更新当前帖子版块id。
+            $topics_update = array('forum_id' => $post[$action]);
+            $this->topics_model->update($topics_update, 'id in(' . join(',', $topic_ids) . ')');
+        }elseif($action == 'editcategory'){
+            //更新当前帖子版块id。
+            $topics_update = array('category_id' => $post[$action]);
+            $this->topics_model->update($topics_update, 'id in(' . join(',', $topic_ids) . ')');
         }
+        
         //添加管理日志
         foreach ($topic_ids as $topic_id) {
             $topics_log[] = array(
@@ -130,15 +146,7 @@ class Topic_manage extends CI_Model {
         }
         //topics_log_model
         $this->topics_log_model->insert_batch($topics_log);
-//'top' => '置顶',
-//'digest' => '推荐精华',
-//'highlight' => '高亮',
-//'bump' => '提升',
-//'move' => '移动',
-//'editcategory' => '分类',
-//'ban' => '屏蔽',
-//'close' => '关闭',
-//'del' => '删除',
+        
 //'copy' => '复制',
 //'merge' => '合并',
 //'split' => '切分',);
