@@ -14,6 +14,7 @@ label {margin:0 10px 0 2px;}
 .textarea {width:220px;	padding:2px 4px;	border:1px #ccc solid;}
 .inp_num {width: 30px;}
 .inp_long_num {width: 60px;}
+.inp_date_num {width: 90px;}
 .inp_long {width: 240px;}
 .inp_txt:hover, .textarea:hover {border:1px #69c solid;}
 .inp_txt:focus, textarea:focus {background-color: #FFFBDE;	border-color: #7BBFF2;	outline: 2px solid #99D8F5;}

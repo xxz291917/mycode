@@ -23,7 +23,7 @@ class Forums_model extends MY_Model {
         return $this->format($forums);
     }
     
-    public static function create_options($forums,$check_arr = array()) {
+    public static function create_options($forums='',$check_arr = array()) {
         $option = '';
         $current_type = '';
         foreach ($forums as $key => $forum) {

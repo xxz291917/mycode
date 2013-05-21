@@ -88,12 +88,12 @@ html, body {
           </div>
           <div id='content'>
             <ul>
-              <li><a href="index.php?admin_doc" target="main" >主题管理</a></li>
-              <li><a href="index.php?admin_attachment" target="main">附件管理</a></li>
-              <li><a href="index.php?admin_comment" target="main">审核管理</a></li>
-              <li><a href="index.php?admin_hotsearch" target="main">举报管理</a></li>
-              <li><a href="index.php?admin_word" target="main">敏感词管理</a></li>
-              <li><a href="index.php?admin_recycle" target="main">回收站</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/topics/" target="main" class="on">帖子管理</a></li>
+              <li><a href="<?=base_url()?>index.php?admin_attachment" target="main">附件管理</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/topics/check" target="main">审核管理</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/reports/" target="main">举报管理</a></li>
+              <li><a href="<?=base_url()?>index.php?admin_word" target="main">敏感词管理</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/topics/recycle" target="main">回收站</a></li>
             </ul>
           </div>
           <div id='forums'>

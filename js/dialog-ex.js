@@ -90,8 +90,17 @@ $(function(){
 	//弹出框A链接扩展
 	$("a[target=dialog]").each(function(){
 		$(this).click(function(event){
-			var $this = $(this);
-			var title = $this.attr("title") || $this.text();
+			superDialog(event,$(this));
+		});
+	});
+	$("form[target=dialog]").each(function(){
+		$(this).submit(function(event){
+			superDialog(event,$(this));
+		});
+	});
+	var superDialog = function(event,$this){
+			var tagName = gettagname(event);
+			var title = $this.attr("title") || $this.text()||'';
 			var rel = $this.attr("rel") || "my_dialog";
 			var refresh = $this.attr("refresh") || false;
 			var options = {
@@ -123,10 +132,16 @@ $(function(){
 			if(minHeight)options.minHeight = minHeight;
 			if(maxWidth) options.maxWidth = maxWidth;
 			if(minWidth) options.minWidth = minWidth;
-			var url = unescape($this.attr("href"));
+			if(tagName=='A'){
+				var url = unescape($this.attr("href"));
+				var field = {};
+			}else if(tagName=='FORM'){
+				var url = unescape($this.attr("action"));
+				var field = $this.serializeArray();
+			}
 			var html = '<div id="'+rel+'" title="提示信息"></div>';
 			html = $(html);
-			html.load(url, function() {
+			html.load(url,field, function() {
 				//为一个表单添加ajax提交。
 				var form = $('#' + rel).find("form");
 				if(form.length>0){
@@ -149,8 +164,9 @@ $(function(){
 			});
 			html.dialog(options);
 			event.preventDefault();
-		});
-	});
+			return false;
+		};
+	
 	//ajaxA链接扩展
 	$("a[target=ajax]").each(function(){
 		$(this).click(function(event){
@@ -166,4 +182,14 @@ $(function(){
 			event.preventDefault();
 		});
 	});
+
+	function gettagname(e){
+		if (!e) var e = window.event;
+		if (e.target) targ = e.target;
+		else if (e.srcElement) targ = e.srcElement;
+		if (targ.nodeType == 3)// defeat Safari bug
+		   targ = targ.parentNode
+		return targ.tagName;
+	}
+
 });

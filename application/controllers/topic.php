@@ -81,6 +81,9 @@ class Topic extends MY_Controller {
         //格式化ids并检测，两种方式获取ids，get或者post数组。
         empty($topic_id) && $topic_id = $this->input->post('topic_id');
         is_string($topic_id) && $topic_id = array_unique(array_filter(explode(',', $topic_id)));
+        if(empty($topic_id)){
+            $this->message('参数错误，请指定您的操作id！', 0);
+        }
         foreach ($topic_id as $id) {
             if (!is_numeric($id)) {
                 $this->message('参数错误，主题id格式错误！', 0);

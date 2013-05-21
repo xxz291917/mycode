@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" href="<?=base_url()?>css/front_style.css" />
 <link rel="stylesheet" type="text/css" href="<?=base_url()?>js/jquery-ui/jquery-ui.min.css" />
 <script type="text/javascript" src="<?=base_url()?>js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="<?=base_url()?>js/json2.min.js"></script>
 <script type="text/javascript" src="<?=base_url()?>js/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?=base_url()?>js/dialog-ex.js"></script>
 
