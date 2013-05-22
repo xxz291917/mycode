@@ -39,7 +39,7 @@
   <thead>
     <tr>
       <th>ID</th>
-      <th>标题</th>
+      <th>主题</th>
       <th>作者</th>
       <th>发布时间</th>
       <th>所属板块</th>
@@ -47,7 +47,7 @@
     </tr>
   </thead>
   
-  <form method="post" action="" target="dialog" id="todialog">
+  <form method="post" action="" target="dialog" id="todialog" refresh="true">
   <tbody>
     <?php 
 	!isset($topics) && $topics = array();
@@ -56,7 +56,7 @@
       <td>
 	  <input type="checkbox" class="checkbox" name="topic_id[]" value="<?= $topic['id'] ?>">
 	  <?= $topic['id'] ?></td>
-      <td><?= $topic['subject'] ?></td>
+      <td><a href="<?php echo base_url("index.php/topic/show/{$topic['id']}");?>" target="_blank"><?= $topic['subject'] ?></a></td>
       <td><?= $topic['author'] ?></td>
       <td><?= date($date_format,$topic['post_time']) ?></td>
       <td><?= $topic['forum_name'] ?></td>
