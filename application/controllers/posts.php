@@ -130,7 +130,7 @@ class Posts extends MY_Controller {
         $posts_data['is_hide'] = $this->forums_model->get_is('hide', $forum_id);
         $posts_data['is_sign'] = $this->forums_model->get_is('sign', $forum_id);
 
-        $posts_data['status'] = $this->forums_model->get_check($forum_id) == 3 ? 4 : 1;
+        $posts_data['status'] = $this->forums_model->get_check($forum_id) == 2 ? 4 : 1;//回复帖子也审核
         $this->posts_model->insert($posts_data);
         $pid = $this->db->insert_id();
         if (empty($pid)) {
