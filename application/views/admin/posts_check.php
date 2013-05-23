@@ -4,7 +4,7 @@
 <a href="<?=base_url()?>index.php/admin/posts/check" class="on"><span>回复审核</span></a>
 </p>
 <?php $this->load->view('admin/topics_search');?>
-<table class="table">
+<table class="table2">
   <colgroup>
   <col width="80">
   <col width="80">
@@ -16,6 +16,9 @@
   </colgroup>
   <form method="post" action="" target="dialog" id="todialog" refresh="true">
   <tbody>
+  	<tr class="split">
+      <td colspan="6">待审核列表</td>
+    </tr>
     <?php 
 	!isset($topics) && $topics = array();
 	$tops=array('未置顶','版块置顶','分类置顶','全局置顶');
