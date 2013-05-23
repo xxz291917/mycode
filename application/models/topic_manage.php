@@ -22,7 +22,7 @@ class Topic_manage extends CI_Model {
 
     function __construct() {
         parent::__construct();
-        $this->load->model(array('topics_model'));
+        $this->load->model(array('topics_model','posts_model'));
         $this->load->helper('date');
     }
 
@@ -99,20 +99,23 @@ class Topic_manage extends CI_Model {
                 $post[$action] = join(',', $post[$action]);
             }
             $topics_update = array($action => $post[$action]);
+            //var_dump($topics_update);die;
             if ($action == 'digest') {//推荐精华是一起的，所以，加精华，顺便推荐。
-                $topics_update['recommend'] = 1;
+                $topics_update['recommend'] = empty($post[$action])?0:1;
             }
             $this->topics_model->update($topics_update, 'id in(' . join(',', $topic_ids) . ')');
-            //需要更新topics_endtime表
-            $this->topics_endtime_model->delete('topic_id in(' . join(',', $topic_ids) . ') AND action=\''.$action.'\'');
-            foreach ($topic_ids as $topic_id) {
-                $topics_endtime[] = array(
-                    'topic_id' => $topic_id,
-                    'action' => $action,
-                    'end_time' => $post['end_time']
-                );
+            if(!empty($post[$action])){
+               //需要更新topics_endtime表
+                $this->topics_endtime_model->delete('topic_id in(' . join(',', $topic_ids) . ') AND action=\''.$action.'\'');
+                foreach ($topic_ids as $topic_id) {
+                    $topics_endtime[] = array(
+                        'topic_id' => $topic_id,
+                        'action' => $action,
+                        'end_time' => $post['end_time']
+                    );
+                }
+                $this->topics_endtime_model->insert_batch($topics_endtime); 
             }
-            $this->topics_endtime_model->insert_batch($topics_endtime);
         }elseif($action == 'bump'){
             //更新当前帖子的最后回复时间。
             $last_post_time = $post[$action]==1?$this->time:strtotime('-1 year');
@@ -120,6 +123,10 @@ class Topic_manage extends CI_Model {
             $this->topics_model->update($topics_update, 'id in(' . join(',', $topic_ids) . ')');
         }elseif(in_array($action, array('ban','close','del'))){
             $tmp_stasus = $post[$action]==1?self::$status[$action]:1;
+            $topics_update = array('status' => $tmp_stasus);
+            $this->topics_model->update($topics_update, 'id in(' . join(',', $topic_ids) . ')');
+        }elseif($action == 'pass'){//审核通过，目前只用于后台的管理操作。
+            $tmp_stasus = 1;//审核通过，状态直接变为1.
             $topics_update = array('status' => $tmp_stasus);
             $this->topics_model->update($topics_update, 'id in(' . join(',', $topic_ids) . ')');
         }elseif($action == 'move'){
@@ -151,5 +158,39 @@ class Topic_manage extends CI_Model {
 //'merge' => '合并',
 //'split' => '切分',);
     }
+    
+    /**
+     * 管理posts的操作
+     * @param type $posts_ids
+     * @param type $action
+     * @param type $post
+     */
+    public function manage_post($posts_ids, $action, $post = '') {
+            $this->load->model(array('posts_log_model','posts_top_model'));
+            if(in_array($action, array('ban','del'))){
+                $tmp_stasus = $post[$action]==1?self::$status[$action]:1;
+                $topics_update = array('status' => $tmp_stasus);
+                $this->posts_model->update($topics_update, 'id in(' . join(',', $posts_ids) . ')');
+            }elseif($action == 'pass'){//审核通过，目前只用于后台的管理操作。
+                $tmp_stasus = 1;//审核通过，状态直接变为1.
+                $topics_update = array('status' => $tmp_stasus);
+                $this->posts_model->update($topics_update, 'id in(' . join(',', $posts_ids) . ')');
+            }
+            //添加管理日志
+            foreach ($posts_ids as $topic_id) {
+                $topics_log[] = array(
+                    'post_id' => $topic_id,
+                    'user_id' => $this->user['id'],
+                    'username' => $this->user['username'],
+                    'time' => $this->time,
+                    'action' => $action,
+                    'data' => json_encode($post),
+                    'reason' => $post['reason']
+                );
+            }
+            //topics_log_model
+            $this->posts_log_model->insert_batch($topics_log);
+    }
+    
 
 }

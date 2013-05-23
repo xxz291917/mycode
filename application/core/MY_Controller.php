@@ -153,9 +153,17 @@ class Admin_Controller extends Base_Controller {
     }
 
     protected function message($message, $redirect = 'BACK') {
-        $vars['message'] = $message;
-        $vars['redirect'] = $redirect;
-        $this->view('message', $vars);
+        //判断是否是ajax提交
+        if($this->input->is_ajax_request()){
+            echo $this->echo_ajax($redirect,$message);
+        }else{
+            global $OUT;
+            $vars['message'] = $message;
+            $vars['redirect'] = $redirect;
+            $this->view('message', $vars);
+            $OUT->_display();
+        }
+        die;
     }
 
     /*

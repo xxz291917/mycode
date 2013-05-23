@@ -1,31 +1,19 @@
-<h3>帖子管理</h3>
+<h3>审核管理</h3>
+<p class="sec_nav">
+<a href="<?=base_url()?>index.php/admin/topics/check/" ><span>帖子审核</span></a>
+<a href="<?=base_url()?>index.php/admin/posts/check" class="on"><span>回复审核</span></a>
+</p>
 <?php $this->load->view('admin/topics_search');?>
 <table class="table">
   <colgroup>
   <col width="80">
-  <col width="250">
+  <col width="80">
+  <col width="200">
   <col width="150">
   <col width="200">
   <col width="120">
-  <col width="100">
-  <col width="100">
-  <col width="100">
   <col>
   </colgroup>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>主题</th>
-      <th>作者</th>
-      <th>发布时间</th>
-      <th>所属板块</th>
-      <th>回复/查看</th>
-      <th>置顶类型</th>
-      <th>精华类型</th>
-      <th>帖子状态</th>
-    </tr>
-  </thead>
-  
   <form method="post" action="" target="dialog" id="todialog" refresh="true">
   <tbody>
     <?php 
@@ -39,19 +27,23 @@
       <td>
 	  <input type="checkbox" class="checkbox" name="topic_id[]" value="<?= $topic['id'] ?>">
 	  <?= $topic['id'] ?></td>
-      <td><a href="<?php echo base_url("index.php/topic/show/{$topic['id']}");?>" target="_blank"><?= $topic['subject'] ?></a></td>
-      <td><?= $topic['author'] ?></td>
-      <td><?= date($date_format,$topic['post_time']) ?></td>
-      <td><?= $topic['forum_name'] ?></td>
-      <td><?php echo "{$topic['replies']}/{$topic['views']}"; ?></td>
-      <td><?php echo $tops[$topic['top']]; ?></td>
-      <td><?php echo $digests[$topic['digest']]; ?></td>
-      <td><?php echo $status[$topic['status']]; ?></td>
+      <td><b>状态：</b><?php echo $status[$topic['status']]; ?></td>
+      <td><b>主题：</b><a href="<?php echo base_url("index.php/topic/show/{$topic['id']}");?>" target="_blank"><?= $topic['subject'] ?></a></td>
+      <td><b>作者：</b><?= $topic['author'] ?></td>
+      <td><b>发表于：</b><?= date($date_format,$topic['post_time']) ?></td>
+      <td><b>所属板块：</b><?= $topic['forum_name'] ?></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td colspan="5">
+      <textarea name="test" cols="150" rows="3" disabled="disabled"><?= $topic['content'] ?></textarea>
+      </td>
     </tr>
     <?php }if(empty($topics)){ ?>
     <tr>
-      <td colspan="9">
-      没有符合条件的帖子
+      <td></td>
+      <td colspan="5">
+      暂无需要审核的回复。
       </td>
     </tr>
 	<?php }?>
@@ -59,9 +51,8 @@
       <td>
 	  <input type="checkbox" class="checkbox" name="ok" >全选</td>
       <td colspan="8" id="op">
-		<?php foreach($manage_arr as $key=>$val){?>
-        <a class="inp_btn2" href="<?php echo base_url('index.php/topic/manage/'.$val[0]);?>"><?=$val[1]?></a>
-        <?php }?>
+        <a class="inp_btn2" href="<?php echo base_url('index.php/admin/topics/deal_check/pass');?>">通过</a>
+        <a class="inp_btn2" href="<?php echo base_url('index.php/admin/topics/deal_check/del');?>">删除</a>
       </td>
     </tr>
   </tbody>

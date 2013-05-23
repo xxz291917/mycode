@@ -8,9 +8,6 @@ class Posts_model extends MY_Model {
         $this->id='id';
     }
     
-    public function add($param) {
-        
-    }
 }
 
 ?>

@@ -1,4 +1,9 @@
-<form action="<?php echo base_url('index.php/topic/manage/' . $action); ?>" method="post" id="topic_manage">
+<?php 
+//审核是后台的操作，发送到后台的处理程序。
+empty($action_url) && $action = 'index.php/topic/manage/';
+?>
+
+<form action="<?php echo base_url($action_url . $action); ?>" method="post" id="topic_manage">
   <input type="hidden" name="submit" value="1">
   <input type="hidden" name="topic_id" value="<?= $topic_id ?>">
   <table class="table2" width="400px">
@@ -91,7 +96,7 @@
         <th>删除</th>
         <td>
         <input type="hidden" name="del" value="1" />
-        您确定要删除此帖子么？</td>
+        您确定要删除这些帖子么？</td>
       </tr>
     </tbody>
     <?php } elseif($action == 'move'){?>
@@ -114,6 +119,15 @@
             <?php echo $category_option;?>
           </select>
         </td>
+      </tr>
+    </tbody>
+    <?php } elseif($action == 'pass'){?>
+      <tbody>
+      <tr>
+        <th>审核</th>
+        <td>
+        <input type="hidden" name="del" value="1" />
+        您确定审核通过这些帖子么？</td>
       </tr>
     </tbody>
     <?php }?>
