@@ -8,6 +8,20 @@ class Posts_model extends MY_Model {
         $this->id='id';
     }
     
+    public function output_filter($html) {
+        //过滤is_bbcode
+        //过滤is_smilies
+        //过滤is_html
+        //过滤is_hide
+    }
+    
+    public function input_filter($html) {
+        //过滤is_bbcode
+        //过滤is_smilies
+        //过滤is_html
+        //过滤is_hide
+    }
+    
 }
 
 ?>

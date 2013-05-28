@@ -170,6 +170,13 @@ class Posts extends MY_Controller {
         $this->form_validation->set_error_delimiters('', '');
         return $this->form_validation->run();
     }
+    
+    public function get_smiley_json(){
+        $this->load->model(array('smiley_model'));
+        $smileys = $this->smiley_model->get_smiley();
+        echo $this->echo_ajax(1,count($smileys),$smileys);
+        die;
+    }
 
 }
 
