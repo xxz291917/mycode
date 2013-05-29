@@ -20,7 +20,7 @@ class Posts extends MY_Controller {
         if (empty($forum) || $forum['type'] == 'group') {
             $this->message('参数错误，发布的版块不存在或者不是子版块', $forum_show_url);
         }
-        if ($this->check_posts('post') && $post = $this->input->post(null)) {
+        if ($this->input->post('submit') && $this->check_posts('post') && $post = $this->input->post(null)) {
             //检测权限。
             $is_post = $this->forums_model->check_permission('post', $forum_id);
             if (!$is_post) {
@@ -37,7 +37,9 @@ class Posts extends MY_Controller {
                 $this->message('发帖失败。', $forum_show_url);
             }
         } else {
-            $this->view('posts_post');
+            $is_arr = $this->get_is($forum_id);
+            $var['is_arr'] = $is_arr;
+            $this->view('posts_post',$var);
         }
     }
 
@@ -51,7 +53,7 @@ class Posts extends MY_Controller {
         if (empty($topic)) {
             $this->message('参数错误，发布的主题不存在', $forum_show_url);
         }
-        if ($this->check_posts('reply') && $post = $this->input->post(null)) {
+        if ($this->input->post('submit') && $this->check_posts('reply') && $post = $this->input->post(null)) {
             //检测权限。
             $is_post = $this->forums_model->check_permission('reply', $topic['forum_id']);
             if (!$is_post) {
@@ -68,7 +70,10 @@ class Posts extends MY_Controller {
                 $this->message('发帖失败。', $forum_show_url);
             }
         } else {
-            $this->view('posts_post');
+            $forum_id = $topic['forum_id'];
+            $is_arr = $this->get_is($forum_id);
+            $var['is_arr'] = $is_arr;
+            $this->view('posts_post',$var);
         }
     }
 
@@ -171,7 +176,16 @@ class Posts extends MY_Controller {
         return $this->form_validation->run();
     }
     
-    public function get_smiley_json(){
+    private function get_is($forum_id){
+        $return = array();
+        $is_arr = array('is_bbcode','is_smilies','is_html','is_hide','is_media','is_anonymous','is_sign');
+        foreach ($is_arr as $key => $is) {
+            $return[$is] = $this->forums_model->get_is($is, $forum_id);
+        }
+        return $return;
+    }
+
+        public function get_smiley_json(){
         $this->load->model(array('smiley_model'));
         $smileys = $this->smiley_model->get_smiley();
         echo $this->echo_ajax(1,count($smileys),$smileys);

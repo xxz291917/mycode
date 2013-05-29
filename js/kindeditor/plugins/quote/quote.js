@@ -1,5 +1,8 @@
-KindEditor.plugin('hide', function(K) {
-	var self = this, name = 'hide';
+/**
+* 添加高亮插件SyntaxHighlighter
+*/
+KindEditor.plugin('quote', function(K) {
+	var self = this, name = 'quote';
 	self.clickToolbar(name, function() {
 		var lang = self.lang(name + '.'),
 			html = ['<div style="padding:10px 20px;">',
@@ -15,7 +18,7 @@ KindEditor.plugin('hide', function(K) {
 					click : function(e) {
 						var type = K('.ke-code-type', dialog.div).val(),
 							content = textarea.val(),
-							html = '[hide]' + K.escape(content) + '[/hide]';
+							html = '<blockquote class="blockquote">' + K.escape(content) + '</blockquote> <br/>';
 						if (K.trim(content) === '') {
 							alert(lang.pleaseInput);
 							textarea[0].focus();

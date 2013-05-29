@@ -82,10 +82,3 @@ $(function(){
 
 	
 </script>
-
-<pre class="brush: js;">
-function helloSyntaxHighlighter()
-{
-	return "hi!";
-}
-</pre>

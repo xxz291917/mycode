@@ -1770,6 +1770,7 @@ _each(_K, function(key, val) {
 	K[key] = val;
 });
 K.NodeClass = KNode;
+//xxz
 window.KindEditor = K;
 var _START_TO_START = 0,
 	_START_TO_END = 1,
@@ -3661,6 +3662,7 @@ _extend(KEdit, KWidget, {
 				});
 			}
 			self.cmd = cmd;
+			//xxz
 			self.html(_elementVal(self.srcElement));
 			if (_IE) {
 				doc.body.disabled = true;
@@ -4818,6 +4820,7 @@ KEditor.prototype = {
 			return self;
 		}
 		_each(self._handlers[key], function() {
+                        //this用self替换
 			fn = this.call(self, fn);
 		});
 		return fn;

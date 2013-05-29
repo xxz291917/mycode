@@ -10,7 +10,12 @@
     width: 16px;
 }
 .ke-icon-hide {
-	background-position: 0px -960px;
+	background:url(<?=base_url()?>js/kindeditor/plugins/hide/hide.gif) no-repeat;
+	width: 16px;
+	height: 16px;
+}
+.ke-icon-quote {
+	background:url(<?=base_url()?>js/kindeditor/plugins/quote/quote.gif) no-repeat;
 	width: 16px;
 	height: 16px;
 }
@@ -32,7 +37,9 @@
 				hide : '隐藏内容',
 				code2 : '插入代码',
 				smiley : '插入表情',
+				quote : '插入应用',
 		});
+		
         var editor;
         KindEditor.ready(function(K) {
 			//alert(K===KindEditor); //true
@@ -42,7 +49,10 @@
                         allowPreviewEmoticons : true,
                         allowImageUpload : true,
 						//代码高亮，样式
-						cssPath : ['<?=base_url()?>js/kindeditor/plugins/code2/codeprint.css'],
+						cssPath : [
+						'<?=base_url()?>js/kindeditor/plugins/code2/codeprint.css',
+						'<?=base_url()?>js/kindeditor/plugins/quote/quote.css',
+						],
 						items : [
 						'fontname', 'fontsize', 
 						'|','justifyleft', 'justifycenter', 'justifyright', 'justifyfull', 
@@ -53,8 +63,45 @@
 						'|','forecolor', 'hilitecolor',
 						'|','hr', 'table','link', 'unlink',
 						'|','smiley','image','insertfile','media','code2',
-						'|','undo', 'redo','hide'],
-	
+						'|','undo', 'redo','hide','quote'],
+						htmlTags : {
+							font : ['id', 'class', 'color', 'size', 'face', '.background-color'],
+							span : [
+								'id', 'class', '.color', '.background-color', '.font-size', '.font-family', '.background',
+								'.font-weight', '.font-style', '.text-decoration', '.vertical-align', '.line-height'
+							],
+							div : [
+								'id', 'class', 'align', '.border', '.margin', '.padding', '.text-align', '.color',
+								'.background-color', '.font-size', '.font-family', '.font-weight', '.background',
+								'.font-style', '.text-decoration', '.vertical-align', '.margin-left'
+							],
+							table: [
+								'id', 'class', 'border', 'cellspacing', 'cellpadding', 'width', 'height', 'align', 'bordercolor',
+								'.padding', '.margin', '.border', 'bgcolor', '.text-align', '.color', '.background-color',
+								'.font-size', '.font-family', '.font-weight', '.font-style', '.text-decoration', '.background',
+								'.width', '.height', '.border-collapse'
+							],
+							'td,th': [
+								'id', 'class', 'align', 'valign', 'width', 'height', 'colspan', 'rowspan', 'bgcolor',
+								'.text-align', '.color', '.background-color', '.font-size', '.font-family', '.font-weight',
+								'.font-style', '.text-decoration', '.vertical-align', '.background', '.border'
+							],
+							a : ['id', 'class', 'href', 'target', 'name'],
+							embed : ['id', 'class', 'src', 'width', 'height', 'type', 'loop', 'autostart', 'quality', '.width', '.height', 'align', 'allowscriptaccess'],
+							img : ['id', 'class', 'src', 'width', 'height', 'border', 'alt', 'title', 'align', '.width', '.height', '.border','smileid'],
+							'p,ol,ul,li,blockquote,h1,h2,h3,h4,h5,h6' : [
+								'id', 'class', 'align', '.text-align', '.color', '.background-color', '.font-size', '.font-family', '.background',
+								'.font-weight', '.font-style', '.text-decoration', '.vertical-align', '.text-indent', '.margin-left'
+							],
+							pre : ['id', 'class'],
+							hr : ['id', 'class', '.page-break-after'],
+							'br,tbody,tr,strong,b,sub,sup,em,i,u,strike,s,del' : ['id', 'class'],
+							iframe : ['id', 'class', 'src', 'frameborder', 'width', 'height', '.width', '.height']
+						},
+						//将内容格式化为bbcode
+						afterCreate:function(){
+							//this.html(bbc2html(this.html()));
+						},
                 });
 			//将内容格式化为bbcode
 			editor.beforeGetHtml(function(html){
@@ -104,7 +151,7 @@
     <td style="color:#F00;"><?php echo form_error('subject'); ?></td>
   </tr>
   <tr>
-    <td><textarea name="content" style="width:700px;height:200px;visibility:hidden;"><?php echo set_value('content', '填写帖子内容'); ?></textarea></td>
+    <td><textarea name="content" style="width:700px;height:200px;visibility:hidden;"><?php echo $this->posts_model->smiley2html(set_value('content', '填写帖子内容')); ?></textarea></td>
     <td style="color:#F00;"><?php echo form_error('content'); ?></td>
   </tr>
 </table>
