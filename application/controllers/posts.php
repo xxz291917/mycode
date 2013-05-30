@@ -39,7 +39,7 @@ class Posts extends MY_Controller {
         } else {
             $is_arr = $this->get_is($forum_id);
             $var['is_arr'] = $is_arr;
-            $this->view('posts_post',$var);
+            $this->view('posts_post', $var);
         }
     }
 
@@ -73,7 +73,7 @@ class Posts extends MY_Controller {
             $forum_id = $topic['forum_id'];
             $is_arr = $this->get_is($forum_id);
             $var['is_arr'] = $is_arr;
-            $this->view('posts_post',$var);
+            $this->view('posts_post', $var);
         }
     }
 
@@ -135,7 +135,7 @@ class Posts extends MY_Controller {
         $posts_data['is_hide'] = $this->forums_model->get_is('hide', $forum_id);
         $posts_data['is_sign'] = $this->forums_model->get_is('sign', $forum_id);
 
-        $posts_data['status'] = $this->forums_model->get_check($forum_id) == 2 ? 4 : 1;//回复帖子也审核
+        $posts_data['status'] = $this->forums_model->get_check($forum_id) == 2 ? 4 : 1; //回复帖子也审核
         $this->posts_model->insert($posts_data);
         $pid = $this->db->insert_id();
         if (empty($pid)) {
@@ -175,21 +175,82 @@ class Posts extends MY_Controller {
         $this->form_validation->set_error_delimiters('', '');
         return $this->form_validation->run();
     }
-    
-    private function get_is($forum_id){
+
+    private function get_is($forum_id) {
         $return = array();
-        $is_arr = array('is_bbcode','is_smilies','is_html','is_hide','is_media','is_anonymous','is_sign');
+        $is_arr = array('is_bbcode', 'is_smilies', 'is_html', 'is_hide', 'is_media', 'is_anonymous', 'is_sign');
         foreach ($is_arr as $key => $is) {
             $return[$is] = $this->forums_model->get_is($is, $forum_id);
         }
         return $return;
     }
 
-        public function get_smiley_json(){
+    public function get_smiley_json() {
         $this->load->model(array('smiley_model'));
         $smileys = $this->smiley_model->get_smiley();
-        echo $this->echo_ajax(1,count($smileys),$smileys);
+        echo $this->echo_ajax(1, count($smileys), $smileys);
         die;
+    }
+    
+    
+    /**
+     * 主要是配合前台编辑器使用的图片和文件上传功能
+     * //成功时
+     * "error" : 0,
+     * "url" : "http://www.example.com/path/to/file.ext"
+     * //失败时
+     * "error" : 1,
+     * "message" : "错误信息"
+     */
+    public function do_upload() {
+        $this->output->set_header('Content-type: text/html; charset=UTF-8');
+        $gets = $this->input->get();
+        $field_name = 'imgFile';
+        //对于上传的不同类型，做不同的参数，后期这个是在后台管理的。
+        $config['remove_spaces'] = TRUE;
+        $config['encrypt_name'] = TRUE;
+        if($gets['dir']='file'){
+            $config['upload_path'] = './uploads/file';
+            $config['allowed_types'] = 'doc|docx|xls|xlsx|ppt|htm|html|txt|zip|rar|gz|bz2|gif|jpg|jpeg|png|bmp';
+            $config['max_size'] = '100';
+        }elseif($gets['dir']='image'){
+            $config['upload_path'] = './uploads/image';
+            $config['allowed_types'] = 'gif|jpg|jpeg|png|bmp';
+            $config['max_size'] = '100';
+            $config['max_width'] = '1024';
+            $config['max_height'] = '768';
+        }
+        $this->load->library('upload',$config);
+        if (!$this->upload->do_upload($field_name)) {
+            $error = array('error' => $this->upload->display_errors());
+            $return = array('error'=>1,'message'=>$error['error']);
+            echo json_encode($return);die;
+        } else {
+            $data = $this->upload->data();
+            $file_path = trim($config['upload_path'], './').'/'.$data['file_name'];
+            $title = $this->input->post('title');
+            //将文件保存到未使用附件表。
+            $insert_data['user_id']=$this->user['id'];
+            $insert_data['upload_time']=$this->time;
+            $insert_data['size']=$data['file_size'];
+            $insert_data['extension']=  trim($data['file_ext'],'.');
+            $insert_data['filename']=$data['file_name'];
+            $insert_data['path']=$file_path;
+            $insert_data['is_image']=$data['is_image'];
+            $insert_data['description']=$title;
+            $insert_data['is_thumb']=0;
+            $this->load->model('attachments_unused_model');
+            $this->attachments_unused_model->insert($insert_data);
+            $aid = $this->db->insert_id();
+            
+            $file_url = base_url($file_path);
+            $return = array('error'=>0,'url'=>$file_url,'aid'=>$aid,'title'=>$title);
+            echo json_encode($return);die;
+        }
+        
+        
+        
+        
     }
 
 }

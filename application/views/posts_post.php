@@ -4,6 +4,11 @@
 	width: 16px;
 	height: 16px;
 }
+.ke-icon-image2 {
+	background-position: 0px -496px;
+	width: 16px;
+	height: 16px;
+}
 .ke-icon-smiley {
 	background:url(<?=base_url()?>js/kindeditor/plugins/smiley/smile.gif) no-repeat;
     height: 16px;
@@ -22,6 +27,7 @@
 .ke-img{ text-align:center;}
 </style>
 <script>
+		KindEditor.uploadImages={};
 		KindEditor.smileUrl = "<?=base_url()?>index.php/posts/get_smiley_json";
 		KindEditor.smileys=null;
 		$.ajax({
@@ -34,10 +40,26 @@
 		});
 		
 		KindEditor.lang({
-				hide : '隐藏内容',
+				hide : '插入隐藏内容',
 				code2 : '插入代码',
+				image2 : '插入图片',
+				'image2.remoteImage' : '网络图片',
+				'image2.localImage' : '本地上传',
+				'image2.remoteUrl' : '图片地址',
+				'image2.localUrl' : '上传文件',
+				'image2.size' : '图片大小',
+				'image2.width' : '宽',
+				'image2.height' : '高',
+				'image2.resetSize' : '重置大小',
+				'image2.align' : '对齐方式',
+				'image2.defaultAlign' : '默认方式',
+				'image2.leftAlign' : '左对齐',
+				'image2.rightAlign' : '右对齐',
+				'image2.imgTitle' : '图片说明',
+				'image2.upload' : '浏览...',
+				'image2.viewServer' : '图片空间',
 				smiley : '插入表情',
-				quote : '插入应用',
+				quote : '插入引用内容',
 		});
 		
         var editor;
@@ -53,6 +75,21 @@
 						'<?=base_url()?>js/kindeditor/plugins/code2/codeprint.css',
 						'<?=base_url()?>js/kindeditor/plugins/quote/quote.css',
 						],
+						useContextmenu:false,
+						uploadJson : '<?=base_url()?>index.php/posts/do_upload/',   //<<相对于kindeditor3.5.5\plugins\image\image.html 
+						//fileManagerJson : '../../php/file_manager_json2.php',   //<<相对于kindeditor3.5.5\plugins\file_manager\file_manager.html 
+						allowFileManager : false,
+						afterUpload : function(url,data,name) {
+							//postform
+							if(data.aid!=undefined){
+								var postform = $("#postform");
+								postform.append('<input type="hidden" name="attachments[]" value="' + data.aid + '" />');
+							}
+						},
+						extraFileUploadParams : {
+						},
+						fillDescAfterUploadImage:false,
+						
 						items : [
 						'fontname', 'fontsize', 
 						'|','justifyleft', 'justifycenter', 'justifyright', 'justifyfull', 
@@ -62,8 +99,8 @@
 						'bold', 'italic', 'underline','strikethrough',
 						'|','forecolor', 'hilitecolor',
 						'|','hr', 'table','link', 'unlink',
-						'|','smiley','image','insertfile','media','code2',
-						'|','undo', 'redo','hide','quote'],
+						'|','smiley','image2','insertfile',/*'media',*/'code2','quote',
+						'|','undo', 'redo','|','hide'],
 						htmlTags : {
 							font : ['id', 'class', 'color', 'size', 'face', '.background-color'],
 							span : [
@@ -88,7 +125,7 @@
 							],
 							a : ['id', 'class', 'href', 'target', 'name'],
 							embed : ['id', 'class', 'src', 'width', 'height', 'type', 'loop', 'autostart', 'quality', '.width', '.height', 'align', 'allowscriptaccess'],
-							img : ['id', 'class', 'src', 'width', 'height', 'border', 'alt', 'title', 'align', '.width', '.height', '.border','smileid'],
+							img : ['id', 'class', 'src', 'width', 'height', 'border', 'alt', 'title', 'align', '.width', '.height', '.border','smileid','aid'],
 							'p,ol,ul,li,blockquote,h1,h2,h3,h4,h5,h6' : [
 								'id', 'class', 'align', '.text-align', '.color', '.background-color', '.font-size', '.font-family', '.background',
 								'.font-weight', '.font-style', '.text-decoration', '.vertical-align', '.text-indent', '.margin-left'
@@ -119,14 +156,25 @@
 				if(KindEditor.smileys!=null){
 					str = str.replace(/<img[^>]+smileId=(["']?)(\d+)(\1)[^>]*>/ig, function($1, $2, $3) {return KindEditor.smileys[$3].code;});
 				}
+				//处理上传的图片，变为html
+				if(KindEditor.uploadImages!=null){
+					str = str.replace(/<img[^>]+aid=(["']?)(\d+)(\1)[^>]*>/ig, "[attachimg]$2[/attachimg]");
+				}
 				return str;
 			}
 			function bbc2html(str){
 				var smileys = KindEditor.smileys;
 				if(smileys != null) {
 					for(var id in smileys) {
-						re = new RegExp(preg_quote(smileys[id].code), "g");
+						var re = new RegExp(preg_quote(smileys[id].code), "g");
 						str = str.replace(re, '<img src="' + smileys[id].url + '" border="0" smileId="' + id + '" />');
+					}
+				}
+				//处理上传的图片，变为html
+				if(KindEditor.uploadImages!={}){
+					for(var aid in KindEditor.uploadImages) {
+						var re = new RegExp(preg_quote('[attachimg]'+aid+'\[/attachimg]'), "g");
+						str = str.replace(re, KindEditor.uploadImages[aid]);
 					}
 				}
 				return str;
@@ -137,7 +185,10 @@
 		});
 		
 </script>
-<?php echo form_open(current_url())?>
+<?php
+	$attributes = array('id' => 'postform');
+	echo form_open(current_url(),$attributes);
+?>
 <table class="table2">
   <colgroup>
   <col >

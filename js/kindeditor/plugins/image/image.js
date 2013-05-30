@@ -140,6 +140,7 @@ KindEditor.plugin('image', function(K) {
 						heightBox[0].focus();
 						return;
 					}
+					alert(clickFn);
 					clickFn.call(self, url, title, width, height, 0, align);
 				}
 			},

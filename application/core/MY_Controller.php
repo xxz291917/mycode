@@ -38,6 +38,22 @@ class Base_Controller extends CI_Controller {
         return base_url("index.php/{$this->uri->segment(1)}/{$this->uri->segment(2)}");
     }
 
+    protected function upload() {
+//        $config['upload_path'] = './uploads/';
+//        $config['allowed_types'] = 'gif|jpg|png';
+//        $config['max_size'] = '100';
+//        $config['max_width'] = '1024';
+//        $config['max_height'] = '768';
+        $this->load->library('upload');
+        if (!$this->upload->do_upload()) {
+            $error = array('error' => $this->upload->display_errors());
+            $this->load->view('upload_form', $error);
+        } else {
+            $data = array('upload_data' => $this->upload->data());
+            $this->load->view('upload_success', $data);
+        }
+    }
+
 }
 
 class MY_Controller extends Base_Controller {
@@ -72,9 +88,9 @@ class MY_Controller extends Base_Controller {
 
     protected function message($message, $redirect = 'BACK') {
         //判断是否是ajax提交
-        if($this->input->is_ajax_request()){
-            echo $this->echo_ajax($redirect,$message);
-        }else{
+        if ($this->input->is_ajax_request()) {
+            echo $this->echo_ajax($redirect, $message);
+        } else {
             global $OUT;
             $vars['message'] = $message;
             $vars['redirect'] = $redirect;
@@ -97,7 +113,7 @@ class MY_Controller extends Base_Controller {
         $config['base_url'] = !empty($base_url) ? $base_url : current_url();
         $config['total_rows'] = $total_rows;
         $config['per_page'] = !empty($per_page) ? $per_page : 20;
-        
+
         //结构和样式
         $config['num_links'] = 4;
         $config['full_tag_open'] = '<p class="pagination">';
@@ -154,9 +170,9 @@ class Admin_Controller extends Base_Controller {
 
     protected function message($message, $redirect = 'BACK') {
         //判断是否是ajax提交
-        if($this->input->is_ajax_request()){
-            echo $this->echo_ajax($redirect,$message);
-        }else{
+        if ($this->input->is_ajax_request()) {
+            echo $this->echo_ajax($redirect, $message);
+        } else {
             global $OUT;
             $vars['message'] = $message;
             $vars['redirect'] = $redirect;
@@ -174,6 +190,7 @@ class Admin_Controller extends Base_Controller {
       <a href="index.php?admin_doc-search----0-0--2">››</a>
       </p>
      */
+
     protected function init_page($base_url = '', $total_rows, $per_page = 20, $my_config = array()) {
         $this->load->library('pagination');
         $config['base_url'] = !empty($base_url) ? $base_url : current_url();
