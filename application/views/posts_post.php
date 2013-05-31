@@ -28,6 +28,7 @@
 </style>
 <script>
 		KindEditor.uploadImages={};
+		KindEditor.uploadFiles={};
 		KindEditor.smileUrl = "<?=base_url()?>index.php/posts/get_smiley_json";
 		KindEditor.smileys=null;
 		$.ajax({
@@ -51,15 +52,14 @@
 				'image2.width' : '宽',
 				'image2.height' : '高',
 				'image2.resetSize' : '重置大小',
-				'image2.align' : '对齐方式',
 				'image2.defaultAlign' : '默认方式',
 				'image2.leftAlign' : '左对齐',
 				'image2.rightAlign' : '右对齐',
 				'image2.imgTitle' : '图片说明',
 				'image2.upload' : '浏览...',
-				'image2.viewServer' : '图片空间',
 				smiley : '插入表情',
 				quote : '插入引用内容',
+				'insertfile.localUrl' : '附件',
 		});
 		
         var editor;
@@ -152,17 +152,22 @@
 				if(str == '') {
 					return '';
 				}
-				//处理表情符号，变为html
+				//处理表情符号，变为code
 				if(KindEditor.smileys!=null){
-					str = str.replace(/<img[^>]+smileId=(["']?)(\d+)(\1)[^>]*>/ig, function($1, $2, $3) {return KindEditor.smileys[$3].code;});
+					str = str.replace(/<img[^>]+smileId=(["']?)(\d+)(\1)[^>]*>/ig, function($0, $1, $2) {return KindEditor.smileys[$2].code;});
 				}
-				//处理上传的图片，变为html
+				//处理上传的图片，变为code
 				if(KindEditor.uploadImages!=null){
 					str = str.replace(/<img[^>]+aid=(["']?)(\d+)(\1)[^>]*>/ig, "[attachimg]$2[/attachimg]");
+				}
+				//处理上传的附件，变为code
+				if(KindEditor.uploadFiles!=null){
+					str = str.replace(/<a[^>]+aid=(["']?)(\d+)(\1)[^>]*>[^>]*<\/a>/ig, "[attach]$2[/attach]");
 				}
 				return str;
 			}
 			function bbc2html(str){
+				//处理表情符号，变为html
 				var smileys = KindEditor.smileys;
 				if(smileys != null) {
 					for(var id in smileys) {
@@ -170,18 +175,31 @@
 						str = str.replace(re, '<img src="' + smileys[id].url + '" border="0" smileId="' + id + '" />');
 					}
 				}
-				//处理上传的图片，变为html
-				if(KindEditor.uploadImages!={}){
-					for(var aid in KindEditor.uploadImages) {
-						var re = new RegExp(preg_quote('[attachimg]'+aid+'\[/attachimg]'), "g");
-						str = str.replace(re, KindEditor.uploadImages[aid]);
-					}
-				}
+				//bbcode图片，变为html
+				str = str.replace(/\[attachimg\](\d+)\[\/attachimg\]/g, function($0,$1,$2){
+													if(typeof KindEditor.uploadImages[$1] == "undefined"){
+														return '';
+													}else{
+														return KindEditor.uploadImages[$1]
+													}
+												});
+				//bbcode附件，变为html
+				str = str.replace(/\[attach\](\d+)\[\/attach\]/g, function($0,$1,$2){
+													if(typeof(KindEditor.uploadFiles[$1]) == "undefined"){
+														return '';
+													}else{
+														return KindEditor.uploadFiles[$1]
+													}
+												});
 				return str;
 			}
 			function preg_quote(str) {
 				return (str+'').replace(/([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!<>\|\:])/g, "\\$1");
 			}
+			function isEmptyObject(obj){
+				for(var n in obj){return false} 
+				return true;
+			} 
 		});
 		
 </script>
@@ -201,8 +219,16 @@
     <td><input type="text" value="<?php echo set_value('subject', '输入标题'); ?>" name="subject" class="inp_txt inp_long"></td>
     <td style="color:#F00;"><?php echo form_error('subject'); ?></td>
   </tr>
+  <?php if($special!=1){?>
   <tr>
-    <td><textarea name="content" style="width:700px;height:200px;visibility:hidden;"><?php echo $this->posts_model->smiley2html(set_value('content', '填写帖子内容')); ?></textarea></td>
+    <td>
+		<?php $this->load->view($special_post);?>
+    </td>
+    <td style="color:#F00;"><?php echo form_error('subject'); ?></td>
+  </tr>
+  <?php }?>
+  <tr>
+    <td><textarea name="content" style="width:700px;height:360px;visibility:hidden;"><?php echo $this->posts_model->smiley2html(set_value('content', '填写帖子内容')); ?></textarea></td>
     <td style="color:#F00;"><?php echo form_error('content'); ?></td>
   </tr>
 </table>

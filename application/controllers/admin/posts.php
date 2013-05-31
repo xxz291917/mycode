@@ -101,7 +101,7 @@ class Posts extends Admin_Controller {
         $page_str = $page_obj->create_links();
         //获取用户
         $start = max(0,($page_obj->cur_page-1)*$per_num);
-        $topics = $this->posts_model->get_list($where, '*', '', $start,$per_num);
+        $topics = $this->posts_model->get_posts_list($where, '*', '', $start,$per_num);
         $key_forums = $this->forums_model->get_key_forums();
         foreach ($topics as $key=>$topic) {
             $topics[$key]['forum_name'] = $key_forums[$topic['forum_id']]['name'];

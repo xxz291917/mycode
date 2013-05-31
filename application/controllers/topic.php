@@ -40,7 +40,7 @@ class Topic extends MY_Controller {
         $page_str = $page_obj->create_links();
 
         $start = max(0, ($page_obj->cur_page - 1) * $per_num);
-        $posts = $this->posts_model->get_list(array('topic_id' => $id), '*', 'post_time', $start, $per_num);
+        $posts = $this->posts_model->get_posts_list(array('topic_id' => $id), '*', 'post_time', $start, $per_num);
 
         //获取需要的用户信息
         $uids = array();

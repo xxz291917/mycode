@@ -15,15 +15,15 @@
   <tr>
     <th>允许的特殊主题</th>
     <td><ul>
-        <li>
-          <input type="checkbox" value="1" name="allow_special[]" <?php echo my_set_checkbox('allow_special', '1',$data); ?> class="checkbox">
-          投票主题</li>
-        <li>
+		<li>
           <input type="checkbox" value="2" name="allow_special[]" <?php echo my_set_checkbox('allow_special', '2',$data); ?> class="checkbox">
           问答主题</li>
         <li>
-          <input type="checkbox" value="3" name="allow_special[]" <?php echo my_set_checkbox('allow_special', '3',$data); ?> class="checkbox">
-          活动主题</li>
+          <input type="checkbox" value="3" name="allow_special[]" <?php echo my_set_checkbox('allow_special', '1',$data); ?> class="checkbox">
+          投票主题</li>
+        <li>
+          <input type="checkbox" value="4" name="allow_special[]" <?php echo my_set_checkbox('allow_special', '3',$data); ?> class="checkbox">
+          辩论主题</li>
       </ul></td>
     <td></td>
   </tr>
