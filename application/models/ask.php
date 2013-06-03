@@ -3,10 +3,10 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Poll extends CI_Model {
+class Ask extends CI_Model {
 
-    static $special = 3;
-    static $special_post = 'poll_posts';
+    static $special = 2;
+    static $special_post = 'ask_posts';
     
     function __construct() {
         parent::__construct();

@@ -3,14 +3,14 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Poll extends CI_Model {
+class Debate extends CI_Model {
 
-    static $special = 3;
-    static $special_post = 'poll_posts';
+    static $special = 4;
+    static $special_post = 'debate_posts';
     
     function __construct() {
         parent::__construct();
-        $this->load->model(array('poll_model','poll_options_model','poll_voter_model'));
+        $this->load->model(array('debate_model','debate_posts_model'));
 //        $this->load->helper('date');
     }
     

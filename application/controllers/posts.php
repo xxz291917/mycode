@@ -22,7 +22,7 @@ class Posts extends MY_Controller {
         if (empty($forum) || $forum['type'] == 'group') {
             $this->message('参数错误，发布的版块不存在或者不是子版块', $forum_show_url);
         }
-        if ($this->input->post('submit') && $this->check_posts('post') && $post = $this->input->post(null)) {
+        if ($this->input->post('submit') && $this->check_post('post',$special) && $post = $this->input->post(null)) {
             //检测权限。
             $is_post = $this->forums_model->check_permission('post', $forum_id);
             if (!$is_post) {
@@ -45,6 +45,7 @@ class Posts extends MY_Controller {
             if($special !=1){
                 $class = self::$specials[$special];
                 $this->load->model($class);
+//                var_dump($this->user);die;
                 $var['special_post'] = $class::$special_post;
             }
             $this->view('posts_post', $var);
@@ -62,7 +63,7 @@ class Posts extends MY_Controller {
             $this->message('参数错误，发布的主题不存在', $forum_show_url);
         }
         //通过了check校验
-        if ($this->input->post('submit') && $this->check_posts('reply') && $post = $this->input->post(null)) {
+        if ($this->input->post('submit') && $this->check_post('reply',$topic['special']) && $post = $this->input->post(null)) {
             //检测权限。
             $is_post = $this->forums_model->check_permission('reply', $topic['forum_id']);
             if (!$is_post) {
@@ -113,7 +114,9 @@ class Posts extends MY_Controller {
             }
             //特殊主题完成自己特有的发帖操作。
             if($post['special']!=1){
-                
+                $class = self::$specials[$post['special']];
+                $this->load->model($class);
+                $this->$class->post($tid,$post);
             }
         } elseif ('reply' == $type) {
             //更新topics表
@@ -187,7 +190,7 @@ class Posts extends MY_Controller {
         return TRUE;
     }
 
-    private function check_posts($type = 'post') {
+    private function check_post($type = 'post',$special=1) {
         $this->load->library('form_validation');
         $config = array(
             array(
@@ -203,6 +206,13 @@ class Posts extends MY_Controller {
                 'rules' => 'trim|required|min_length[5]|max_length[80]'
             );
         }
+        //校验特殊主题
+        if($special!=1){
+            $class = self::$specials[$special];
+            $this->load->model($class);
+            $this->$class->check_post($type);
+        }
+        
         $this->form_validation->set_rules($config);
         $this->form_validation->set_error_delimiters('', '');
         return $this->form_validation->run();
