@@ -12,7 +12,6 @@
 <script type="text/javascript" src="<?=base_url()?>js/json2.min.js"></script>
 <script type="text/javascript" src="<?=base_url()?>js/dialog-ex.js"></script>
 
-
 <link rel="stylesheet" href="<?=base_url()?>js/kindeditor/themes/default/default.css" />
 <script charset="utf-8" src="<?=base_url()?>js/kindeditor/kindeditor.js"></script>
 <script charset="utf-8" src="<?=base_url()?>js/kindeditor/lang/zh_CN.js"></script>

@@ -219,12 +219,12 @@
     <td><input type="text" value="<?php echo set_value('subject', '输入标题'); ?>" name="subject" class="inp_txt inp_long"></td>
     <td style="color:#F00;"><?php echo form_error('subject'); ?></td>
   </tr>
-  <?php if($special!=1){?>
+  <?php if($type == 'post' && $special!=1){?>
   <tr>
     <td>
 		<?php $this->load->view($special_post);?>
     </td>
-    <td style="color:#F00;"><?php echo form_error('subject'); ?></td>
+    <td style="color:#F00;"></td>
   </tr>
   <?php }?>
   <tr>

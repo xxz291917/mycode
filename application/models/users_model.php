@@ -18,9 +18,7 @@ class Users_model extends MY_Model {
         if($user){
             //插入用户的操作在这里哦。
         }
-        
         $current_groups = array(empty($user['group_id']) ? $user['member_id'] : $user['group_id']);
-
         //检测是否有过期的扩展组，更新。
         if (!empty($user['groups'])) {
             $new_groups = $this->refresh_blong($user_id);
@@ -117,6 +115,14 @@ class Users_model extends MY_Model {
             return FALSE;
         }
         $sql = "SELECT $u $ex FROM {$this->table} u LEFT JOIN users_extra ex ON ex.user_id=u.id WHERE $where";
+        $query = $this->db->query($sql);
+        return $query->$result_fun();
+    }
+    
+    public function get_user_by_name($name){
+        $where = "username = '$name' AND status=1 LIMIT 0,1";
+        $result_fun = 'row_array';
+        $sql = "SELECT id FROM {$this->table} WHERE $where";
         $query = $this->db->query($sql);
         return $query->$result_fun();
     }

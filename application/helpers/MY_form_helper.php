@@ -87,7 +87,7 @@ if (!function_exists('set_date')) {
         if (!isset($data[$field]) || empty($data[$field])) {
             return '';
         }
-        return date($date_format,$data[$field]);
+        return date($date_format,intval($data[$field]));
     }
 
 }

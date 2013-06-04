@@ -18,33 +18,22 @@ class Debate extends CI_Model {
         if(empty($tid)||empty($post)){
             return FALSE;
         }
-        //完成poll表的数据
-        $poll_data['topic_id']=$tid;
-        $poll_data['is_overt']=$post['is_overt'];
-        $poll_data['is_multiple']=$post['max_choices']>1?1:0;
-        $poll_data['is_visible']=$post['is_visible'];
-        $poll_data['max_choices']=$post['max_choices'];
-        $poll_data['expire_time']=strtotime($post['expire_time']);
-        $poll_data['preview']=join('[|]',array_slice($post['poll_option'], 0, 2));
-        $poll_data['voters']=0;
-        $this->poll_model->insert($poll_data);
-        //完成poll_options表的数据
-        $options_data = array();
-        foreach($post['poll_option'] as $k=>$v){
-            $options_data[$k]['topic_id']=$tid;
-            $options_data[$k]['display_order']=$k;
-            $options_data[$k]['option']=$v;
-        }
-        $this->poll_options_model->insert_batch($options_data);
+        //完成debate表的数据
+        $debate_data['topic_id']=$tid;
+        $debate_data['user_id']=$this->user['id'];
+        $debate_data['start_time']=$this->time;
+        $debate_data['end_time']=  strtotime($post['end_time']);
+        $debate_data['umpire']=$post['umpire'];
+        $debate_data['affirm_point']=$post['affirm_point'];
+        $debate_data['negate_point']=$post['negate_point'];
+        $this->debate_model->insert($debate_data);
     }
     
     public function check_post($type = 'post') {
-//        $this->form_validation->set_rules('highlight[0]', '高亮颜色', 'required|color');
-//        $this->form_validation->set_rules('highlight[1]', '粗体', 'regex_match[/[01]/]');
-//        $this->form_validation->set_rules('highlight[2]', '斜体', 'regex_match[/[01]/]');
-//        $this->form_validation->set_rules('highlight[3]', '下划线', 'regex_match[/[01]/]');
-//        $this->form_validation->set_message('regex_match', '%s参数不正确。');
-//        $this->form_validation->set_message('color', '%s不是正确的颜色值。');
+        $this->form_validation->set_rules('affirm_point', '正方观点', 'trim|required|max_length[1500]');
+        $this->form_validation->set_rules('negate_point', '反方观点', 'trim|required|max_length[1500]');
+        $this->form_validation->set_rules('end_time', '结束日期', 'is_strtotime');
+        $this->form_validation->set_rules('umpire', '裁判员', 'trim|required|callback_username_check');
     }
 
 }

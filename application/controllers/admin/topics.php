@@ -109,7 +109,7 @@ class Topics extends Admin_Controller {
         if(!empty($ids)){
           //获取涉及的帖子的内容
             $ids = join(',', $ids);
-            $contents = $this->posts_model->get_posts_list("topic_id in($ids)",'topic_id,content');
+            $contents = $this->posts_model->get_posts_list("topic_id in($ids)");
             $contents = $this->posts_model->key_list($contents,'topic_id');
             foreach ($topics as $key=>$topic) {
                 $topics[$key]['content'] = $contents[$topic['id']]['content'];

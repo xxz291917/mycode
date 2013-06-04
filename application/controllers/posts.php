@@ -45,9 +45,9 @@ class Posts extends MY_Controller {
             if($special !=1){
                 $class = self::$specials[$special];
                 $this->load->model($class);
-//                var_dump($this->user);die;
                 $var['special_post'] = $class::$special_post;
             }
+            $var['type'] = 'post';
             $this->view('posts_post', $var);
         }
     }
@@ -85,6 +85,7 @@ class Posts extends MY_Controller {
             $forum_id = $topic['forum_id'];
             $is_arr = $this->get_is($forum_id);
             $var['is_arr'] = $is_arr;
+            $var['type'] = 'replay';
             $this->view('posts_post', $var);
         }
     }
@@ -291,6 +292,16 @@ class Posts extends MY_Controller {
             $file_url = base_url($file_path);
             $return = array('error'=>0,'url'=>$file_url,'aid'=>$aid,'title'=>$title);
             echo json_encode($return);die;
+        }
+    }
+
+    public function username_check($str) {
+        $user = $this->users_model->get_user_by_name($str);
+        if (empty($user['id'])) {
+            $this->form_validation->set_message('username_check', '%s不是有效的用户。');
+            return FALSE;
+        } else {
+            return TRUE;
         }
     }
 

@@ -17,8 +17,8 @@
     </div>
     <div>
       <label>发帖时间：<em class="feedback"></em></label>
-      <input name="start_time" class="inp_txt inp_date_num" type="text" value="<?php echo my_set_date('start_time',$data,'Y-m-d');?>" /> -
-      <input name="end_time" class="inp_txt inp_date_num" type="text" value="<?php echo my_set_date('end_time',$data,'Y-m-d');?>" />
+      <input name="start_time" class="inp_txt inp_date_num" type="text" value="<?php echo my_set_value('start_time',$data);?>" /> -
+      <input name="end_time" class="inp_txt inp_date_num" type="text" value="<?php echo my_set_value('end_time',$data);?>" />
     </div>
     <div>
       <label>&nbsp;</label>

@@ -768,7 +768,7 @@ class CI_Form_validation {
 		}
 
 		$field = $this->_field_data[$field]['postdata'];
-
+echo $field;
 		if (is_array($field))
 		{
 			if ( ! in_array($value, $field))
