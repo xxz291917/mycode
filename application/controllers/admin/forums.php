@@ -1,4 +1,7 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
 
 class Forums extends Admin_Controller {
 
@@ -45,11 +48,45 @@ class Forums extends Admin_Controller {
         die;
     }
 
+    public function delete_category() {
+        $id = intval($this->input->post('id'));
+        if ($id > 0) {
+            $this->load->model('topics_category_model');
+            if ($this->topics_category_model->delete(array('id' => $id))) {
+                $this->message('操作成功。', 1);
+            } else {
+                $this->message('操作数据库失败。');
+            }
+        } else {
+            $this->message('操作成功。', 1);
+        }
+    }
+
     public function edit($id = '', $type = 'basic') {
         if (empty($id)) {
             $this->message('参数错误！');
         } elseif ($this->input->post('submit')) {
             $forums = $this->input->post();
+            
+            //需要加入操作主题分类
+            if ($type == 'category') {
+                $this->load->model('topics_category_model');
+                if(!empty($forums['old'])){
+                    if($this->topics_category_model->update_old($forums['old'],$id)){
+                        unset($forums['old']);
+                    }else{
+                        $this->message('修改分类失败');
+                    }
+                }
+                if(!empty($forums['new'])){
+                    if($is_insert = $this->topics_category_model->insert_new($forums['new'],$id)){
+                        unset($forums['new']);
+                    }else{
+                        $this->message('添加分类失败');
+                    }
+                }
+            }
+            
             $forums = $this->forums_model->form_filter($forums, 'en');
             if ($this->forums_model->update($forums, array('id' => $id))) {
                 $this->message('修改成功！');
@@ -68,10 +105,15 @@ class Forums extends Admin_Controller {
             } elseif ($type == 'credit') {
                 //获取启用的积分名称
                 $this->load->model('credit_name_model');
-                $var['credit_names'] =$this->credit_name_model->get_all();
+                $var['credit_names'] = $this->credit_name_model->get_all();
                 $this->load->model('credit_rule_model');
-                $var['credit_rules'] =$this->credit_rule_model->get_all();
-                $var['cycle_names'] = array(0 => '一次', 1 => '一天', 2 => '整点',3=>'间隔时间',4=>'不限');
+                $var['credit_rules'] = $this->credit_rule_model->get_all();
+                $var['cycle_names'] = array(0 => '一次', 1 => '一天', 2 => '整点', 3 => '间隔时间', 4 => '不限');
+            } elseif ($type == 'category') {
+                //获取本版块下的主题分类
+                $this->load->model('topics_category_model');
+                $categorys = $this->topics_category_model->get_list(array('forum_id'=>$id),'*','display_order');
+                $var['categorys'] = !empty($categorys) ? $this->topics_category_model->key_list($categorys) : array();
             }
             $this->view('forums_' . $type, $var);
         }

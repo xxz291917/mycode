@@ -54,6 +54,29 @@ class Base_Controller extends CI_Controller {
         }
     }
 
+    /**
+     * 递归循环处理html，使其成为安全的代码。主要是过滤可执行的代码。并不过滤html。
+     * @param type $str
+     * @return type
+     */
+    protected function safe_filter($str) {
+        if(is_array($str)){
+            foreach ($str as $k=>$val){
+                $str[$k] = $this->safe_filter($val);
+            }
+            return $str;
+        }elseif(is_string($str)){
+            $farr = array(
+                "/<\/?(script|i?frame|style|object)[^>]*>/ies",
+                "/<[^>]*on[a-zA-Z]+\s*=[^>]*>/ies", //过滤javascript的on事件
+                );
+            $str = preg_replace($farr, "htmlspecialchars('\\0')", $str);
+            return $str;
+        }else{
+            return $str;
+        }
+    }
+
 }
 
 class MY_Controller extends Base_Controller {
@@ -86,10 +109,10 @@ class MY_Controller extends Base_Controller {
         }
     }
 
-    protected function message($message, $redirect = 'BACK') {
+    protected function message($message, $sucess = 0, $redirect = 'BACK') {
         //判断是否是ajax提交
         if ($this->input->is_ajax_request()) {
-            echo $this->echo_ajax($redirect, $message);
+            echo $this->echo_ajax($sucess, $message);
         } else {
             global $OUT;
             $vars['message'] = $message;

@@ -2,6 +2,7 @@
 <p class="sec_nav">
 <a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/basic"><span>基本设置</span></a> 
 <a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/seo"><span>SEO设置</span></a>
+<a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/category"><span>主题分类</span></a> 
 <a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/post"><span>帖子相关</span></a>
 <a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/access" class="on"><span>权限设置</span></a>
 <a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/credit"><span>积分设置</span></a> 

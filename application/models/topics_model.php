@@ -20,6 +20,15 @@ class Topics_model extends MY_Model {
         return $topic['subject'];
     }
     
+    public function format_tags($tags) {
+        $tags = trim($tags);
+        if(!empty($tags)){
+            $tags = preg_split('/[\s,]+/', $tags);
+            $tags = join(',', array_slice(array_unique(array_filter($tags)), 0, 5));
+        }
+        return $tags;
+    }
+    
 }
 
 ?>

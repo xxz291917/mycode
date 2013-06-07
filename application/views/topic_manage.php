@@ -1,6 +1,6 @@
 <?php 
 //审核是后台的操作，发送到后台的处理程序。
-empty($action_url) && $action = 'index.php/topic/manage/';
+empty($action_url) && $action_url = 'index.php/topic/manage/';
 ?>
 
 <form action="<?php echo base_url($action_url . $action); ?>" method="post" id="topic_manage">

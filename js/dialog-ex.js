@@ -85,7 +85,7 @@ jQuery.extend(jQuery, {
   }
 });
 
-var base_url = '<?=base_url()?>';
+
 $(function(){
 	//弹出框A链接扩展
 	$("a[target=dialog]").each(function(){

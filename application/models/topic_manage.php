@@ -36,6 +36,18 @@ class Topic_manage extends CI_Model {
         return $return_arr;
     }
 
+    public function get_permission_manage($forum_id) {
+        //获取管理权限
+        $admin_permission = $this->groups_model->get_admin_permission($forum_id);
+        //获取页面中展示的可操作的链接
+        $manage_arr = $this->get_manage_arr();
+        foreach ($manage_arr as $key => $val) {
+            if (empty($admin_permission[$key])) {
+                unset($manage_arr[$key]);
+            }
+        }
+        return $manage_arr;
+    }
     /**
      * 传入一个action,返回在数据库中的字段值。比如：top=>allow_top
      * @param type $action

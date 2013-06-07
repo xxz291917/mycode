@@ -1,7 +1,14 @@
 <h3>编辑版块：
   <?=$data['name']?>
 </h3>
-<p class="sec_nav"> <a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/basic"><span>基本设置</span></a> <a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/seo" class="on"><span>SEO设置</span></a> <a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/post"><span>帖子相关</span></a> <a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/access"><span>权限设置</span></a> <a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/credit"><span>积分设置</span></a> </p>
+<p class="sec_nav">
+<a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/basic"><span>基本设置</span></a>
+<a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/seo" class="on"><span>SEO设置</span></a>
+<a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/category"><span>主题分类</span></a> 
+<a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/post"><span>帖子相关</span></a>
+<a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/access"><span>权限设置</span></a>
+<a href="<?=base_url()?>index.php/admin/forums/edit/<?=$data['id']?>/credit"><span>积分设置</span></a>
+</p>
 <!--<ul class="col-ul tips">
   <li><b>提示: </b></li>
   <li>双击版块名称可编辑版块标题</li>

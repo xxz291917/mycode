@@ -11,13 +11,21 @@ class Posts_model extends MY_Model {
     public function __construct() {
         parent::__construct();
         $this->table = 'posts';
-        $this->id = 'id';
-        $this->load->model(array('smiley_model','attachments_model'));
+        $this->load->model(array('smiley_model', 'attachments_model'));
     }
 
+    /**
+     * 严格按照post_time排序。 
+     * @param type $where
+     * @param type $field
+     * @param type $orderby
+     * @param type $limit
+     * @param type $length
+     * @return type
+     */
     public function get_posts_list($where = '', $field = '*', $orderby = '', $limit = 0, $length = 20) {
         $result = parent::get_list($where, $field, $orderby, $limit, $length);
-        if(!empty($result)){
+        if (!empty($result)) {
             foreach ($result as $key => &$value) {
                 $value = $this->output_filter($value);
             }
@@ -26,12 +34,13 @@ class Posts_model extends MY_Model {
     }
 
     public function output_filter($value) {
-        if(empty($value)) return FALSE;
+        if (empty($value))
+            return FALSE;
         //过滤attachments
         $value = $this->attachments2html($value);
         //过滤is_bbcode
         //过滤is_smilies
-        if($value['is_smilies']){
+        if ($value['is_smilies']) {
             $value['content'] = $this->smiley2html($value['content']);
         }
         //过滤is_html
@@ -67,30 +76,31 @@ class Posts_model extends MY_Model {
         }
         return $str;
     }
-    
+
     public function attachments2html($value) {
         //此处加一个cache
-        $attachments = $this->attachments_model->get_list(array('topic_id'=>$value['topic_id'],'post_id'=>$value['id']));
-        $this->attachments = $this->key_list($attachments,'id');
+        $attachments = $this->attachments_model->get_list(array('topic_id' => $value['topic_id'], 'post_id' => $value['id']));
+        $this->attachments = $this->key_list($attachments, 'id');
         //[attach][attachimg]
         $value['content'] = preg_replace("/\[(attach|attachimg)\](\d+)\[\/\\1\]/ies", "\$this->get_html_for_attach('\\2','\\1')", $value['content']);
         return $value;
     }
-    private function get_html_for_attach($aid,$type='attach') {
-        if(!empty($this->attachments[$aid])){
+
+    private function get_html_for_attach($aid, $type = 'attach') {
+        if (!empty($this->attachments[$aid])) {
             $attachment = $this->attachments[$aid];
             $html = '';
-            if('attach'==$type){
+            if ('attach' == $type) {
                 $href = base_url("index.php/attachment/download/$aid");
                 $title = $attachment['description'];
-                $html = '<a href="'.$href.'" title="'.$title.'">'.$title.'</a>';
-            }elseif('attachimg'==$type){
+                $html = '<a href="' . $href . '" title="' . $title . '">' . $title . '</a>';
+            } elseif ('attachimg' == $type) {
                 $src = base_url($attachment['path']);
                 $title = $attachment['description'];
-                $html = '<img src="'.$src.'" title="'.$title.'" alt="'.$title.'" />';
+                $html = '<img src="' . $src . '" title="' . $title . '" alt="' . $title . '" />';
             }
             return $html;
-        }else{
+        } else {
             return '';
         }
     }

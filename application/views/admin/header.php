@@ -10,5 +10,8 @@
 <script type="text/javascript" src="<?=base_url()?>js/json2.min.js"></script>
 <script type="text/javascript" src="<?=base_url()?>js/jquery-ui/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?=base_url()?>js/dialog-ex.js"></script>
+<script type="text/javascript">
+var base_url = '<?=base_url()?>';
+</script>
 </head>
 <body>

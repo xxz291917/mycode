@@ -6,7 +6,7 @@ class Posts extends MY_Controller {
             
     function __construct() {
         parent::__construct();
-        $this->load->model(array('permission', 'topics_model', 'topics_posted_model', 'posts_model', 'users_extra_model', 'forums_statistics_model'));
+        $this->load->model(array('permission', 'topics_model','tags_model', 'topics_posted_model', 'posts_model', 'users_extra_model', 'forums_statistics_model'));
     }
 
     public function index() {
@@ -15,12 +15,12 @@ class Posts extends MY_Controller {
 
     public function post($forum_id = '', $special = 1) {
         if (empty($forum_id) || !is_numeric($forum_id)) {
-            $this->message('参数错误，请指定要发布的版块！', base_url());
+            $this->message('参数错误，请指定要发布的版块！', 0 ,base_url());
         }
         $forum_show_url = base_url('index.php/forum/show/' . $forum_id);
         $forum = $this->forums_model->get_by_id($forum_id);
         if (empty($forum) || $forum['type'] == 'group') {
-            $this->message('参数错误，发布的版块不存在或者不是子版块', $forum_show_url);
+            $this->message('参数错误，发布的版块不存在或者不是子版块', 0 ,$forum_show_url);
         }
         if ($this->input->post('submit') && $this->check_post('post',$special) && $post = $this->input->post(null)) {
             //检测权限。
@@ -34,9 +34,9 @@ class Posts extends MY_Controller {
             }
             $post = array_merge($post, array('forum_id' => $forum_id, 'special' => $special));
             if ($this->_post($post)) {
-                $this->message('发帖成功。', $forum_show_url);
+                $this->message('发帖成功。', 0 ,$forum_show_url);
             } else {
-                $this->message('发帖失败。', $forum_show_url);
+                $this->message('发帖失败。', 0 ,$forum_show_url);
             }
         } else {
             $is_arr = $this->get_is($forum_id);
@@ -54,13 +54,13 @@ class Posts extends MY_Controller {
 
     public function reply($topic_id = '') {
         if (empty($topic_id) || !is_numeric($topic_id)) {
-            $this->message('参数错误，请指定要发布的主题！', base_url());
+            $this->message('参数错误，请指定要发布的主题！', 0 ,base_url());
         }
 
         $forum_show_url = base_url("index.php/topic/show/$topic_id"); //回复完成跳转到帖子的最后一页。
         $topic = $this->topics_model->get_by_id($topic_id);
         if (empty($topic)) {
-            $this->message('参数错误，发布的主题不存在', $forum_show_url);
+            $this->message('参数错误，发布的主题不存在', 0 ,$forum_show_url);
         }
         //通过了check校验
         if ($this->input->post('submit') && $this->check_post('reply',$topic['special']) && $post = $this->input->post(null)) {
@@ -77,9 +77,9 @@ class Posts extends MY_Controller {
             $post = array_merge($post, array('topic_id' => $topic_id, 'forum_id' => $topic['forum_id'], 'topic_author_id' => $topic['author_id']));
             //完成回复。
             if ($this->_post($post, 'reply')) {
-                $this->message('发帖成功。', $forum_show_url);
+                $this->message('发帖成功。', 1 ,$forum_show_url);
             } else {
-                $this->message('发帖失败。', $forum_show_url);
+                $this->message('发帖失败。', 0 ,$forum_show_url);
             }
         } else {
             $forum_id = $topic['forum_id'];
@@ -97,14 +97,18 @@ class Posts extends MY_Controller {
      * @return boolean
      */
     private function _post($post, $type = 'post') {
+        $post = $this->safe_filter($post);//安全过滤，不包括html转义，也就是说在一定条件下可以使用html代码
+        var_dump($post);die;
         $forum_id = $post['forum_id'];
         if ('post' == $type) {
             //插入topics表
+            $tags = $this->topics_model->format_tags($post['tags']);
             $topics_data['forum_id'] = $forum_id;
             $topics_data['author'] = $this->user['username'];
             $topics_data['author_id'] = $this->user['id'];
             $topics_data['post_time'] = $this->time;
             $topics_data['subject'] = $post['subject'];
+            $topics_data['tags'] = $tags;
             $topics_data['special'] = $post['special'];
             $topics_data['replies'] = 0;
             $topics_data['status'] = $this->forums_model->get_check($forum_id) > 0 ? 4 : 1;
@@ -113,6 +117,7 @@ class Posts extends MY_Controller {
             if (empty($tid)) {
                 $this->message('发帖topics失败。');
             }
+            $this->tags_model->insert_tags($tags,$tid);
             //特殊主题完成自己特有的发帖操作。
             if($post['special']!=1){
                 $class = self::$specials[$post['special']];

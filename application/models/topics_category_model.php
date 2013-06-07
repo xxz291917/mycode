@@ -17,6 +17,53 @@ class Topics_category_model extends MY_Model {
         return !empty($option)?$option:'<option value="0">暂无分类</option>';
     }
     
+    
+    public function update_old($data,$forum_id) {
+        if (!is_array($data))
+            return TRUE;
+        //得到当前的forums
+        $categorys = $this->get_list(array('forum_id'=>$forum_id));
+        $categorys = $this->key_list($categorys);
+        foreach ($data as $key => $val) {
+            $is_update = FALSE;
+            $tmp = array();
+            $name = isset($val['name']) ? trim($val['name']) : '';
+            !empty($name) && $tmp['name'] = $name;
+            $tmp['display_order'] = intval($val['display_order']);
+            $tmp['moderators'] = !empty($val['moderators'])?intval($val['moderators']):0;
+            foreach ($tmp as $k => $v) {
+                if ($categorys[$key][$k] != $v) {
+                    $is_update = TRUE;
+                    break;
+                }
+            }
+            if ($is_update) {
+                if (!$this->update($tmp,array('id'=>$key))) {
+                    return FALSE;
+                }
+            }
+        }
+        return TRUE;
+    }
+
+    public function insert_new($data,$forum_id) {
+        if (!is_array($data))
+            return TRUE;
+        foreach ($data as $key => $val) {
+            $name = trim($val['name']);
+            if (!empty($name)) {
+                $insert_data['display_order'] = intval($val['display_order']);
+                $insert_data['name'] = $name;
+                $insert_data['forum_id'] = $forum_id;
+                $insert_data['moderators'] = !empty($val['moderators'])?intval($val['moderators']):0;
+                if (!$this->insert($insert_data)) {
+                    return FALSE;
+                }
+            }
+        }
+        return TRUE;
+    }
+    
 }
 
 ?>
