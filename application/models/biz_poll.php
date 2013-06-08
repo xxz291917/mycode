@@ -2,6 +2,7 @@
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
+
 /**
  * 业务模型
  * 主要处理特殊帖子投票相关的调用和业务。
@@ -53,6 +54,34 @@ class Biz_poll extends CI_Model {
         $this->form_validation->set_message('is_overt', '%s参数不正确。');
         $this->form_validation->set_message('max_choices', '%s必须是大于0的正整数');
     }
+
+    public function append_first_post($first_post) {
+        if (empty($first_post)) {
+            return FALSE;
+        }
+        //添加上poll表里的投票附加字段
+        $poll = $this->poll_model->get_by_id($first_post['topic_id']);
+        $first_post = $first_post + $poll;
+        //初始化投票选项，放入option索引里
+        $options = $this->poll_options_model->get_list(array('topic_id'=>$first_post['topic_id']));
+        $options = empty($options)?array():$options;
+        $first_post['options'] = $options;
+        return $first_post;
+    }
+    
+    public function post_append(&$post) {
+        if (empty($post)) {
+            return FALSE;
+        }
+        //添加上poll表里的投票附加字段
+        $poll = $this->poll_model->get_by_id($post['id']);
+        $post = $post + $poll;
+        //初始化投票选项，放入option索引里
+        $options = $this->poll_options_model->get_list(array('topic_id'=>$post['id']));
+        $options = empty($options)?array():$options;
+        $post['options'] = $options;
+    }
+    
 
 }
 

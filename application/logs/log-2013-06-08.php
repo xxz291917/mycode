@@ -27,3 +27,13 @@ ERROR - 2013-06-08 14:55:58 --> Severity: Notice  --> Undefined property: Topic:
 ERROR - 2013-06-08 14:55:58 --> Severity: Notice  --> Undefined property: Topic::$enable_cache D:\www\mycode\system\core\Model.php 51
 ERROR - 2013-06-08 14:55:58 --> Severity: Notice  --> Undefined property: Topic::$enable_cache D:\www\mycode\system\core\Model.php 51
 ERROR - 2013-06-08 15:16:33 --> Severity: Warning  --> Invalid argument supplied for foreach() D:\www\mycode\application\controllers\topic.php 61
+ERROR - 2013-06-08 15:19:43 --> Severity: Warning  --> Invalid argument supplied for foreach() D:\www\mycode\application\controllers\topic.php 61
+ERROR - 2013-06-08 16:30:46 --> Severity: Notice  --> Undefined variable: special D:\www\mycode\application\controllers\topic.php 38
+ERROR - 2013-06-08 16:30:46 --> Severity: Notice  --> Undefined index:  D:\www\mycode\application\controllers\topic.php 38
+ERROR - 2013-06-08 16:31:31 --> Severity: Notice  --> Undefined index: is_multiple D:\www\mycode\application\views\poll_show.php 35
+ERROR - 2013-06-08 16:31:31 --> Severity: Notice  --> Undefined index: voters D:\www\mycode\application\views\poll_show.php 41
+ERROR - 2013-06-08 16:31:31 --> Severity: Notice  --> Undefined index: expire_time D:\www\mycode\application\views\poll_show.php 43
+ERROR - 2013-06-08 16:31:31 --> Severity: Notice  --> Undefined variable: attributes D:\www\mycode\application\views\poll_show.php 45
+ERROR - 2013-06-08 18:19:29 --> Severity: Notice  --> Undefined variable: attributes D:\www\mycode\application\views\poll_show.php 45
+ERROR - 2013-06-08 18:26:58 --> Severity: Notice  --> Array to string conversion D:\www\mycode\application\core\MY_Model.php 154
+ERROR - 2013-06-08 18:41:37 --> Severity: Warning  --> Invalid argument supplied for foreach() D:\www\mycode\application\controllers\topic.php 65

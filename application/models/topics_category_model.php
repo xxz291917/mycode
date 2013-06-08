@@ -7,14 +7,21 @@ class Topics_category_model extends MY_Model {
         $this->table='topics_category';
     }
     
-    public function create_options($check_arr = array()) {
+    /**
+     * 生成select的option选项，传入版块id。分类只跟版块id挂钩。
+     * @param type $check_arr
+     * @return type
+     */
+    public function create_options($forum_id, $check_arr = array()) {
         $option = '';
-        $categorys = $this->get_all();
-        foreach ($categorys as $key => $category) {
-            $checked = in_array($category['id'], $check_arr) ? ' selected="selected"' : '';
-            $option .= '<option value="' . $category['id'] . '"' . $checked . '>' . $category['name'] . '</option>';
+        $categorys = $this->get_list(array('forum_id'=>$forum_id));
+        if(empty($categorys)){
+            foreach ($categorys as $key => $category) {
+                $checked = in_array($category['id'], $check_arr) ? ' selected="selected"' : '';
+                $option .= '<option value="' . $category['id'] . '"' . $checked . '>' . $category['name'] . '</option>';
+            }
         }
-        return !empty($option)?$option:'<option value="0">暂无分类</option>';
+        return !empty($option) ? $option : '<option value="0">暂无分类</option>';
     }
     
     

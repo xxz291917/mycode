@@ -67,9 +67,9 @@
     <td><a href="<?=base_url()?>index.php/topic/show/<?=$topic['id']?>">
       <?=$topic['subject']?>
       </a></td>
-    <td><?php echo "{$topic['author']} <br/> ".timespan($topic['post_time']);?></td>
+    <td><?php echo "{$topic['author']} <br/> ".time_span($topic['post_time']);?></td>
     <td><?php echo "{$topic['replies']} / {$topic['views']}";?></td>
-    <td><?php echo "{$topic['last_author']} <br/> ".timespan($topic['last_post_time']);?></td>
+    <td><?php echo "{$topic['last_author']} <br/> ".time_span($topic['last_post_time']);?></td>
   </tr>
   <?php 
         }    

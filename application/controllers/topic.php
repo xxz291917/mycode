@@ -12,7 +12,7 @@ class Topic extends MY_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model(array('biz_topic_manage', 'forums_statistics_model', 'posts_model', 'credit_name_model'));
+        $this->load->model(array('biz_topic_manage','biz_post', 'forums_statistics_model', 'posts_model', 'credit_name_model'));
     }
 
     public function show($id) {
@@ -34,6 +34,10 @@ class Topic extends MY_Controller {
             $where = "topic_id = '$id' AND is_first = '1'";
             $first_post = $this->posts_model->get_one($where);
             $var['first_post'] = $this->posts_model->output_filter($first_post);
+            //特殊主题需要的其他变量
+            $class = biz_post::$specials[$topic['special']];
+            $this->load->model($class);
+            $var['first_post'] = $this->$class->append_first_post($var['first_post']);
         }
         
         //获取本主题下的回复和分页
@@ -81,6 +85,16 @@ class Topic extends MY_Controller {
     }
 
     /**
+     * 用户提交投票选项
+     */
+    public function poll($id) {
+        
+    }
+
+
+
+
+    /**
      * 管理帖子，接收post过来的topic_id,填写删除原因，然后删除帖子。
      */
     public function manage($action, $topic_id = '') {
@@ -124,14 +138,14 @@ class Topic extends MY_Controller {
                 $end_time = $this->topics_endtime_model->get_one(array('topic_id' => $topic_id[0], 'action' => $action), 'end_time');
                 $topic['end_time'] = empty($end_time) ? 0 : $end_time['end_time'];
             } elseif (in_array($action, array('ban', 'close', 'del'))) {//屏蔽、关闭、删除
-                $topic[$action] = $topic['status'] == Topic_manage::$status[$action] ? 1 : 0;
+                $topic[$action] = $topic['status'] == Biz_topic_manage::$status[$action] ? 1 : 0;
             } elseif ($action == 'move') {//移动版块
                 $forums = $this->forums_model->get_format_forums();
                 $forums_option = $this->forums_model->create_options($forums, array($topic['forum_id']));
                 $var['forums_option'] = $forums_option;
             } elseif ($action == 'editcategory') {//移动分类
                 $this->load->model('topics_category_model');
-                $category_option = $this->topics_category_model->create_options(array($topic['category_id']));
+                $category_option = $this->topics_category_model->create_options($topic['forum_id'],array($topic['category_id']));
                 $var['category_option'] = $category_option;
             } elseif (in_array($action, array('copy', 'merge', 'split'))) {
                 echo '暂未开发';

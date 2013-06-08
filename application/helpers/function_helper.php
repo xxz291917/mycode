@@ -12,9 +12,9 @@
  * @param	integer	Unix timestamp
  * @return	integer
  */
-if (!function_exists('timespan')) {
+if (!function_exists('time_span')) {
 
-    function timespan($first_time = 1, $second_time = '',$max_time=2592000) {
+    function time_span($first_time = 1, $second_time = '',$max_time=2592000) {
         $CI = & get_instance();
         $CI->lang->load('date');
         if (!is_numeric($second_time)) {

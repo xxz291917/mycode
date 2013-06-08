@@ -131,7 +131,7 @@ class Forums extends Admin_Controller {
                 $this->message('修改失败！');
             }
         } else {
-            $this->load->helper('form');
+            //$this->load->helper('form');
             //获取版块积分设置
             $forums = $this->forums_model->get_by_id($id);
             $forums_setting = $this->forums_setting_model->get_by_id($id);

@@ -28,12 +28,33 @@
             ?>
     </td>
     <td>标题：<?php echo $first_post['subject'];?><br/>
-        <?php echo "发表于：".timespan($first_post['post_time']);?><br/>
+        <?php echo "发表于：".time_span($first_post['post_time']);?><br/>
         内容：<?php echo $first_post['content'];?><br/>
         
-        帖子选项：<br/>
-        
-        
+        <hr/>
+<?php if($first_post['is_multiple']){
+		echo '多选';
+	}else{
+		echo '单选';
+	}
+?>
+投票，共有<?=$first_post['voters']?>名用户参与了投票（查看投票参与人）<br/>
+距离投票结束还有：<?php echo time_span($this->time,$first_post['expire_time'],0);?>  <br/>
+      	<?php
+		$create_function = $first_post['is_multiple']?'form_checkbox':'form_radio';
+		echo form_open(base_url('index.php/topic/poll/'.$first_post['topic_id']));
+		foreach($first_post['options'] as $option){
+			$data = array(
+				'name'        => 'option_'.$first_post['topic_id'],
+				'value'       => $option['id'],
+				'style'       => 'margin:10px',
+				);
+			echo $create_function($data).$option['option'].'<br/>';
+			}
+			echo form_submit('submit','投票');
+		echo form_close();
+			?>
+<hr/>        
         
         签名：<?php echo $user['signature'];?><br/>
     </td>
@@ -56,7 +77,7 @@
             ?>
     </td>
     <td>标题：<?php echo $post['subject'];?><br/>
-        <?php echo "发表于：".timespan($post['post_time']);?><br/>
+        <?php echo "发表于：".time_span($post['post_time']);?><br/>
         内容：<?php echo $post['content'];?><br/>
         签名：<?php echo $user['signature'];?><br/>
     </td>

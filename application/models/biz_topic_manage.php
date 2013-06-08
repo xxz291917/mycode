@@ -23,7 +23,7 @@ class Biz_topic_manage extends CI_Model {
     function __construct() {
         parent::__construct();
         $this->load->model(array('topics_model','posts_model'));
-        $this->load->helper('date');
+        //$this->load->helper('date');
     }
 
     public function get_manage_arr() {

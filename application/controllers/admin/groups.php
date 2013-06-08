@@ -67,7 +67,7 @@ class Groups extends Admin_Controller {
                 $this->message('修改失败！');
             }
         } else {
-            $this->load->helper('form');
+            //$this->load->helper('form');
             $groups = $this->groups_model->get_by_id($id);
             $groups = $this->groups_model->form_filter($groups, 'de');
             $var['data'] = $groups;

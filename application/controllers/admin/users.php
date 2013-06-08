@@ -74,7 +74,7 @@ class Users extends Admin_Controller {
                 $this->message('修改失败！');
             }
         } else {
-            $this->load->helper('form');
+            //$this->load->helper('form');
             $users = $this->users_model->get_by_id($id);
             $users = $this->users_model->form_filter($users, 'de');
             $var['data'] = $users;
