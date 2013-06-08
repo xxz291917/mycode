@@ -2,6 +2,7 @@
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
+
 /**
  * 业务模型
  * 主要处理普通的发帖回帖业务。
@@ -9,13 +10,13 @@ if (!defined('BASEPATH'))
  * @author		xiaxuezhi
  */
 class Biz_post extends CI_Model {
-    
-    static $specials = array(2=>'biz_ask',3=>'biz_poll',4=>'biz_debate');
-    
+
+    static $specials = array(2 => 'biz_ask', 3 => 'biz_poll', 4 => 'biz_debate');
+
     public function __construct() {
         parent::__construct();
     }
-    
+
     /**
      * 接受参数，完成发帖或者回复的数据库操作。
      * @param type $post
@@ -23,8 +24,7 @@ class Biz_post extends CI_Model {
      * @return boolean
      */
     public function post($post, $type = 'post') {
-        $post = $this->safe_filter($post);//安全过滤，不包括html转义，也就是说在一定条件下可以使用html代码
-        var_dump($post);die;
+        $post = $this->safe_filter($post); //安全过滤，不包括html转义，也就是说在一定条件下可以使用html代码
         $forum_id = $post['forum_id'];
         if ('post' == $type) {
             //插入topics表
@@ -43,12 +43,12 @@ class Biz_post extends CI_Model {
             if (empty($tid)) {
                 $this->message('发帖topics失败。');
             }
-            $this->tags_model->insert_tags($tags,$tid);
+            $this->tags_model->insert_tags($tags, $tid);
             //特殊主题完成自己特有的发帖操作。
-            if($post['special']!=1){
+            if ($post['special'] != 1) {
                 $class = self::$specials[$post['special']];
                 $this->load->model($class);
-                $this->$class->post($tid,$post);
+                $this->$class->post($tid, $post);
             }
         } elseif ('reply' == $type) {
             //更新topics表
@@ -92,23 +92,23 @@ class Biz_post extends CI_Model {
             $this->message('发帖posts失败。');
         }
         //更新用户上传的附件（图片和文件）
-        if(!empty($post['attachments'])){
-            $this->load->model(array('attachments_unused_model','attachments_model'));
+        if (!empty($post['attachments'])) {
+            $this->load->model(array('attachments_unused_model', 'attachments_model'));
             $aids = join(',', $post['attachments']);
             $attachments = $this->attachments_unused_model->get_list("id in($aids)");
             foreach ($attachments as &$attachment) {
-                $attachment['topic_id']=$tid;
-                $attachment['post_id']=$pid;
-                $attachment['is_remote']=0;
-                $attachment['downloads']=0;
+                $attachment['topic_id'] = $tid;
+                $attachment['post_id'] = $pid;
+                $attachment['is_remote'] = 0;
+                $attachment['downloads'] = 0;
             }
-            if(!$this->attachments_model->insert_batch($attachments)){
+            if (!$this->attachments_model->insert_batch($attachments)) {
                 $this->message('插入附件表失败。');
-            }else{
+            } else {
                 $this->attachments_unused_model->delete("id in($aids)");
             }
         }
-        
+
         //更新用户积分
         $credit = $this->forums_model->get_credit($forum_id, $type);
         $update_credit = $this->users_extra_model->update_credits($credit, $this->user['id'], $type);
@@ -122,7 +122,30 @@ class Biz_post extends CI_Model {
         return TRUE;
     }
 
-    private function check_post($type = 'post',$special=1) {
+    /**
+     * 递归循环处理html，使其成为安全的代码。主要是过滤可执行的代码。并不过滤html。
+     * @param type $str
+     * @return type
+     */
+    public function safe_filter($str) {
+        if (is_array($str)) {
+            foreach ($str as $k => $val) {
+                $str[$k] = $this->safe_filter($val);
+            }
+            return $str;
+        } elseif (is_string($str)) {
+            $farr = array(
+                "/<\/?(script|i?frame|style|object)[^>]*>/ies",
+                "/<[^>]*on[a-zA-Z]+\s*=[^>]*>/ies", //过滤javascript的on事件
+            );
+            $str = preg_replace($farr, "htmlspecialchars('\\0')", $str);
+            return $str;
+        } else {
+            return $str;
+        }
+    }
+
+    public function check_post($type = 'post', $special = 1) {
         $this->load->library('form_validation');
         $config = array(
             array(
@@ -139,12 +162,12 @@ class Biz_post extends CI_Model {
             );
         }
         //校验特殊主题
-        if($special!=1){
+        if ($special != 1) {
             $class = self::$specials[$special];
             $this->load->model($class);
             $this->$class->check_post($type);
         }
-        
+
         $this->form_validation->set_rules($config);
         $this->form_validation->set_error_delimiters('', '');
         return $this->form_validation->run();
@@ -163,7 +186,6 @@ class Biz_post extends CI_Model {
         }
         return $return;
     }
-
 
 }
 

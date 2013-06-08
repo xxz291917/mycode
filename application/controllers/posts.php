@@ -46,10 +46,15 @@ class Posts extends MY_Controller {
             $is_arr = $this->biz_post->get_is($forum_id);
             $var['is_arr'] = $is_arr;
             $var['special'] = $special;
+            //如果是特殊帖子需要做相应的处理。
             if ($special != 1) {
                 $class = biz_post::$specials[$special];
                 $this->load->model($class);
                 $var['special_post'] = $class::$special_post;
+                if (method_exists($this->$class, 'init_var')) {
+                    $special_var = $this->$class->init_var();
+                    $var = $var + $special_var;
+                }
             }
             $var['type'] = 'post';
             $this->view('posts_post', $var);

@@ -14,7 +14,35 @@
   <col style="background-color: #8cd5ff;" width="150">
   <col >
   </colgroup>
-  <?php foreach ($posts as $post) { 
+<?php if(!empty($first_post)){
+	$user = $users[$first_post['author_id']];
+?>
+  <tr>
+    <td>
+        <?php echo $user['username'];?><br/>
+        <?php echo $user['group']['name'];?><br/>
+        总分：<?php echo $user['credits'];?><br/>
+        <?php foreach ($credit_name as $key => $val) {
+                echo $val['view_name'].'：'.$user[$key].'<br/>';
+            }
+            ?>
+    </td>
+    <td>标题：<?php echo $first_post['subject'];?><br/>
+        <?php echo "发表于：".timespan($first_post['post_time']);?><br/>
+        内容：<?php echo $first_post['content'];?><br/>
+        
+        帖子选项：<br/>
+        
+        
+        
+        签名：<?php echo $user['signature'];?><br/>
+    </td>
+  </tr>
+<?php }?>
+  
+  <?php
+  if(!empty($posts)){
+   foreach ($posts as $post) { 
       $user = $users[$post['author_id']];
       ?>
   <tr>
@@ -34,7 +62,8 @@
     </td>
   </tr>
   <?php  
-    }
+     }
+	}
     ?>
 </table>
 

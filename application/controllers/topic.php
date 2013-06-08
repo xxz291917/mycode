@@ -23,15 +23,15 @@ class Topic extends MY_Controller {
         if (empty($topic)) {
             $this->message('参数错误，主题不存在');
         }
-        //获取本主题帖子
+        
+        //获取本主题
         $var['topic'] = $topic;
-
         //获取有管理权限的管理数组
         $var['manage_arr'] = $this->biz_topic_manage->get_permission_manage($topic['forum_id']);
 
         //如果是特殊主题获取主题帖子
         if($topic['special']>1){
-            $where = "'topic_id' = '$id' AND is_first = 1";
+            $where = "topic_id = '$id' AND is_first = '1'";
             $first_post = $this->posts_model->get_one($where);
             $var['first_post'] = $this->posts_model->output_filter($first_post);
         }
@@ -50,7 +50,7 @@ class Topic extends MY_Controller {
         $start = max(0, ($page_obj->cur_page - 1) * $per_num);
         $posts = $this->posts_model->get_posts_list($where, '*', 'post_time', $start, $per_num);
         //获取需要的用户信息
-        $uids = array();
+        $uids = $topic['special']>1?array($var['first_post']['author_id']):array();
         foreach ($posts as $post) {
             $uids[] = $post['author_id'];
         }

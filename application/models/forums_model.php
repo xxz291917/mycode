@@ -49,10 +49,17 @@ class Forums_model extends MY_Model {
     }
     
     public function get_forums() {
+        if($this->enable_cache){
+            $cache_key = "get_forums";
+            $this->forums = $this->cache->get($cache_key);
+        }
         if (empty($this->forums)) {
             $this->db->order_by("display_order");
             $query = $this->db->get($this->table);
             $this->forums = $query->result_array();
+            if ($this->enable_cache) {
+                $this->cache->save($cache_key, $this->forums, config_item('cache_time'));
+            }
         }
         return $this->forums;
     }

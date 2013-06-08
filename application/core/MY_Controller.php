@@ -8,19 +8,26 @@ class Base_Controller extends CI_Controller {
     public $user;
     public $ip;
     public $time;
+    
+    public $enable_cache = false;//是否开启cache
 
     public function __construct() {
         parent::__construct();
         //aotoload.php中自动加载了$autoload['libraries'] = array('database');$autoload['helper'] = array('url','form');
         $this->load->model(array('users_model', 'groups_model', 'forums_model'));
         $this->load->library(array('user_agent'));
-        $this->load->driver('cache', array('adapter' => 'file', 'backup' => 'apc'));
+        $this->config->load('my_config');
+        if(config_item('enable_cache')){
+            $this->enable_cache = true;
+            $this->load->driver('cache', array('adapter' => 'file', 'backup' => 'apc'));
+        }
+        $this->output->enable_profiler(config_item('enable_profiler')); //是否开启profiler。
+        
         //初始化用户信息（包括所属用户组）
         $this->user = $this->users_model->get_userinfo();
         $this->ip = $this->input->ip_address();
         $this->time = time();
 //        var_dump($this->user);die;
-//        $this->output->enable_profiler(TRUE); //是否开启profiler。
     }
 
     protected function echo_ajax($success = 1, $message = '', $data = array()) {
@@ -36,45 +43,6 @@ class Base_Controller extends CI_Controller {
 
     protected function get_current_url() {
         return base_url("index.php/{$this->uri->segment(1)}/{$this->uri->segment(2)}");
-    }
-
-    protected function upload() {
-//        $config['upload_path'] = './uploads/';
-//        $config['allowed_types'] = 'gif|jpg|png';
-//        $config['max_size'] = '100';
-//        $config['max_width'] = '1024';
-//        $config['max_height'] = '768';
-        $this->load->library('upload');
-        if (!$this->upload->do_upload()) {
-            $error = array('error' => $this->upload->display_errors());
-            $this->load->view('upload_form', $error);
-        } else {
-            $data = array('upload_data' => $this->upload->data());
-            $this->load->view('upload_success', $data);
-        }
-    }
-
-    /**
-     * 递归循环处理html，使其成为安全的代码。主要是过滤可执行的代码。并不过滤html。
-     * @param type $str
-     * @return type
-     */
-    protected function safe_filter($str) {
-        if(is_array($str)){
-            foreach ($str as $k=>$val){
-                $str[$k] = $this->safe_filter($val);
-            }
-            return $str;
-        }elseif(is_string($str)){
-            $farr = array(
-                "/<\/?(script|i?frame|style|object)[^>]*>/ies",
-                "/<[^>]*on[a-zA-Z]+\s*=[^>]*>/ies", //过滤javascript的on事件
-                );
-            $str = preg_replace($farr, "htmlspecialchars('\\0')", $str);
-            return $str;
-        }else{
-            return $str;
-        }
     }
 
 }
@@ -213,7 +181,6 @@ class Admin_Controller extends Base_Controller {
       <a href="index.php?admin_doc-search----0-0--2">››</a>
       </p>
      */
-
     protected function init_page($base_url = '', $total_rows, $per_page = 20, $my_config = array()) {
         $this->load->library('pagination');
         $config['base_url'] = !empty($base_url) ? $base_url : current_url();

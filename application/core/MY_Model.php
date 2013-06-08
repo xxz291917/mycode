@@ -7,7 +7,6 @@ class MY_Model extends CI_Model {
 
     protected $table;
     protected $id = 'id';
-    protected $list = array();
 
     function __construct() {
         parent::__construct();
@@ -62,17 +61,23 @@ class MY_Model extends CI_Model {
         }
     }
 
-    public function get_by_id($id, $cache = true) {
-        if (!isset($this->list[$id]) || !$cache) {
+    public function get_by_id($id) {
+        $return = FALSE;
+        if($this->enable_cache){
+            $cache_key = "{$this->table}_$id";
+            $return = $this->cache->get($cache_key);
+        }
+        if (empty($return)) {
             if (!empty($this->table)) {
                 $sql = 'select * from ' . $this->table . ' where ' . $this->id . '=' . $id;
                 $query = $this->db->query($sql);
-                $this->list[$id] = $query->row_array();
-            } else {
-                return array();
+                $return = $query->row_array();
+                if ($this->enable_cache) {
+                    $this->cache->save($cache_key, $return, config_item('cache_time'));
+                }
             }
         }
-        return $this->list[$id];
+        return $return;
     }
 
     public function get_one($where = '', $field = '*', $orderby = '') {
@@ -87,8 +92,20 @@ class MY_Model extends CI_Model {
     }
 
     public function get_all() {
+        $return = false;
+        if($this->enable_cache){
+            $cache_key = "get_all_{$this->table}";
+            $return = $this->cache->get($cache_key);
+            if(!empty($return)){
+                return $return;
+            }
+        }
         $query = $this->db->get($this->table);
-        return $query->result_array();
+        $return = $query->result_array();
+        if($this->enable_cache){
+            $this->cache->save($cache_key, $return, config_item('cache_time'));
+        }
+        return $return;
     }
     
     public function key_list($list,$key='') {

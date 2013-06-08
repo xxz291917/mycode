@@ -14,6 +14,14 @@ class Users_model extends MY_Model {
      */
     function get_userinfo() {
         $user_id = '1';
+        if($this->enable_cache){
+            $cache_key = "get_userinfo_$user_id";
+            $user = $this->cache->get($cache_key);
+            if(!empty($user)){
+                return $user;
+            }
+        }
+        
         $user = $this->get_users_by_ids($user_id);
         if($user){
             //插入用户的操作在这里哦。
@@ -31,8 +39,11 @@ class Users_model extends MY_Model {
             //根据扩展组信息，得出合并后的用户组。
             $current_groups = array_unique(array_merge($current_groups, $user['groups']));
         }
-        $user['groups'] = $current_groups;//用户所属的用户组
+        $user['groups'] = $current_groups; //用户所属的用户组
         $user['group'] = $this->groups_model->get_user_group($current_groups);
+        if ($this->enable_cache) {
+            $this->cache->save($cache_key, $user, config_item('cache_time'));
+        }
         return $user;
     }
 

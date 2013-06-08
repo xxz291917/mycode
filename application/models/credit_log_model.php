@@ -5,7 +5,8 @@ if (!defined('BASEPATH'))
 
 class Credit_log_model extends MY_Model {
 
-    public $credit_log_action = array('admin_set' => '后台管理员设置');
+    public $credit_log_action = array('admin_set' => '后台管理员设置',
+                                      'ask_action' => '发表问答扣减积分',);
 
     function __construct() {
         parent::__construct();
@@ -21,7 +22,7 @@ class Credit_log_model extends MY_Model {
         }
         $user = $this->users_model->get_by_id($uid);
         $data['action']= $action;
-        $data['description']= $credit_rule['name'];
+        $data['description']= !empty($credit_rule['name'])?$credit_rule['name']:$action;
         $data['user_id']= $uid;
         $data['username']= $user['username'];
         $data['time']= $this->time;

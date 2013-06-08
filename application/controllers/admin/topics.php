@@ -7,7 +7,7 @@ class Topics extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model(array('topics_model','topic_manage','posts_model'));
+        $this->load->model(array('topics_model','biz_topic_manage','posts_model'));
     }
 
     /**
@@ -41,7 +41,7 @@ class Topics extends Admin_Controller {
         $var['data'] = $search;
         $var['topics'] = $topics;
         $var['page'] = $page_str;
-        $manage_arr = $this->topic_manage->get_manage_arr();
+        $manage_arr = $this->biz_topic_manage->get_manage_arr();
         $var['manage_arr'] = $manage_arr;
         $this->view('topics', $var);
     }
@@ -123,7 +123,7 @@ class Topics extends Admin_Controller {
         $var['data'] = $search;
         $var['topics'] = $topics;
         $var['page'] = $page_str;
-        $manage_arr = $this->topic_manage->get_manage_arr();
+        $manage_arr = $this->biz_topic_manage->get_manage_arr();
         $var['manage_arr'] = $manage_arr;
         $this->view('topics_check', $var);
     }
@@ -148,7 +148,7 @@ class Topics extends Admin_Controller {
         }
         if ($this->input->post('submit')) {
             $post = $this->input->post();
-            $this->topic_manage->manage($topic_id,$action,$post);
+            $this->biz_topic_manage->manage($topic_id,$action,$post);
             $this->message('操作完成！', 1);
         } else {
             $var['action'] = $action;
