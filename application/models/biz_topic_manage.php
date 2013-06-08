@@ -3,7 +3,7 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Topic_manage extends CI_Model {
+class Biz_topic_manage extends CI_Model {
 
     public $action;
     private $manage_arr = array('allow_top' => '置顶',

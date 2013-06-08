@@ -8,7 +8,7 @@ class Users_extra_model extends MY_Model {
         parent::__construct();
         $this->table = 'users_extra';
         $this->id = 'user_id';
-        $this->load->model(array('credit_log_model', 'users_model', 'groups_model','permission'));
+        $this->load->model(array('credit_log_model', 'users_model', 'groups_model','biz_permission'));
     }
 
     public function admin_credits($credits, $uid) {
@@ -91,7 +91,7 @@ class Users_extra_model extends MY_Model {
 
     public function post_increment() {
         $extra_data['posts'] = ':1';
-        $extra_data['today_posts'] = $this->permission->is_today($this->user['last_post_time'])?':1':1;
+        $extra_data['today_posts'] = $this->biz_permission->is_today($this->user['last_post_time'])?':1':1;
         $extra_data['today_uploads'] = ':1';
         $extra_data['last_post_time'] = $this->time;
         $extra_data['last_active_time'] = $this->time;
@@ -100,7 +100,7 @@ class Users_extra_model extends MY_Model {
     
     public function reply_increment() {
         $extra_data['posts'] = ':1';
-        $extra_data['today_posts'] = $this->permission->is_today($this->user['last_post_time'])?':1':1;
+        $extra_data['today_posts'] = $this->biz_permission->is_today($this->user['last_post_time'])?':1':1;
         $extra_data['today_uploads'] = ':1';
         $extra_data['last_post_time'] = $this->time;
         $extra_data['last_active_time'] = $this->time;

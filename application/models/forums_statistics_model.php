@@ -9,7 +9,7 @@ class Forums_statistics_model extends MY_Model {
         parent::__construct();
         $this->table = 'forums_statistics';
         $this->id = 'forum_id';
-        $this->load->model(array('permission', 'index'));
+        $this->load->model(array('biz_permission', 'biz_index'));
     }
 
     /**
@@ -34,11 +34,11 @@ class Forums_statistics_model extends MY_Model {
         } else {
             $last_post_time = $statics['last_post_time'];
             $extra_data['posts'] = ':1';
-            $extra_data['today_posts'] = $this->permission->is_today($last_post_time) ? ':1' : 1;
+            $extra_data['today_posts'] = $this->biz_permission->is_today($last_post_time) ? ':1' : 1;
             //如果是主题帖子发表，还要在topics上加1
             if ("post" == $type) {
                 $extra_data['topics'] = ':1';
-                $extra_data['today_topics'] = $this->permission->is_today($last_post_time) ? ':1' : 1;
+                $extra_data['today_topics'] = $this->biz_permission->is_today($last_post_time) ? ':1' : 1;
             }
             return $this->update_increment($extra_data, array('forum_id' => $forum_id));
         }
@@ -56,7 +56,7 @@ class Forums_statistics_model extends MY_Model {
         foreach ($forums as $key => $value) {
             $fourm_id = $value['id'];
             if (isset($statistics[$fourm_id])) {
-                $this_statistics = $this->index->process_statistics_one($statistics[$fourm_id]);
+                $this_statistics = $this->biz_index->process_statistics_one($statistics[$fourm_id]);
             } else {
                 $this_statistics = array();
             }

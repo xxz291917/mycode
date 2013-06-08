@@ -2,8 +2,13 @@
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
-
-class Poll extends CI_Model {
+/**
+ * 业务模型
+ * 主要处理特殊帖子投票相关的调用和业务。
+ *
+ * @author		xiaxuezhi
+ */
+class Biz_poll extends CI_Model {
 
     static $special = 3;
     static $special_post = 'poll_posts';

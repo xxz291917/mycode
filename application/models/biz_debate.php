@@ -2,8 +2,13 @@
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
-
-class Debate extends CI_Model {
+/**
+ * 业务模型
+ * 主要处理特殊帖子辩论相关的调用和业务。
+ *
+ * @author		xiaxuezhi
+ */
+class Biz_debate extends CI_Model {
 
     static $special = 4;
     static $special_post = 'debate_posts';

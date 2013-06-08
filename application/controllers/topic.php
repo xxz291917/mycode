@@ -12,7 +12,7 @@ class Topic extends MY_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model(array('topic_manage', 'forums_statistics_model', 'posts_model', 'credit_name_model'));
+        $this->load->model(array('biz_topic_manage', 'forums_statistics_model', 'posts_model', 'credit_name_model'));
     }
 
     public function show($id) {
@@ -27,7 +27,7 @@ class Topic extends MY_Controller {
         $var['topic'] = $topic;
 
         //获取有管理权限的管理数组
-        $var['manage_arr'] = $this->topic_manage->get_permission_manage($topic['forum_id']);
+        $var['manage_arr'] = $this->biz_topic_manage->get_permission_manage($topic['forum_id']);
 
         //如果是特殊主题获取主题帖子
         if($topic['special']>1){
@@ -107,10 +107,10 @@ class Topic extends MY_Controller {
             }
             $post = $this->input->post();
             //检测权限。
-            if (!$this->topic_manage->check_manager_permission($topic_id, $action, $post)) {
+            if (!$this->biz_topic_manage->check_manager_permission($topic_id, $action, $post)) {
                 $this->message('操作的主题，没有权限。', 0);
             }
-            $this->topic_manage->manage($topic_id, $action, $post);
+            $this->biz_topic_manage->manage($topic_id, $action, $post);
             $this->message('操作完成！', 1);
         } else {
             $var['action'] = $action;

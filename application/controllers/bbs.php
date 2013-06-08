@@ -4,7 +4,7 @@ class Bbs extends MY_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model(array('index','forums_statistics_model'));
+        $this->load->model(array('biz_index','forums_statistics_model'));
     }
 
     public function index() {

@@ -248,7 +248,7 @@ class Forums_model extends MY_Model {
     /**
      * 用户组的审核机制和版块自己的审核机制，取较严厉者。
      * @param type $id
-     * @return type
+     * @return int 返回此版块下的帖子是否需要审核。
      */
     public function get_check($id) {
         $forum = $this->get_by_id($id);
@@ -257,6 +257,12 @@ class Forums_model extends MY_Model {
         return max($forum_check, $group_check);
     }
 
+    /**
+     * 传入版块id和编辑器关键字，返回此论坛版块是否拥有此权限。
+     * @param type $type
+     * @param type $id
+     * @return int
+     */
     public function get_is($type,$id='') {
         $types = array('bbcode', 'smilies', 'media', 'html','anonymous','hide','sign','permission');
         if (in_array($type, $types)) {
@@ -279,22 +285,24 @@ class Forums_model extends MY_Model {
     }
 
     /**
-     * 用户组的审核机制和版块自己的审核机制，取较严厉者。
-     * post,reply,digest,postattach ,getattach ,daylogin ,search
+     * 全局积分规则和板块积分规则的合并，版块覆盖全局。
+     * 规则如下：post,reply,digest,postattach ,getattach ,daylogin ,search
      * 
      * @param type $id
-     * @return type
+     * @return array 版块在此rule下的加减积分数组
      */
     public function get_credit($id, $rule = '') {
         //有些积分规则是需要判断条件的，比如登录。
         if ($rule == 'daylogin') {
+            //判断是否是今天第一次登录。
             if (date('Ymd', $this->user['last_visit_time']) == date('Ymd', $this->time)) {
-                return FALSE;
+                return false;
             }
         }
         $this->load->model('credit_rule_model');
         $rules = $this->credit_rule_model->get_one("action = '$rule'");
         if (!empty($rules)) {
+            //取出版块信息
             $forum = $this->get_by_id($id);
             $credit_setting = $forum['credit_setting'];
             $credit_setting = json_decode($credit_setting, TRUE);
@@ -305,6 +313,11 @@ class Forums_model extends MY_Model {
         return $rules;
     }
     
+    /**
+     * 取出版块下设置的版主id。
+     * @param type $id
+     * @return type
+     */
     public function get_manager_by_id($id){
         $forum = $this->get_by_id($id);
         return array_filter(explode(',', $forum['manager']));

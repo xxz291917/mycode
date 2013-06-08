@@ -6,7 +6,7 @@ class Forum extends MY_Controller {
     
     function __construct() {
         parent::__construct();
-        $this->load->model(array('index','forums_statistics_model'));
+        $this->load->model(array('biz_index','forums_statistics_model'));
     }
 
     public function show($id) {
@@ -21,7 +21,7 @@ class Forum extends MY_Controller {
         $var['forum'] = $this->forums_model->get_by_id($id);
         $statistics = $this->forums_statistics_model->get_by_id($id);
         if(!empty($statistics)){
-            $statistics = $this->index->process_statistics_one($statistics);
+            $statistics = $this->biz_index->process_statistics_one($statistics);
             $var['forum'] = array_merge($var['forum'],$statistics);
         }
         $var['admin_permission'] = $this->groups_model->get_admin_permission($id);
