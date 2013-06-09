@@ -28,7 +28,10 @@ class Topic extends MY_Controller {
         $var['topic'] = $topic;
         //获取有管理权限的管理数组
         $var['manage_arr'] = $this->biz_topic_manage->get_permission_manage($topic['forum_id']);
-
+        
+        //得到当前用户的管理权限。
+        $admin_permission = $this->groups_model->get_admin_permission($topic['forum_id']);
+        
         //如果是特殊主题获取主题帖子
         if($topic['special']>1){
             $where = "topic_id = '$id' AND is_first = '1'";
@@ -83,16 +86,6 @@ class Topic extends MY_Controller {
         $view_template = self::$post_view[$topic['special']];
         $this->view($view_template, $var);
     }
-
-    /**
-     * 用户提交投票选项
-     */
-    public function poll($id) {
-        
-    }
-
-
-
 
     /**
      * 管理帖子，接收post过来的topic_id,填写删除原因，然后删除帖子。

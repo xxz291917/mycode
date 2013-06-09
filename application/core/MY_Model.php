@@ -41,11 +41,14 @@ class MY_Model extends CI_Model {
         $sql = "UPDATE $this->table SET  ";
         $sql_tmp = '';
         foreach ($data as $key => $value) {
-            if (':' !== $value[0]) {
-                $sql_tmp .= "$key='$value',";
-            } else {
+            if (':' == $value[0]) {
                 $value = substr($value, 1);
-                $sql_tmp .= "$key=$key" . ($value > 0 ? '+' : '') . "$value,";
+                $sql_tmp .= "$key = $key" . ($value > 0 ? '+' : '') . "$value,";
+            } elseif('+' == $value[0]){
+                $value = substr($value, 1);
+                $sql_tmp .= "$key = CONCAT_WS(',',$key,'$value')";
+            } else {
+                $sql_tmp .= "$key = '$value',";
             }
         }
         $sql .= trim($sql_tmp, ',') . ' ';

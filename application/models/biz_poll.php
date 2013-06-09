@@ -62,13 +62,34 @@ class Biz_poll extends CI_Model {
         //添加上poll表里的投票附加字段
         $poll = $this->poll_model->get_by_id($first_post['topic_id']);
         $first_post = $first_post + $poll;
+
         //初始化投票选项，放入option索引里
-        $options = $this->poll_options_model->get_list(array('topic_id'=>$first_post['topic_id']));
-        $options = empty($options)?array():$options;
+        $options = $this->poll_options_model->get_list(array('topic_id' => $first_post['topic_id']));
+        $options = empty($options) ? array() : $options;
         $first_post['options'] = $options;
+
+        //获取当前用户是否投过票，是否允许再投票。
+        $mypoll = $this->poll_voter_model->get_one(array('topic_id' => 1, 'user_id' => $this->user['id']));
+        $first_post['is_vote'] = !empty($mypoll) ? TRUE : false;
+
+        //根据当前用户获取投票数。（有编辑权利的用户和已经投票有权利查看投票数。）
+        if (empty($mypoll)) {
+            $this->load->model('biz_permission');
+            $is_edit = $this->biz_permission->check_manage($first_post['topic_id'], 'edit');
+        }
+        if (!empty($mypoll) || $is_edit) {//有编辑权利
+            $first_post['percent'] = true;
+            $sum_vote = 0;
+            foreach ($options as $key => $option) {
+                $sum_vote += $option['votes'];
+            }
+            foreach ($first_post['options'] as $key => &$option) {
+                $option['percent'] = round($option['votes'] / $sum_vote, 2);
+            }
+        }
         return $first_post;
     }
-    
+
     public function post_append(&$post) {
         if (empty($post)) {
             return FALSE;
@@ -77,11 +98,10 @@ class Biz_poll extends CI_Model {
         $poll = $this->poll_model->get_by_id($post['id']);
         $post = $post + $poll;
         //初始化投票选项，放入option索引里
-        $options = $this->poll_options_model->get_list(array('topic_id'=>$post['id']));
-        $options = empty($options)?array():$options;
+        $options = $this->poll_options_model->get_list(array('topic_id' => $post['id']));
+        $options = empty($options) ? array() : $options;
         $post['options'] = $options;
     }
-    
 
 }
 

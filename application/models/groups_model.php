@@ -6,7 +6,8 @@ if (!defined('BASEPATH'))
 class Groups_model extends MY_Model {
 
     static $moderators_id = 3;
-
+    public $admin_permission = array();
+    
     function __construct() {
         parent::__construct();
         $this->table = 'groups';
@@ -213,46 +214,57 @@ class Groups_model extends MY_Model {
      * @param type $forum_id
      */
     public function get_admin_permission($forum_id) {
+        //need_cache
+        if(isset($this->admin_permission[$forum_id])){
+            return $this->admin_permission[$forum_id];
+        }
+        
         $current_groups = array_unique(array_merge((array) $this->user['group_id'], (array) $this->user['groups']));
         if (empty($current_groups)) {
             return null;
         }
         $this->load->model(array('groups_admin_model'));
+        //获取此版块的版主列表
         $managers = $this->forums_model->get_manager_by_id($forum_id);
         if (in_array($this->user['username'], $managers)) {
             if (!in_array(Groups_model::$moderators_id, $current_groups)) {
+                //为用户添加版主组
                 $current_groups[] = Groups_model::$moderators_id;
             }
         } else {
+            //既然当前用户不是此版块的版主则把其版主组去掉。
             $current_groups = array_filter($current_groups, create_function('$var', 'return $var != Groups_model::$moderators_id;'));
         }
+        
         //当前的管理组权限合并
         //var_dump($current_groups);
-        $return_group = array();
+        $admin_permission = array();
         if (!empty($current_groups)) {
             $current_groups = join(',', $current_groups);
-            $groups = $this->groups_admin_model->get_list('group_id in (' . $current_groups . ')');
+            //获取用户组们的管理权限。
+            $groups_admin = $this->groups_admin_model->get_list('group_id in (' . $current_groups . ')');
             $max_arr = array('allow_digest', 'allow_top');
-            foreach ($groups as $group) {
-                foreach ($group as $key => $val) {
+            foreach ($groups_admin as $admin) {
+                foreach ($admin as $key => $val) {
                     if($key == 'group_id'){
                         continue;
                     }
-                    if (!isset($return_group[$key])) {
-                        $return_group[$key] = $val;
+                    if (!isset($admin_permission[$key])) {
+                        $admin_permission[$key] = $val;
                         continue;
                     }
                     if (in_array($key, $max_arr)) {
-                        $return_group[$key] = max($return_group[$key], $val);
+                        $admin_permission[$key] = max($admin_permission[$key], $val);
                     } else {
-                        if ($return_group[$key] == 1)
+                        if ($admin_permission[$key] == 1)
                             continue;
-                        $return_group[$key] = $val;
+                        $admin_permission[$key] = $val;
                     }
                 }
             }
         }
-        return ($return_group);
+        $this->admin_permission[$forum_id] = $admin_permission;
+        return ($admin_permission);
     }
 
 }

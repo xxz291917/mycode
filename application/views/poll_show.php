@@ -38,22 +38,28 @@
 		echo '单选';
 	}
 ?>
-投票，共有<?=$first_post['voters']?>名用户参与了投票（查看投票参与人）<br/>
+投票，共有<?=$first_post['voters']?>名用户参与了投票<?php if($first_post['is_visible']){?>（查看投票参与人）<?php }?><br/>
 距离投票结束还有：<?php echo time_span($this->time,$first_post['expire_time'],0);?>  <br/>
-      	<?php
+    <?php
 		$create_function = $first_post['is_multiple']?'form_checkbox':'form_radio';
-		echo form_open(base_url('index.php/topic/poll/'.$first_post['topic_id']));
-		foreach($first_post['options'] as $option){
+		echo form_open(base_url('index.php/topic/poll/'.$first_post['topic_id']),array('target'=>'ajax','refresh'=>'true'));
+		foreach($first_post['options'] as $key=>$option){
 			$data = array(
-				'name'        => 'option_'.$first_post['topic_id'],
+				'name'        => 'option_'.$first_post['topic_id'].'[]',
 				'value'       => $option['id'],
 				'style'       => 'margin:10px',
 				);
-			echo $create_function($data).$option['option'].'<br/>';
+			echo ($first_post['is_vote']?$create_function($data):$key+1).$option['option'].'<br/>';
+			if(!empty($first_post['percent'])){
+				echo '百分比：'.$option['percent'].'<br/>';
 			}
+		}
+		if($first_post['is_vote']){
 			echo form_submit('submit','投票');
+		}
+		
 		echo form_close();
-			?>
+	?>
 <hr/>        
         
         签名：<?php echo $user['signature'];?><br/>

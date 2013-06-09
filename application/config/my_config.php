@@ -7,6 +7,6 @@
 
 $config['enable_profiler'] = FALSE;//是否开启profiler。
 
-$config['enable_cache'] = TRUE;
-$config['cache_time'] = 60*5;
+$config['enable_cache'] = false;
+$config['cache_time'] = 6*5;
 ?>

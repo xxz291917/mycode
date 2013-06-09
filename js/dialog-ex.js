@@ -7,18 +7,20 @@ jQuery.extend(jQuery, {
         }
         return html;
     },
-    Alert: function(text, title) {
+    Alert: function(text, title, options) {
         var html = this.creatHTML(text);
-        return html.dialog({
-            resizable: false,
-            modal: true,
-            title: title || "提示信息",
-            buttons: {
-                "确定": function() {
-                    $(this).dialog("close");
-                }
-            }
-        });
+        return html.dialog(
+			$.extend({
+				resizable: false,
+				modal: true,
+				title: title || "提示信息",
+				buttons: {
+					"确定": function() {
+						$(this).dialog("close");
+					}
+				}
+			}, options)
+		);
     },
     Confirm: function(text, title, fn) {
         var html = this.creatHTML(text);
@@ -38,51 +40,7 @@ jQuery.extend(jQuery, {
                 }
             }
         });
-    },
-  // jQuery UI alert弹出提示,一定间隔之后自动关闭
-  jTimerAlert: function(text, title, fn, timerMax) {
-    var dd = $(
-    '<div class="dialog" id="dialog-message">' +
-    '  <p>' +
-    '    <span class="ui-icon ui-icon-circle-check" style="float: left; margin: 0 7px 0 0;"></span>' + text +
-    '  </p>' +
-    '</div>');
-    dd[0].timerMax = timerMax || 3;
-    return dd.dialog({
-      //autoOpen: false,
-      resizable: false,
-      modal: true,
-      show: {
-        effect: 'fade',
-        duration: 300
-      },
-      open: function(e, ui) {
-        var me = this,
-          dlg = $(this),
-          btn = dlg.parent().find(".ui-button-text").text("确定(" + me.timerMax + ")");
-        --me.timerMax;
-        me.timer = window.setInterval(function() {
-          btn.text("确定(" + me.timerMax + ")");
-          if (me.timerMax-- <= 0) {
-            dlg.dialog("close");
-            fn && fn.call(dlg);
-            window.clearInterval(me.timer); // 时间到了清除计时器
-          }
-        }, 1000);
-      },
-      title: title || "提示信息",
-      buttons: {
-        "确定": function() {
-          var dlg = $(this).dialog("close");
-          fn && fn.call(dlg);
-          window.clearInterval(this.timer); // 清除计时器
-        }
-      },
-      close: function() {
-        window.clearInterval(this.timer); // 清除计时器
-      }
-    });
-  }
+    }
 });
 
 
@@ -167,21 +125,49 @@ $(function(){
 			return false;
 		};
 	
-	//ajaxA链接扩展
+	//弹出框A链接扩展
 	$("a[target=ajax]").each(function(){
 		$(this).click(function(event){
-			var $this = $(this);
-			$.get($this.attr("href"), function(data){
-				if(!data.success){
-					alert(data.message);
-				}else{
-					alert(data.message);
-					html.dialog("close");
-				}
-			},'json');
-			event.preventDefault();
+			superAjax(event,$(this));
 		});
 	});
+	$("form[target=ajax]").each(function(){
+		$(this).submit(function(event){
+			superAjax(event,$(this));
+		});
+	});
+	var superAjax = function(event,$this){
+		var tagName = gettagname(event);
+		var refresh = $this.attr("refresh") || false;
+		if(tagName=='A'){
+			var url = unescape($this.attr("href")),
+			    field = {}
+				ajaxFun = $.get;
+		}else if(tagName=='FORM'){
+			var url = unescape($this.attr("action")),
+				method = $this.attr('method'),
+				fields = $this.serialize(),
+				ajaxFun = method=='post'?$.post:$.get;;
+		}
+		ajaxFun(url,fields,function(data){
+			var options = {buttons: {
+					"确定": function() {
+								$(this).dialog("close");
+								if(refresh){
+									window.location.reload();
+								}
+							}
+				}};
+			if(!data.success){
+				$.Alert(data.message);
+			}else{
+				$.Alert(data.message,'',options);
+			}
+		},'json');
+		event.preventDefault();
+		return false;
+	};
+
 
 	function gettagname(e){
 		if (!e) var e = window.event;

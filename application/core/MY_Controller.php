@@ -14,7 +14,7 @@ class Base_Controller extends CI_Controller {
     public function __construct() {
         parent::__construct();
         //aotoload.php中自动加载了$autoload['libraries'] = array('database');$autoload['helper'] = array('url','form');
-        $this->load->model(array('users_model', 'groups_model', 'forums_model'));
+        $this->load->model(array('users_model', 'groups_model', 'forums_model','biz_permission'));
         $this->load->library(array('user_agent'));
         $this->config->load('my_config');
         if(config_item('enable_cache')){

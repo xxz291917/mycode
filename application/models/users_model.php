@@ -21,7 +21,6 @@ class Users_model extends MY_Model {
                 return $user;
             }
         }
-        
         $user = $this->get_users_by_ids($user_id);
         if($user){
             //插入用户的操作在这里哦。

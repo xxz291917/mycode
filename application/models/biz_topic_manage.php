@@ -26,6 +26,14 @@ class Biz_topic_manage extends CI_Model {
         //$this->load->helper('date');
     }
 
+    /**
+     * 从私有属性$manage_arr中分离权限关键字和说明文字。
+     *  'digest' => '推荐精华',
+        'highlight' => '高亮',
+        'bump' => '升降',
+        'move' => '移动',
+     * @return type
+     */
     public function get_manage_arr() {
         $manage_arr = $this->manage_arr;
         $return_arr = array();
@@ -35,7 +43,24 @@ class Biz_topic_manage extends CI_Model {
         }
         return $return_arr;
     }
-
+    /**
+     * 传入一个action,返回在数据库中的字段值。比如：top=>allow_top
+     * @param type $action
+     * @return type
+     */
+    private function get_full_action($action) {
+        foreach ($this->manage_arr as $key => $value) {
+            list($null, $tmp_action) = explode('_', $key);
+            if ($tmp_action == $action) {
+                return $key;
+            }
+        }
+    }
+    /**
+     * 过滤$manage_arr中没有权限的元素。
+     * @param type $forum_id
+     * @return type
+     */
     public function get_permission_manage($forum_id) {
         //获取管理权限
         $admin_permission = $this->groups_model->get_admin_permission($forum_id);
@@ -48,20 +73,7 @@ class Biz_topic_manage extends CI_Model {
         }
         return $manage_arr;
     }
-    /**
-     * 传入一个action,返回在数据库中的字段值。比如：top=>allow_top
-     * @param type $action
-     * @return type
-     */
-    private function get_permission_action($action) {
-        foreach ($this->manage_arr as $key => $value) {
-            list($null, $tmp_action) = explode('_', $key);
-            if ($tmp_action == $action) {
-                return $key;
-            }
-        }
-    }
-
+    
     /**
      * 检测主题管理的权限，可以检测多个主题，只要一个主题所属板块没有权限就返回false。
      * @param type $topic_ids
@@ -70,14 +82,19 @@ class Biz_topic_manage extends CI_Model {
      * @return boolean
      */
     public function check_manager_permission($topic_ids, $action, $post = '') {
+        !is_array($topic_ids) && $topic_ids = array($topic_ids);
         empty($post) && $post = $this->input->post();
         $topics = $this->topics_model->get_list('id in(' . join(',', $topic_ids) . ')');
         $permission = array();
         foreach ($topics as $topic) {
+            //此主题是我的发布的，不做检查，直接通过。
+            if($topic['author_id'] == $this->user['id']){
+                continue;
+            }
             if (!isset($permission[$topic['forum_id']])) {
                 $admin_permission = $this->groups_model->get_admin_permission($topic['forum_id']);
                 //var_dump($admin_permission);
-                $permission_action = $this->get_permission_action($action);
+                $permission_action = $this->get_full_action($action);
                 if (in_array($permission_action, array('allow_digest', 'allow_top'))) {
                     //echo $admin_permission[$permission_action];
                     $return = $admin_permission[$permission_action] >= $post[$action];

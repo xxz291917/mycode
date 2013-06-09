@@ -37,7 +37,7 @@ class Biz_post extends CI_Model {
             $topics_data['tags'] = $tags;
             $topics_data['special'] = $post['special'];
             $topics_data['replies'] = 0;
-            $topics_data['status'] = $this->forums_model->get_check($forum_id) > 0 ? 4 : 1;
+            $topics_data['status'] = $this->get_check->get_check($forum_id) > 0 ? 4 : 1;
             $this->topics_model->insert($topics_data);
             $tid = $this->db->insert_id();
             if (empty($tid)) {
@@ -78,14 +78,14 @@ class Biz_post extends CI_Model {
         $posts_data['content'] = $post['content'];
         $posts_data['attachment'] = 0;
         $posts_data['is_first'] = 'post' == $type ? 1 : 0;
-        $posts_data['is_bbcode'] = $this->forums_model->get_is('bbcode', $forum_id);
-        $posts_data['is_smilies'] = $this->forums_model->get_is('smilies', $forum_id);
-        $posts_data['is_media'] = $this->forums_model->get_is('media', $forum_id);
-        $posts_data['is_html'] = $this->forums_model->get_is('html', $forum_id);
-        $posts_data['is_anonymous'] = $this->forums_model->get_is('anonymous', $forum_id);
-        $posts_data['is_hide'] = $this->forums_model->get_is('hide', $forum_id);
-        $posts_data['is_sign'] = $this->forums_model->get_is('sign', $forum_id);
-        $posts_data['status'] = $this->forums_model->get_check($forum_id) == 2 ? 4 : 1; //回复帖子也审核
+        $posts_data['is_bbcode'] = $this->biz_permission->get_is('bbcode', $forum_id);
+        $posts_data['is_smilies'] = $this->biz_permission->get_is('smilies', $forum_id);
+        $posts_data['is_media'] = $this->biz_permission->get_is('media', $forum_id);
+        $posts_data['is_html'] = $this->biz_permission->get_is('html', $forum_id);
+        $posts_data['is_anonymous'] = $this->biz_permission->get_is('anonymous', $forum_id);
+        $posts_data['is_hide'] = $this->biz_permission->get_is('hide', $forum_id);
+        $posts_data['is_sign'] = $this->biz_permission->get_is('sign', $forum_id);
+        $posts_data['status'] = $this->biz_permission->get_check($forum_id) == 2 ? 4 : 1; //回复帖子也审核
         $this->posts_model->insert($posts_data);
         $pid = $this->db->insert_id();
         if (empty($pid)) {
@@ -182,7 +182,7 @@ class Biz_post extends CI_Model {
         $return = array();
         $is_arr = array('is_bbcode', 'is_smilies', 'is_html', 'is_hide', 'is_media', 'is_anonymous', 'is_sign');
         foreach ($is_arr as $key => $is) {
-            $return[$is] = $this->forums_model->get_is($is, $forum_id);
+            $return[$is] = $this->biz_permission->get_is($is, $forum_id);
         }
         return $return;
     }

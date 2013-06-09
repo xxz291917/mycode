@@ -28,7 +28,7 @@ class Posts extends MY_Controller {
         }
         if ($this->input->post('submit') && $this->biz_post->check_post('post', $special) && $post = $this->input->post(null)) {
             //检测权限。
-            $is_post = $this->forums_model->check_permission('post', $forum_id);
+            $is_post = $this->biz_permission->check_base('post', $forum_id);
             if (!$is_post) {
                 $this->message('您没有权限发表帖子');
             }
@@ -73,7 +73,7 @@ class Posts extends MY_Controller {
         //通过了check校验
         if ($this->input->post('submit') && $this->biz_post->check_post('reply', $topic['special']) && $post = $this->input->post(null)) {
             //检测权限。
-            $is_post = $this->forums_model->check_permission('reply', $topic['forum_id']);
+            $is_post = $this->biz_permission->check_base('reply', $topic['forum_id']);
             if (!$is_post) {
                 $this->message('您没有权限回复帖子');
             }
@@ -98,6 +98,42 @@ class Posts extends MY_Controller {
         }
     }
 
+    /**
+     * 用户提交投票选项
+     */
+    public function poll($topic_id) {
+        $post_key = 'option_'.$topic_id;
+        $options = $this->input->post($post_key);
+        if(empty($options)||empty($topic_id)){
+            $this->message('参数错误，请重新检查');
+        }
+        
+        $topic = $this->topics_model->get_by_id($topic_id);
+        if (empty($topic)) {
+            $this->message('参数错误，投票的主题不存在');
+        }
+        //检测是否有投票的权限，等同于回复权限。
+        $is_post = $this->biz_permission->check_base('reply', $topic['forum_id']);
+        if (!$is_post) {
+            $this->message('您没有投票的权限');
+        }
+        
+        $this->load->model('poll_model');
+        $poll = $this->poll_model->get_by_id($topic_id);
+        if(empty($poll)){
+            $this->message('参数错误，请重新检查');
+        }elseif (count($options)>$poll['max_choices']) {
+            $this->message('超过允许的最大投票数，请重新检查');
+        }
+        //将投票插入到数据库中，完成投票操作。
+        if($this->poll_model->submit_poll($topic_id,$options)){
+            $this->message('投票成功！',1);
+        }else{
+            $this->message('网络原因，投票失败！',1);
+        }
+    }
+    
+    
     /**
      * 主要是配合前台编辑器使用的图片和文件上传功能
      * //成功时
