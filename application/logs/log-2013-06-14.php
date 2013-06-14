@@ -83,3 +83,11 @@ ERROR - 2013-06-14 16:42:54 --> Severity: Notice  --> Undefined index: is_multip
 ERROR - 2013-06-14 16:42:54 --> Severity: Notice  --> Undefined index: options D:\www\mycode\application\views\ask_show.php 50
 ERROR - 2013-06-14 16:42:54 --> Severity: Warning  --> Invalid argument supplied for foreach() D:\www\mycode\application\views\ask_show.php 50
 ERROR - 2013-06-14 16:42:54 --> Severity: Notice  --> Undefined index: is_vote D:\www\mycode\application\views\ask_show.php 61
+ERROR - 2013-06-14 16:58:35 --> Severity: Notice  --> Undefined index: is_multiple D:\www\mycode\application\views\ask_show.php 39
+ERROR - 2013-06-14 16:58:35 --> Severity: Notice  --> Undefined index: voters D:\www\mycode\application\views\ask_show.php 45
+ERROR - 2013-06-14 16:58:35 --> Severity: Notice  --> Undefined index: is_visible D:\www\mycode\application\views\ask_show.php 45
+ERROR - 2013-06-14 16:58:35 --> Severity: Notice  --> Undefined index: expire_time D:\www\mycode\application\views\ask_show.php 46
+ERROR - 2013-06-14 16:58:35 --> Severity: Notice  --> Undefined index: is_multiple D:\www\mycode\application\views\ask_show.php 48
+ERROR - 2013-06-14 16:58:35 --> Severity: Notice  --> Undefined index: options D:\www\mycode\application\views\ask_show.php 50
+ERROR - 2013-06-14 16:58:35 --> Severity: Warning  --> Invalid argument supplied for foreach() D:\www\mycode\application\views\ask_show.php 50
+ERROR - 2013-06-14 16:58:35 --> Severity: Notice  --> Undefined index: is_vote D:\www\mycode\application\views\ask_show.php 61

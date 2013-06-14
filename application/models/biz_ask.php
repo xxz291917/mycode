@@ -137,6 +137,13 @@ class Biz_Ask extends CI_Model {
         return $first_post;
     }
 
+    
+    public function deal_support($post_id,$type){
+        $field = $type=='support'?'supports':'opposes';
+        $update_data[$field] = ':1';
+        return $this->ask_posts_model->update_increment($update_data, array('id'=>$post['topic_id']));
+    }
+    
 }
 
 ?>

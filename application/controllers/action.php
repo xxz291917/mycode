@@ -200,6 +200,65 @@ class Action extends MY_Controller {
         }
     }
 
+    public function support($post_id){
+        $this->deal_support($post_id,'support');
+    }
+    public function oppose($post_id){
+        $this->deal_support($post_id,'oppose');
+    }
+    
+    /**
+     * 处理顶踩的具体程序。
+     */
+    private function deal_support($post_id,$type='support'){
+        //判断是否已经支持过。
+        $this->load->model('posts_supported_model');
+        $supported = $this->posts_supported_model->get_by_id($post_id);
+        if(!empty($supported) && !empty($supported['user_ids'])){
+            $user_ids = explode(',', $supported['user_ids']);
+            if(in_array($this->user['id'], $user_ids)){
+                $this->message('您已经点评过此帖子');
+            }
+        }
+        $post = $this->posts_model->get_by_id($post_id);
+        $update_data = array();
+        if($post['is_first']==1){
+            $field = $type=='support'?'supports':'opposes';
+            $update_data[$field] = ':1';
+            $is_succ = $this->topics_model->update_increment($update_data, array('id'=>$post['topic_id']));
+        }else{
+            $topic = $this->topics_model->get_by_id($post['topic_id']);
+            if($topic['special']>1){
+                $special_class = Biz_post::$specials[$topic['special']];
+                if(!empty($special_class)){
+                    $this->load->model($special_class);
+                    $method = 'deal_support';
+                    if(method_exists($this->$special_class, $method)){
+                        $is_succ = $this->$special_class->$method($post_id,$type);
+                    }else{
+                        $is_succ = false;
+                    }
+                }
+            }else{
+                $is_succ = false;
+            }
+        }
+        if($is_succ){
+            $op_data = array();
+            if(!empty($supported)){
+                $op_data['user_ids'] = '+'.$this->user['id'];
+                $supported = $this->posts_supported_model->update_increment($op_data,array('post_id'=>$post_id));
+            }else{
+                $op_data['post_id'] = $post_id;
+                $op_data['user_ids'] = $this->user['id'];
+                $supported = $this->posts_supported_model->insert($op_data);  
+            }
+            $this->message('操作成功',1);
+        }else{
+            $this->message('操作失败');
+        }
+    }
+    
 }
 
 ?>

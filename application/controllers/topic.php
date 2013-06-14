@@ -48,7 +48,7 @@ class Topic extends MY_Controller {
         $special_var = call_user_func_array(array($cls, $func), $args);
         $var = array_merge($var, $special_var);
         
-        var_dump($var);die;
+//        var_dump($var);die;
         
         //获取积分名称。
         $credit_name = $this->credit_name_model->get_all_by_creditx();

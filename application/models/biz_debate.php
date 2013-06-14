@@ -181,6 +181,14 @@ class Biz_debate extends CI_Model {
         $first_post['debate'] = $debate;
         return $first_post;
     }
+    
+    public function deal_support($post_id,$type){
+        if($type == 'support'){
+            return $this->debate_posts_model->update_increment(array('voters'=>':1'),array('post_id'=>$post_id));
+        }else{
+            return FALSE;
+        }
+    }
 
 }
 
