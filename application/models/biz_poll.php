@@ -12,13 +12,48 @@ if (!defined('BASEPATH'))
 class Biz_poll extends CI_Model {
 
     static $special = 3;
-    static $special_post = 'poll_posts';
+    static $special_post = 'poll_post';
 
     function __construct() {
         parent::__construct();
         $this->load->model(array('poll_model', 'poll_options_model', 'poll_voter_model'));
     }
 
+    public function init_show($topic,$id) {
+            $where = "topic_id = '$id' AND is_first = '1'";
+            $first_post = $this->posts_model->get_one($where);
+            $var['first_post'] = $this->posts_model->output_filter($first_post);
+            //特殊主题需要的其他变量
+            if (method_exists($this, 'append_first_post')) {
+                $var['first_post'] = $this->append_first_post($var['first_post']);
+            }
+        
+            $this->load->model('biz_pagination');
+            //获取本主题下的回复和分页
+            $where =  " is_first != 1 AND topic_id = '$id' AND status =1";
+            $per_num = $this->config->item('per_num');
+            $total_num = $this->posts_model->get_count($where);
+            //生成分页字符串
+            $base_url = current_url();
+            $page_obj = $this->biz_pagination->init_page($base_url, $total_num, $per_num);
+            $page_str = $page_obj->create_links();
+            $start = max(0, ($page_obj->cur_page - 1) * $per_num);
+            $posts = $this->posts_model->get_posts_list($where, '*', 'post_time', $start, $per_num);
+            //获取需要的用户信息
+            $uids = array($var['first_post']['author_id']);
+            foreach ($posts as $post) {
+                $uids[] = $post['author_id'];
+            }
+            $users = $this->users_model->get_userinfo_by_ids(array_unique($uids));
+            
+            //为前面获取的变量赋值到$var
+            $var['posts'] = $posts;
+            $var['users'] = $users;
+            $var['page'] = $page_str;
+            
+            return $var;
+    }
+    
     public function post($tid, $post) {
         if (empty($tid) || empty($post)) {
             return FALSE;
@@ -44,15 +79,17 @@ class Biz_poll extends CI_Model {
     }
 
     public function check_post($type = 'post') {
-        $this->form_validation->set_rules('poll_option[]', '选项', 'trim|required|max_length[100]');
-        $this->form_validation->set_rules('max_choices', '选项个数', 'trim|is_natural_no_zero');
-        $this->form_validation->set_rules('expire_time', '投票有效天数', 'trim|is_natural');
-        $this->form_validation->set_rules('is_visible', '', 'regex_match[/[01]/]');
-        $this->form_validation->set_rules('is_overt', '', 'regex_match[/[01]/]');
+        if ($type == 'post') {
+            $this->form_validation->set_rules('poll_option[]', '选项', 'trim|required|max_length[100]');
+            $this->form_validation->set_rules('max_choices', '选项个数', 'trim|is_natural_no_zero');
+            $this->form_validation->set_rules('expire_time', '投票有效天数', 'trim|is_natural');
+            $this->form_validation->set_rules('is_visible', '', 'regex_match[/[01]/]');
+            $this->form_validation->set_rules('is_overt', '', 'regex_match[/[01]/]');
 
-        $this->form_validation->set_message('is_visible', '%s参数不正确。');
-        $this->form_validation->set_message('is_overt', '%s参数不正确。');
-        $this->form_validation->set_message('max_choices', '%s必须是大于0的正整数');
+            $this->form_validation->set_message('is_visible', '%s参数不正确。');
+            $this->form_validation->set_message('is_overt', '%s参数不正确。');
+            $this->form_validation->set_message('max_choices', '%s必须是大于0的正整数');
+        }
     }
 
     public function append_first_post($first_post) {

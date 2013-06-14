@@ -31,7 +31,7 @@
 <script>
 		KindEditor.uploadImages={};
 		KindEditor.uploadFiles={};
-		KindEditor.smileUrl = "<?=base_url()?>index.php/posts/get_smiley_json";
+		KindEditor.smileUrl = "<?=base_url()?>index.php/action/get_smiley_json";
 		KindEditor.smileys=null;
 		$.ajax({
 			type: "POST",
@@ -78,7 +78,7 @@
 						'<?=base_url()?>js/kindeditor/plugins/quote/quote.css',
 						],
 						useContextmenu:false,
-						uploadJson : '<?=base_url()?>index.php/posts/do_upload/',   //<<相对于kindeditor3.5.5\plugins\image\image.html 
+						uploadJson : '<?=base_url()?>index.php/action/do_upload/',   //<<相对于kindeditor3.5.5\plugins\image\image.html 
 						//fileManagerJson : '../../php/file_manager_json2.php',   //<<相对于kindeditor3.5.5\plugins\file_manager\file_manager.html 
 						allowFileManager : false,
 						afterUpload : function(url,data,name) {
@@ -221,9 +221,13 @@
     <td><input type="text" value="<?php echo set_value('subject', '输入标题'); ?>" name="subject" class="inp_txt inp_long"></td>
     <td style="color:#F00;"><?php echo form_error('subject'); ?></td>
   </tr>
-  <?php if($type == 'post' && $special!=1){?>
+  <?php if($special!=1){?>
   <tr>
-    <td><?php $this->load->view($special_post);?></td>
+    <td><?php 
+	if(!empty($special_view)){
+		$this->load->view($special_view);
+	}
+	?></td>
     <td style="color:#F00;"></td>
   </tr>
   <?php }?>

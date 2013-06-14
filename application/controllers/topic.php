@@ -15,6 +15,10 @@ class Topic extends MY_Controller {
         $this->load->model(array('biz_topic_manage','biz_post', 'forums_statistics_model', 'posts_model', 'credit_name_model'));
     }
 
+    /**
+     * 帖子展示页面，包括特殊帖子。
+     * @param type $id
+     */
     public function show($id) {
         if (empty($id) || !is_numeric($id)) {
             $this->message('参数错误，请指定要展示的帖子！');
@@ -23,62 +27,32 @@ class Topic extends MY_Controller {
         if (empty($topic)) {
             $this->message('参数错误，主题不存在');
         }
-        
         //获取本主题
         $var['topic'] = $topic;
-        //获取有管理权限的管理数组
+        //获取当前用户管理帖子的链接。
         $var['manage_arr'] = $this->biz_topic_manage->get_permission_manage($topic['forum_id']);
         
-        //得到当前用户的管理权限。
-        $admin_permission = $this->groups_model->get_admin_permission($topic['forum_id']);
-        
-        //如果是特殊主题获取主题帖子
+        //根据不同的主题来获取不同的业务类。
         if($topic['special']>1){
-            $where = "topic_id = '$id' AND is_first = '1'";
-            $first_post = $this->posts_model->get_one($where);
-            $var['first_post'] = $this->posts_model->output_filter($first_post);
-            //特殊主题需要的其他变量
             $class = biz_post::$specials[$topic['special']];
             $this->load->model($class);
-            $var['first_post'] = $this->$class->append_first_post($var['first_post']);
+        }else{
+            $class = 'biz_post';
         }
         
-        //获取本主题下的回复和分页
-        $where = $topic['special']>1?" is_first != 1":'1';
-        $where .= " AND topic_id = '$id' AND status =1";
-        $per_num = self::$per_num;
-        //$total_num = $var['topic']['replies'] + 1;
-        $total_num = $this->posts_model->get_count($where);
-        //生成分页字符串
-        $base_url = $this->get_current_url() . "/$id";
-        $config['uri_segment'] = 4;
-        $page_obj = $this->init_page($base_url, $total_num, $per_num, $config);
-        $page_str = $page_obj->create_links();
-        $start = max(0, ($page_obj->cur_page - 1) * $per_num);
-        $posts = $this->posts_model->get_posts_list($where, '*', 'post_time', $start, $per_num);
-        //获取需要的用户信息
-        $uids = $topic['special']>1?array($var['first_post']['author_id']):array();
-        foreach ($posts as $post) {
-            $uids[] = $post['author_id'];
-        }
-        $users = $this->users_model->get_users_by_ids(array_unique($uids));
+        $func = 'init_show';
+        $cls = method_exists($this->$class, $func)?$this->$class:$this->biz_post;
+        $args = func_get_args();
+        array_unshift($args, $topic);
+        $special_var = call_user_func_array(array($cls, $func), $args);
+        $var = array_merge($var, $special_var);
         
-        $groups = $this->groups_model->get_key_groups();
-        $need_users = array();
-        foreach ($users as $key => $value) {
-            $group_id = empty($value['group_id']) ? $value['member_id'] : $value['group_id'];
-            $need_users[$value['id']] = $value;
-            $need_users[$value['id']]['group'] = $groups[$group_id];
-        }
-
-        $credit_name = $this->credit_name_model->get_all();
-        $credit_name = $this->credit_name_model->key_list($credit_name, 'credit_x');
-
-        $var['posts'] = $posts;
-        $var['users'] = $need_users;
+//        var_dump($var);die;
+        
+        //获取积分名称。
+        $credit_name = $this->credit_name_model->get_all_by_creditx();
         $var['credit_name'] = $credit_name;
-        $var['page'] = $page_str;
-
+        
         //最后更新topics点击数
         $this->topics_model->update_increment(array('views' => ':1'), array('id' => $id));
         

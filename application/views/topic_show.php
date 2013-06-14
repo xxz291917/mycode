@@ -41,5 +41,5 @@
 <?php empty($page) && $page = '';
 echo $page;?>
 <p style="text-align:right;">
-  <input class="inp_btn" name="submit" type="submit" value="回复" onClick="location.href='<?php echo base_url('index.php/posts/reply/'.$topic['id']);?>'" />
+  <input class="inp_btn" name="submit" type="submit" value="回复" onClick="location.href='<?php echo base_url('index.php/action/reply/'.$topic['id']);?>'" />
 </p>

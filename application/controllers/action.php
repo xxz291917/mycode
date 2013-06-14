@@ -3,7 +3,7 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Posts extends MY_Controller {
+class Action extends MY_Controller {
 
     function __construct() {
         parent::__construct();
@@ -50,14 +50,14 @@ class Posts extends MY_Controller {
             if ($special != 1) {
                 $class = biz_post::$specials[$special];
                 $this->load->model($class);
-                $var['special_post'] = $class::$special_post;
-                if (method_exists($this->$class, 'init_var')) {
-                    $special_var = $this->$class->init_var();
+                $var['special_view'] = $class::$special_post;
+                if (method_exists($this->$class, 'init_post')) {
+                    $special_var = $this->$class->init_post();
                     $var = $var + $special_var;
                 }
             }
             $var['type'] = 'post';
-            $this->view('posts_post', $var);
+            $this->view('action_post', $var);
         }
     }
 
@@ -82,7 +82,7 @@ class Posts extends MY_Controller {
                 $this->message('您发帖太快或者是发帖数太多。');
             }
             //构造post数组。
-            $post = array_merge($post, array('topic_id' => $topic_id, 'forum_id' => $topic['forum_id'], 'topic_author_id' => $topic['author_id']));
+            $post = array_merge($post, array('topic_id' => $topic_id, 'forum_id' => $topic['forum_id'],'special'=>$topic['special'], 'topic_author_id' => $topic['author_id']));
             //完成回复。
             if ($this->biz_post->post($post, 'reply')) {
                 $this->message('发帖成功。', 1, $forum_show_url);
@@ -92,50 +92,29 @@ class Posts extends MY_Controller {
         } else {
             $forum_id = $topic['forum_id'];
             $is_arr = $this->biz_post->get_is($forum_id);
+            //如果是特殊帖子需要做相应的处理。
+            $special = $topic['special'];
+            $var['special'] = $special;
+            if ($special != 1) {
+                $class = biz_post::$specials[$special];
+                $this->load->model($class);
+                if(method_exists($this->$class, 'get_reply_view')){
+                    $var['special_view'] = $this->$class->get_reply_view($topic_id);
+                }
+                if (method_exists($this->$class, 'init_reply')) {
+                    $special_var = $this->$class->init_reply($topic_id);
+                    $var = $var + $special_var;
+                }
+            }
             $var['is_arr'] = $is_arr;
             $var['type'] = 'replay';
-            $this->view('posts_post', $var);
-        }
-    }
-
-    /**
-     * 用户提交投票选项
-     */
-    public function poll($topic_id) {
-        $post_key = 'option_'.$topic_id;
-        $options = $this->input->post($post_key);
-        if(empty($options)||empty($topic_id)){
-            $this->message('参数错误，请重新检查');
-        }
-        
-        $topic = $this->topics_model->get_by_id($topic_id);
-        if (empty($topic)) {
-            $this->message('参数错误，投票的主题不存在');
-        }
-        //检测是否有投票的权限，等同于回复权限。
-        $is_post = $this->biz_permission->check_base('reply', $topic['forum_id']);
-        if (!$is_post) {
-            $this->message('您没有投票的权限');
-        }
-        
-        $this->load->model('poll_model');
-        $poll = $this->poll_model->get_by_id($topic_id);
-        if(empty($poll)){
-            $this->message('参数错误，请重新检查');
-        }elseif (count($options)>$poll['max_choices']) {
-            $this->message('超过允许的最大投票数，请重新检查');
-        }
-        //将投票插入到数据库中，完成投票操作。
-        if($this->poll_model->submit_poll($topic_id,$options)){
-            $this->message('投票成功！',1);
-        }else{
-            $this->message('网络原因，投票失败！',1);
+            $this->view('action_post', $var);
         }
     }
     
     
     /**
-     * 主要是配合前台编辑器使用的图片和文件上传功能
+     * 前台编辑器使用的图片和文件上传功能
      * //成功时
      * "error" : 0,
      * "url" : "http://www.example.com/path/to/file.ext"
@@ -196,6 +175,9 @@ class Posts extends MY_Controller {
         }
     }
 
+    /**
+     * 前台编辑器使用的获取数据库表情。
+     */
     public function get_smiley_json() {
         $this->load->model(array('smiley_model'));
         $smileys = $this->smiley_model->get_smiley();
@@ -203,6 +185,11 @@ class Posts extends MY_Controller {
         die;
     }
 
+    /**
+     * 辩论帖，填写裁判时，校验用户用。
+     * @param type $str
+     * @return boolean
+     */
     public function username_check($str) {
         $user = $this->users_model->get_user_by_name($str);
         if (empty($user['id'])) {

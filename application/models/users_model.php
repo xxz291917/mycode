@@ -111,6 +111,11 @@ class Users_model extends MY_Model {
         return $datas;
     }
     
+    /**
+     * 根据id获取用户信息。
+     * @param type $ids
+     * @return boolean
+     */
     public function get_users_by_ids($ids){
         $u = 'id,email,username,credits,group_id,member_id,groups,icon,gender,signature,regdate,';
         $ex = 'posts,digests,today_posts,today_uploads,last_visit_time,last_login_ip,last_post_time,last_active_time,online_time,extcredits1,extcredits2,extcredits3,extcredits4,extcredits5,extcredits6,extcredits7,extcredits8';
@@ -127,6 +132,23 @@ class Users_model extends MY_Model {
         $sql = "SELECT $u $ex FROM {$this->table} u LEFT JOIN users_extra ex ON ex.user_id=u.id WHERE $where";
         $query = $this->db->query($sql);
         return $query->$result_fun();
+    }
+    
+    /**
+     * 根据id获取用户信息，不同的是添加了用户组信息。
+     * @param type $ids
+     * @return array
+     */
+    public function get_userinfo_by_ids($ids) {
+        $users = $this->get_users_by_ids(array_unique($ids));
+        $groups = $this->groups_model->get_key_groups();
+        $need_users = array();
+        foreach ($users as $key => $value) {
+            $group_id = empty($value['group_id']) ? $value['member_id'] : $value['group_id'];
+            $need_users[$value['id']] = $value;
+            $need_users[$value['id']]['group'] = $groups[$group_id];
+        }
+        return $need_users;
     }
     
     public function get_user_by_name($name){

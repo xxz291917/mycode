@@ -81,7 +81,7 @@ class Biz_permission extends CI_Model {
                     return TRUE;
                 }
                 if (!empty($forum_id)) {
-                    $forum = $this->forum_model->get_by_id($forum_id);
+                    $forum = $this->forums_model->get_by_id($forum_id);
                     $forum_key = 'allow_' . $action;
                     $permission = $forum[$forum_key];
                     if (empty($permission)) {//版块里面没有设置
@@ -110,7 +110,7 @@ class Biz_permission extends CI_Model {
      * @return int 返回此版块下的帖子是否需要审核。
      */
     public function get_check($forum_id) {
-        $forum = $this->forum_model->get_by_id($forum_id);
+        $forum = $this->forums_model->get_by_id($forum_id);
         $forum_check = $forum['check'];
         $group_check = $this->user['group']['check'];
         return max($forum_check, $group_check);
@@ -128,7 +128,7 @@ class Biz_permission extends CI_Model {
             $group_key = 'is_' . $type;
             if ($this->user['group'][$group_key] == 1) {
                 if(!empty($forum_id)){
-                    $forum = $this->forum_model->get_by_id($forum_id);
+                    $forum = $this->forums_model->get_by_id($forum_id);
                     $forum_key = 'is_' . $type;
                     if (empty($forum[$forum_key])) {
                         return 1;
@@ -142,8 +142,6 @@ class Biz_permission extends CI_Model {
         }
         return 0;
     }
-    
-    
     
     /**
      * 传入一个action,返回在数据库中的字段值。比如：top=>allow_top

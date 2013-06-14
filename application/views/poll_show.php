@@ -42,7 +42,7 @@
 距离投票结束还有：<?php echo time_span($this->time,$first_post['expire_time'],0);?>  <br/>
     <?php
 		$create_function = $first_post['is_multiple']?'form_checkbox':'form_radio';
-		echo form_open(base_url('index.php/topic/poll/'.$first_post['topic_id']),array('target'=>'ajax','refresh'=>'true'));
+		echo form_open(base_url('index.php/poll/submit/'.$first_post['topic_id']),array('target'=>'ajax','refresh'=>'true'));
 		foreach($first_post['options'] as $key=>$option){
 			$data = array(
 				'name'        => 'option_'.$first_post['topic_id'].'[]',
@@ -97,5 +97,5 @@
 <?php empty($page) && $page = '';
 echo $page;?>
 <p style="text-align:right;">
-  <input class="inp_btn" name="submit" type="submit" value="回复" onClick="location.href='<?php echo base_url('index.php/posts/reply/'.$topic['id']);?>'" />
+  <input class="inp_btn" name="submit" type="submit" value="回复" onClick="location.href='<?php echo base_url('index.php/action/reply/'.$topic['id']);?>'" />
 </p>

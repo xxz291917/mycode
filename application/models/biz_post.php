@@ -11,11 +11,41 @@ if (!defined('BASEPATH'))
  */
 class Biz_post extends CI_Model {
 
-    static $specials = array(2 => 'biz_ask', 3 => 'biz_poll', 4 => 'biz_debate');
+    static $specials = array(1=>'biz_post', 2 => 'biz_ask', 3 => 'biz_poll', 4 => 'biz_debate');
 
     public function __construct() {
         parent::__construct();
     }
+
+    public function init_show($topic,$id) {
+            $this->load->model('biz_pagination');
+            //获取本主题下的回复和分页
+            $where = " topic_id = '$id' AND status =1";
+            $per_num = $this->config->item('per_num');
+            $total_num = $this->posts_model->get_count($where);
+            //生成分页字符串
+            $base_url = current_url();
+            $page_obj = $this->biz_pagination->init_page($base_url, $total_num, $per_num);
+            $page_str = $page_obj->create_links();
+            $start = max(0, ($page_obj->cur_page - 1) * $per_num);
+            $posts = $this->posts_model->get_posts_list($where, '*', 'post_time', $start, $per_num);
+            //获取需要的用户信息
+            $uids = array();
+            foreach ($posts as $post) {
+                $uids[] = $post['author_id'];
+            }
+            $users = $this->users_model->get_userinfo_by_ids(array_unique($uids));
+            
+            //为前面获取的变量赋值到$var
+            $var['posts'] = $posts;
+            $var['users'] = $users;
+            $var['page'] = $page_str;
+            
+            return $var;
+    }
+
+
+
 
     /**
      * 接受参数，完成发帖或者回复的数据库操作。
@@ -26,6 +56,20 @@ class Biz_post extends CI_Model {
     public function post($post, $type = 'post') {
         $post = $this->safe_filter($post); //安全过滤，不包括html转义，也就是说在一定条件下可以使用html代码
         $forum_id = $post['forum_id'];
+        $special = $post['special'];
+        
+        //特殊贴钩子（处理业务之前调用）
+        if ($special != 1) {
+            $special_class = self::$specials[$special];
+            if(!empty($special_class)){
+                $this->load->model($special_class);
+                $method = 'pre_'.$type;
+                if(method_exists($this->$special_class, $method)){
+                    $this->$special_class->$method($post);
+                }
+            }
+        }
+        
         if ('post' == $type) {
             //插入topics表
             $tags = $this->topics_model->format_tags($post['tags']);
@@ -35,37 +79,30 @@ class Biz_post extends CI_Model {
             $topics_data['post_time'] = $this->time;
             $topics_data['subject'] = $post['subject'];
             $topics_data['tags'] = $tags;
-            $topics_data['special'] = $post['special'];
+            $topics_data['special'] = $special;
             $topics_data['replies'] = 0;
-            $topics_data['status'] = $this->get_check->get_check($forum_id) > 0 ? 4 : 1;
+            $topics_data['status'] = $this->biz_permission->get_check($forum_id) > 0 ? 4 : 1;
             $this->topics_model->insert($topics_data);
             $tid = $this->db->insert_id();
             if (empty($tid)) {
                 $this->message('发帖topics失败。');
             }
             $this->tags_model->insert_tags($tags, $tid);
-            //特殊主题完成自己特有的发帖操作。
-            if ($post['special'] != 1) {
-                $class = self::$specials[$post['special']];
-                $this->load->model($class);
-                $this->$class->post($tid, $post);
-            }
         } elseif ('reply' == $type) {
+            $tid = $post['topic_id'];
             //更新topics表
             $topics_data['replies'] = ':1';
             $topics_data['last_author'] = $this->user['username'];
             $topics_data['last_author_id'] = $this->user['id'];
             $topics_data['last_post_time'] = $this->time;
-            $tid = $post['topic_id'];
             $this->topics_model->update_increment($topics_data, array('id' => $tid));
             //更新topics_posted表，如果回复的帖子不是我发起的，则记录我参与过的帖子。
             if ($this->user['id'] != $post['topic_author_id']) {
-                $topic_id = $this->topics_posted_model->get_one(array('user_id' => $this->user['id'], 'topic_id' => $tid));
-                if (empty($topic_id)) {
-                    $this->topics_posted_model->insert(array('user_id' => $this->user['id'], 'topic_id' => $tid));
+                $is_posted = $this->topics_posted_model->check_is_posted($tid);
+                if (!$is_posted) {
+                    $this->topics_posted_model->insert(array('user_id' => $this->user['id'], 'topic_id' => $tid, 'time'=>$this->time));
                 }
             }
-            //特殊主题完成自己特有的回复操作。
         }
         //插入posts表
         $posts_data['topic_id'] = $tid;
@@ -91,6 +128,15 @@ class Biz_post extends CI_Model {
         if (empty($pid)) {
             $this->message('发帖posts失败。');
         }
+        
+        //特殊贴钩子（完成基本业务后调用）
+        if(!empty($special_class)){
+            $method = $type;
+            if(method_exists($this->$special_class, $method)){
+                $this->$special_class->$method($tid,$post,$pid);
+            }
+        }
+        
         //更新用户上传的附件（图片和文件）
         if (!empty($post['attachments'])) {
             $this->load->model(array('attachments_unused_model', 'attachments_model'));
@@ -115,8 +161,10 @@ class Biz_post extends CI_Model {
         if (!$update_credit) {
             $this->message('更新用户积分失败。');
         }
+        
         //更新用户user_extra信息
         $this->users_extra_model->post_increment();
+        
         //更新用户forums_statistics信息
         $this->forums_statistics_model->post_increment($forum_id, $tid, $type);
         return TRUE;
@@ -161,11 +209,12 @@ class Biz_post extends CI_Model {
                 'rules' => 'trim|required|min_length[5]|max_length[80]'
             );
         }
+        
         //校验特殊主题
         if ($special != 1) {
-            $class = self::$specials[$special];
-            $this->load->model($class);
-            $this->$class->check_post($type);
+            $special_class = self::$specials[$special];
+            $this->load->model($special_class);
+            $this->$special_class->check_post($type);
         }
 
         $this->form_validation->set_rules($config);

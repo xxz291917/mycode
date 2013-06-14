@@ -39,7 +39,7 @@
 <br />
 
 <p class="div_bottom">
-  <input class="inp_btn" name="submit" type="submit" value="发帖" onClick="location.href='<?php echo base_url('index.php/posts/post/'.$forum['id']);?>'" />
+  <input class="inp_btn" name="submit" type="submit" value="发帖" onClick="location.href='<?php echo base_url('index.php/action/post/'.$forum['id']);?>'" />
 </p>
 
 

@@ -158,6 +158,20 @@ class MY_Model extends CI_Model {
         }
         return $where_str;
     }
+    
+    public function get_list_append_page($where = '', $field = '*', $orderby = '') {
+            $per_num = $this->config->item('per_num');
+            $total_num = $this->get_count($where);
+            //生成分页字符串
+            $base_url = current_url();
+            $page_obj = $this->init_page($base_url, $total_num, $per_num);
+            $page_str = $page_obj->create_links();
+            $start = max(0, ($page_obj->cur_page - 1) * $per_num);
+            $list = $this->get_list($where, $field , $orderby, $start, $per_num);
+            return array('list'=>$list,'page_str'=>$page_str);
+    }
+    
+    
 
 }
 

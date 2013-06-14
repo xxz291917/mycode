@@ -1,12 +1,10 @@
 <?php
 
 class Forum extends MY_Controller {
-
-    static $per_num = 10;
     
     function __construct() {
         parent::__construct();
-        $this->load->model(array('biz_index','forums_statistics_model'));
+        $this->load->model(array('biz_index','forums_statistics_model','biz_pagination'));
     }
 
     public function show($id) {
@@ -31,13 +29,11 @@ class Forum extends MY_Controller {
         
         //获取本版块下的主题
         if(!empty($var['forum']['topics'])){
-            $per_num = self::$per_num;
+            $per_num = $this->config->item('per_num');
             $total_num = $var['forum']['topics'];
             //生成分页字符串
             $base_url = $this->get_current_url()."/$id";
-            $config['uri_segment'] = 4;
-            $page_obj = $this->init_page($base_url, $total_num,$per_num,$config);
-            
+            $page_obj = $this->biz_pagination->init_page($base_url, $total_num,$per_num);
             $page_str = $page_obj->create_links();
             $start = max(0,($page_obj->cur_page-1)*$per_num);
             $topics = $this->topics_model->get_list(array('forum_id'=>$id), '*', 'last_post_time DESC', $start,$per_num);
