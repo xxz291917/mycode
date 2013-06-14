@@ -40,6 +40,7 @@ class Topic extends MY_Controller {
             $class = 'biz_post';
         }
         
+        //判断特殊主题帖子类下是否有init_show方法，如果有则调用，如果没有则调用biz_post下的方法。
         $func = 'init_show';
         $cls = method_exists($this->$class, $func)?$this->$class:$this->biz_post;
         $args = func_get_args();
@@ -47,7 +48,7 @@ class Topic extends MY_Controller {
         $special_var = call_user_func_array(array($cls, $func), $args);
         $var = array_merge($var, $special_var);
         
-//        var_dump($var);die;
+        var_dump($var);die;
         
         //获取积分名称。
         $credit_name = $this->credit_name_model->get_all_by_creditx();

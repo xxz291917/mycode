@@ -108,7 +108,7 @@ class Biz_debate extends CI_Model {
             
             $stand = $this->input->get('stand', TRUE);
             $where = $stand !== false ? " d.stand = $stand " : '1';
-            $where .=  " AND p.is_first != 1 AND p.topic_id = '$id' AND p.status =1 ";
+            $where .=  " AND d.topic_id = '$id' AND p.is_first != 1 AND p.status =1 ";
             
             $count_sql .= $where ."LIMIT 0,1";
             $query = $this->db->query($count_sql);
@@ -122,7 +122,8 @@ class Biz_debate extends CI_Model {
             $page_str = $page_obj->create_links();
             
             $start = max(0, ($page_obj->cur_page - 1) * $per_num);
-            $list_sql  .= $where ." LIMIT $start,$per_num";
+            $order_by = ' ORDER BY post_time';
+            $list_sql  .= $where.$order_by ." LIMIT $start,$per_num";
             
 //            echo $list_sql;die;
             $query = $this->db->query($list_sql);

@@ -15,6 +15,7 @@ class Biz_post extends CI_Model {
 
     public function __construct() {
         parent::__construct();
+        $this->load->model('posts_model','topics_model');
     }
 
     public function init_show($topic,$id) {
@@ -43,10 +44,7 @@ class Biz_post extends CI_Model {
             
             return $var;
     }
-
-
-
-
+    
     /**
      * 接受参数，完成发帖或者回复的数据库操作。
      * @param type $post
