@@ -25,14 +25,14 @@
     ?>
   </tr>
 </thead>
-  <?php foreach($credit_rules as $rules){ ?>
+  <?php foreach($credit_rules as $medal){ ?>
   <tr>
-    <td ><?=$rules['name']?></td>
-    <td ><?=$cycle_names[$rules['cycle_type']]?></td>
-    <!--td ><?=$rules['cycle_time']?></td-->
-    <td ><?=$rules['reward_num']?></td>
+    <td ><?=$medal['name']?></td>
+    <td ><?=$cycle_names[$medal['cycle_type']]?></td>
+    <!--td ><?=$medal['cycle_time']?></td-->
+    <td ><?=$medal['reward_num']?></td>
     <?php foreach ($credit_names as $key => $value){ ?>
-    <td ><input type="text" class="inp_txt inp_num" value="<?php if(isset($data['credit_setting'][$rules['action']][$value['credit_x']])) echo $data['credit_setting'][$rules['action']][$value['credit_x']];?>" name="<?php echo 'credit_setting'.'['.$rules['action'].']'.'['.$value['credit_x'].']'?>"></td>
+    <td ><input type="text" class="inp_txt inp_num" value="<?php if(isset($data['credit_setting'][$medal['action']][$value['credit_x']])) echo $data['credit_setting'][$medal['action']][$value['credit_x']];?>" name="<?php echo 'credit_setting'.'['.$medal['action'].']'.'['.$value['credit_x'].']'?>"></td>
     <?php }?>
   </tr>
   <?php }?>

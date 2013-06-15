@@ -53,11 +53,12 @@ html, body {
     <td colspan="2" height="56px"><div class="head">
         <p class="r a-r t-tips"> <a href="<?php echo base_url()?>" target="_blank">前台首页</a>|<a href="index.php?admin_main-logout">退出管理中心</a> </p>
         <ul id="nav">
-          <li onclick="getMenu('index',this)" id="indexmenu" ><a href="javascript:void(0);"><span>首页</span></a></li>
-          <li onclick="getMenu('global',this)" id="globalmenu"><a href="javascript:void(0);"><span>全局</span></a></li>
-          <li onclick="getMenu('users',this)" id="usermenu"><a href="javascript:void(0);"><span>用户</span></a></li>
-          <li onclick="getMenu('forums',this)" id="plugmenu"><a href="javascript:void(0);"><span>版块管理</span></a></li>
+          <li onclick="getMenu('index',this)" 	 id="indexmenu" ><a href="javascript:void(0);"><span>首页</span></a></li>
+          <li onclick="getMenu('global',this)" 	 id="globalmenu"><a href="javascript:void(0);"><span>全局</span></a></li>
+          <li onclick="getMenu('users',this)"    id="usermenu"><a href="javascript:void(0);"><span>用户</span></a></li>
+          <li onclick="getMenu('forums',this)"   id="forummenu"><a href="javascript:void(0);"><span>版块管理</span></a></li>
           <li onclick="getMenu('content',this)"  id="contentmenu"><a href="javascript:void(0);"><span>内容</span></a></li>
+          <li onclick="getMenu('busines',this)"  id="businessmenu"><a href="javascript:void(0);"><span>运营</span></a></li>
         </ul>
       </div></td>
   </tr>
@@ -69,15 +70,15 @@ html, body {
         <div style="display:none" id='menulist'>
           <div id='index'>
             <ul>
-              <li><a href="main/admin_index" target="main" class="on">首页信息</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/main/info" target="main" class="on">首页信息</a></li>
             </ul>
           </div>
           <div id='global'>
             <ul>
-              <li><a href="index.php?admin_setting-base" target="main" >站点设置</a></li>
-              <li><a href="index.php?admin_channel" target="main">基本设置</a></li>
-              <li><a href="index.php?admin_setting-sec" target="main">附件设置</a></li>
-              <li><a href="index.php?admin_setting-index" target="main">积分设置</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/site/edit/setting" class="on" target="main">站点设置</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/site/edit/seo" target="main">SEO设置</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/site/setting" target="main">附件设置</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/site/setting" target="main">积分设置</a></li>
             </ul>
           </div>
           <div id='users'>
@@ -99,6 +100,12 @@ html, body {
           <div id='forums'>
             <ul>
               <li><a href="<?=base_url()?>index.php/admin/forums" class="on" target="main">版块管理</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/forums/merge" target="main">版块合并</a></li>
+            </ul>
+          </div>
+          <div id='busines'>
+            <ul>
+              <li><a href="<?=base_url()?>index.php/admin/medals" class="on" target="main">勋章管理</a></li>
               <li><a href="<?=base_url()?>index.php/admin/forums/merge" target="main">版块合并</a></li>
             </ul>
           </div>
