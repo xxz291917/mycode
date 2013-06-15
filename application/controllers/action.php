@@ -7,14 +7,15 @@ class Action extends MY_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model(array('biz_permission',
-                                'biz_post',
-                                'topics_model',
-                                'tags_model',
-                                'topics_posted_model',
-                                'posts_model',
-                                'users_extra_model',
-                                'forums_statistics_model'));
+        $this->load->model(array(
+            'biz_permission',
+            'biz_post',
+            'topics_model',
+            'tags_model',
+            'topics_posted_model',
+            'posts_model',
+            'users_extra_model',
+            'forums_statistics_model'));
     }
 
     public function post($forum_id = '', $special = 1) {
@@ -200,6 +201,10 @@ class Action extends MY_Controller {
         }
     }
 
+    /**
+     * 帖子支持数
+     * @param type $post_id
+     */
     public function support($post_id){
         $this->deal_support($post_id,'support');
     }
@@ -256,6 +261,62 @@ class Action extends MY_Controller {
             $this->message('操作成功',1);
         }else{
             $this->message('操作失败');
+        }
+    }
+    
+    /**
+     * 问答帖选择最佳答案，将出入的post_id选为本帖子的最佳答案。
+     * @param type $post_id
+     */
+    public function select_answer($post_id) {
+        $this->load->model(array('ask_model'));
+        $post = $this->posts_model->get_by_id($post_id);
+        $topic = $this->topics_model->get_by_id($post['topic_id']);
+        if(empty($post) || empty($topic) || $topic['special']!=2){
+            $this->message('参数错误');
+        }
+        $update_data = array('best_answer'=>$post_id);
+        if($this->ask_model->update($update_data,array('topic_id'=>$post['topic_id']))){
+            $this->message('操作成功',1);
+        }else{
+            $this->message('操作失败');
+        }
+    }
+    
+    /**
+     * 举报帖子
+     * @param type $post_id
+     */
+    public function report($post_id) {
+        $this->load->model('reports_model');
+        $post = $this->posts_model->get_by_id($post_id);
+        $topic = $this->topics_model->get_by_id($post['topic_id']);
+        if(empty($post) || empty($topic)){
+            $this->message('参数错误');
+        }
+        if ($this->input->post('submit')) {
+            $report_post = $this->input->post();
+            //检测权限。
+            if (!$this->biz_permission->check_base('report', $topic['forum_id'])) {
+                $this->message('没有权限。', 0);
+            }
+            $insert_data = array(
+                'topic_id'=>$topic['id'],
+                'post_id'=>$post['id'],
+                'user_id'=>$this->user['id'],
+                'reason'=>html_escape($report_post['reason']),
+                'time'=>$this->time,
+                'status'=>0,
+            );
+            if($this->reports_model->insert($insert_data)){
+                $this->message('操作完成！', 1);
+            }else{
+                $this->message('操作失败！');
+            }
+        } else {
+            $var['post_id'] = $post_id;
+            $var['post_id'] = $post_id;
+            $this->view('report', $var);
         }
     }
     

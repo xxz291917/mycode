@@ -92,7 +92,12 @@ class Biz_debate extends CI_Model {
         }elseif($type=='reply'){
         }
     }
-    
+    /**
+     * 辩论帖展示初始化变量
+     * @param type $topic
+     * @param type $id
+     * @return type
+     */
     public function init_show($topic,$id) {
             $this->load->model('biz_pagination');
             $where = "topic_id = '$id' AND is_first = '1'";
@@ -173,15 +178,15 @@ class Biz_debate extends CI_Model {
      * @return boolean
      */
     public function specail_where() {
-        //得到辩论帖子基本信息以及双方观点数所占比例。
-        $debate = $this->debate_model->get_by_id($first_post['topic_id']);
-        $total_votes = $debate['affirm_votes']+$debate['negate_votes'];
-        $debate['affirm_percent'] = round($debate['affirm_votes'] / $total_votes, 2);
-        $debate['negate_votes'] = round($debate['negate_votes'] / $total_votes, 2);
-        $first_post['debate'] = $debate;
-        return $first_post;
+
     }
     
+    /**
+     * 添加辩论的喜欢数。
+     * @param type $post_id
+     * @param type $type
+     * @return boolean
+     */
     public function deal_support($post_id,$type){
         if($type == 'support'){
             return $this->debate_posts_model->update_increment(array('voters'=>':1'),array('post_id'=>$post_id));
