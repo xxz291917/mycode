@@ -120,8 +120,8 @@ class Admin_Controller extends Base_Controller {
             $this->load->view($footer, $vars);
         }
     }
-
-    protected function message($message, $redirect = 'BACK') {
+    
+    protected function message($message, $sucess = 0, $redirect = 'BACK') {
         //判断是否是ajax提交
         if ($this->input->is_ajax_request()) {
             echo $this->echo_ajax($redirect, $message);

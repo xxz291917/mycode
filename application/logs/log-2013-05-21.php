@@ -265,3 +265,6 @@ ERROR - 2013-05-21 14:43:21 --> Query error: You have an error in your SQL synta
 ERROR - 2013-05-21 14:43:25 --> Severity: Warning  --> Invalid argument supplied for foreach() D:\www\mycode\application\controllers\topic.php 84
 ERROR - 2013-05-21 14:43:25 --> Severity: Warning  --> join(): Invalid arguments passed D:\www\mycode\application\controllers\topic.php 104
 ERROR - 2013-05-21 14:43:25 --> Query error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+ERROR - 2013-05-21 17:16:49 --> Severity: Notice  --> Undefined index: category_id D:\xampp\htdocs\www\mycode\application\controllers\topic.php 124
+ERROR - 2013-05-21 17:17:12 --> 404 Page Not Found --> topics/check
+ERROR - 2013-05-21 17:17:17 --> 404 Page Not Found --> forums/merge

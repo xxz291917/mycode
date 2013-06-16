@@ -25,7 +25,7 @@
   foreach($medals as $medal){ ?>
   <tr cid="<?=$medal['id'] ?>">
     <td ><input type="text" class="inp_txt inp_num" name="old[<?=$medal['id'] ?>][display_order]" value="<?php echo my_set_value('display_order', $medal)?>" ></td>
-    <td ><input type="checkbox" class="checkbox" name="old[<?=$medal['id'] ?>][is_open]" value="1" <?php echo my_set_radio('closed', 1, $medal)?> ></td>
+    <td ><input type="checkbox" class="checkbox" name="old[<?=$medal['id'] ?>][is_open]" value="1" <?php echo my_set_radio('is_open', 1, $medal)?> ></td>
     <td ><input type="text" class="inp_txt" name="old[<?=$medal['id'] ?>][name]" value="<?php echo my_set_value('name', $medal)?>" ></td>
     <td ><input type="text" class="inp_txt" name="old[<?=$medal['id'] ?>][description]" value="<?php echo my_set_value('description', $medal)?>" ></td>
     <td ><input type="text" class="inp_txt" name="old[<?=$medal['id'] ?>][image]" value="<?php echo my_set_value('image', $medal)?>" > <img style="vertical-align:middle" src="<?php echo base_url('/images/medals/'.my_set_value('image', $medal));?>"></td>

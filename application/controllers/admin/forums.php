@@ -66,7 +66,7 @@ class Forums extends Admin_Controller {
         if (empty($id)) {
             $this->message('参数错误！');
         } elseif ($this->input->post('submit')) {
-            $forums = $this->input->post();
+            $forums = $this->input->post(null,true);
             
             //需要加入操作主题分类
             if ($type == 'category') {
