@@ -14,7 +14,7 @@ class Base_Controller extends CI_Controller {
     public function __construct() {
         parent::__construct();
         //aotoload.php中自动加载了$autoload['libraries'] = array('database');$autoload['helper'] = array('url','form');
-        $this->load->model(array('users_model', 'groups_model', 'forums_model','biz_permission'));
+        $this->load->model(array('users_model', 'groups_model', 'forums_model','biz_permission','users_extra_model'));
         $this->load->library(array('user_agent'));
         $this->config->load('my_config');
         if(config_item('enable_cache')){
@@ -27,6 +27,10 @@ class Base_Controller extends CI_Controller {
         $this->user = $this->users_model->get_userinfo();
         $this->ip = $this->input->ip_address();
         $this->time = time();
+        
+        if(!empty($this->user)){//如果用户登录了，则添加最后活动时间。
+            $this->users_extra_model->update_active_time();
+        }
 //        var_dump($this->user);die;
     }
 

@@ -24,23 +24,27 @@ class Biz_pagination extends CI_Model {
         }
         $config['total_rows'] = $total_rows;
         $config['per_page'] = !empty($per_page) ? $per_page : $this->config->item('per_num');
-
+        
         //结构和样式
-        $config['num_links'] = 4;
-        $config['full_tag_open'] = '<p class="pagination">';
-        $config['full_tag_close'] = '</p>';
-        $config['cur_tag_open'] = '<span>';
-        $config['cur_tag_close'] = '</span>';
+        $config['num_links'] = 5;
+        $config['full_tag_open'] = '<div class="pagenum">';
+        $config['full_tag_close'] = '</div>';
+        $config['cur_tag_open'] = '<a href="#" class="current">';
+        $config['cur_tag_close'] = '</a>';
         $config['next_tag_open'] = '';
         $config['next_tag_close'] = '';
         $config['prev_tag_open'] = '';
         $config['prev_tag_close'] = '';
         $config['num_tag_open'] = '';
         $config['num_tag_close'] = '';
+        
         $config['first_link'] = '第一页';
-        $config['next_link'] = '&gt;';
-        $config['prev_link'] = '&lt;';
+        $config['next_link'] = '';
+        $config['prev_link'] = '';
         $config['last_link'] = '最后一页';
+        
+        
+        
         $config['page_query_string']	= TRUE;
         $config['query_string_segment'] = 'per_page';
         if (!empty($my_config)) {

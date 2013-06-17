@@ -228,7 +228,7 @@ class Forums_model extends MY_Model {
         //有些积分规则是需要判断条件的，比如登录。
         if ($rule == 'daylogin') {
             //判断是否是今天第一次登录。
-            if (date('Ymd', $this->user['last_visit_time']) == date('Ymd', $this->time)) {
+            if (date('Ymd', $this->user['last_login_time']) == date('Ymd', $this->time)) {
                 return false;
             }
         }
@@ -255,6 +255,23 @@ class Forums_model extends MY_Model {
         $forum = $this->get_by_id($id);
         return array_filter(explode(',', $forum['manager']));
     }
+    
+    public function get_nav($id){
+        $forums = $this->get_key_forums();
+        $nav[$id] = $forums[$id]['name'];
+        for($i=1;$i<=3;$i++){
+            $parent_id = $forums[$id]['parent_id'];
+            $id = $parent_id;
+            if($id == 0){
+                break;
+            }else{
+                $nav[$id] = $forums[$id]['name'];
+            }
+        }
+        return array_reverse($nav);
+//        var_dump($nav);die;
+    }
+    
     
 }
 

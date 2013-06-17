@@ -44,7 +44,12 @@ class Posts_model extends MY_Model {
             $value['content'] = $this->smiley2html($value['content']);
         }
         //过滤is_html
+        
         //过滤is_hide
+        if($value['is_first'] && $value['is_hide']){
+            $value['content'] = $this->hide2html($value['content']);
+        }
+        
         return $value;
     }
 
@@ -62,7 +67,6 @@ class Posts_model extends MY_Model {
         $str = preg_replace('/<img[^>]+smileId=([\"\']?)(\d+)(\1)[^>]*>/ie', "\$this->smileys[\\2]['code']", $str);
         return $str;
     }
-
     function smiley2html($str) {
         if (!isset($this->smileys)) {
             $this->smileys = $this->smiley_model->get_smiley();
@@ -78,17 +82,17 @@ class Posts_model extends MY_Model {
     }
 
     public function attachments2html($value) {
-        //此处加一个cache
-        $attachments = $this->attachments_model->get_list(array('topic_id' => $value['topic_id'], 'post_id' => $value['id']));
-        $this->attachments = $this->key_list($attachments, 'id');
         //[attach][attachimg]
         $value['content'] = preg_replace("/\[(attach|attachimg)\](\d+)\[\/\\1\]/ies", "\$this->get_html_for_attach('\\2','\\1')", $value['content']);
         return $value;
     }
-
     private function get_html_for_attach($aid, $type = 'attach') {
-        if (!empty($this->attachments[$aid])) {
-            $attachment = $this->attachments[$aid];
+        //cache
+        $attachments = $this->attachments_model->get_list(array('topic_id' => $value['topic_id'], 'post_id' => $value['id']));
+        $attachments = $this->key_list($attachments, 'id');
+        
+        if (!empty($attachments[$aid])) {
+            $attachment = $attachments[$aid];
             $html = '';
             if ('attach' == $type) {
                 $href = base_url("index.php/attachment/download/$aid");
@@ -104,6 +108,14 @@ class Posts_model extends MY_Model {
             return '';
         }
     }
+    
+    public function hide2html($value) {
+        //[attach][attachimg]
+        $value['content'] = preg_replace("/\[(attach|attachimg)\](\d+)\[\/\\1\]/ies", "\$this->get_html_for_attach('\\2','\\1')", $value['content']);
+        return $value;
+    }
+    
+    
 
 }
 

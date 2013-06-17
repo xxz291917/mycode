@@ -6,6 +6,7 @@ if (!defined('BASEPATH'))
 class Groups_model extends MY_Model {
 
     static $moderators_id = 3;
+    static $tourist_id = 7;//游客组id
     public $admin_permission = array();
     
     function __construct() {

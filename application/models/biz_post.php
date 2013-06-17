@@ -21,7 +21,9 @@ class Biz_post extends CI_Model {
     public function init_show($topic,$id) {
             $this->load->model('biz_pagination');
             //获取本主题下的回复和分页
-            $where = " topic_id = '$id' AND status =1";
+            $author = $this->input->get('author', TRUE);
+            $where = !empty($author) ? " author_id = '$author' " : '1';
+            $where .= " AND topic_id = '$id' AND status =1";
             $per_num = $this->config->item('per_num');
             $total_num = $this->posts_model->get_count($where);
             //生成分页字符串

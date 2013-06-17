@@ -40,6 +40,17 @@ class Topic extends MY_Controller {
             $class = 'biz_post';
         }
         
+        //获取导航面包屑，论坛>综合交流>活动专区>现代程序员的工作环境
+        $nav = array(array('论坛', base_url()));
+        $nav_forums = $this->forums_model->get_nav($topic['forum_id']);
+        foreach ($nav_forums as $key => $val) {
+            $nav[] = array($val, base_url('index.php/forum/show/'.$key));
+        }
+        $nav[] = array($topic['subject'], current_url());
+        $var['nav'] = $nav;
+        
+        
+        
         //判断特殊主题帖子类下是否有init_show方法，如果有则调用，如果没有则调用biz_post下的方法。
         $func = 'init_show';
         $cls = method_exists($this->$class, $func)?$this->$class:$this->biz_post;

@@ -94,7 +94,7 @@ class Users_extra_model extends MY_Model {
         $extra_data['today_posts'] = $this->biz_permission->is_today($this->user['last_post_time'])?':1':1;
         $extra_data['today_uploads'] = ':1';
         $extra_data['last_post_time'] = $this->time;
-        $extra_data['last_active_time'] = $this->time;
+        //$extra_data['last_active_time'] = $this->time;
         return $this->update_increment($extra_data,array('user_id' => $this->user['id']));
     }
     
@@ -103,10 +103,13 @@ class Users_extra_model extends MY_Model {
         $extra_data['today_posts'] = $this->biz_permission->is_today($this->user['last_post_time'])?':1':1;
         $extra_data['today_uploads'] = ':1';
         $extra_data['last_post_time'] = $this->time;
-        $extra_data['last_active_time'] = $this->time;
+        //$extra_data['last_active_time'] = $this->time;
         return $this->update_increment($extra_data,array('user_id' => $this->user['id']));
     }
 
+    public function update_active_time() {
+        return $this->update(array('last_active_time'=>$this->time), array('user_id'=>$this->user['id']));
+    }
 }
 
 ?>

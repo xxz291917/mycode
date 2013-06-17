@@ -14,11 +14,14 @@
  */
 if (!function_exists('time_span')) {
 
-    function time_span($first_time = 1, $second_time = '',$max_time=2592000) {
+    function time_span($first_time = 1, $second_time = '',$max_time=2592000,$view_str = '') {
         $CI = & get_instance();
         $CI->lang->load('date');
         if (!is_numeric($second_time)) {
             $second_time = time();
+        }
+        if (!is_numeric($max_time)) {
+            $max_time=2592000;
         }
         if (empty($first_time) || !is_numeric($first_time)) {
             return '';
@@ -74,7 +77,7 @@ if (!function_exists('time_span')) {
             $str .= $first_time . ' ' . $CI->lang->line((($first_time > 1) ? 'date_seconds' : 'date_second')) . '';
         }
 
-        return trim($str);
+        return trim($str).$view_str;
     }
 
 }

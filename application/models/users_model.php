@@ -2,6 +2,8 @@
 
 class Users_model extends MY_Model {
 
+    static $max_active = 1800;
+    
     function __construct() {
         parent::__construct();
         $this->table = 'users';
@@ -13,35 +15,50 @@ class Users_model extends MY_Model {
      * @return type
      */
     function get_userinfo() {
+        //用户信息从cookie中获取。
         $user_id = '1';
-        if($this->enable_cache){
-            $cache_key = "get_userinfo_$user_id";
-            $user = $this->cache->get($cache_key);
-            if(!empty($user)){
-                return $user;
+        //否则从passport获取登录信息。
+        if(empty($user_id)){
+            $user_id = '1';
+            //更新最后登录时间。
+            $this->users_extra_model->update(array('last_login_time'=>$this->time), array('user_id'=>$this->user['id']));
+        }
+        if(!empty($user_id)){//已经登录了，获取登录信息。
+            if($this->enable_cache){
+                $cache_key = "get_userinfo_$user_id";
+                $user = $this->cache->get($cache_key);
+                if(!empty($user)){
+                    return $user;
+                }
             }
-        }
-        $user = $this->get_users_by_ids($user_id);
-        if($user){
-            //插入用户的操作在这里哦。
-        }
-        $current_groups = array(empty($user['group_id']) ? $user['member_id'] : $user['group_id']);
-        //检测是否有过期的扩展组，更新。
-        if (!empty($user['groups'])) {
-            $new_groups = $this->refresh_blong($user_id);
-            if ($new_groups !== FALSE) {
-                $user['groups'] = $new_groups;
+            $user = $this->get_users_by_ids($user_id);
+            if($user){
+                //插入用户的操作在这里哦。
             }
-        }
-        if (!empty($user['groups'])) {
-            $user['groups'] = explode(',', $user['groups']);
-            //根据扩展组信息，得出合并后的用户组。
-            $current_groups = array_unique(array_merge($current_groups, $user['groups']));
-        }
-        $user['groups'] = $current_groups; //用户所属的用户组
-        $user['group'] = $this->groups_model->get_user_group($current_groups);
-        if ($this->enable_cache) {
-            $this->cache->save($cache_key, $user, config_item('cache_time'));
+            $current_groups = array(empty($user['group_id']) ? $user['member_id'] : $user['group_id']);
+            //检测是否有过期的扩展组，更新。
+            if (!empty($user['groups'])) {
+                $new_groups = $this->refresh_blong($user_id);
+                if ($new_groups !== FALSE) {
+                    $user['groups'] = $new_groups;
+                }
+            }
+            if (!empty($user['groups'])) {
+                $user['groups'] = explode(',', $user['groups']);
+                //根据扩展组信息，得出合并后的用户组。
+                $current_groups = array_unique(array_merge($current_groups, $user['groups']));
+            }
+            $user['groups'] = $current_groups; //用户所属的用户组
+            $user['group'] = $this->groups_model->get_user_group($current_groups);
+            if ($this->enable_cache) {
+                $this->cache->save($cache_key, $user, config_item('cache_time'));
+            }
+        }else{
+            //为用户赋值管理组为游客。
+            $user['id'] = 0;
+            $current_groups = Groups_model::$tourist_id;
+            $user['groups'] = $current_groups; //用户所属的用户组
+            $user['group'] = $this->groups_model->get_user_group($current_groups);
         }
         return $user;
     }
@@ -118,7 +135,7 @@ class Users_model extends MY_Model {
      */
     public function get_users_by_ids($ids){
         $u = 'id,email,username,credits,group_id,member_id,groups,icon,gender,signature,regdate,';
-        $ex = 'posts,digests,today_posts,today_uploads,last_visit_time,last_login_ip,last_post_time,last_active_time,online_time,extcredits1,extcredits2,extcredits3,extcredits4,extcredits5,extcredits6,extcredits7,extcredits8';
+        $ex = 'posts,digests,today_posts,today_uploads,last_login_time,last_login_ip,last_post_time,last_active_time,online_time,extcredits1,extcredits2,extcredits3,extcredits4,extcredits5,extcredits6,extcredits7,extcredits8';
         if(is_array($ids) && !empty($ids)){
             $ids = join (',', $ids);
             $where = "u.id in($ids)";
@@ -147,6 +164,7 @@ class Users_model extends MY_Model {
             $group_id = empty($value['group_id']) ? $value['member_id'] : $value['group_id'];
             $need_users[$value['id']] = $value;
             $need_users[$value['id']]['group'] = $groups[$group_id];
+            $need_users[$value['id']]['online'] = $this->time - $value['last_active_time'] < self::$max_active;
         }
         return $need_users;
     }
