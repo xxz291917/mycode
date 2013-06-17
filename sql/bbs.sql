@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: 127.0.0.1
--- 生成日期: 2013 年 06 月 15 日 12:58
+-- 生成日期: 2013 年 06 月 17 日 13:55
 -- 服务器版本: 5.5.27
 -- PHP 版本: 5.4.7
 
@@ -834,7 +834,7 @@ CREATE TABLE IF NOT EXISTS `medals` (
 --
 
 INSERT INTO `medals` (`id`, `name`, `image`, `type`, `display_order`, `description`, `expired_time`, `condition`, `credit`, `price`, `is_open`) VALUES
-(1, '最佳新人', 'medal1.gif', 0, 0, '注册账号后积极发帖的会员', 0, '', 0, 0, 0),
+(1, '最佳新人', 'medal1.gif', 0, 0, '注册账号后积极发帖的会员', 0, '', 0, 0, 1),
 (2, '活跃会员', 'medal2.gif', 0, 0, '经常参与各类话题的讨论，发帖内容较有主见', 0, '', 0, 0, 0),
 (3, '热心会员', 'medal3.gif', 0, 0, '经常帮助其他会员答疑', 0, '', 0, 0, 0),
 (4, '推广达人', 'medal4.gif', 0, 0, '积极宣传本站，为本站带来更多注册会员', 0, '', 0, 0, 0),
@@ -1384,13 +1384,13 @@ CREATE TABLE IF NOT EXISTS `topics` (
 INSERT INTO `topics` (`id`, `forum_id`, `category_id`, `author`, `author_id`, `post_time`, `subject`, `last_author`, `last_author_id`, `last_post_time`, `tags`, `views`, `replies`, `supports`, `opposes`, `top`, `highlight`, `digest`, `recommend`, `special`, `status`) VALUES
 (1, 6, 0, 'admin', 1, 0, 'xuezhiceshi', '', 0, 0, '', 4, 0, 0, 0, 0, '0', 0, 0, 0, 0),
 (6, 2, 0, 'xxz291917', 1, 1368531645, '输入标题r', '', 0, 0, '', 0, 0, 0, 0, 1, '0', 0, 0, 1, 1),
-(7, 2, 0, 'xxz291917', 1, 1368583217, '夏学智测试', '', 0, 0, '', 6, 0, 0, 0, 1, '0', 0, 0, 1, 3),
+(7, 2, 0, 'xxz291917', 1, 1368583217, '夏学智测试', '', 0, 0, '', 7, 0, 0, 0, 1, '0', 0, 0, 1, 3),
 (8, 2, 0, 'xxz291917', 1, 1368588882, '发帖测试123', 'xxz5291917', 2, 1368772292, '', 10, 2, 0, 0, 0, '0', 0, 0, 1, 1),
 (9, 2, 0, 'xxz291917', 1, 1368609926, '输入标题二二', 'xxz291917', 1, 1368702719, '', 7, 1, 0, 0, 1, '0', 0, 0, 1, 1),
 (10, 2, 0, 'xxz291917', 1, 1368610003, '输入标题二二', 'xxz5291917', 2, 1368774131, '', 120, 5, 0, 0, 0, '0', 0, 0, 1, 1),
 (11, 12, 0, 'xxz291917', 1, 1368611640, '输入标题人人', 'xxz5291917', 2, 1368774662, '', 70, 11, 0, 0, 0, '0', 0, 0, 1, 1),
 (12, 11, 0, 'xxz291917', 1, 1368612732, 'gdgdfgdgdfg', '', 0, 0, '', 14, 0, 0, 0, 0, '0', 1, 1, 1, 1),
-(13, 11, 0, 'xxz291917', 1, 1368696809, '输入标题大大大', 'xxz5291917', 2, 1337484852, '', 251, 8, 0, 0, 2, '#2B65B7,0,1,1', 1, 1, 1, 5),
+(13, 11, 0, 'xxz291917', 1, 1368696809, '输入标题大大大', 'xxz5291917', 2, 1337484852, '', 414, 8, 0, 0, 2, '#2B65B7,0,1,1', 1, 1, 1, 5),
 (14, 6, 0, 'xxz291917', 1, 1368699427, '红星闪闪放光芒', 'xxz291917', 1, 1368701675, '', 6, 4, 0, 0, 0, '0', 0, 0, 1, 1),
 (15, 6, 0, 'xxz5291917', 2, 1368772328, '输入标题yy', '', 0, 0, '', 0, 0, 0, 0, 0, '0', 0, 0, 1, 1),
 (16, 12, 0, 'xxz5291917', 2, 1368774681, '输入标题凤飞飞', 'xxz291917', 1, 1371105016, '', 28, 2, 0, 0, 0, '0', 0, 0, 1, 1),
@@ -1422,7 +1422,7 @@ INSERT INTO `topics` (`id`, `forum_id`, `category_id`, `author`, `author_id`, `p
 (42, 2, 0, 'xxz291917', 1, 1370662947, '发表文旦扣减分', '', 0, 0, '&lt;script&gt;alert(123);&lt;/script&gt;', 0, 0, 0, 0, 0, '', 0, 0, 2, 1),
 (43, 2, 0, 'xxz291917', 1, 1370662983, 'vvvvvvvvvvvvv', '', 0, 0, '', 0, 0, 0, 0, 0, '', 0, 0, 2, 1),
 (44, 11, 0, 'xxz291917', 1, 1370770112, '学智测试辩论', 'xxz291917', 1, 1370781961, '', 18, 3, 0, 0, 0, '', 0, 0, 4, 4),
-(45, 11, 0, 'xxz291917', 1, 1370782056, '问答问答问答', '', 0, 0, '', 9, 0, 0, 0, 0, '', 0, 0, 2, 4);
+(45, 11, 0, 'xxz291917', 1, 1370782056, '问答问答问答', '', 0, 0, '', 11, 0, 0, 0, 0, '', 0, 0, 2, 4);
 
 -- --------------------------------------------------------
 
@@ -1649,7 +1649,7 @@ CREATE TABLE IF NOT EXISTS `users_extra` (
   `digests` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '精华数',
   `today_posts` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '今天发帖数',
   `today_uploads` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '今日上传个数',
-  `last_visit_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后访问时间',
+  `last_login_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后访问时间',
   `last_login_ip` varchar(20) NOT NULL DEFAULT '' COMMENT '最后登录IP',
   `last_post_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后发帖时间',
   `last_active_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后活动时间',
@@ -1670,8 +1670,8 @@ CREATE TABLE IF NOT EXISTS `users_extra` (
 -- 转存表中的数据 `users_extra`
 --
 
-INSERT INTO `users_extra` (`user_id`, `posts`, `digests`, `today_posts`, `today_uploads`, `last_visit_time`, `last_login_ip`, `last_post_time`, `last_active_time`, `online_time`, `extcredits1`, `extcredits2`, `extcredits3`, `extcredits4`, `extcredits5`, `extcredits6`, `extcredits7`, `extcredits8`, `last_credit_affect_log`) VALUES
-(1, 78, 0, 7, 78, 0, '', 1371105016, 1371105016, 0, 269, 178, 614, 0, 0, 0, 0, 0, ''),
+INSERT INTO `users_extra` (`user_id`, `posts`, `digests`, `today_posts`, `today_uploads`, `last_login_time`, `last_login_ip`, `last_post_time`, `last_active_time`, `online_time`, `extcredits1`, `extcredits2`, `extcredits3`, `extcredits4`, `extcredits5`, `extcredits6`, `extcredits7`, `extcredits8`, `last_credit_affect_log`) VALUES
+(1, 78, 0, 7, 78, 0, '', 1371105016, 1371469911, 0, 269, 178, 614, 0, 0, 0, 0, 0, ''),
 (2, 16, 0, 17, 16, 0, '', 1368774681, 1368774681, 0, 30, 39, 34, 0, 0, 0, 0, 0, '');
 
 -- --------------------------------------------------------
