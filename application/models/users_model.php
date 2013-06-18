@@ -176,6 +176,14 @@ class Users_model extends MY_Model {
         $query = $this->db->query($sql);
         return $query->$result_fun();
     }
+    
+    public function get_user_by_names($names) {
+        if(is_array($names)){
+            $names = "'".join("','", array_unique($names))."'";
+        }
+        $where = "username in( $names ) AND status=1";
+        return $this->get_list($where);
+    }
 
 }
 

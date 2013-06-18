@@ -1,8 +1,8 @@
 <h3>勋章管理</h3>
 <p class="sec_nav">
-<a href="<?=base_url()?>index.php/admin/medals/edit/basic" class="on"><span>&nbsp;&nbsp;管理&nbsp;&nbsp;</span></a>
-<a href="<?=base_url()?>index.php/admin/medals/edit/seo"><span>&nbsp;&nbsp;颁发&nbsp;&nbsp;</span></a>
-<a href="<?=base_url()?>index.php/admin/medals/edit/category"><span>&nbsp;&nbsp;审核&nbsp;&nbsp;</span></a> </p>
+<a href="<?=base_url()?>index.php/admin/medals" class="on"><span>&nbsp;&nbsp;管理&nbsp;&nbsp;</span></a>
+<a href="<?=base_url()?>index.php/admin/medals/award"><span>手动颁发</span></a>
+</p>
 <!--<ul class="col-ul tips">
   <li><b>提示: </b></li>
   <li>双击版块名称可编辑版块标题</li>
@@ -30,7 +30,7 @@
     <td ><input type="text" class="inp_txt" name="old[<?=$medal['id'] ?>][description]" value="<?php echo my_set_value('description', $medal)?>" ></td>
     <td ><input type="text" class="inp_txt" name="old[<?=$medal['id'] ?>][image]" value="<?php echo my_set_value('image', $medal)?>" > <img style="vertical-align:middle" src="<?php echo base_url('/images/medals/'.my_set_value('image', $medal));?>"></td>
     <td ><?=$type_names[$medal['type']]?></td>
-    <td ><a href="#" class = "del">[详情]</a> <a href="#" class = "del">[删除]</a></td>
+    <td ><a href="<?=base_url()?>index.php/admin/medals/detail/<?=$medal['id']?>">[详情]</a> <a href="#" class = "del">[删除]</a></td>
   </tr>
   <?php }?>
   

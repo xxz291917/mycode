@@ -1,6 +1,9 @@
-<dl class="col-dl error">
+<?php
+$class = $success?'success':'error';
+?>
+<dl class="message <?=$class?>">
 	<dt>提示信息</dt>
-	<dd class="red"><?php echo $message ?></dd>
+	<dd><?php echo $message ?></dd>
 	<dd>
         <?php if ($redirect == 'BACK'){ ?>
 		<a href="javascript:history.back();">点击返回……</a>
