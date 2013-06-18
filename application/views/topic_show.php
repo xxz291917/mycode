@@ -82,7 +82,7 @@ echo $page;?>
         </div>
         <div class="usName"><a href="#"><?php echo $user['username'];?></a></div>
         <ul class="usTip">
-          <li><span class="fl">等级：</span><span class="myRank"><i class="icoSun"></i><i class="icoSun"></i><i class="icoMoon"></i><i class="icoStar"></i></span></li>
+          <li><span class="fl">等级：</span><?php echo $user['stars_rank'];?></li>
           <li><span class="fl">积分：</span><?php echo $user['credits'];?></li>
           <li class="icoHonour"><span>荣誉学员</span></li>
           <li class="usIco"><a class="usIco1" title="2">收藏</a><a class="usIco2" title="2">勋章</a><a class="usIco3" title="2">顶</a><a class="usIco4" title="2">编辑</a></li>
@@ -96,15 +96,16 @@ echo $page;?>
       
         <article class="newsCots">
           <h1 class="fyahei"><?php echo $post['subject'];?></h1>
-          <div class="newsTip"><span>发表于 <?php echo time_span($post['post_time'],'','','前');?> | <a href="<?php echo base_url('index.php/topic/show/'.$post['topic_id'].'/?author='.$post['author_id']);?>">只看该作者</a></span><span title="阅读" class="icoEye"><?php echo $topic['views']?></span><span title="评论" class="icoMsg"><a href="#"><?php echo $topic['replies']?></a></span></div>
+          <div class="newsTip"><span>发表于 <?php echo time_span($post['post_time'],'','','前');?> | <a href="<?php echo base_url('index.php/topic/show/'.$post['topic_id'].'/?author='.$post['author_id']);?>">只看该作者</a></span><span title="阅读" class="icoEye"><?php echo $topic['views']?></span>
+              <span title="评论" class="icoMsg2"><?php echo $topic['replies']?></span></div>
           
           <div class="newsCotIn">
           <?php echo $post['content'];?>
           </div>
+          
+          
+          
         </article>
-        
-        
-        
         
         
         
@@ -134,41 +135,21 @@ echo $page;?>
                   <li class="td4">郭美美真是个NB的人啊！~</li>
                 </ul>
               </li>
-              <li>
-                <ul>
-                  <li class="td1"><a href="#"><img src="images/temp.jpg" alt="我名"></a></li>
-                  <li class="td2"><a href="#">浪漫的杯子</a></li>
-                  <li class="td3">+8</li>
-                  <li class="td4">郭美美真是个NB的人啊！~</li>
-                </ul>
-              </li>
-              <li>
-                <ul>
-                  <li class="td1"><a href="#"><img src="images/temp.jpg" alt="我名"></a></li>
-                  <li class="td2"><a href="#">浪漫的杯子</a></li>
-                  <li class="td3">+8</li>
-                  <li class="td4">郭美美真是个NB的人啊！~</li>
-                </ul>
-              </li>
             </ul>
             <div class="replyCotBot"> <span class="pageRep"><a href="#">上一页</a><a href="#">1</a><a href="#">2</a><a href="#">3</a>...<a href="#">4</a><a href="#">5</a><a href="#">下一页</a></span> <span class="btnGrade">我来评分</span> </div>
           </div>
           <span class="icoReply pa">收起回复</span> </div>
-        <div class="related">
+        
+          <?php if(!empty($related_posts)){?>
+          <div class="related">
           <h3>相关帖子</h3>
           <ul>
-            <li><a href="#" title="全称">福州村民被两三千名政府武装人员殴打</a></li>
-            <li><a href="#" title="全称">福州村民被两三千名政府武装人员殴打</a></li>
-            <li><a href="#" title="全称">福州村民被两三千名政府武装人员殴打</a></li>
-            <li><a href="#" title="全称">福州村民被两三千名政府武装人员殴打</a></li>
-            <li><a href="#" title="全称">福州村民被两三千名政府武装人员殴打</a></li>
-            <li><a href="#" title="全称">福州村民被两三千名政府武装人员殴打</a></li>
-            <li><a href="#" title="全称">福州村民被两三千名政府武装人员殴打</a></li>
-            <li><a href="#" title="全称">福州村民被两三千名政府武装人员殴打</a></li>
-            <li><a href="#" title="全称">福州村民被两三千名政府武装人员殴打</a></li>
-            <li><a href="#" title="全称">福州村民被两三千名政府武装人员殴打</a></li>
+            <?php foreach ($related_posts as $key => $related) {?>
+              <li><a href="<?php echo base_url('index.php/topic/show/'.$related['id'])?>" title="<?php echo $related['subject'];?>"><?php echo $related['subject'];?></a></li>
+            <?php }?>
           </ul>
-        </div>
+          </div>
+          <?php }?>
         <ul class="newsBot">
           <li class="fl"><a href="#">举报</a></li>
           <li><a href="#" class="icoEdit">评分</a></li>

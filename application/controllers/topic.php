@@ -61,6 +61,10 @@ class Topic extends MY_Controller {
         
 //        var_dump($var);die;
         
+        //获取相关帖子
+        $var['related_posts'] = $this->topics_model->related_posts($id, 10, 'user');
+        
+        
         //获取积分名称。
         $credit_name = $this->credit_name_model->get_all_by_creditx();
         $var['credit_name'] = $credit_name;
