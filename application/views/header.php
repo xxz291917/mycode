@@ -40,7 +40,7 @@
           <li class="icoEmail"><a href="#">250</a></li>
           <li class="icoUser pr">
             <a href="#"><img src="images/userSmall.gif" alt="作者名字" title="作者名字"></a>
-            <ul class="pa" id="cup">
+            <ul class="pa">
               <li><a href="#">账号设置</a></li>
               <li><a href="#">退出</a></li>
             </ul>

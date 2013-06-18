@@ -110,6 +110,15 @@ class Posts_model extends MY_Model {
     }
     
     public function hide2html($value) {
+        $this->load->model(array('biz_permission','topics_posted_model'));
+        //检测当前用户是否是帖子作者，是否是版主或管理员。（是否有编辑帖子的权限）
+        $this->user['id'];
+        $is_edit = $this->biz_permission->check_manage($value['topic_id'], 'edit');
+        if($is_edit || $this->topics_posted_model->check_is_posted($topic_id)){//显示隐藏内容
+            
+        }else{//需要回复才能显示隐藏内容。
+            
+        }
         //[attach][attachimg]
         //$value['content'] = preg_replace("/\[(attach|attachimg)\](\d+)\[\/\\1\]/ies", "\$this->get_html_for_attach('\\2','\\1')", $value['content']);
         return $value;

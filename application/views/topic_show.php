@@ -30,7 +30,15 @@
         </div>
       </li>
       <li><a href="javascript:void(0);" onClick="location.href='<?php echo base_url('index.php/action/reply/'.$topic['id']);?>'">回复</a></li>
-      <li><a href="javascript:void(0);">管理菜单</a></li>
+      <li class="pr hasMenu"><a href="javascript:void(0);" class="icoMag">管理菜单</a>
+        <div class="menuBox pa">
+          <ul class="menuList">
+            <li class="icoSj"></li>
+            <li><a href="#">发表帖子</a></li>
+            <li><a href="#">发起投票</a></li>
+          </ul>
+        </div>
+      </li>
     </ul>
     <?php empty($page) && $page = '';
 echo $page;?>
@@ -46,7 +54,8 @@ echo $page;?>
         <a href="#"><img src="<?php echo base_url(!empty($user['icon'])?$user['icon']:'images/default.png');?>" alt="头像"></a>
         <span class="pa usFaceBg"></span>
         <!--usFaceBg为红色背景 usFaceBg2为绿色背景 usFaceBg3为黄色背景--> 
-          <span class="pa usFaceP"><?php echo $user['group']['name'];?></span> <i class="pa icoSj2"></i>
+          <span class="pa usFaceP"><?php echo $user['group']['name'];?></span>
+          <i class="pa icoSj2"></i>
           <div class="usFaceInfoBox pa">
             <div class="usFaceInfo pr">
               <div class="usFaceInfoTit"><?php if($user['online']){echo '当前在线';}else{echo '当前不在线';}?></div>
@@ -80,7 +89,11 @@ echo $page;?>
           <!--titile和文字待定-->
         </ul>
       </div>
+      
+      
+      
       <div class="newsCotR">
+      
         <article class="newsCots">
           <h1 class="fyahei"><?php echo $post['subject'];?></h1>
           <div class="newsTip"><span>发表于 <?php echo time_span($post['post_time'],'','','前');?> | <a href="<?php echo base_url('index.php/topic/show/'.$post['topic_id'].'/?author='.$post['author_id']);?>">只看该作者</a></span><span title="阅读" class="icoEye"><?php echo $topic['views']?></span><span title="评论" class="icoMsg"><a href="#"><?php echo $topic['replies']?></a></span></div>
@@ -89,6 +102,11 @@ echo $page;?>
           <?php echo $post['content'];?>
           </div>
         </article>
+        
+        
+        
+        
+        
         
         <div class="download"> <span class="downloadPsw">解压密码:</span>
           <p>浪漫的杯子，如果您要查看本帖隐藏内容请<a href="#">回复</a></p>
