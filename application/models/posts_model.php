@@ -111,7 +111,7 @@ class Posts_model extends MY_Model {
     
     public function hide2html($value) {
         //[attach][attachimg]
-        $value['content'] = preg_replace("/\[(attach|attachimg)\](\d+)\[\/\\1\]/ies", "\$this->get_html_for_attach('\\2','\\1')", $value['content']);
+        //$value['content'] = preg_replace("/\[(attach|attachimg)\](\d+)\[\/\\1\]/ies", "\$this->get_html_for_attach('\\2','\\1')", $value['content']);
         return $value;
     }
     
