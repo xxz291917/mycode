@@ -333,10 +333,24 @@ a.searchBtn{ display:inline-block; width:25px; height:26px; margin:12px 0 0 0; b
 .listCot .tdSpan1,.listCot .tdSpan2{ display:block; height:16px; margin-top:3px; padding-left:5px; line-height:16px; overflow:hidden;}
 .listCot .tdSpan2{  margin-top:0;color:#999; }
 .listCot .tdSpan1 a,.listCot .tdSpan2 a{ color:#666;}
-
-
-
-
+/*发布问答帖*/
+.pubQA{}
+.pubQA h4{ height:20px; padding:0 0 6px; border-bottom:1px solid #CCC; line-height:20px; font-size:14px;}
+.pubQAForm li{ padding:10px 0; overflow:hidden; line-height:32px;}
+.pubQAForm li select,.pubQAForm li input,.pubQAForm li label,.pubQAForm li span,.pubQAForm li em{ display:inline; float:left;margin-right:15px; }
+.pubQAForm li select{  padding:7px 5px 6px;border:1px solid #8F939C;line-height:30px;}
+.pubQAForm li input{ color:#999;}
+.pubQAForm li input.pubInpW1{ width:590px;}
+.pubQAForm li input.pubInpW2{ width:60px;}
+.pubQAForm li input.pubInpW3{ width:590px;}
+.pubQAForm li.reward{ padding-left:15px; border:1px dashed #BBD6EA; border-radius:4px; background:#FFF;}
+.pubQAForm li em{ color:#666;}
+.pubQAForm li em i{ padding:0 4px; color:#FF691F;}
+.pubQAForm li.pubQAEdit span{ margin-right:0;}
+.pubQAForm .mainCmtBtn{ display:inline; float:left; margin-right:15px;}
+.btnGray,.btnGray:hover,.btnGray:active{ border-color:#909090;  background-color:#B3B3B3; box-shadow:1px 2px 2px #BBB; text-shadow:1px 1px 0 #999;}
+.btnGray:hover{ background-color:#AAAAAA; box-shadow:1px 2px 2px #AAA;}
+.btnGray:active{ background-color:#A3A3A3;}
 
 
 

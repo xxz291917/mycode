@@ -44,6 +44,11 @@ class Action extends MY_Controller {
                 $this->message('发帖失败。', 0, $forum_show_url);
             }
         } else {
+            //获取导航面包屑，论坛>综合交流>活动专区>现代程序员的工作环境
+            $nav = $this->forums_model->get_nav_str($forum_id);
+            $nav[] = array('发布帖子', current_url());
+            $var['nav'] = $nav;
+            
             $is_arr = $this->biz_post->get_is($forum_id);
             $var['is_arr'] = $is_arr;
             $var['special'] = $special;
@@ -92,6 +97,11 @@ class Action extends MY_Controller {
             }
         } else {
             $forum_id = $topic['forum_id'];
+            //获取导航面包屑，论坛>综合交流>活动专区>现代程序员的工作环境
+            $nav = $this->forums_model->get_nav_str($forum_id);
+            $nav[] = array('回复帖子', current_url());
+            $var['nav'] = $nav;
+            
             $is_arr = $this->biz_post->get_is($forum_id);
             //如果是特殊帖子需要做相应的处理。
             $special = $topic['special'];

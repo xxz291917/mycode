@@ -36,6 +36,9 @@ class Biz_post extends CI_Model {
             $uids = array();
             foreach ($posts as $post) {
                 $uids[] = $post['author_id'];
+                if($post['is_first']==1){
+                    $var['related_posts'] = $this->topics_model->related_posts($id, 10, 'user');
+                }
             }
             $users = $this->users_model->get_userinfo_by_ids(array_unique($uids));
             
@@ -122,6 +125,7 @@ class Biz_post extends CI_Model {
         $posts_data['is_anonymous'] = $this->biz_permission->get_is('anonymous', $forum_id);
         $posts_data['is_hide'] = $this->biz_permission->get_is('hide', $forum_id);
         $posts_data['is_sign'] = $this->biz_permission->get_is('sign', $forum_id);
+        $posts_data['position'] = $this->posts_model->get_max_position($tid)+1;
         $posts_data['status'] = $this->biz_permission->get_check($forum_id) == 2 ? 4 : 1; //回复帖子也审核
         $this->posts_model->insert($posts_data);
         $pid = $this->db->insert_id();
@@ -235,7 +239,7 @@ class Biz_post extends CI_Model {
         }
         return $return;
     }
-
+    
 }
 
 ?>

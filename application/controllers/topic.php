@@ -41,11 +41,7 @@ class Topic extends MY_Controller {
         }
         
         //获取导航面包屑，论坛>综合交流>活动专区>现代程序员的工作环境
-        $nav = array(array('论坛', base_url()));
-        $nav_forums = $this->forums_model->get_nav($topic['forum_id']);
-        foreach ($nav_forums as $key => $val) {
-            $nav[] = array($val, base_url('index.php/forum/show/'.$key));
-        }
+        $nav = $this->forums_model->get_nav_str($topic['forum_id']);
         $nav[] = array($topic['subject'], current_url());
         $var['nav'] = $nav;
         
@@ -60,11 +56,7 @@ class Topic extends MY_Controller {
         $var = array_merge($var, $special_var);
         
 //        var_dump($var);die;
-        
-        //获取相关帖子
-        $var['related_posts'] = $this->topics_model->related_posts($id, 10, 'user');
-        
-        
+
         //获取积分名称。
         $credit_name = $this->credit_name_model->get_all_by_creditx();
         $var['credit_name'] = $credit_name;

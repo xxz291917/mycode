@@ -3,6 +3,7 @@
 <div class="wrap">
   <div class="myPos fsong">>
   <?php 
+  	$position_names = array(1=>'沙发',2=>'板凳',3=>'地板');
   	$nav_num = count($nav);
 	foreach($nav as $key=>$val){
 		$link = '<a href="'.$val[1].'">'.$val[0].'</a>>';
@@ -34,8 +35,9 @@
         <div class="menuBox pa">
           <ul class="menuList">
             <li class="icoSj"></li>
-            <li><a href="#">发表帖子</a></li>
-            <li><a href="#">发起投票</a></li>
+			<?php foreach($manage_arr as $key=>$val){?>
+            <li><a target="dialog" href="<?php echo base_url('index.php/topic/manage/'.$val[0].'/'.$topic['id']);?>"><?=$val[1]?></a></li>
+            <?php }?>
           </ul>
         </div>
       </li>
@@ -43,11 +45,11 @@
     <?php empty($page) && $page = '';
 echo $page;?>
 </div>
-    
+  <ul class="newsCot">    
 <?php foreach ($posts as $post) { 
   $user = $users[$post['author_id']];
   ?>
-  <ul class="newsCot">
+
     <li>
       <div class="newsCotL">
         <div class="usFace pr">
@@ -89,26 +91,36 @@ echo $page;?>
           <!--titile和文字待定-->
         </ul>
       </div>
-      
-      
-      
+
       <div class="newsCotR">
-      
+      	
         <article class="newsCots">
           <h1 class="fyahei"><?php echo $post['subject'];?></h1>
-          <div class="newsTip"><span>发表于 <?php echo time_span($post['post_time'],'','','前');?> | <a href="<?php echo base_url('index.php/topic/show/'.$post['topic_id'].'/?author='.$post['author_id']);?>">只看该作者</a></span><span title="阅读" class="icoEye"><?php echo $topic['views']?></span>
-              <span title="评论" class="icoMsg2"><?php echo $topic['replies']?></span></div>
+          
+          <div class="newsTip">
+          <span>发表于 <?php echo time_span($post['post_time'],'','','前');?> |<a href="<?php echo base_url('index.php/topic/show/'.$post['topic_id'].'/?author='.$post['author_id']);?>">只看该作者</a></span>
+          <?php if($post['is_first']==1){?>
+          <span title="阅读数" class="icoEye"><?php echo $topic['views']?></span>
+          <span title="回复数" class="icoMsg2"><?php echo $topic['replies']?></span>
+          <?php }?>
+          </div>
+          
+          <div class="tr myState">
+			<?php
+            if(empty($position_names[$post['position']])){
+                echo $post['position'].'#';
+            }else{
+                echo $position_names[$post['position']];
+            }
+            ?>
+          </div>
           
           <div class="newsCotIn">
           <?php echo $post['content'];?>
           </div>
-          
-          
-          
         </article>
         
-        
-        
+        <!--
         <div class="download"> <span class="downloadPsw">解压密码:</span>
           <p>浪漫的杯子，如果您要查看本帖隐藏内容请<a href="#">回复</a></p>
           <div class="downloadUrl"><a href="#" target="_blank">Nape离线API文档.rar</a>(599.78 KB, 下载次数: 269)</div>
@@ -121,7 +133,7 @@ echo $page;?>
             <ul>
               <li>
                 <ul>
-                  <li class="td1"><a href="#"><img src="images/temp.jpg" alt="我名"></a></li>
+                  <li class="td1"><a href="#"><img src="/images/temp.jpg" alt="我名" width="50" height="57" /></a></li>
                   <li class="td2"><a href="#">浪漫的杯子</a></li>
                   <li class="td3">+8</li>
                   <li class="td4">郭美美真是个NB的人啊！~</li>
@@ -129,7 +141,7 @@ echo $page;?>
               </li>
               <li>
                 <ul>
-                  <li class="td1"><a href="#"><img src="images/temp.jpg" alt="我名"></a></li>
+                  <li class="td1"><a href="#"><img src="/images/temp.jpg" alt="我名" width="50" height="57"></a></li>
                   <li class="td2"><a href="#">浪漫的杯子</a></li>
                   <li class="td3">+8</li>
                   <li class="td4">郭美美真是个NB的人啊！~</li>
@@ -139,34 +151,45 @@ echo $page;?>
             <div class="replyCotBot"> <span class="pageRep"><a href="#">上一页</a><a href="#">1</a><a href="#">2</a><a href="#">3</a>...<a href="#">4</a><a href="#">5</a><a href="#">下一页</a></span> <span class="btnGrade">我来评分</span> </div>
           </div>
           <span class="icoReply pa">收起回复</span> </div>
-        
+        -->
           <?php if(!empty($related_posts)){?>
           <div class="related">
           <h3>相关帖子</h3>
           <ul>
             <?php foreach ($related_posts as $key => $related) {?>
-              <li><a href="<?php echo base_url('index.php/topic/show/'.$related['id'])?>" title="<?php echo $related['subject'];?>"><?php echo $related['subject'];?></a></li>
+              <li><a href="" title="<?php echo $related['subject'];?>"><?php echo $related['subject'];?></a></li>
             <?php }?>
           </ul>
           </div>
           <?php }?>
         <ul class="newsBot">
-          <li class="fl"><a href="#">举报</a></li>
-          <li><a href="#" class="icoEdit">评分</a></li>
+          <li class="fl"><a href="<?php echo base_url('index.php/action/report/'.$post['id'])?>" target="dialog">举报</a></li>
+          <?php if($post['is_first']==1){?>
           <li><a href="#" class="icoCollect">收藏</a></li>
+          <?php }?>
+          <!--li><a href="#" class="icoEdit">评分</a></li-->
+          
           <li><a href="#" class="icoGrade">编辑</a></li>
           <li><a href="#" class="icoReplys">回复</a></li>
+          
         </ul>
       </div>
+      
     </li>
-  </ul>
+
   <?php  
     }
     ?>
+     </ul> 
+    
+    
   <ul class="newsCot">
+  
+  
+  
     <li>
       <div class="newsCotL">
-        <div class="usFace pr"> <a href="#"><img src="images/temp.jpg" alt="名称"></a> <span class="pa usFaceBg usFaceBg2"></span> <span class="pa usFaceP">实习总航</span> <i class="pa icoSj2"></i>
+        <div class="usFace pr"> <a href="#"><img src="/images/temp.jpg" alt="我名" width="50" height="57" /></a> <span class="pa usFaceBg usFaceBg2"></span> <span class="pa usFaceP">实习总航</span> <i class="pa icoSj2"></i>
           <div class="usFaceInfoBox pa">
             <div class="usFaceInfo pr">
               <div class="usFaceInfoTit">当前在线</div>
@@ -199,26 +222,31 @@ echo $page;?>
           <!--titile和文字待定-->
         </ul>
       </div>
+      
       <div class="newsCotR">
+      
         <div class="tr myState">沙发</div>
         <div class="myCmt">
           <p>7天前，32岁的漯河人周三江倒在郑州东区的马路边上，再也没有醒来。周三江72岁的老父亲来郑州商都路派出所办理死亡证明时被索要3000元运尸费，而且不开发票，这个数字顿时吓住了老人。从周三江的死亡地点到医院太平间区区15公里，为何会花费3000元运尸费？警察和太平间工作人员均表示，这是"不成文的规定"。<em>(今天10:17)</em></p>
         </div>
-        <div class="cmtCot"> <span class="btnCmt">点评</span> <a href="#"><img src="images/temp.jpg" alt="名称"></a>
+        <div class="cmtCot"> <span class="btnCmt">点评</span> <a href="#"><img src="/images/temp.jpg" alt="我名" width="50" height="57" /></a>
           <div class="cmtCotR"><a href="#">浪漫的杯子</a>从周三江的死亡地点到医院太平间区区15公里，为何会花费3000元运尸费？<span><em>发表于：</em>2012-12-12 15：22</span><span><em>IP：</em>158.236.232.232</span></div>
         </div>
+        
         <ul class="newsBot">
           <li class="fl"><a href="#">举报</a></li>
           <li><a href="#" class="icoEdit">评分</a></li>
           <li><a href="#" class="icoCite">引用不着</a></li>
           <li><a href="#" class="icoReplys">回复</a></li>
         </ul>
+        
         <div class="newsAD fsong"><i></i>本次大会更注难，并分享实战经验。为庆祝此次大会<cite>|</cite><a href="#">本次大会更注重交流与互难，并分享实</a><cite>|</cite><a href="#">本次大会更注重交流与互难，并分享实</a></div>
       </div>
     </li>
+    
     <li>
       <div class="newsCotL">
-        <div class="usFace pr"> <a href="#"><img src="images/temp.jpg" alt="名称"></a> <span class="pa usFaceBg usFaceBg3"></span> <span class="pa usFaceP">会员</span> <i class="pa icoSj2"></i>
+        <div class="usFace pr"> <a href="#"><img src="/images/temp.jpg" alt="我名" width="50" height="57" /></a> <span class="pa usFaceBg usFaceBg3"></span> <span class="pa usFaceP">会员</span> <i class="pa icoSj2"></i>
           <div class="usFaceInfoBox pa">
             <div class="usFaceInfo pr">
               <div class="usFaceInfoTit">当前在线</div>
@@ -266,7 +294,7 @@ echo $page;?>
           <li><a class="icoCite" href="#">引用不着</a></li>
           <li><a class="icoReplys" href="#">回复</a></li>
         </ul>
-        <div class="newsADImg"><a href="#"><img src="images/temp.jpg" alt="名称"></a></div>
+        <div class="newsADImg"><a href="#"><img src="/images/temp.jpg" alt="名称"></a></div>
       </div>
     </li>
   </ul>
