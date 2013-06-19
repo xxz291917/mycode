@@ -47,3 +47,11 @@ ERROR - 2013-06-19 12:07:58 --> Severity: Notice  --> Undefined index: is_vote D
 ERROR - 2013-06-19 17:57:30 --> 此文件超出允许上传的最大长度.
 ERROR - 2013-06-19 18:13:57 --> 404 Page Not Found --> forums/merge
 ERROR - 2013-06-19 18:14:16 --> 404 Page Not Found --> site/setting
+ERROR - 2013-06-19 22:54:16 --> Severity: Notice  --> Undefined index: position D:\xampp\htdocs\www\mycode\application\views\topic_show.php 99
+ERROR - 2013-06-19 22:54:16 --> Severity: Notice  --> Undefined index: position D:\xampp\htdocs\www\mycode\application\views\topic_show.php 100
+ERROR - 2013-06-19 22:54:16 --> Severity: Notice  --> Undefined index: position D:\xampp\htdocs\www\mycode\application\views\topic_show.php 99
+ERROR - 2013-06-19 22:54:16 --> Severity: Notice  --> Undefined index: position D:\xampp\htdocs\www\mycode\application\views\topic_show.php 100
+ERROR - 2013-06-19 22:54:16 --> Severity: Notice  --> Undefined index: position D:\xampp\htdocs\www\mycode\application\views\topic_show.php 99
+ERROR - 2013-06-19 22:54:16 --> Severity: Notice  --> Undefined index: position D:\xampp\htdocs\www\mycode\application\views\topic_show.php 100
+ERROR - 2013-06-19 22:54:28 --> Severity: Notice  --> Undefined index: position D:\xampp\htdocs\www\mycode\application\views\topic_show.php 99
+ERROR - 2013-06-19 22:54:28 --> Severity: Notice  --> Undefined index: position D:\xampp\htdocs\www\mycode\application\views\topic_show.php 100

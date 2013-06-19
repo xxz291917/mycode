@@ -49,6 +49,10 @@ class Action extends MY_Controller {
             $nav[] = array('发布帖子', current_url());
             $var['nav'] = $nav;
             
+            $this->load->model('topics_category_model');
+            $category_option = $this->topics_category_model->create_options($forum_id);
+            $var['category_option'] = $category_option;
+            
             $is_arr = $this->biz_post->get_is($forum_id);
             $var['is_arr'] = $is_arr;
             $var['special'] = $special;
