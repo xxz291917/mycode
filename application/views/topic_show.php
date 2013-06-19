@@ -93,9 +93,24 @@ echo $page;?>
       </div>
 
       <div class="newsCotR">
-      	
+      	<?php if($post['is_first']!=1){?>
+        <div class="tr myState">
+			<?php
+            if(empty($position_names[$post['position']])){
+                echo $post['position'].'#';
+            }else{
+                echo $position_names[$post['position']];
+            }
+            ?>
+        </div>
+        <?php }?>
         <article class="newsCots">
+        
+          <?php if($post['is_first']==1){?>
           <h1 class="fyahei"><?php echo $post['subject'];?></h1>
+          <?php }elseif(!empty($post['subject'])){?>
+          <h2 class="fyahei"><?php echo $post['subject'];?></h2>
+          <?php }?>
           
           <div class="newsTip">
           <span>发表于 <?php echo time_span($post['post_time'],'','','前');?> |<a href="<?php echo base_url('index.php/topic/show/'.$post['topic_id'].'/?author='.$post['author_id']);?>">只看该作者</a></span>
@@ -104,20 +119,11 @@ echo $page;?>
           <span title="回复数" class="icoMsg2"><?php echo $topic['replies']?></span>
           <?php }?>
           </div>
-          
-          <div class="tr myState">
-			<?php
-            if(empty($position_names[$post['position']])){
-                echo $post['position'].'#';
-            }else{
-                echo $position_names[$post['position']];
-            }
-            ?>
-          </div>
-          
+
           <div class="newsCotIn">
           <?php echo $post['content'];?>
           </div>
+          
         </article>
         
         <!--
@@ -152,7 +158,7 @@ echo $page;?>
           </div>
           <span class="icoReply pa">收起回复</span> </div>
         -->
-          <?php if(!empty($related_posts)){?>
+          <?php if($post['is_first']==1 && !empty($related_posts)){?>
           <div class="related">
           <h3>相关帖子</h3>
           <ul>
@@ -162,17 +168,17 @@ echo $page;?>
           </ul>
           </div>
           <?php }?>
+          
         <ul class="newsBot">
           <li class="fl"><a href="<?php echo base_url('index.php/action/report/'.$post['id'])?>" target="dialog">举报</a></li>
           <?php if($post['is_first']==1){?>
           <li><a href="#" class="icoCollect">收藏</a></li>
           <?php }?>
           <!--li><a href="#" class="icoEdit">评分</a></li-->
-          
           <li><a href="#" class="icoGrade">编辑</a></li>
           <li><a href="#" class="icoReplys">回复</a></li>
-          
         </ul>
+        
       </div>
       
     </li>
