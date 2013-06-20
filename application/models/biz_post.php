@@ -158,7 +158,17 @@ class Biz_post extends CI_Model {
                 $this->attachments_unused_model->delete("id in($aids)");
             }
         }
-
+        
+        //删除可能存在的草稿箱
+        $draft_where = array('user_id'=>$this->user['id'], 'special'=>$special);
+        if($type == 'post'){
+            $draft_where['forum_id'] = $forum_id;
+        }else{
+            $draft_where['topic_id'] = $tid;
+        }
+        $this->load->model('drafts_model');
+        $this->drafts_model->delete($draft_where);
+        
         //更新用户积分
         $credit = $this->forums_model->get_credit($forum_id, $type);
         $update_credit = $this->users_extra_model->update_credits($credit, $this->user['id'], $type);
@@ -171,6 +181,7 @@ class Biz_post extends CI_Model {
         
         //更新用户forums_statistics信息
         $this->forums_statistics_model->post_increment($forum_id, $tid, $type);
+        
         return TRUE;
     }
 

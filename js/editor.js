@@ -14,25 +14,25 @@ $(function(){
 	});
 	
 	KindEditor.lang({
-			hide : '²åÈëÒş²ØÄÚÈİ',
-			code2 : '²åÈë´úÂë',
-			image2 : '²åÈëÍ¼Æ¬',
-			'image2.remoteImage' : 'ÍøÂçÍ¼Æ¬',
-			'image2.localImage' : '±¾µØÉÏ´«',
-			'image2.remoteUrl' : 'Í¼Æ¬µØÖ·',
-			'image2.localUrl' : 'ÉÏ´«ÎÄ¼ş',
-			'image2.size' : 'Í¼Æ¬´óĞ¡',
-			'image2.width' : '¿í',
-			'image2.height' : '¸ß',
-			'image2.resetSize' : 'ÖØÖÃ´óĞ¡',
-			'image2.defaultAlign' : 'Ä¬ÈÏ·½Ê½',
-			'image2.leftAlign' : '×ó¶ÔÆë',
-			'image2.rightAlign' : 'ÓÒ¶ÔÆë',
-			'image2.imgTitle' : 'Í¼Æ¬ËµÃ÷',
-			'image2.upload' : 'ä¯ÀÀ...',
-			smiley : '²åÈë±íÇé',
-			quote : '²åÈëÒıÓÃÄÚÈİ',
-			'insertfile.localUrl' : '¸½¼ş',
+			hide : 'æ’å…¥éšè—å†…å®¹',
+			code2 : 'æ’å…¥ä»£ç ',
+			image2 : 'æ’å…¥å›¾ç‰‡',
+			'image2.remoteImage' : 'ç½‘ç»œå›¾ç‰‡',
+			'image2.localImage' : 'æœ¬åœ°ä¸Šä¼ ',
+			'image2.remoteUrl' : 'å›¾ç‰‡åœ°å€',
+			'image2.localUrl' : 'ä¸Šä¼ æ–‡ä»¶',
+			'image2.size' : 'å›¾ç‰‡å¤§å°',
+			'image2.width' : 'å®½',
+			'image2.height' : 'é«˜',
+			'image2.resetSize' : 'é‡ç½®å¤§å°',
+			'image2.defaultAlign' : 'é»˜è®¤æ–¹å¼',
+			'image2.leftAlign' : 'å·¦å¯¹é½',
+			'image2.rightAlign' : 'å³å¯¹é½',
+			'image2.imgTitle' : 'å›¾ç‰‡è¯´æ˜',
+			'image2.upload' : 'æµè§ˆ...',
+			smiley : 'æ’å…¥è¡¨æƒ…',
+			quote : 'æ’å…¥å¼•ç”¨å†…å®¹',
+			'insertfile.localUrl' : 'é™„ä»¶',
 	});
 	
 	
@@ -43,14 +43,14 @@ $(function(){
 					resizeType : 1,
 					allowPreviewEmoticons : true,
 					allowImageUpload : true,
-					//´úÂë¸ßÁÁ£¬ÑùÊ½
+					//ä»£ç é«˜äº®ï¼Œæ ·å¼
 					cssPath : [
 					base_url+'js/kindeditor/plugins/code2/codeprint.css',
 					base_url+'js/kindeditor/plugins/quote/quote.css',
 					],
 					useContextmenu:false,
-					uploadJson : base_url+'index.php/action/do_upload/',   //<<Ïà¶ÔÓÚkindeditor3.5.5\plugins\image\image.html 
-					//fileManagerJson : '../../php/file_manager_json2.php',   //<<Ïà¶ÔÓÚkindeditor3.5.5\plugins\file_manager\file_manager.html 
+					uploadJson : base_url+'index.php/action/do_upload/',   //<<ç›¸å¯¹äºkindeditor3.5.5\plugins\image\image.html 
+					//fileManagerJson : '../../php/file_manager_json2.php',   //<<ç›¸å¯¹äºkindeditor3.5.5\plugins\file_manager\file_manager.html 
 					allowFileManager : false,
 					afterUpload : function(url,data,name) {
 						//postform
@@ -67,14 +67,14 @@ $(function(){
 					'fontname', 'fontsize', 
 					'|','justifyleft', 'justifycenter', 'justifyright', 'justifyfull', 
 					'|','insertorderedlist', 'insertunorderedlist','indent', 'outdent',
-					'|','wordpaste','clearhtml','quickformat','selectall','fullscreen','source',
 					//'/',
 					'|',
 					'bold', 'italic', 'underline','strikethrough',
 					'|','forecolor', 'hilitecolor',
 					'|','hr', 'table','link', 'unlink',
 					'|','smiley','image2','insertfile',/*'media',*/'code2','quote',
-					'|','undo', 'redo','|','hide'],
+					'|','undo', 'redo','|','hide',
+					'|','wordpaste','clearhtml','quickformat','selectall','fullscreen','source'],
 					htmlTags : {
 						font : ['id', 'class', 'color', 'size', 'face', '.background-color'],
 						span : [
@@ -109,16 +109,16 @@ $(function(){
 						'br,tbody,tr,strong,b,sub,sup,em,i,u,strike,s,del' : ['id', 'class'],
 						iframe : ['id', 'class', 'src', 'frameborder', 'width', 'height', '.width', '.height']
 					},
-					//½«ÄÚÈİ¸ñÊ½»¯Îªbbcode
+					//å°†å†…å®¹æ ¼å¼åŒ–ä¸ºbbcode
 					afterCreate:function(){
 						//this.html(bbc2html(this.html()));
 					},
 			});
-		//½«ÄÚÈİ¸ñÊ½»¯Îªbbcode
+		//å°†å†…å®¹æ ¼å¼åŒ–ä¸ºbbcode
 		editor.beforeGetHtml(function(html){
 				return html2bbc(html);
 			});
-		//½«bbcode¸ñÊ½»¯Îªhtml
+		//å°†bbcodeæ ¼å¼åŒ–ä¸ºhtml
 		editor.beforeSetHtml(function(html){
 				return bbc2html(html);
 			});
@@ -126,22 +126,22 @@ $(function(){
 			if(str == '') {
 				return '';
 			}
-			//´¦Àí±íÇé·ûºÅ£¬±äÎªcode
+			//å¤„ç†è¡¨æƒ…ç¬¦å·ï¼Œå˜ä¸ºcode
 			if(KindEditor.smileys!=null){
 				str = str.replace(/<img[^>]+smileId=(["']?)(\d+)(\1)[^>]*>/ig, function($0, $1, $2) {return KindEditor.smileys[$2].code;});
 			}
-			//´¦ÀíÉÏ´«µÄÍ¼Æ¬£¬±äÎªcode
+			//å¤„ç†ä¸Šä¼ çš„å›¾ç‰‡ï¼Œå˜ä¸ºcode
 			if(KindEditor.uploadImages!=null){
 				str = str.replace(/<img[^>]+aid=(["']?)(\d+)(\1)[^>]*>/ig, "[attachimg]$2[/attachimg]");
 			}
-			//´¦ÀíÉÏ´«µÄ¸½¼ş£¬±äÎªcode
+			//å¤„ç†ä¸Šä¼ çš„é™„ä»¶ï¼Œå˜ä¸ºcode
 			if(KindEditor.uploadFiles!=null){
 				str = str.replace(/<a[^>]+aid=(["']?)(\d+)(\1)[^>]*>[^>]*<\/a>/ig, "[attach]$2[/attach]");
 			}
 			return str;
 		}
 		function bbc2html(str){
-			//´¦Àí±íÇé·ûºÅ£¬±äÎªhtml
+			//å¤„ç†è¡¨æƒ…ç¬¦å·ï¼Œå˜ä¸ºhtml
 			var smileys = KindEditor.smileys;
 			if(smileys != null) {
 				for(var id in smileys) {
@@ -149,7 +149,7 @@ $(function(){
 					str = str.replace(re, '<img src="' + smileys[id].url + '" border="0" smileId="' + id + '" />');
 				}
 			}
-			//bbcodeÍ¼Æ¬£¬±äÎªhtml
+			//bbcodeå›¾ç‰‡ï¼Œå˜ä¸ºhtml
 			str = str.replace(/\[attachimg\](\d+)\[\/attachimg\]/g, function($0,$1,$2){
 												if(typeof KindEditor.uploadImages[$1] == "undefined"){
 													return '';
@@ -157,7 +157,7 @@ $(function(){
 													return KindEditor.uploadImages[$1]
 												}
 											});
-			//bbcode¸½¼ş£¬±äÎªhtml
+			//bbcodeé™„ä»¶ï¼Œå˜ä¸ºhtml
 			str = str.replace(/\[attach\](\d+)\[\/attach\]/g, function($0,$1,$2){
 												if(typeof(KindEditor.uploadFiles[$1]) == "undefined"){
 													return '';
@@ -174,16 +174,15 @@ $(function(){
 			for(var n in obj){return false} 
 			return true;
 		} 
-		//Ô¤ÀÀ
+		//é¢„è§ˆ
 		$("#preview").click(function() {
-			alert(editor);
                     var K = KindEditor,
                         html = '<div style="padding:10px 20px;">' +
                                 '<iframe class="ke-textarea" frameborder="0" style="width:708px;height:400px;"></iframe>' +
                                 '</div>',
                         dialog = editor.createDialog({
                                 width : 750,
-                                title : 'Ô¤ÀÀ',
+                                title : 'é¢„è§ˆ',
                                 body : html
                         }),
                         iframe = K('iframe', dialog.div),

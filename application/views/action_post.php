@@ -58,8 +58,8 @@ var base_url = '<?=base_url()?>';
           <select name="editcategory">
             <?php echo $category_option;?>
           </select>
-          <input type="text" value="<?php echo set_value('subject', '输入问答概述'); ?>" name="subject" class="inp inpTxt pubInpW1">
-          <label>（还可输入80字符）</label>
+          <input type="text" value="<?php echo set_value('subject', '输入帖子标题'); ?>" name="subject" class="inp inpTxt pubInpW1">
+          <label></label>
         </li>
         
 		<?php 
@@ -67,13 +67,14 @@ var base_url = '<?=base_url()?>';
                 $this->load->view($special_view);
             }
         ?>
-        
+        <input type="hidden" name="special" value="<?php echo $special?>">
         <li class="pubQAEdit">
           <textarea name="content" style="width:958px;height:360px;visibility:hidden;"><?php echo $this->posts_model->smiley2html(set_value('content', '')); ?></textarea>
         </li>
       </ul>
       <h4>发布问答帖</h4>
       <ul class="pubQAForm">
+      
         <?php if($type == 'post'){?>
         <li>
           <input type="text" value="<?php echo set_value('tags', "标签间请用'空格'或'逗号'隔开，最多可添加5个标签。"); ?>" name="tags" id="tags" size="60" class="inp inpTxt pubInpW3">
@@ -83,6 +84,7 @@ var base_url = '<?=base_url()?>';
   		<?php }elseif($type == 'reply'){?>
         <input type="hidden" name="topic_id" value="<?php echo $topic_id?>">
         <?php }?>
+        
         <li>
         <input  type="submit" name="submit" class="mainCmtBtn" value="发布问题">
         <button type="button" class="mainCmtBtn btnGray" id="preview">预览</button>
@@ -95,6 +97,27 @@ var base_url = '<?=base_url()?>';
 <script type="text/javascript">
 
 $(function(){
+	var thisform = $("#postform");
+	//如果有草稿箱，提示用户。
+	<?php
+	  if(!empty($draft)){
+	?>
+	var draft = <?php echo $draft;?>,
+		drafts_tip = '您当前有未发表的草稿需要使用么？',
+		drafts_title = '草稿箱提示';
+		
+	$.Confirm(drafts_tip, drafts_title, function(){
+		$.each( draft, function(i, n){
+			if(i=='content'){
+				editor.html(n);
+			}else{
+				thisform.find("[name='"+i+"']").val(n);
+			}
+		});
+	});
+	<?php }?>
+	
+	//提交错误提示
 	<?php $errors = my_validation_errors();
 	  if(!empty($errors)){
 	?>
@@ -103,15 +126,13 @@ $(function(){
 	<?php }?>
 	
 	var publish = $("#publish"),
-		drafts = $("#drafts"),
-		thisform = $("#postform");
+		drafts = $("#drafts");
 		
 	publish.click(function(){
 		thisform.submit();
 	});
 	
-	
-	drafts.click(function(){
+	drafts.click(function(event){
 		editor.sync();
 		var url = unescape('<?php echo base_url('index.php/action/safe_drafts')?>'),
 				method = thisform.attr('method'),

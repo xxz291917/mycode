@@ -67,7 +67,25 @@ class Action extends MY_Controller {
                 }
             }
             $var['type'] = 'post';
+            
+            //为保存草稿使用的版块id
             $var['forum_id'] = $forum_id;
+            
+            //找出此用户，此版块下的,同类型草稿。
+            $where = array('user_id'=>$this->user['id'],'forum_id'=> $forum_id, 'special'=>$special);
+            $this->load->model('drafts_model');
+            $draft = $this->drafts_model->get_one($where);
+            if(!empty($draft)){
+                $draft_tmp['subject'] = $draft['subject'];
+                $draft_tmp['content'] = $draft['content'];
+                $remain_data = $draft['remain_data'];
+                $remain_data = json_decode($remain_data, TRUE);
+                $draft_tmp = array_merge($draft_tmp,$remain_data);
+//                var_dump($draft_tmp);die;
+                $draft_tmp = json_encode($draft_tmp);
+                $var['draft'] = $draft_tmp;
+            }
+            
             $this->view('action_post', $var);
         }
     }
@@ -351,14 +369,16 @@ class Action extends MY_Controller {
             $this->message('参数错误');
         }
         
-        $drafts['subject'] = $post['subject'];
-        $drafts['content'] = $post['content'];
-        unset($post['subject'],$post['content'],$post['submit']);
+        $where = array('user_id'=>$this->user['id'],$id_type=> intval($post[$id_type]),'special'=>intval($post['special']));
+        $exist = $this->drafts_model->get_one($where);
+        
+        $drafts['subject'] = html_escape($post['subject']);
+        $drafts['content'] = trim($post['content']);
+        $drafts['special'] = intval($post['special']);
+        unset($post['subject'],$post['content'],$post['special'],$post['submit']);
         $drafts['remain_data'] = json_encode($post);
         $drafts['time'] = $this->time;
         
-        $where = array('user_id'=>$this->user['id'],$id_type=>  intval($post[$id_type]));
-        $exist = $this->drafts_model->get_one($where);
         if(!empty($exist)){
             $issucc = $this->drafts_model->update($drafts,$where);
         }else{

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: 127.0.0.1
--- 生成日期: 2013 年 06 月 17 日 13:55
+-- 生成日期: 2013 年 06 月 20 日 15:01
 -- 服务器版本: 5.5.27
 -- PHP 版本: 5.4.7
 
@@ -41,7 +41,9 @@ INSERT INTO `ask` (`topic_id`, `price`, `best_answer`) VALUES
 (41, 5, 0),
 (42, 5, 0),
 (43, 5, 0),
-(45, 20, 0);
+(45, 20, 0),
+(46, 0, 0),
+(47, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -109,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `attachments_unused` (
   `is_thumb` tinyint(1) NOT NULL COMMENT '是否是缩率图',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='附件表' AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='附件表' AUTO_INCREMENT=4 ;
 
 --
 -- 转存表中的数据 `attachments_unused`
@@ -117,7 +119,8 @@ CREATE TABLE IF NOT EXISTS `attachments_unused` (
 
 INSERT INTO `attachments_unused` (`id`, `user_id`, `upload_time`, `size`, `extension`, `filename`, `path`, `description`, `is_image`, `is_thumb`) VALUES
 (1, 1, 1370259021, 81.83, 'jpg', '81b02032c5cd8f7c013e9036afa81f61.jpg', 'uploads/image/81b02032c5cd8f7c013e9036afa81f61.jpg', '', 1, 0),
-(2, 1, 1370660619, 81.83, 'jpg', '9574e0d7244c79c89374a3732ddf6c98.jpg', 'uploads/file/9574e0d7244c79c89374a3732ddf6c98.jpg', '', 1, 0);
+(2, 1, 1370660619, 81.83, 'jpg', '9574e0d7244c79c89374a3732ddf6c98.jpg', 'uploads/file/9574e0d7244c79c89374a3732ddf6c98.jpg', '', 1, 0),
+(3, 1, 1371635857, 27.85, 'jpg', '7e79dfed920432070064ba9bd8c61035.jpg', 'uploads/image/7e79dfed920432070064ba9bd8c61035.jpg', '', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -168,7 +171,7 @@ CREATE TABLE IF NOT EXISTS `credit_log` (
   `time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '产生时间',
   PRIMARY KEY (`id`),
   KEY `idx_createduserid_createdtime` (`user_id`,`time`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='积分日志表' AUTO_INCREMENT=296 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='积分日志表' AUTO_INCREMENT=302 ;
 
 --
 -- 转存表中的数据 `credit_log`
@@ -469,7 +472,13 @@ INSERT INTO `credit_log` (`id`, `type`, `action`, `affect`, `description`, `user
 (292, 'extcredits1', 'reply', 2, '发表回复', 1, 'xxz291917', 1371097775),
 (293, 'extcredits2', 'reply', 2, '发表回复', 1, 'xxz291917', 1371097775),
 (294, 'extcredits3', 'reply', 3, '发表回复', 1, 'xxz291917', 1371097775),
-(295, 'extcredits2', 'reply', 1, '发表回复', 1, 'xxz291917', 1371105016);
+(295, 'extcredits2', 'reply', 1, '发表回复', 1, 'xxz291917', 1371105016),
+(296, 'extcredits1', 'post', 2, '发表主题', 1, 'xxz291917', 1371702544),
+(297, 'extcredits2', 'post', 3, '发表主题', 1, 'xxz291917', 1371702544),
+(298, 'extcredits3', 'post', 3, '发表主题', 1, 'xxz291917', 1371702544),
+(299, 'extcredits1', 'post', 2, '发表主题', 1, 'xxz291917', 1371726788),
+(300, 'extcredits2', 'post', 3, '发表主题', 1, 'xxz291917', 1371726788),
+(301, 'extcredits3', 'post', 3, '发表主题', 1, 'xxz291917', 1371726788);
 
 -- --------------------------------------------------------
 
@@ -605,12 +614,24 @@ CREATE TABLE IF NOT EXISTS `drafts` (
   `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '所属用户id',
   `topic_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '所属主题id',
   `forum_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '所属版块id',
+  `special` tinyint(3) unsigned NOT NULL,
   `subject` varchar(80) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '草稿主题',
   `content` mediumtext CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '草稿内容',
+  `remain_data` varchar(3000) NOT NULL,
   `time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '保存时间',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+
+--
+-- 转存表中的数据 `drafts`
+--
+
+INSERT INTO `drafts` (`id`, `user_id`, `topic_id`, `forum_id`, `special`, `subject`, `content`, `remain_data`, `time`) VALUES
+(3, 1, 0, 11, 0, '$post', 0x24706f737424703c7374726f6e673e6f73743c2f7374726f6e673e3c7374726f6e673e24706f73743c2f7374726f6e673e3c7374726f6e673e24706f73743c2f7374726f6e673e3c7374726f6e673e24706f3c2f7374726f6e673e737424706f73747b3a325f33373a7d, '{"editcategory":"0","price":"4","tags":"test \\u767d\\u8272,,hongse,,   sfsl  sdfsdf"}', 1371732576),
+(4, 1, 0, 0, 0, '输入问答概述', 0x797472797472797472797472797275797279747279, '{"editcategory":"0","price":"","tags":"\\u6807\\u7b7e\\u95f4\\u8bf7\\u7528''\\u7a7a\\u683c''\\u6216''\\u9017\\u53f7''\\u9694\\u5f00\\uff0c\\u6700\\u591a\\u53ef\\u6dfb\\u52a05\\u4e2a\\u6807\\u7b7e\\u3002"}', 1371732422),
+(5, 1, 0, 0, 2, '$post', 0x24706f737424703c7374726f6e673e6f73743c2f7374726f6e673e3c7374726f6e673e24706f73743c2f7374726f6e673e3c7374726f6e673e24706f73743c2f7374726f6e673e3c7374726f6e673e24706f3c2f7374726f6e673e737424706f73747b3a325f33373a7d, '{"editcategory":"0","price":"4","tags":"test \\u767d\\u8272,,hongse,,   sfsl  sdfsdf"}', 1371732613),
+(6, 1, 0, 11, 2, '$post', 0x24706f737424703c7374726f6e673e6f73743c2f7374726f6e673e3c7374726f6e673e24706f73743c2f7374726f6e673e3c7374726f6e673e24706f73743c2f7374726f6e673e3c7374726f6e673e24706f3c2f7374726f6e673e737424706f73747b3a325f33373a7d, '{"editcategory":"0","price":"4","tags":"test \\u767d\\u8272,,hongse,,   sfsl  sdfsdf","forum_id":"11"}', 1371732649);
 
 -- --------------------------------------------------------
 
@@ -695,7 +716,7 @@ INSERT INTO `forums_statistics` (`forum_id`, `posts`, `topics`, `today_posts`, `
 (2, 29, 14, 6, 2, 34, 1371097775, 'xxz291917'),
 (6, 8, 5, 1, 1, 21, 1369452030, 'xxz291917'),
 (10, 1, 1, 1, 1, 15, 1368772328, 'xxz5291917'),
-(11, 38, 10, 5, 2, 45, 1370782056, 'xxz291917'),
+(11, 40, 12, 2, 2, 47, 1371726788, 'xxz291917'),
 (12, 15, 2, 1, 2, 16, 1371105016, 'xxz291917');
 
 -- --------------------------------------------------------
@@ -834,13 +855,13 @@ CREATE TABLE IF NOT EXISTS `medals` (
 --
 
 INSERT INTO `medals` (`id`, `name`, `image`, `type`, `display_order`, `description`, `expired_time`, `condition`, `credit`, `price`, `is_open`) VALUES
-(1, '最佳新人', 'medal1.gif', 0, 0, '注册账号后积极发帖的会员', 0, '', 0, 0, 1),
+(1, '最佳新人', 'medal1.gif', 0, 0, '注册账号后积极发帖的会员', 65535, 'extcredits2 > 100 and topics >= 50', 0, 0, 1),
 (2, '活跃会员', 'medal2.gif', 0, 0, '经常参与各类话题的讨论，发帖内容较有主见', 0, '', 0, 0, 0),
 (3, '热心会员', 'medal3.gif', 0, 0, '经常帮助其他会员答疑', 0, '', 0, 0, 0),
 (4, '推广达人', 'medal4.gif', 0, 0, '积极宣传本站，为本站带来更多注册会员', 0, '', 0, 0, 0),
 (5, '宣传达人', 'medal5.gif', 0, 0, '积极宣传本站，为本站带来更多的用户访问量', 0, '', 0, 0, 0),
 (6, '灌水之王', 'medal6.gif', 0, 0, '经常在论坛发帖，且发帖量较大', 0, '', 0, 0, 0),
-(7, '突出贡献', 'medal7.gif', 0, 0, '长期对论坛的繁荣而不断努力，或多次提出建设性意见', 0, '', 0, 0, 0),
+(7, '突出贡献', 'medal7.gif', 0, 0, '长期对论坛的繁荣而不断努力，或多次提出建设性意见', 0, '', 0, 0, 1),
 (8, '优秀版主', 'medal8.gif', 0, 0, '活跃且尽责职守的版主', 0, '', 0, 0, 1),
 (9, '荣誉管理', 'medal9.gif', 0, 0, '曾经为论坛做出突出贡献目前已离职的版主', 0, '', 0, 0, 1),
 (10, '论坛元老', 'medal10.gif', 0, 0, '为论坛做出突出贡献的会员', 0, '', 0, 0, 1);
@@ -857,12 +878,38 @@ CREATE TABLE IF NOT EXISTS `medals_log` (
   `medal_id` smallint(6) unsigned NOT NULL DEFAULT '0' COMMENT '勋章id',
   `time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '颁发时间',
   `expired_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '到期时间',
-  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1正常，2申请',
+  `description` varchar(255) NOT NULL DEFAULT '' COMMENT '颁发原因',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1正常，2申请，3删除',
   PRIMARY KEY (`id`),
-  KEY `status` (`status`,`expired_time`),
-  KEY `uid` (`user_id`,`medal_id`),
-  KEY `dateline` (`time`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  KEY `user_id` (`user_id`,`medal_id`),
+  KEY `time` (`time`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
+
+--
+-- 转存表中的数据 `medals_log`
+--
+
+INSERT INTO `medals_log` (`id`, `user_id`, `medal_id`, `time`, `expired_time`, `description`, `status`) VALUES
+(1, 1, 8, 1371544640, 1371657600, '', 0),
+(2, 1, 10, 1371544640, 1371657600, '', 0),
+(3, 2, 8, 1371544640, 1371657600, '', 0),
+(4, 2, 10, 1371544640, 1371657600, '', 0),
+(5, 1, 7, 1371544935, 1370275200, '', 1),
+(6, 1, 8, 1371544935, 1370275200, '', 1),
+(7, 2, 7, 1371544935, 1370275200, '', 1),
+(8, 2, 8, 1371544935, 1370275200, '', 1),
+(9, 1, 7, 1371545347, 1370188800, '', 1),
+(10, 1, 9, 1371545347, 1370188800, '', 1),
+(11, 2, 7, 1371545347, 1370188800, '', 1),
+(12, 2, 9, 1371545347, 1370188800, '', 1),
+(13, 1, 7, 1371545712, 1371657600, '', 1),
+(14, 1, 8, 1371545712, 1371657600, '', 1),
+(15, 2, 7, 1371545712, 1371657600, '', 1),
+(16, 2, 8, 1371545712, 1371657600, '', 1),
+(17, 1, 7, 1371545843, 1372262400, '', 1),
+(18, 1, 8, 1371545843, 1372262400, '', 1),
+(19, 2, 7, 1371545843, 1372262400, '', 1),
+(20, 2, 8, 1371545843, 1372262400, '', 1);
 
 -- --------------------------------------------------------
 
@@ -983,113 +1030,116 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `is_anonymous` tinyint(1) NOT NULL COMMENT '是否匿名贴',
   `is_hide` tinyint(1) NOT NULL COMMENT '是否是隐藏贴',
   `is_sign` int(11) NOT NULL COMMENT '是否显示签名',
+  `position` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '帖子位置',
   `status` tinyint(3) unsigned NOT NULL COMMENT '状态（1正常，2删除，3被锁定）',
   PRIMARY KEY (`id`),
   KEY `forum_id` (`forum_id`),
   KEY `topic_id` (`topic_id`,`author_id`),
   KEY `post_time` (`topic_id`,`post_time`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=99 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=101 ;
 
 --
 -- 转存表中的数据 `posts`
 --
 
-INSERT INTO `posts` (`id`, `topic_id`, `forum_id`, `author`, `author_id`, `author_ip`, `post_time`, `subject`, `content`, `edit_user`, `edit_user_id`, `edit_time`, `attachment`, `check_status`, `is_first`, `is_report`, `is_bbcode`, `is_smilies`, `is_media`, `is_html`, `is_anonymous`, `is_hide`, `is_sign`, `status`) VALUES
-(1, 4, 2, 'xxz291917', 1, '127.0.0.1', 1368531409, '输入标题r', '填写帖子内容', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(2, 6, 2, 'xxz291917', 1, '127.0.0.1', 1368531645, '输入标题r', '填写帖子内容', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(6, 10, 2, 'xxz291917', 1, '127.0.0.1', 1368535793, '输入标题r', '填写帖子内容', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(7, 7, 2, 'xxz291917', 1, '127.0.0.1', 1368583217, '夏学智测试', '今天的内容要新鲜哦\r\n<p class="MsoNormalCxSpFirst" style="margin-left:6.55pt;text-indent:36.0pt;">\r\n	<span style="font-family:&quot;">显式地把已<span>经</span>不再被引<span>用</span>的对象<span>赋</span>为</span><span> </span><span>nu</span><span>l</span><span>l</span>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="margin-left:6.55pt;text-indent:36.0pt;">\r\n	<span style="font-family:&quot;">不要频繁初<span>始</span>化对象</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="margin-left:6.55pt;text-indent:36.0pt;">\r\n	<span style="font-family:&quot;">除非必要，<span>否</span>则不要<span>在</span>循环内<span>初</span>始化对象</span><span> <span></span></span>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="margin-left:6.55pt;text-indent:36.0pt;">\r\n	<span style="font-family:&quot;">示例：</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="margin-left:6.55pt;text-indent:36.0pt;">\r\n	<span>f</span><span>o</span><span>r <span>(</span><span>$</span>i<span> </span>= <span>0</span>; <span>$</span>i<span> </span><span>&lt;</span><span>$</span><span>r</span><span>o</span><span>w</span>s;<span> </span><span>$i</span><span>++</span>)<span> </span>{</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="margin-left:36.0pt;text-indent:36.0pt;">\r\n	<span>$</span><span>c<span>o</span><span>mm</span><span>o</span><span>n</span><span>W</span><span>r</span><span>k</span><span>S</span><span>h</span>t<span> </span>= <span>n</span><span>e</span>w<span> </span><span>C</span><span>o</span><span>mm</span><span>o</span><span>n</span><span>W</span><span>r</span><span>k</span><span>S</span><span>h</span><span>t()</span>;</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="margin-left:36.0pt;text-indent:36.0pt;">\r\n	<span>…</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="text-indent:41.45pt;">\r\n	<span>}</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="text-indent:41.45pt;">\r\n	<span style="font-family:&quot;">应写成：</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="text-indent:40.35pt;">\r\n	<span>$</span><span>c<span>o</span><span>mm</span><span>o</span><span>n</span><span>W</span><span>r</span><span>k</span><span>S</span><span>h</span>t<span> </span>= <span>n</span><span>e</span>w<span> </span><span>C</span><span>o</span><span>mm</span><span>o</span><span>n</span><span>W</span><span>r</span><span>k</span><span>S</span><span>h</span><span>t()</span>;</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="text-indent:42.2pt;">\r\n	<span>f</span><span>o</span><span>r <span>(</span><span>$</span>i<span> </span>= <span>0</span>; <span>$</span>i<span> </span><span>&lt;</span><span>r</span><span>o</span><span>w</span>s;<span> </span><span>$i</span><span>++</span>)<span> </span>{</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="margin-left:30.55pt;text-indent:41.45pt;">\r\n	<span>…</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="text-indent:41.45pt;">\r\n	<span>}</span><b><span></span></b>\r\n</p>', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(8, 8, 2, 'xxz291917', 1, '127.0.0.1', 1368588882, '发帖测试123', '<table>\r\n	<tbody>\r\n		<tr>\r\n			<td class="c1 td1">\r\n				tid\r\n			</td>\r\n			<td class="c2 td1">\r\n				mediumint(8) unsigned\r\n			</td>\r\n			<td class="c3 td1">\r\n				&nbsp;0\r\n			</td>\r\n			<td class="c4 td1">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td1">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td1">\r\n				&nbsp;主题id\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td class="c1 td2">\r\n				overt\r\n			</td>\r\n			<td class="c2 td2">\r\n				tinyint(1)\r\n			</td>\r\n			<td class="c3 td2">\r\n				&nbsp;0\r\n			</td>\r\n			<td class="c4 td2">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td2">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td2">\r\n				&nbsp;是否公开投票参与人\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td class="c1 td1">\r\n				multiple\r\n			</td>\r\n			<td class="c2 td1">\r\n				tinyint(1)\r\n			</td>\r\n			<td class="c3 td1">\r\n				&nbsp;0\r\n			</td>\r\n			<td class="c4 td1">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td1">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td1">\r\n				&nbsp;是否多选\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td class="c1 td2">\r\n				visible\r\n			</td>\r\n			<td class="c2 td2">\r\n				tinyint(1)\r\n			</td>\r\n			<td class="c3 td2">\r\n				&nbsp;0\r\n			</td>\r\n			<td class="c4 td2">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td2">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td2">\r\n				&nbsp;是否投票后可见\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td class="c1 td1">\r\n				maxchoices\r\n			</td>\r\n			<td class="c2 td1">\r\n				tinyint(3) unsigned\r\n			</td>\r\n			<td class="c3 td1">\r\n				&nbsp;0\r\n			</td>\r\n			<td class="c4 td1">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td1">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td1">\r\n				&nbsp;最大可选项数\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td class="c1 td2">\r\n				expiration\r\n			</td>\r\n			<td class="c2 td2">\r\n				int(10) unsigned\r\n			</td>\r\n			<td class="c3 td2">\r\n				&nbsp;0\r\n			</td>\r\n			<td class="c4 td2">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td2">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td2">\r\n				&nbsp;过期时间\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td class="c1 td1">\r\n				pollpreview\r\n			</td>\r\n			<td class="c2 td1">\r\n				varchar(255)\r\n			</td>\r\n			<td class="c3 td1">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c4 td1">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td1">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td1">\r\n				&nbsp;选项内容前两项预览\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td class="c1 td2">\r\n				voters\r\n			</td>\r\n			<td class="c2 td2">\r\n				mediumint(8) unsigned\r\n			</td>\r\n			<td class="c3 td2">\r\n				&nbsp;0\r\n			</td>\r\n			<td class="c4 td2">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td2">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td2">\r\n				&nbsp;投票人数\r\n			</td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(9, 9, 2, 'xxz291917', 1, '127.0.0.1', 1368609926, '输入标题二二', '填写帖子内容污染物而', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(10, 10, 2, 'xxz291917', 1, '127.0.0.1', 1368610003, '输入标题二二', '填写帖子内容污染物而', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(11, 11, 12, 'xxz291917', 1, '127.0.0.1', 1368611640, '输入标题人人', '<a>展开</a> | <a>全部折叠</a> \r\n<table class="tb tb2 ">\r\n	<tbody>\r\n		<tr class="header">\r\n			<th>\r\n				<br />\r\n			</th>\r\n			<th>\r\n				显示顺序\r\n			</th>\r\n			<th>\r\n				版块名称\r\n			</th>\r\n			<th>\r\n				<br />\r\n			</th>\r\n			<th>\r\n				版主\r\n			</th>\r\n			<th>\r\n				<a>批量编辑</a>\r\n			</th>\r\n		</tr>\r\n		<tr class="hover">\r\n			<td class="td25">\r\n				<a id="a_group_1">[-]</a>\r\n			</td>\r\n			<td class="td25">\r\n			</td>\r\n			<td>\r\n				<div class="parentboard">\r\n				</div>\r\n			</td>\r\n			<td class="td23 lightfont" align="right">\r\n				(gid:1)\r\n			</td>\r\n			<td class="td23">\r\n				<a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=moderators&amp;fid=1">无 / 添加版主</a>\r\n			</td>\r\n			<td width="160">\r\n				<a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=edit&amp;fid=1" class="act">编辑</a><a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=delete&amp;fid=1" class="act">删除</a>\r\n			</td>\r\n		</tr>\r\n	</tbody>\r\n	<tbody id="group_1">\r\n		<tr class="hover">\r\n			<td class="td25">\r\n				<br />\r\n			</td>\r\n			<td class="td25">\r\n			</td>\r\n			<td>\r\n				<div class="board">\r\n					<a href="http://localhost/dz2.5/admin.php?action=forums###" class="addchildboard">添加子版块</a>\r\n				</div>\r\n			</td>\r\n			<td class="td23 lightfont" align="right">\r\n				(fid:2)\r\n			</td>\r\n			<td class="td23">\r\n				<a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=moderators&amp;fid=2">无 / 添加版主</a>\r\n			</td>\r\n			<td width="160">\r\n				<a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=edit&amp;fid=2" class="act">编辑</a><a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=copy&amp;source=2" class="act">设置复制</a><a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=delete&amp;fid=2" class="act">删除</a>\r\n			</td>\r\n		</tr>\r\n		<tr class="hover">\r\n			<td class="td25">\r\n				<br />\r\n			</td>\r\n			<td class="td25">\r\n			</td>\r\n			<td>\r\n				<div id="cb_39" class="lastchildboard">\r\n				</div>\r\n			</td>\r\n			<td class="td23 lightfont" align="right">\r\n				(fid:39)\r\n			</td>\r\n			<td class="td23">\r\n				<a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=moderators&amp;fid=39">xxz291917 »</a>\r\n			</td>\r\n			<td width="160">\r\n				<a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=edit&amp;fid=39" class="act">编辑</a><a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=copy&amp;source=39" class="act">设置复制</a><a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=delete&amp;fid=39" class="act">删除</a>\r\n			</td>\r\n		</tr>\r\n	</tbody>\r\n	<tbody>\r\n		<tr>\r\n			<td>\r\n				<br />\r\n			</td>\r\n			<td colspan="4">\r\n				<div class="lastboard">\r\n					<a href="http://localhost/dz2.5/admin.php?action=forums###" class="addtr">添加新版块</a>\r\n				</div>\r\n			</td>\r\n			<td>\r\n				&nbsp;\r\n			</td>\r\n		</tr>\r\n		<tr class="hover">\r\n			<td class="td25">\r\n				<a id="a_group_36">[-]</a>\r\n			</td>\r\n			<td class="td25">\r\n			</td>\r\n			<td>\r\n				<div class="parentboard">\r\n				</div>\r\n			</td>\r\n			<td class="td23 lightfont" align="right">\r\n				(gid:36)\r\n			</td>\r\n			<td class="td23">\r\n				<a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=moderators&amp;fid=36">无 / 添加版主</a>\r\n			</td>\r\n			<td width="160">\r\n				<a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=edit&amp;fid=36" class="act">编辑</a><a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=delete&amp;fid=36" class="act">删除</a>\r\n			</td>\r\n		</tr>\r\n	</tbody>\r\n	<tbody id="group_36">\r\n		<tr class="hover">\r\n			<td class="td25">\r\n				<br />\r\n			</td>\r\n			<td class="td25">\r\n			</td>\r\n			<td>\r\n				<div class="board">\r\n					<a href="http://localhost/dz2.5/admin.php?action=forums###" class="addchildboard">添加子版块</a>\r\n				</div>\r\n			</td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(12, 12, 11, 'xxz291917', 1, '127.0.0.1', 1368612732, 'gdgdfgdgdfg', 'dfgdfgdgdfg', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(13, 11, 12, 'xxz291917', 1, '127.0.0.1', 1368696089, '', '回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1),
-(14, 11, 12, 'xxz291917', 1, '127.0.0.1', 1368696323, '', '回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1),
-(15, 11, 12, 'xxz291917', 1, '127.0.0.1', 1368696465, '', '回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1),
-(16, 11, 12, 'xxz291917', 1, '127.0.0.1', 1368696706, 'test', '测试回复内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1),
-(17, 11, 12, 'xxz291917', 1, '127.0.0.1', 1368696770, '输入标题', '填写帖子内容才踩踩踩踩踩踩踩踩踩踩踩踩', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1),
-(18, 13, 11, 'xxz291917', 1, '127.0.0.1', 1368696809, '输入标题大大大', '填写帖子内容士大夫士大夫', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1),
-(19, 13, 11, 'xxz291917', 1, '127.0.0.1', 1368696817, '输入标题', '填写帖子内容发反反复复反反复复', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1),
-(20, 13, 11, 'xxz291917', 1, '127.0.0.1', 1368697037, '输入标题', '填写帖子内容<img src="http://localhost/mycode/js/kindeditor/plugins/emoticons/images/10.gif" alt="" border="0" />', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1),
-(21, 14, 6, 'xxz291917', 1, '127.0.0.1', 1368699427, '红星闪闪放光芒', '填写帖子内容', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1),
-(22, 14, 6, 'xxz291917', 1, '127.0.0.1', 1368699436, '输入标题', '填写帖子内容士大夫士大夫撒', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1),
-(23, 14, 6, 'xxz291917', 1, '127.0.0.1', 1368701592, '输入标题士大夫士大夫', '填写帖子内容士大夫士大夫', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1),
-(24, 14, 6, 'xxz291917', 1, '127.0.0.1', 1368701675, '', '填写帖子内容士大夫士大夫', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1),
-(25, 9, 2, 'xxz291917', 1, '127.0.0.1', 1368702719, '输入标题', '填写帖子内容凤飞飞', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1),
-(26, 13, 11, 'xxz291917', 1, '127.0.0.1', 1368757267, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1),
-(27, 13, 11, 'xxz5291917', 2, '127.0.0.1', 1368758585, '输入标题', '填写帖子内容sdf <br />', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(28, 13, 11, 'xxz5291917', 2, '127.0.0.1', 1368758605, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(29, 10, 2, 'xxz5291917', 2, '127.0.0.1', 1368771892, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1),
-(30, 10, 2, 'xxz5291917', 2, '127.0.0.1', 1368771927, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1),
-(31, 8, 2, 'xxz5291917', 2, '127.0.0.1', 1368772287, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1),
-(32, 8, 2, 'xxz5291917', 2, '127.0.0.1', 1368772292, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1),
-(33, 15, 6, 'xxz5291917', 2, '127.0.0.1', 1368772328, '输入标题yy', '填写帖子内容', '', 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1),
-(34, 13, 11, 'xxz5291917', 2, '127.0.0.1', 1368773339, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1),
-(35, 10, 2, 'xxz5291917', 2, '127.0.0.1', 1368774131, '是大范甘迪过分的', '大范甘迪过分', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1),
-(36, 11, 12, 'xxz5291917', 2, '127.0.0.1', 1368774508, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1),
-(37, 11, 12, 'xxz5291917', 2, '127.0.0.1', 1368774528, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1),
-(38, 11, 12, 'xxz5291917', 2, '127.0.0.1', 1368774534, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1),
-(39, 11, 12, 'xxz5291917', 2, '127.0.0.1', 1368774539, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1),
-(40, 11, 12, 'xxz5291917', 2, '127.0.0.1', 1368774591, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1),
-(41, 11, 12, 'xxz5291917', 2, '127.0.0.1', 1368774662, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1),
-(42, 16, 12, 'xxz5291917', 2, '127.0.0.1', 1368774681, '输入标题凤飞飞', '填写帖子内容', '', 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1),
-(43, 17, 6, 'xxz291917', 1, '127.0.0.1', 1369310155, '是否需要测试', '是否需要测试是否需要测试是否需要测试是否需要测试是否需要测试是否需要测试是否需要测试是否需要测试是否需要测试是否需要测试是否需要测试', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(44, 18, 11, 'xxz291917', 1, '127.0.0.1', 1369310199, '电梯直达跳转到指定楼层', '<h1 class="ts">\r\n	<a href="http://localhost/dz2.5/forum.php?mod=viewthread&amp;tid=2" id="thread_subject">我们的测试</a> \r\n</h1>\r\n<span class="xg1"> <a href="http://localhost/dz2.5/forum.php?mod=viewthread&amp;tid=2&amp;fromuid=1">[复制链接]</a> </span> \r\n<table class="ad" cellpadding="0" cellspacing="0">\r\n	<tbody>\r\n		<tr>\r\n			<td class="pls">\r\n				<br />\r\n			</td>\r\n			<td class="plc">\r\n				<br />\r\n			</td>\r\n		</tr>\r\n	</tbody>\r\n</table>\r\n<table id="pid5" cellpadding="0" cellspacing="0">\r\n	<tbody>\r\n		<tr>\r\n			<td class="pls" rowspan="2">\r\n				<div class="pi">\r\n					<div class="authi">\r\n						<a href="http://localhost/dz2.5/home.php?mod=space&amp;uid=1" target="_blank" class="xw1">admin</a> \r\n					</div>\r\n				</div>\r\n				<div>\r\n					<div class="avatar">\r\n						<a href="http://localhost/dz2.5/home.php?mod=space&amp;uid=1" target="_blank"><img src="http://localhost/dz2.5/uc_server/avatar.php?uid=1&amp;size=middle" /></a>\r\n					</div>\r\n					<div class="tns xg2">\r\n						<table cellpadding="0" cellspacing="0">\r\n							<tbody>\r\n								<tr>\r\n									<th>\r\n										<p>\r\n											<a href="http://localhost/dz2.5/home.php?mod=space&amp;uid=1&amp;do=thread&amp;view=me&amp;from=space" class="xi2">2</a>\r\n										</p>\r\n主题\r\n									</th>\r\n									<th>\r\n										<p>\r\n											<a href="http://localhost/dz2.5/home.php?mod=space&amp;uid=1&amp;do=friend&amp;view=me" class="xi2">0</a>\r\n										</p>\r\n好友\r\n									</th>\r\n									<td>\r\n										<p>\r\n											<a href="http://localhost/dz2.5/home.php?mod=space&amp;uid=1&amp;do=profile" class="xi2">68</a>\r\n										</p>\r\n积分\r\n									</td>\r\n								</tr>\r\n							</tbody>\r\n						</table>\r\n					</div>\r\n					<p>\r\n						<em><a href="http://localhost/dz2.5/home.php?mod=spacecp&amp;ac=usergroup&amp;gid=1" target="_blank">管理员</a></em>\r\n					</p>\r\n				</div>\r\n				<p>\r\n					<img src="http://localhost/dz2.5/static/image/common/star_level3.gif" alt="Rank: 9" /><img src="http://localhost/dz2.5/static/image/common/star_level3.gif" alt="Rank: 9" /><img src="http://localhost/dz2.5/static/image/common/star_level1.gif" alt="Rank: 9" />\r\n				</p>\r\n				<p class="cp_pls cl">\r\n					<a href="http://localhost/dz2.5/forum.php?mod=topicadmin&amp;action=getip&amp;fid=37&amp;tid=2&amp;pid=5">IP</a> <a href="http://localhost/dz2.5/admin.php?frames=yes&amp;action=members&amp;operation=search&amp;uid=1&amp;submit=yes" target="_blank">编辑</a> <a href="http://localhost/dz2.5/admin.php?action=members&amp;operation=ban&amp;username=admin&amp;frames=yes" target="_blank">禁止</a> <a href="http://localhost/dz2.5/forum.php?mod=modcp&amp;action=thread&amp;op=post&amp;do=search&amp;searchsubmit=1&amp;users=admin" target="_blank">帖子</a> <a href="http://localhost/dz2.5/forum.php?mod=ajax&amp;action=quickclear&amp;uid=1">清理</a> \r\n				</p>\r\n			</td>\r\n			<td class="plc">\r\n				<div class="pi">\r\n					<div id="fj" class="y">\r\n						电梯直达<a id="fj_btn" class="z"><img src="http://localhost/dz2.5/static/image/common/fj_btn.png" alt="跳转到指定楼层" class="vm" /></a> \r\n					</div>\r\n<strong> <a href="http://localhost/dz2.5/forum.php?mod=viewthread&amp;tid=2&amp;fromuid=1" id="postnum5">楼主</a> </strong> \r\n					<div class="pti">\r\n						<div class="pdbt">\r\n						</div>\r\n						<div class="authi">\r\n							<img class="authicn vm" id="authicon5" src="http://localhost/dz2.5/static/image/common/online_admin.gif" /> <em id="authorposton5">发表于 2013-4-16 17:59:25</em> <span class="pipe">|</span><a href="http://localhost/dz2.5/forum.php?mod=viewthread&amp;tid=2&amp;page=1&amp;authorid=1">只看该作者</a> <span class="pipe">|</span><a href="http://localhost/dz2.5/forum.php?mod=viewthread&amp;tid=2&amp;extra=page%3D1&amp;ordertype=1">倒序浏览</a> <span class="pipe">|</span> <a id="replynotice" href="http://localhost/dz2.5/forum.php?mod=misc&amp;action=replynotice&amp;op=ignore&amp;tid=2">取消回复通知</a> \r\n						</div>\r\n					</div>\r\n				</div>\r\n				<div class="pct">\r\n					<div class="pcb">\r\n						<div class="t_fsz">\r\n							<table cellpadding="0" cellspacing="0">\r\n								<tbody>\r\n									<tr>\r\n										<td class="t_f" id="postmessage_5">\r\n											主题测试主题测试主题测试主题测试主题测试主题测试主题测试主题测试<img src="http://localhost/dz2.5/static/image/smiley/default/lol.gif" alt="" border="0" /><br />\r\n										</td>\r\n									</tr>\r\n								</tbody>\r\n							</table>\r\n						</div>\r\n					</div>\r\n				</div>\r\n			</td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(45, 19, 6, 'xxz291917', 1, '127.0.0.1', 1369313698, '审核测试审核测试', '审核测试审核测试审核测试审核测试审核测试审核测试审核测试', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(46, 20, 6, 'xxz291917', 1, '127.0.0.1', 1369314292, '士大夫士大夫士大夫似的', '填写帖子内容反反复复反反复复反反复复反反复复', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(47, 21, 6, 'xxz291917', 1, '127.0.0.1', 1369452030, '输入标题ddd', '填写帖子内容\r\n<pre class="prettyprint lang-php">phpinfo();\r\necho 123;</pre>', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(48, 22, 11, 'xxz291917', 1, '127.0.0.1', 1369472789, '输入标题士大夫士大夫', '填写帖子内容\r\n<pre class="prettyprint lang-php">phpinfo();\r\necho 123;</pre>\r\n<pre class="prettyprint lang-js">alert(2222222);\r\n</pre>', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(49, 22, 11, 'xxz291917', 1, '127.0.0.1', 1369476588, '输入标题', '<pre class="brush: js;">function helloSyntaxHighlighter()\r\n{\r\n    return "hi!";\r\n}\r\n</pre>', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(50, 22, 11, 'xxz291917', 1, '127.0.0.1', 1369476618, '输入标题', '填写帖子内容\r\n<pre class="prettyprint lang-js">function helloSyntaxHighlighter()\r\n{\r\n    return "hi!";\r\n}</pre>', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(51, 22, 11, 'xxz291917', 1, '127.0.0.1', 1369624037, '输入标题', '<pre class="brush:php;">phpinfo();</pre>\r\n填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(52, 22, 11, 'xxz291917', 1, '127.0.0.1', 1369624075, '输入标题', '填写帖子内容\r\n<pre class="brush:php;">function helloSyntaxHighlighter()\r\n{\r\n    return "hi!";\r\n}</pre>', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(53, 22, 11, 'xxz291917', 1, '127.0.0.1', 1369625536, '输入标题', '<pre class="codeprint brush:applescript;">asdasd\r\nsfsdfsfdsf\r\nsdfsdfsdfsdfsdf\r\n</pre>\r\n填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(54, 22, 11, 'xxz291917', 1, '127.0.0.1', 1369626059, '输入标题', '<pre class="codeprint brush:html;">ssssssssssssssssss</pre>\r\n填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(55, 22, 11, 'xxz291917', 1, '127.0.0.1', 1369714000, '输入标题', '<p>\r\n	填写帖子内容\r\n</p>\r\n<p>\r\n	<br />\r\n</p>\r\n<p>\r\n<pre class="codeprint brush:php;">phpinfo();\r\necho 123;</pre>\r\n234\r\n</p>\r\neeeeeeeeeee', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(56, 23, 2, 'xxz291917', 1, '127.0.0.1', 1369740062, '输入标题7777', '填写帖子内容:$:kiss::handshake{:3_46:}', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(57, 23, 2, 'xxz291917', 1, '127.0.0.1', 1369795605, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(58, 24, 11, 'xxz291917', 1, '127.0.0.1', 1369815311, '输入标题夸奖夸奖夸奖', '填写帖子内容:lol{:2_36:}<a href="http://www.baidu.com" target="_blank">http://www.baidu.com</a>', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(59, 24, 11, 'xxz291917', 1, '127.0.0.1', 1369815380, '输入标题', '填写帖子内容{:3_46:}', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(60, 24, 11, 'xxz291917', 1, '127.0.0.1', 1369817179, '输入标题', '<blockquote class="blockquote">\r\n	士大夫士大夫\r\n</blockquote>\r\n填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(61, 24, 11, 'xxz291917', 1, '127.0.0.1', 1369818158, '输入标题', '<blockquote class="blockquote">\r\n	sdfsdf\r\n</blockquote>\r\n填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(62, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369819307, 'hahhhhhhhh', '填写帖子内容:sleepy:{:3_43:}:@{:2_38:}', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(63, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369819367, '输入标题', '<blockquote class="blockquote">\r\n	''|'',\r\n</blockquote>\r\n<br />\r\n填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(64, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369893399, '输入标题', '填写帖子内容<img src="/mycode/./uploads/file/b7da665c18f830c5a081a695395e734c.jpg" alt="" />', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(65, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369898357, '输入标题', '<img src="/mycode/uploads/file/e378c80cacad35dc854a972f397b0ed7.jpg" alt="" />填写帖子内容<img src="/mycode/uploads/file/9685aa209fb498b4eb8e5ddc0c987a7d.jpg" title="xxzxxzxxz" alt="xxzxxzxxz" height="109" width="109" /><a class="ke-insertfile" href="/mycode/uploads/file/2d925a00ca6495b559d646002de13f07.jpg" target="_blank">dddddddd</a>', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(66, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369899428, '输入标题', '<img src="/mycode/uploads/file/5134fa443f587661f910228e594d89f5.jpg" alt="" />填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(67, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369899454, '输入标题', '填写帖子内容<img src="/mycode/uploads/file/b43e329af02d0b67017b2ea5681249c3.jpg" alt="" />', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(68, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369899590, '输入标题', '填写帖子内容<img src="/mycode/uploads/file/47158d0b0863f15c4eaf28f659b9b8a1.jpg" alt="" />', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(69, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369899791, '输入标题', '填写帖子内容<img src="/mycode/uploads/file/6f5a88c0a5643420ca913595f20fcd04.jpg" alt="" />', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(70, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369903578, '输入标题', '填写帖子内容<img src="/mycode/uploads/file/9ba8fe893d04425fd9fb1fd17fed7e04.jpg" title="ffffffffffff" aid="34" alt="ffffffffffff" height="109" width="109" />', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(71, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369979792, '输入标题', '[attach]7[/attach]填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(72, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369979848, '输入标题', '填写帖子内容[attach]1[/attach]', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(73, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369979898, '输入标题', '填写帖子内容[attach]1[/attach]', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(74, 16, 12, 'xxz291917', 1, '127.0.0.1', 1369988139, '输入标题', '填写帖子内容[attachimg]3[/attachimg]', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(75, 29, 2, 'xxz291917', 1, '127.0.0.1', 1370233126, '去问去问夫士大夫', '填写帖子内容反反复复&nbsp; 士大夫士大夫士大夫士大夫<br />', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(76, 31, 2, 'xxz291917', 1, '127.0.0.1', 1370319752, '辩论发帖测试', 'errrrrrrrrrrrrrrrerrrrrrrrrrrrrrrrerrrrrrrrrrrrrrrrerrrrrrrrrrrrrrrrerrrrrrrrrrrrrrrrerrrrrrrrrrrrrrrrerrrrrrrrrrrrrrrrerrrrrrrrrrrrrrrrerrrrrrrrrrrrrrrrerrrrrrrrrrrrrrrrerrrrrrrrrrrrrrrr', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(77, 34, 2, 'xxz291917', 1, '127.0.0.1', 1370335370, '输入标sdfsdfsdf', '填写帖子内容', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(78, 35, 2, 'xxz291917', 1, '127.0.0.1', 1370397845, 'test 白色,,hongse,,   sfsl  sdfsdf', 'test 白色,,hongse,,&nbsp;&nbsp; sfsl&nbsp; sdfsdftest 白色,,hongse,,&nbsp;&nbsp; sfsl&nbsp; sdfsdftest 白色,,hongse,,&nbsp;&nbsp; sfsl&nbsp; sdfsdftest 白色,,hongse,,&nbsp;&nbsp; sfsl&nbsp; sdfsdftest 白色,,hongse,,&nbsp;&nbsp; sfsl&nbsp; sdfsdf', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(79, 36, 2, 'xxz291917', 1, '127.0.0.1', 1370398156, '输入标题士大夫士大夫', '填写帖子内容', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(80, 38, 2, 'xxz291917', 1, '127.0.0.1', 1370418370, '士大夫士大夫标题', '填写士大夫士大夫', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(81, 39, 11, 'xxz291917', 1, '127.0.0.1', 1370585781, 'lert(123);', '填写帖子内容123123', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(82, 40, 11, 'xxz291917', 1, '127.0.0.1', 1370586266, '&lt;script&gt;alert(123);&lt;/script&gt;', '填写帖子内容sdfsdfsdfsdf', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(83, 42, 2, 'xxz291917', 1, '127.0.0.1', 1370662947, '发表文旦扣减分', '发表文旦扣减分发表文旦扣减分发表文旦扣减分发表文旦扣减分发表文旦扣减分发表文旦扣减分发表文旦扣减分发表文旦扣减分发表文旦扣减分', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(84, 43, 2, 'xxz291917', 1, '127.0.0.1', 1370662983, 'vvvvvvvvvvvvv', 'vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(85, 34, 2, 'xxz291917', 1, '127.0.0.1', 1370762810, '', '填写帖子内容士大夫士大夫', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(86, 34, 2, 'xxz291917', 1, '127.0.0.1', 1370766742, '输入标题sdffff', '填写帖子内容sdfsdfsdf', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(87, 44, 11, 'xxz291917', 1, '127.0.0.1', 1370770112, '学智测试辩论', '学智测试辩论学智测试辩论学智测试辩论学智测试辩{:3_60:}论学智测试辩论学智测试辩论学智测试辩论学智测试辩论学智测试辩论学智测试辩论学智测试辩论学:hug:智测试辩论学智测试辩论学智测试辩论', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(88, 44, 11, 'xxz291917', 1, '127.0.0.1', 1370781275, '蓝放蓝放', '蓝放蓝放蓝放蓝放蓝放蓝放', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(89, 44, 11, 'xxz291917', 1, '127.0.0.1', 1370781675, '蓝放', '蓝放蓝放蓝放蓝放蓝放', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(90, 44, 11, 'xxz291917', 1, '127.0.0.1', 1370781961, 'specialspecialspecial', 'specialspecialspecialspecial', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(91, 45, 11, 'xxz291917', 1, '127.0.0.1', 1370782056, '问答问答问答', '问答问答问答问答', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 4),
-(92, 34, 2, 'xxz291917', 1, '127.0.0.1', 1371097739, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(93, 34, 2, 'xxz291917', 1, '127.0.0.1', 1371097751, '', '士大夫士大夫', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(94, 34, 2, 'xxz291917', 1, '127.0.0.1', 1371097756, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(95, 34, 2, 'xxz291917', 1, '127.0.0.1', 1371097762, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(96, 34, 2, 'xxz291917', 1, '127.0.0.1', 1371097769, '输入标题', '填写帖子内容叫姐姐', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(97, 34, 2, 'xxz291917', 1, '127.0.0.1', 1371097775, '输入标题', '填写帖子内容规划局', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-(98, 16, 12, 'xxz291917', 1, '127.0.0.1', 1371105016, '输入标题', '填写帖子内容啊实打实大', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1);
+INSERT INTO `posts` (`id`, `topic_id`, `forum_id`, `author`, `author_id`, `author_ip`, `post_time`, `subject`, `content`, `edit_user`, `edit_user_id`, `edit_time`, `attachment`, `check_status`, `is_first`, `is_report`, `is_bbcode`, `is_smilies`, `is_media`, `is_html`, `is_anonymous`, `is_hide`, `is_sign`, `position`, `status`) VALUES
+(1, 4, 2, 'xxz291917', 1, '127.0.0.1', 1368531409, '输入标题r', '填写帖子内容', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(2, 6, 2, 'xxz291917', 1, '127.0.0.1', 1368531645, '输入标题r', '填写帖子内容', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(6, 10, 2, 'xxz291917', 1, '127.0.0.1', 1368535793, '输入标题r', '填写帖子内容', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(7, 7, 2, 'xxz291917', 1, '127.0.0.1', 1368583217, '夏学智测试', '今天的内容要新鲜哦\r\n<p class="MsoNormalCxSpFirst" style="margin-left:6.55pt;text-indent:36.0pt;">\r\n	<span style="font-family:&quot;">显式地把已<span>经</span>不再被引<span>用</span>的对象<span>赋</span>为</span><span> </span><span>nu</span><span>l</span><span>l</span>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="margin-left:6.55pt;text-indent:36.0pt;">\r\n	<span style="font-family:&quot;">不要频繁初<span>始</span>化对象</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="margin-left:6.55pt;text-indent:36.0pt;">\r\n	<span style="font-family:&quot;">除非必要，<span>否</span>则不要<span>在</span>循环内<span>初</span>始化对象</span><span> <span></span></span>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="margin-left:6.55pt;text-indent:36.0pt;">\r\n	<span style="font-family:&quot;">示例：</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="margin-left:6.55pt;text-indent:36.0pt;">\r\n	<span>f</span><span>o</span><span>r <span>(</span><span>$</span>i<span> </span>= <span>0</span>; <span>$</span>i<span> </span><span>&lt;</span><span>$</span><span>r</span><span>o</span><span>w</span>s;<span> </span><span>$i</span><span>++</span>)<span> </span>{</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="margin-left:36.0pt;text-indent:36.0pt;">\r\n	<span>$</span><span>c<span>o</span><span>mm</span><span>o</span><span>n</span><span>W</span><span>r</span><span>k</span><span>S</span><span>h</span>t<span> </span>= <span>n</span><span>e</span>w<span> </span><span>C</span><span>o</span><span>mm</span><span>o</span><span>n</span><span>W</span><span>r</span><span>k</span><span>S</span><span>h</span><span>t()</span>;</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="margin-left:36.0pt;text-indent:36.0pt;">\r\n	<span>…</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="text-indent:41.45pt;">\r\n	<span>}</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="text-indent:41.45pt;">\r\n	<span style="font-family:&quot;">应写成：</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="text-indent:40.35pt;">\r\n	<span>$</span><span>c<span>o</span><span>mm</span><span>o</span><span>n</span><span>W</span><span>r</span><span>k</span><span>S</span><span>h</span>t<span> </span>= <span>n</span><span>e</span>w<span> </span><span>C</span><span>o</span><span>mm</span><span>o</span><span>n</span><span>W</span><span>r</span><span>k</span><span>S</span><span>h</span><span>t()</span>;</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="text-indent:42.2pt;">\r\n	<span>f</span><span>o</span><span>r <span>(</span><span>$</span>i<span> </span>= <span>0</span>; <span>$</span>i<span> </span><span>&lt;</span><span>r</span><span>o</span><span>w</span>s;<span> </span><span>$i</span><span>++</span>)<span> </span>{</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="margin-left:30.55pt;text-indent:41.45pt;">\r\n	<span>…</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="text-indent:41.45pt;">\r\n	<span>}</span><b><span></span></b>\r\n</p>', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(8, 8, 2, 'xxz291917', 1, '127.0.0.1', 1368588882, '发帖测试123', '<table>\r\n	<tbody>\r\n		<tr>\r\n			<td class="c1 td1">\r\n				tid\r\n			</td>\r\n			<td class="c2 td1">\r\n				mediumint(8) unsigned\r\n			</td>\r\n			<td class="c3 td1">\r\n				&nbsp;0\r\n			</td>\r\n			<td class="c4 td1">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td1">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td1">\r\n				&nbsp;主题id\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td class="c1 td2">\r\n				overt\r\n			</td>\r\n			<td class="c2 td2">\r\n				tinyint(1)\r\n			</td>\r\n			<td class="c3 td2">\r\n				&nbsp;0\r\n			</td>\r\n			<td class="c4 td2">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td2">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td2">\r\n				&nbsp;是否公开投票参与人\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td class="c1 td1">\r\n				multiple\r\n			</td>\r\n			<td class="c2 td1">\r\n				tinyint(1)\r\n			</td>\r\n			<td class="c3 td1">\r\n				&nbsp;0\r\n			</td>\r\n			<td class="c4 td1">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td1">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td1">\r\n				&nbsp;是否多选\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td class="c1 td2">\r\n				visible\r\n			</td>\r\n			<td class="c2 td2">\r\n				tinyint(1)\r\n			</td>\r\n			<td class="c3 td2">\r\n				&nbsp;0\r\n			</td>\r\n			<td class="c4 td2">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td2">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td2">\r\n				&nbsp;是否投票后可见\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td class="c1 td1">\r\n				maxchoices\r\n			</td>\r\n			<td class="c2 td1">\r\n				tinyint(3) unsigned\r\n			</td>\r\n			<td class="c3 td1">\r\n				&nbsp;0\r\n			</td>\r\n			<td class="c4 td1">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td1">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td1">\r\n				&nbsp;最大可选项数\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td class="c1 td2">\r\n				expiration\r\n			</td>\r\n			<td class="c2 td2">\r\n				int(10) unsigned\r\n			</td>\r\n			<td class="c3 td2">\r\n				&nbsp;0\r\n			</td>\r\n			<td class="c4 td2">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td2">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td2">\r\n				&nbsp;过期时间\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td class="c1 td1">\r\n				pollpreview\r\n			</td>\r\n			<td class="c2 td1">\r\n				varchar(255)\r\n			</td>\r\n			<td class="c3 td1">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c4 td1">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td1">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td1">\r\n				&nbsp;选项内容前两项预览\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td class="c1 td2">\r\n				voters\r\n			</td>\r\n			<td class="c2 td2">\r\n				mediumint(8) unsigned\r\n			</td>\r\n			<td class="c3 td2">\r\n				&nbsp;0\r\n			</td>\r\n			<td class="c4 td2">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td2">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td2">\r\n				&nbsp;投票人数\r\n			</td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(9, 9, 2, 'xxz291917', 1, '127.0.0.1', 1368609926, '输入标题二二', '填写帖子内容污染物而', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(10, 10, 2, 'xxz291917', 1, '127.0.0.1', 1368610003, '输入标题二二', '填写帖子内容污染物而', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(11, 11, 12, 'xxz291917', 1, '127.0.0.1', 1368611640, '输入标题人人', '<a>展开</a> | <a>全部折叠</a> \r\n<table class="tb tb2 ">\r\n	<tbody>\r\n		<tr class="header">\r\n			<th>\r\n				<br />\r\n			</th>\r\n			<th>\r\n				显示顺序\r\n			</th>\r\n			<th>\r\n				版块名称\r\n			</th>\r\n			<th>\r\n				<br />\r\n			</th>\r\n			<th>\r\n				版主\r\n			</th>\r\n			<th>\r\n				<a>批量编辑</a>\r\n			</th>\r\n		</tr>\r\n		<tr class="hover">\r\n			<td class="td25">\r\n				<a id="a_group_1">[-]</a>\r\n			</td>\r\n			<td class="td25">\r\n			</td>\r\n			<td>\r\n				<div class="parentboard">\r\n				</div>\r\n			</td>\r\n			<td class="td23 lightfont" align="right">\r\n				(gid:1)\r\n			</td>\r\n			<td class="td23">\r\n				<a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=moderators&amp;fid=1">无 / 添加版主</a>\r\n			</td>\r\n			<td width="160">\r\n				<a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=edit&amp;fid=1" class="act">编辑</a><a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=delete&amp;fid=1" class="act">删除</a>\r\n			</td>\r\n		</tr>\r\n	</tbody>\r\n	<tbody id="group_1">\r\n		<tr class="hover">\r\n			<td class="td25">\r\n				<br />\r\n			</td>\r\n			<td class="td25">\r\n			</td>\r\n			<td>\r\n				<div class="board">\r\n					<a href="http://localhost/dz2.5/admin.php?action=forums###" class="addchildboard">添加子版块</a>\r\n				</div>\r\n			</td>\r\n			<td class="td23 lightfont" align="right">\r\n				(fid:2)\r\n			</td>\r\n			<td class="td23">\r\n				<a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=moderators&amp;fid=2">无 / 添加版主</a>\r\n			</td>\r\n			<td width="160">\r\n				<a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=edit&amp;fid=2" class="act">编辑</a><a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=copy&amp;source=2" class="act">设置复制</a><a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=delete&amp;fid=2" class="act">删除</a>\r\n			</td>\r\n		</tr>\r\n		<tr class="hover">\r\n			<td class="td25">\r\n				<br />\r\n			</td>\r\n			<td class="td25">\r\n			</td>\r\n			<td>\r\n				<div id="cb_39" class="lastchildboard">\r\n				</div>\r\n			</td>\r\n			<td class="td23 lightfont" align="right">\r\n				(fid:39)\r\n			</td>\r\n			<td class="td23">\r\n				<a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=moderators&amp;fid=39">xxz291917 »</a>\r\n			</td>\r\n			<td width="160">\r\n				<a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=edit&amp;fid=39" class="act">编辑</a><a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=copy&amp;source=39" class="act">设置复制</a><a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=delete&amp;fid=39" class="act">删除</a>\r\n			</td>\r\n		</tr>\r\n	</tbody>\r\n	<tbody>\r\n		<tr>\r\n			<td>\r\n				<br />\r\n			</td>\r\n			<td colspan="4">\r\n				<div class="lastboard">\r\n					<a href="http://localhost/dz2.5/admin.php?action=forums###" class="addtr">添加新版块</a>\r\n				</div>\r\n			</td>\r\n			<td>\r\n				&nbsp;\r\n			</td>\r\n		</tr>\r\n		<tr class="hover">\r\n			<td class="td25">\r\n				<a id="a_group_36">[-]</a>\r\n			</td>\r\n			<td class="td25">\r\n			</td>\r\n			<td>\r\n				<div class="parentboard">\r\n				</div>\r\n			</td>\r\n			<td class="td23 lightfont" align="right">\r\n				(gid:36)\r\n			</td>\r\n			<td class="td23">\r\n				<a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=moderators&amp;fid=36">无 / 添加版主</a>\r\n			</td>\r\n			<td width="160">\r\n				<a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=edit&amp;fid=36" class="act">编辑</a><a href="http://localhost/dz2.5/admin.php?action=forums&amp;operation=delete&amp;fid=36" class="act">删除</a>\r\n			</td>\r\n		</tr>\r\n	</tbody>\r\n	<tbody id="group_36">\r\n		<tr class="hover">\r\n			<td class="td25">\r\n				<br />\r\n			</td>\r\n			<td class="td25">\r\n			</td>\r\n			<td>\r\n				<div class="board">\r\n					<a href="http://localhost/dz2.5/admin.php?action=forums###" class="addchildboard">添加子版块</a>\r\n				</div>\r\n			</td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(12, 12, 11, 'xxz291917', 1, '127.0.0.1', 1368612732, 'gdgdfgdgdfg', 'dfgdfgdgdfg', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(13, 11, 12, 'xxz291917', 1, '127.0.0.1', 1368696089, '', '回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1),
+(14, 11, 12, 'xxz291917', 1, '127.0.0.1', 1368696323, '', '回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1),
+(15, 11, 12, 'xxz291917', 1, '127.0.0.1', 1368696465, '', '回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题回复贴标题', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1),
+(16, 11, 12, 'xxz291917', 1, '127.0.0.1', 1368696706, 'test', '测试回复内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1),
+(17, 11, 12, 'xxz291917', 1, '127.0.0.1', 1368696770, '输入标题', '填写帖子内容才踩踩踩踩踩踩踩踩踩踩踩踩', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1),
+(18, 13, 11, 'xxz291917', 1, '127.0.0.1', 1368696809, '输入标题大大大', '填写帖子内容士大夫士大夫', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1),
+(19, 13, 11, 'xxz291917', 1, '127.0.0.1', 1368696817, '输入标题', '填写帖子内容发反反复复反反复复', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1),
+(20, 13, 11, 'xxz291917', 1, '127.0.0.1', 1368697037, '输入标题', '填写帖子内容<img src="http://localhost/mycode/js/kindeditor/plugins/emoticons/images/10.gif" alt="" border="0" />', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1),
+(21, 14, 6, 'xxz291917', 1, '127.0.0.1', 1368699427, '红星闪闪放光芒', '填写帖子内容', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1),
+(22, 14, 6, 'xxz291917', 1, '127.0.0.1', 1368699436, '输入标题', '填写帖子内容士大夫士大夫撒', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1),
+(23, 14, 6, 'xxz291917', 1, '127.0.0.1', 1368701592, '输入标题士大夫士大夫', '填写帖子内容士大夫士大夫', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1),
+(24, 14, 6, 'xxz291917', 1, '127.0.0.1', 1368701675, '', '填写帖子内容士大夫士大夫', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1),
+(25, 9, 2, 'xxz291917', 1, '127.0.0.1', 1368702719, '输入标题', '填写帖子内容凤飞飞', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1),
+(26, 13, 11, 'xxz291917', 1, '127.0.0.1', 1368757267, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1),
+(27, 13, 11, 'xxz5291917', 2, '127.0.0.1', 1368758585, '输入标题', '填写帖子内容sdf <br />', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(28, 13, 11, 'xxz5291917', 2, '127.0.0.1', 1368758605, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(29, 10, 2, 'xxz5291917', 2, '127.0.0.1', 1368771892, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1),
+(30, 10, 2, 'xxz5291917', 2, '127.0.0.1', 1368771927, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1),
+(31, 8, 2, 'xxz5291917', 2, '127.0.0.1', 1368772287, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1),
+(32, 8, 2, 'xxz5291917', 2, '127.0.0.1', 1368772292, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1),
+(33, 15, 6, 'xxz5291917', 2, '127.0.0.1', 1368772328, '输入标题yy', '填写帖子内容', '', 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1),
+(34, 13, 11, 'xxz5291917', 2, '127.0.0.1', 1368773339, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1),
+(35, 10, 2, 'xxz5291917', 2, '127.0.0.1', 1368774131, '是大范甘迪过分的', '大范甘迪过分', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1),
+(36, 11, 12, 'xxz5291917', 2, '127.0.0.1', 1368774508, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1),
+(37, 11, 12, 'xxz5291917', 2, '127.0.0.1', 1368774528, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1),
+(38, 11, 12, 'xxz5291917', 2, '127.0.0.1', 1368774534, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1),
+(39, 11, 12, 'xxz5291917', 2, '127.0.0.1', 1368774539, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1),
+(40, 11, 12, 'xxz5291917', 2, '127.0.0.1', 1368774591, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1),
+(41, 11, 12, 'xxz5291917', 2, '127.0.0.1', 1368774662, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1),
+(42, 16, 12, 'xxz5291917', 2, '127.0.0.1', 1368774681, '输入标题凤飞飞', '填写帖子内容', '', 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1),
+(43, 17, 6, 'xxz291917', 1, '127.0.0.1', 1369310155, '是否需要测试', '是否需要测试是否需要测试是否需要测试是否需要测试是否需要测试是否需要测试是否需要测试是否需要测试是否需要测试是否需要测试是否需要测试', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(44, 18, 11, 'xxz291917', 1, '127.0.0.1', 1369310199, '电梯直达跳转到指定楼层', '<h1 class="ts">\r\n	<a href="http://localhost/dz2.5/forum.php?mod=viewthread&amp;tid=2" id="thread_subject">我们的测试</a> \r\n</h1>\r\n<span class="xg1"> <a href="http://localhost/dz2.5/forum.php?mod=viewthread&amp;tid=2&amp;fromuid=1">[复制链接]</a> </span> \r\n<table class="ad" cellpadding="0" cellspacing="0">\r\n	<tbody>\r\n		<tr>\r\n			<td class="pls">\r\n				<br />\r\n			</td>\r\n			<td class="plc">\r\n				<br />\r\n			</td>\r\n		</tr>\r\n	</tbody>\r\n</table>\r\n<table id="pid5" cellpadding="0" cellspacing="0">\r\n	<tbody>\r\n		<tr>\r\n			<td class="pls" rowspan="2">\r\n				<div class="pi">\r\n					<div class="authi">\r\n						<a href="http://localhost/dz2.5/home.php?mod=space&amp;uid=1" target="_blank" class="xw1">admin</a> \r\n					</div>\r\n				</div>\r\n				<div>\r\n					<div class="avatar">\r\n						<a href="http://localhost/dz2.5/home.php?mod=space&amp;uid=1" target="_blank"><img src="http://localhost/dz2.5/uc_server/avatar.php?uid=1&amp;size=middle" /></a>\r\n					</div>\r\n					<div class="tns xg2">\r\n						<table cellpadding="0" cellspacing="0">\r\n							<tbody>\r\n								<tr>\r\n									<th>\r\n										<p>\r\n											<a href="http://localhost/dz2.5/home.php?mod=space&amp;uid=1&amp;do=thread&amp;view=me&amp;from=space" class="xi2">2</a>\r\n										</p>\r\n主题\r\n									</th>\r\n									<th>\r\n										<p>\r\n											<a href="http://localhost/dz2.5/home.php?mod=space&amp;uid=1&amp;do=friend&amp;view=me" class="xi2">0</a>\r\n										</p>\r\n好友\r\n									</th>\r\n									<td>\r\n										<p>\r\n											<a href="http://localhost/dz2.5/home.php?mod=space&amp;uid=1&amp;do=profile" class="xi2">68</a>\r\n										</p>\r\n积分\r\n									</td>\r\n								</tr>\r\n							</tbody>\r\n						</table>\r\n					</div>\r\n					<p>\r\n						<em><a href="http://localhost/dz2.5/home.php?mod=spacecp&amp;ac=usergroup&amp;gid=1" target="_blank">管理员</a></em>\r\n					</p>\r\n				</div>\r\n				<p>\r\n					<img src="http://localhost/dz2.5/static/image/common/star_level3.gif" alt="Rank: 9" /><img src="http://localhost/dz2.5/static/image/common/star_level3.gif" alt="Rank: 9" /><img src="http://localhost/dz2.5/static/image/common/star_level1.gif" alt="Rank: 9" />\r\n				</p>\r\n				<p class="cp_pls cl">\r\n					<a href="http://localhost/dz2.5/forum.php?mod=topicadmin&amp;action=getip&amp;fid=37&amp;tid=2&amp;pid=5">IP</a> <a href="http://localhost/dz2.5/admin.php?frames=yes&amp;action=members&amp;operation=search&amp;uid=1&amp;submit=yes" target="_blank">编辑</a> <a href="http://localhost/dz2.5/admin.php?action=members&amp;operation=ban&amp;username=admin&amp;frames=yes" target="_blank">禁止</a> <a href="http://localhost/dz2.5/forum.php?mod=modcp&amp;action=thread&amp;op=post&amp;do=search&amp;searchsubmit=1&amp;users=admin" target="_blank">帖子</a> <a href="http://localhost/dz2.5/forum.php?mod=ajax&amp;action=quickclear&amp;uid=1">清理</a> \r\n				</p>\r\n			</td>\r\n			<td class="plc">\r\n				<div class="pi">\r\n					<div id="fj" class="y">\r\n						电梯直达<a id="fj_btn" class="z"><img src="http://localhost/dz2.5/static/image/common/fj_btn.png" alt="跳转到指定楼层" class="vm" /></a> \r\n					</div>\r\n<strong> <a href="http://localhost/dz2.5/forum.php?mod=viewthread&amp;tid=2&amp;fromuid=1" id="postnum5">楼主</a> </strong> \r\n					<div class="pti">\r\n						<div class="pdbt">\r\n						</div>\r\n						<div class="authi">\r\n							<img class="authicn vm" id="authicon5" src="http://localhost/dz2.5/static/image/common/online_admin.gif" /> <em id="authorposton5">发表于 2013-4-16 17:59:25</em> <span class="pipe">|</span><a href="http://localhost/dz2.5/forum.php?mod=viewthread&amp;tid=2&amp;page=1&amp;authorid=1">只看该作者</a> <span class="pipe">|</span><a href="http://localhost/dz2.5/forum.php?mod=viewthread&amp;tid=2&amp;extra=page%3D1&amp;ordertype=1">倒序浏览</a> <span class="pipe">|</span> <a id="replynotice" href="http://localhost/dz2.5/forum.php?mod=misc&amp;action=replynotice&amp;op=ignore&amp;tid=2">取消回复通知</a> \r\n						</div>\r\n					</div>\r\n				</div>\r\n				<div class="pct">\r\n					<div class="pcb">\r\n						<div class="t_fsz">\r\n							<table cellpadding="0" cellspacing="0">\r\n								<tbody>\r\n									<tr>\r\n										<td class="t_f" id="postmessage_5">\r\n											主题测试主题测试主题测试主题测试主题测试主题测试主题测试主题测试<img src="http://localhost/dz2.5/static/image/smiley/default/lol.gif" alt="" border="0" /><br />\r\n										</td>\r\n									</tr>\r\n								</tbody>\r\n							</table>\r\n						</div>\r\n					</div>\r\n				</div>\r\n			</td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(45, 19, 6, 'xxz291917', 1, '127.0.0.1', 1369313698, '审核测试审核测试', '审核测试审核测试审核测试审核测试审核测试审核测试审核测试', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(46, 20, 6, 'xxz291917', 1, '127.0.0.1', 1369314292, '士大夫士大夫士大夫似的', '填写帖子内容反反复复反反复复反反复复反反复复', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(47, 21, 6, 'xxz291917', 1, '127.0.0.1', 1369452030, '输入标题ddd', '填写帖子内容\r\n<pre class="prettyprint lang-php">phpinfo();\r\necho 123;</pre>', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(48, 22, 11, 'xxz291917', 1, '127.0.0.1', 1369472789, '输入标题士大夫士大夫', '填写帖子内容\r\n<pre class="prettyprint lang-php">phpinfo();\r\necho 123;</pre>\r\n<pre class="prettyprint lang-js">alert(2222222);\r\n</pre>', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(49, 22, 11, 'xxz291917', 1, '127.0.0.1', 1369476588, '输入标题', '<pre class="brush: js;">function helloSyntaxHighlighter()\r\n{\r\n    return "hi!";\r\n}\r\n</pre>', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(50, 22, 11, 'xxz291917', 1, '127.0.0.1', 1369476618, '输入标题', '填写帖子内容\r\n<pre class="prettyprint lang-js">function helloSyntaxHighlighter()\r\n{\r\n    return "hi!";\r\n}</pre>', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(51, 22, 11, 'xxz291917', 1, '127.0.0.1', 1369624037, '输入标题', '<pre class="brush:php;">phpinfo();</pre>\r\n填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(52, 22, 11, 'xxz291917', 1, '127.0.0.1', 1369624075, '输入标题', '填写帖子内容\r\n<pre class="brush:php;">function helloSyntaxHighlighter()\r\n{\r\n    return "hi!";\r\n}</pre>', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(53, 22, 11, 'xxz291917', 1, '127.0.0.1', 1369625536, '输入标题', '<pre class="codeprint brush:applescript;">asdasd\r\nsfsdfsfdsf\r\nsdfsdfsdfsdfsdf\r\n</pre>\r\n填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(54, 22, 11, 'xxz291917', 1, '127.0.0.1', 1369626059, '输入标题', '<pre class="codeprint brush:html;">ssssssssssssssssss</pre>\r\n填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(55, 22, 11, 'xxz291917', 1, '127.0.0.1', 1369714000, '输入标题', '<p>\r\n	填写帖子内容\r\n</p>\r\n<p>\r\n	<br />\r\n</p>\r\n<p>\r\n<pre class="codeprint brush:php;">phpinfo();\r\necho 123;</pre>\r\n234\r\n</p>\r\neeeeeeeeeee', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(56, 23, 2, 'xxz291917', 1, '127.0.0.1', 1369740062, '输入标题7777', '填写帖子内容:$:kiss::handshake{:3_46:}', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(57, 23, 2, 'xxz291917', 1, '127.0.0.1', 1369795605, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(58, 24, 11, 'xxz291917', 1, '127.0.0.1', 1369815311, '输入标题夸奖夸奖夸奖', '填写帖子内容:lol{:2_36:}<a href="http://www.baidu.com" target="_blank">http://www.baidu.com</a>', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(59, 24, 11, 'xxz291917', 1, '127.0.0.1', 1369815380, '输入标题', '填写帖子内容{:3_46:}', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(60, 24, 11, 'xxz291917', 1, '127.0.0.1', 1369817179, '输入标题', '<blockquote class="blockquote">\r\n	士大夫士大夫\r\n</blockquote>\r\n填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(61, 24, 11, 'xxz291917', 1, '127.0.0.1', 1369818158, '输入标题', '<blockquote class="blockquote">\r\n	sdfsdf\r\n</blockquote>\r\n填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(62, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369819307, 'hahhhhhhhh', '填写帖子内容:sleepy:{:3_43:}:@{:2_38:}', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(63, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369819367, '输入标题', '<blockquote class="blockquote">\r\n	''|'',\r\n</blockquote>\r\n<br />\r\n填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(64, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369893399, '输入标题', '填写帖子内容<img src="/mycode/./uploads/file/b7da665c18f830c5a081a695395e734c.jpg" alt="" />', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(65, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369898357, '输入标题', '<img src="/mycode/uploads/file/e378c80cacad35dc854a972f397b0ed7.jpg" alt="" />填写帖子内容<img src="/mycode/uploads/file/9685aa209fb498b4eb8e5ddc0c987a7d.jpg" title="xxzxxzxxz" alt="xxzxxzxxz" height="109" width="109" /><a class="ke-insertfile" href="/mycode/uploads/file/2d925a00ca6495b559d646002de13f07.jpg" target="_blank">dddddddd</a>', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(66, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369899428, '输入标题', '<img src="/mycode/uploads/file/5134fa443f587661f910228e594d89f5.jpg" alt="" />填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(67, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369899454, '输入标题', '填写帖子内容<img src="/mycode/uploads/file/b43e329af02d0b67017b2ea5681249c3.jpg" alt="" />', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(68, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369899590, '输入标题', '填写帖子内容<img src="/mycode/uploads/file/47158d0b0863f15c4eaf28f659b9b8a1.jpg" alt="" />', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(69, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369899791, '输入标题', '填写帖子内容<img src="/mycode/uploads/file/6f5a88c0a5643420ca913595f20fcd04.jpg" alt="" />', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(70, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369903578, '输入标题', '填写帖子内容<img src="/mycode/uploads/file/9ba8fe893d04425fd9fb1fd17fed7e04.jpg" title="ffffffffffff" aid="34" alt="ffffffffffff" height="109" width="109" />', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(71, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369979792, '输入标题', '[attach]7[/attach]填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(72, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369979848, '输入标题', '填写帖子内容[attach]1[/attach]', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(73, 25, 11, 'xxz291917', 1, '127.0.0.1', 1369979898, '输入标题', '填写帖子内容[attach]1[/attach]', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(74, 16, 12, 'xxz291917', 1, '127.0.0.1', 1369988139, '输入标题', '填写帖子内容[attachimg]3[/attachimg]', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(75, 29, 2, 'xxz291917', 1, '127.0.0.1', 1370233126, '去问去问夫士大夫', '填写帖子内容反反复复&nbsp; 士大夫士大夫士大夫士大夫<br />', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(76, 31, 2, 'xxz291917', 1, '127.0.0.1', 1370319752, '辩论发帖测试', 'errrrrrrrrrrrrrrrerrrrrrrrrrrrrrrrerrrrrrrrrrrrrrrrerrrrrrrrrrrrrrrrerrrrrrrrrrrrrrrrerrrrrrrrrrrrrrrrerrrrrrrrrrrrrrrrerrrrrrrrrrrrrrrrerrrrrrrrrrrrrrrrerrrrrrrrrrrrrrrrerrrrrrrrrrrrrrrr', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(77, 34, 2, 'xxz291917', 1, '127.0.0.1', 1370335370, '输入标sdfsdfsdf', '填写帖子内容', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(78, 35, 2, 'xxz291917', 1, '127.0.0.1', 1370397845, 'test 白色,,hongse,,   sfsl  sdfsdf', 'test 白色,,hongse,,&nbsp;&nbsp; sfsl&nbsp; sdfsdftest 白色,,hongse,,&nbsp;&nbsp; sfsl&nbsp; sdfsdftest 白色,,hongse,,&nbsp;&nbsp; sfsl&nbsp; sdfsdftest 白色,,hongse,,&nbsp;&nbsp; sfsl&nbsp; sdfsdftest 白色,,hongse,,&nbsp;&nbsp; sfsl&nbsp; sdfsdf', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(79, 36, 2, 'xxz291917', 1, '127.0.0.1', 1370398156, '输入标题士大夫士大夫', '填写帖子内容', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(80, 38, 2, 'xxz291917', 1, '127.0.0.1', 1370418370, '士大夫士大夫标题', '填写士大夫士大夫', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(81, 39, 11, 'xxz291917', 1, '127.0.0.1', 1370585781, 'lert(123);', '填写帖子内容123123', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(82, 40, 11, 'xxz291917', 1, '127.0.0.1', 1370586266, '&lt;script&gt;alert(123);&lt;/script&gt;', '填写帖子内容sdfsdfsdfsdf', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(83, 42, 2, 'xxz291917', 1, '127.0.0.1', 1370662947, '发表文旦扣减分', '发表文旦扣减分发表文旦扣减分发表文旦扣减分发表文旦扣减分发表文旦扣减分发表文旦扣减分发表文旦扣减分发表文旦扣减分发表文旦扣减分', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(84, 43, 2, 'xxz291917', 1, '127.0.0.1', 1370662983, 'vvvvvvvvvvvvv', 'vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(85, 34, 2, 'xxz291917', 1, '127.0.0.1', 1370762810, '', '填写帖子内容士大夫士大夫', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(86, 34, 2, 'xxz291917', 1, '127.0.0.1', 1370766742, '输入标题sdffff', '填写帖子内容sdfsdfsdf', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(87, 44, 11, 'xxz291917', 1, '127.0.0.1', 1370770112, '学智测试辩论', '学智测试辩论学智测试辩论学智测试辩论学智测试辩{:3_60:}论学智测试辩论学智测试辩论学智测试辩论学智测试辩论学智测试辩论学智测试辩论学智测试辩论学:hug:智测试辩论学智测试辩论学智测试辩论', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(88, 44, 11, 'xxz291917', 1, '127.0.0.1', 1370781275, '蓝放蓝放', '蓝放蓝放蓝放蓝放蓝放蓝放', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(89, 44, 11, 'xxz291917', 1, '127.0.0.1', 1370781675, '蓝放', '蓝放蓝放蓝放蓝放蓝放', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(90, 44, 11, 'xxz291917', 1, '127.0.0.1', 1370781961, 'specialspecialspecial', 'specialspecialspecialspecial', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(91, 45, 11, 'xxz291917', 1, '127.0.0.1', 1370782056, '问答问答问答', '问答问答问答问答', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(92, 34, 2, 'xxz291917', 1, '127.0.0.1', 1371097739, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(93, 34, 2, 'xxz291917', 1, '127.0.0.1', 1371097751, '', '士大夫士大夫', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(94, 34, 2, 'xxz291917', 1, '127.0.0.1', 1371097756, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(95, 34, 2, 'xxz291917', 1, '127.0.0.1', 1371097762, '输入标题', '填写帖子内容', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(96, 34, 2, 'xxz291917', 1, '127.0.0.1', 1371097769, '输入标题', '填写帖子内容叫姐姐', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(97, 34, 2, 'xxz291917', 1, '127.0.0.1', 1371097775, '输入标题', '填写帖子内容规划局', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(98, 16, 12, 'xxz291917', 1, '127.0.0.1', 1371105016, '输入标题', '填写帖子内容啊实打实大', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(99, 46, 11, 'xxz291917', 1, '127.0.0.1', 1371702544, '人人人人人人人', '人人人人人人人人人人人人', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 4),
+(100, 47, 11, 'xxz291917', 1, '127.0.0.1', 1371726788, '输入问答概述', '反反复复', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 4);
 
 -- --------------------------------------------------------
 
@@ -1327,7 +1377,7 @@ CREATE TABLE IF NOT EXISTS `tags` (
   PRIMARY KEY (`id`),
   KEY `tag` (`tag`,`topic_id`),
   KEY `topic_id` (`topic_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 --
 -- 转存表中的数据 `tags`
@@ -1340,6 +1390,8 @@ INSERT INTO `tags` (`id`, `topic_id`, `tag`) VALUES
 (5, 38, 'sdfsdf'),
 (4, 38, 'sfsl'),
 (1, 38, 'test'),
+(8, 46, '标签间请用''空格''或''逗号''隔开，最多可'),
+(9, 47, '标签间请用''空格''或''逗号''隔开，最多可'),
 (2, 38, '白色');
 
 -- --------------------------------------------------------
@@ -1375,7 +1427,7 @@ CREATE TABLE IF NOT EXISTS `topics` (
   KEY `author_id` (`author_id`),
   KEY `last_post_time` (`last_post_time`),
   KEY `status` (`status`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=46 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=48 ;
 
 --
 -- 转存表中的数据 `topics`
@@ -1390,7 +1442,7 @@ INSERT INTO `topics` (`id`, `forum_id`, `category_id`, `author`, `author_id`, `p
 (10, 2, 0, 'xxz291917', 1, 1368610003, '输入标题二二', 'xxz5291917', 2, 1368774131, '', 120, 5, 0, 0, 0, '0', 0, 0, 1, 1),
 (11, 12, 0, 'xxz291917', 1, 1368611640, '输入标题人人', 'xxz5291917', 2, 1368774662, '', 70, 11, 0, 0, 0, '0', 0, 0, 1, 1),
 (12, 11, 0, 'xxz291917', 1, 1368612732, 'gdgdfgdgdfg', '', 0, 0, '', 14, 0, 0, 0, 0, '0', 1, 1, 1, 1),
-(13, 11, 0, 'xxz291917', 1, 1368696809, '输入标题大大大', 'xxz5291917', 2, 1337484852, '', 414, 8, 0, 0, 2, '#2B65B7,0,1,1', 1, 1, 1, 5),
+(13, 11, 0, 'xxz291917', 1, 1368696809, '输入标题大大大', 'xxz5291917', 2, 1337484852, '', 292, 8, 0, 0, 2, '#2B65B7,0,1,1', 1, 1, 1, 5),
 (14, 6, 0, 'xxz291917', 1, 1368699427, '红星闪闪放光芒', 'xxz291917', 1, 1368701675, '', 6, 4, 0, 0, 0, '0', 0, 0, 1, 1),
 (15, 6, 0, 'xxz5291917', 2, 1368772328, '输入标题yy', '', 0, 0, '', 0, 0, 0, 0, 0, '0', 0, 0, 1, 1),
 (16, 12, 0, 'xxz5291917', 2, 1368774681, '输入标题凤飞飞', 'xxz291917', 1, 1371105016, '', 28, 2, 0, 0, 0, '0', 0, 0, 1, 1),
@@ -1402,7 +1454,7 @@ INSERT INTO `topics` (`id`, `forum_id`, `category_id`, `author`, `author_id`, `p
 (22, 11, 0, 'xxz291917', 1, 1369472789, '输入标题士大夫士大夫', 'xxz291917', 1, 1369714000, '', 37, 7, 0, 0, 0, '', 0, 0, 1, 4),
 (23, 2, 4, 'xxz291917', 1, 1369740062, '输入标题7777', 'xxz291917', 1, 1369795605, '', 8, 1, 0, 0, 0, '', 0, 0, 1, 1),
 (24, 11, 0, 'xxz291917', 1, 1369815311, '输入标题夸奖夸奖夸奖', 'xxz291917', 1, 1369818158, '', 4, 3, 0, 0, 0, '', 0, 0, 1, 4),
-(25, 11, 0, 'xxz291917', 1, 1369819307, 'hahhhhhhhh', 'xxz291917', 1, 1369979898, '', 41, 11, 0, 0, 0, '', 0, 0, 1, 4),
+(25, 11, 0, 'xxz291917', 1, 1369819307, 'hahhhhhhhh', 'xxz291917', 1, 1369979898, '', 42, 11, 0, 0, 0, '', 0, 0, 1, 4),
 (26, 2, 0, 'xxz291917', 1, 1370230068, '去问去问夫士大夫', '', 0, 0, '', 0, 0, 0, 0, 0, '', 0, 0, 3, 1),
 (27, 2, 0, 'xxz291917', 1, 1370230139, '去问去问夫士大夫', '', 0, 0, '', 0, 0, 0, 0, 0, '', 0, 0, 3, 1),
 (28, 2, 0, 'xxz291917', 1, 1370233072, '去问去问夫士大夫', '', 0, 0, '', 0, 0, 0, 0, 0, '', 0, 0, 3, 1),
@@ -1422,7 +1474,9 @@ INSERT INTO `topics` (`id`, `forum_id`, `category_id`, `author`, `author_id`, `p
 (42, 2, 0, 'xxz291917', 1, 1370662947, '发表文旦扣减分', '', 0, 0, '&lt;script&gt;alert(123);&lt;/script&gt;', 0, 0, 0, 0, 0, '', 0, 0, 2, 1),
 (43, 2, 0, 'xxz291917', 1, 1370662983, 'vvvvvvvvvvvvv', '', 0, 0, '', 0, 0, 0, 0, 0, '', 0, 0, 2, 1),
 (44, 11, 0, 'xxz291917', 1, 1370770112, '学智测试辩论', 'xxz291917', 1, 1370781961, '', 18, 3, 0, 0, 0, '', 0, 0, 4, 4),
-(45, 11, 0, 'xxz291917', 1, 1370782056, '问答问答问答', '', 0, 0, '', 11, 0, 0, 0, 0, '', 0, 0, 2, 4);
+(45, 11, 0, 'xxz291917', 1, 1370782056, '问答问答问答', '', 0, 0, '', 14, 0, 0, 0, 0, '', 0, 0, 2, 4),
+(46, 11, 0, 'xxz291917', 1, 1371702544, '人人人人人人人', '', 0, 0, '标签间请用''空格''或''逗号''隔开，最多可添加5个标签。', 0, 0, 0, 0, 0, '0', 0, 0, 2, 4),
+(47, 11, 0, 'xxz291917', 1, 1371726788, '输入问答概述', '', 0, 0, '标签间请用''空格''或''逗号''隔开，最多可添加5个标签。', 0, 0, 0, 0, 0, '0', 0, 0, 2, 4);
 
 -- --------------------------------------------------------
 
@@ -1605,7 +1659,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `signature` varchar(500) NOT NULL COMMENT '个性签名',
   `regdate` int(10) unsigned NOT NULL COMMENT '注册时间',
   `status` tinyint(3) unsigned NOT NULL COMMENT '用户状态（1正常，2删除，3锁定）',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='论坛用户表' AUTO_INCREMENT=3 ;
 
 --
@@ -1613,7 +1668,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `username`, `password`, `credits`, `group_id`, `member_id`, `groups`, `icon`, `gender`, `signature`, `regdate`, `status`) VALUES
-(1, 'xxz291917@163.com', 'xxz291917', '', 1777, 1, 14, '2', '', 0, '<font color=''red''>签名测试22</font>', 1298763453, 1),
+(1, 'xxz291917@163.com', 'xxz291917', '', 1807, 1, 14, '2', '', 0, '<font color=''red''>签名测试22</font>', 1298763453, 1),
 (2, 'xxz5291917@163.com', 'xxz5291917', '', 202, 16, 12, '16', '', 1, '<font color=''green''>签名测试</font>', 1298543453, 1);
 
 -- --------------------------------------------------------
@@ -1671,7 +1726,7 @@ CREATE TABLE IF NOT EXISTS `users_extra` (
 --
 
 INSERT INTO `users_extra` (`user_id`, `posts`, `digests`, `today_posts`, `today_uploads`, `last_login_time`, `last_login_ip`, `last_post_time`, `last_active_time`, `online_time`, `extcredits1`, `extcredits2`, `extcredits3`, `extcredits4`, `extcredits5`, `extcredits6`, `extcredits7`, `extcredits8`, `last_credit_affect_log`) VALUES
-(1, 78, 0, 7, 78, 0, '', 1371105016, 1371469911, 0, 269, 178, 614, 0, 0, 0, 0, 0, ''),
+(1, 80, 0, 2, 80, 0, '', 1371726788, 1371733283, 0, 273, 184, 620, 0, 0, 0, 0, 0, ''),
 (2, 16, 0, 17, 16, 0, '', 1368774681, 1368774681, 0, 30, 39, 34, 0, 0, 0, 0, 0, '');
 
 -- --------------------------------------------------------
@@ -1685,6 +1740,20 @@ CREATE TABLE IF NOT EXISTS `users_medal` (
   `medal_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`user_id`,`medal_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `users_medal`
+--
+
+INSERT INTO `users_medal` (`user_id`, `medal_id`) VALUES
+(1, 7),
+(1, 8),
+(1, 9),
+(1, 10),
+(2, 7),
+(2, 8),
+(2, 9),
+(2, 10);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
