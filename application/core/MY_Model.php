@@ -53,6 +53,7 @@ class MY_Model extends CI_Model {
         }
         $sql .= trim($sql_tmp, ',') . ' ';
         $sql .= $this->create_where($where);
+//        echo $sql;
         return $this->db->query($sql);
     }
 

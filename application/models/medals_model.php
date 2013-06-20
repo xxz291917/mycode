@@ -56,6 +56,37 @@ class Medals_model extends MY_Model {
         return TRUE;
     }
 
+    public function get_medal_tags() {
+        $this->load->model('credit_name_model');
+        $credit_names = $this->credit_name_model->get_all();
+        $condition = array();
+        foreach($credit_names as $val){
+            $condition[] = array($val['view_name'],$val['credit_x']);
+        }
+        $fix_condition = array(array('注册时间', 'regdate'),
+            array('注册天数', 'regday'),
+            array('注册IP', 'regip'),
+            array('最后登录IP', 'lastip'),
+            array('精华帖数', 'digestposts'),
+            array('发帖数', 'posts'),
+            array('主题数', 'topics'),
+            array('在线时间(小时)', 'oltime'),
+            array('+', ' + '),
+            array('-', ' - '),
+            array('*', ' * '),
+            array('/', ' / '),
+            array('>', ' > '),
+            array('>=', ' >= '),
+            array('<', ' < '),
+            array('<=', ' <= '),
+            array('=', ' = '),
+            array('(', ' ( '),
+            array(')', ' ) '),
+            array('并且', ' and '),
+            array('或', ' or '),);
+        $condition = array_merge($condition,$fix_condition);
+        return $condition;
+    }
 }
 
 ?>

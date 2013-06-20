@@ -118,10 +118,13 @@ table {text-align:left;	border-collapse:collapse;empty-cells:show;}
 }
 
 
-/*错误提示*/
-.error {margin:100px;	padding:20px;	border:1px #ccc solid;}
-.error dt {font-size:14px;	font-weight:bold;	margin-bottom:10px;}
-.area2 {width:95%;	margin-top:10px;	height:350px;	line-height:22px;}
+/*信息提示*/
+.message {margin:100px 0 0 100px; width:60%;	padding:20px;border:1px #ccc solid;}
+.error { border-color:#ee681e;}
+.error dt{ color:#ee681e;}
+.message dt {font-size:14px;	font-weight:bold;	margin-bottom:10px;}
+.success { border-color:#1ea4ee}
+.success dt{ color:#1ea4ee;}
 
 /*--版块管理-*/
 .start_icon, .away_icon, .zero_icon, .plus_icon, .plus_end_icon {background: url("../images/admin/icon_list.png") no-repeat scroll 0 0 transparent;	display: inline-block;	vertical-align: middle;}

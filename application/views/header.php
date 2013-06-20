@@ -11,7 +11,7 @@
 <![endif]-->
 <link rel="stylesheet" type="text/css" href="<?=base_url()?>js/jquery-ui/jquery-ui.min.css" />
 <link rel="stylesheet" href="<?=base_url()?>js/kindeditor/themes/default/default.css" />
-
+<script type="text/javascript" src="<?=base_url()?>js/jquery-1.7.2.min.js"></script>
 <link href="<?=base_url()?>js/syntaxhighlighter/styles/shCoreDefault.css" rel="stylesheet" type="text/css" />
 <link href="<?=base_url()?>js/syntaxhighlighter/styles/shThemeEclipse.css" type="text/css" rel="Stylesheet" />
 </head>
@@ -39,8 +39,8 @@
         <ul class="logInfo fr">
           <li class="icoEmail"><a href="#">250</a></li>
           <li class="icoUser pr">
-            <a href="#"><img src="images/userSmall.gif" alt="作者名字" title="作者名字"></a>
-            <ul class="pa" id="cup">
+            <a href="#"><img src="/images/userSmall.gif" alt="作者名字" title="作者名字"></a>
+            <ul class="pa">
               <li><a href="#">账号设置</a></li>
               <li><a href="#">退出</a></li>
             </ul>

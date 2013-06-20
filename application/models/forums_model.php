@@ -256,7 +256,7 @@ class Forums_model extends MY_Model {
         return array_filter(explode(',', $forum['manager']));
     }
     
-    public function get_nav($id){
+    public function get_nav_forums($id){
         $forums = $this->get_key_forums();
         $nav[$id] = $forums[$id]['name'];
         for($i=1;$i<=3;$i++){
@@ -272,6 +272,15 @@ class Forums_model extends MY_Model {
 //        var_dump($nav);die;
     }
     
+    public function get_nav_str($forum_id){
+        //获取导航面包屑，论坛>综合交流>活动专区>现代程序员的工作环境
+        $nav = array(array('论坛', base_url()));
+        $nav_forums = $this->get_nav_forums($forum_id);
+        foreach ($nav_forums as $key => $val) {
+            $nav[] = array($val, base_url('index.php/forum/show/'.$key));
+        }
+        return $nav;
+    }
     
 }
 

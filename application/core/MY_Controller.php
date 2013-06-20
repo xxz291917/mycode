@@ -125,13 +125,14 @@ class Admin_Controller extends Base_Controller {
         }
     }
     
-    protected function message($message, $sucess = 0, $redirect = 'BACK') {
+    protected function message($message, $success = 0, $redirect = 'BACK') {
         //判断是否是ajax提交
         if ($this->input->is_ajax_request()) {
             echo $this->echo_ajax($redirect, $message);
         } else {
             global $OUT;
             $vars['message'] = $message;
+            $vars['success'] = $success;
             $vars['redirect'] = $redirect;
             $this->view('message', $vars);
             $OUT->_display();

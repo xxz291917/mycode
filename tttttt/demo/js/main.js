@@ -104,7 +104,6 @@ $(document).ready(function() {
 	);
 });
 //滚条提示
-/*
 var scrollUp;
 scrollUp || (scrollUp = {});
 (function(a) {
@@ -135,7 +134,6 @@ scrollUp || (scrollUp = {});
     })	
 })($);
 $('.scroll').returntop();
-*/
 //帖子列表左侧菜单展开效果
 $(document).ready(function() {
 	$('.leftNav dt a').toggle(	

@@ -187,7 +187,6 @@ a.searchBtn{ display:inline-block; width:25px; height:26px; margin:12px 0 0 0; b
 /*正文右侧*/
 .newsCots{ padding:10px 20px;}
 .newsCots h1{ padding:20px 0 15px; line-height:26px; font-size:20px; font-weight:bold;}
-.newsCots h2{ padding:0 0 15px; line-height:26px; font-size:18px; font-weight:bold;}
 .newsTip{ height:18px; overflow:hidden; color:#999; line-height:18px;}
 .newsTip span{ float:left; padding-right:20px;}
 .newsTip span a{ color:#666;}
@@ -195,10 +194,10 @@ a.searchBtn{ display:inline-block; width:25px; height:26px; margin:12px 0 0 0; b
 .newsTip .icoEye{ background-position:0 -827px;}
 .newsTip .icoMsg2{background-position:0 -849px;} 
 .newsTip .icoMsg a{ background-position:0 -849px; color:#07C;}
-.newsCotR blockquote{ margin-bottom:18px;padding:10px 13px 9px;border:1px dashed #CCC;background:#F7F7F7; line-height:21px; text-indent:2em; color:#5B5B5B; font-size:12px;}
+.newsCotR blockquote{ margin:18px 0;padding:10px 13px 9px;border:1px dashed #CCC;background:#F7F7F7; line-height:21px; text-indent:2em; color:#5B5B5B; font-size:12px;}
 .newsCotR .blot { margin:5px 20px 15px; text-indent:0; color:#999;}
 .newsCotR .blot{ color:#808080;}
-.newsCotIn{ padding:15px 0 5px; font-size:14px; line-height:25px;}
+.newsCotIn{ padding:0 0 15px 0; font-size:14px; line-height:25px;}
 .newsCotIn p{ text-indent:2em; padding-bottom:10px;}
 .showHide,.showHideCot{ height:18px; margin-top:10px; padding:9px 10px 7px 24px; border:1px dashed #FF9A98; border-radius:4px; background-position:6px -870px; line-height:18px; font-size:12px;}
 .showHide a{ margin-left:4px;}
@@ -227,7 +226,7 @@ a.searchBtn{ display:inline-block; width:25px; height:26px; margin:12px 0 0 0; b
 .myCmt{ padding:0 20px;font-size:14px; line-height:24px;}
 .myCmt em{ padding-left:6px; color:#999;}
 .cmtCot{ padding:0  20px; overflow:hidden;}
-.btnCmt{ display:block; width:310px; height:28px; margin:0 0 11px 0; padding-left:18px; border-radius:4px 0 0 4px; background-color:#FEF9CF; background-position:right -1070px; line-height:28px; color:#900200; font-weight:bold;}
+.btnCmt{ display:block; width:310px; height:28px; margin:10px 0 11px 0; padding-left:18px; border-radius:4px 0 0 4px; background-color:#FEF9CF; background-position:right -1070px; line-height:28px; color:#900200; font-weight:bold;}
 .cmtCot img{ display:inline; float:left; width:24px; height:24px; margin-right:9px;}
 .cmtCotR{ float:right; width:710px; padding-top:1px; line-height:22px;}
 .cmtCotR span{ padding-left:10px; color:#999;}
@@ -347,11 +346,14 @@ a.searchBtn{ display:inline-block; width:25px; height:26px; margin:12px 0 0 0; b
 .pubQAForm li.reward{ padding-left:15px; border:1px dashed #BBD6EA; border-radius:4px; background:#FFF;}
 .pubQAForm li em{ color:#666;}
 .pubQAForm li em i{ padding:0 4px; color:#FF691F;}
-.pubQAForm li.pubQAEdit span{ margin-right:0;}
+
+.pubQAEdit{ height:260px;}
+
 .pubQAForm .mainCmtBtn{ display:inline; float:left; margin-right:15px;}
-.btnGray,.btnGray:hover,.btnGray:active{ border-color:#909090;  background-color:#B3B3B3; box-shadow:1px 2px 2px #BBB; text-shadow:1px 1px 0 #999;}
-.btnGray:hover{ background-color:#AAAAAA; box-shadow:1px 2px 2px #AAA;}
-.btnGray:active{ background-color:#A3A3A3;}
+
+
+
+.btnGray,.btnGray:hover,.btnGray:active{ cursor:default; border-color:#909090;  background-color:#B3B3B3; box-shadow:1px 2px 2px #BBB; text-shadow:1px 1px 0 #999;}
 
 
 

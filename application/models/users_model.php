@@ -165,16 +165,49 @@ class Users_model extends MY_Model {
             $need_users[$value['id']] = $value;
             $need_users[$value['id']]['group'] = $groups[$group_id];
             $need_users[$value['id']]['online'] = $this->time - $value['last_active_time'] < self::$max_active;
+            $need_users[$value['id']]['stars_rank'] = $this->get_star_html($groups[$group_id]['stars']);
         }
         return $need_users;
     }
     
+    /**
+     * 二进制
+     * @param type $stars
+     */
+    public function get_star_html($stars,$scale=2) {
+        $sun  = pow($scale, 2);
+        $moon = pow($scale, 1);
+        $star = pow($scale, 0);
+        $sun_num  = floor($stars/$sun);
+        $moon_num = floor($stars%$sun/$moon);
+        $star_num = floor($stars%$sun%$moon/$star);
+        
+        $sun_str = '<i class="icoSun"></i>';
+        $moon_str = '<i class="icoMoon"></i>';
+        $star_str = '<i class="icoStar"></i>';
+        
+        $html = '<span class="myRank">';
+        $html .= str_repeat($sun_str,  $sun_num);
+        $html .= str_repeat($moon_str, $moon_num);
+        $html .= str_repeat($star_str, $star_num);
+        return $html;
+    }
+
+
     public function get_user_by_name($name){
         $where = "username = '$name' AND status=1 LIMIT 0,1";
         $result_fun = 'row_array';
         $sql = "SELECT id FROM {$this->table} WHERE $where";
         $query = $this->db->query($sql);
         return $query->$result_fun();
+    }
+    
+    public function get_user_by_names($names) {
+        if(is_array($names)){
+            $names = "'".join("','", array_unique($names))."'";
+        }
+        $where = "username in( $names ) AND status=1";
+        return $this->get_list($where);
     }
 
 }

@@ -15,9 +15,10 @@ class Biz_topic_manage extends CI_Model {
         'is_ban' => '屏蔽',
         'is_close' => '关闭',
         'is_del' => '删除',
-        'is_copy' => '复制',
-        'is_merge' => '合并',
-        'is_split' => '切分',);
+//        'is_copy' => '复制',
+//        'is_merge' => '合并',
+//        'is_split' => '切分',
+        );
     public static $status = array('ban' => 3, 'close' => 5, 'del' => 2);
 
     function __construct() {
@@ -75,6 +76,7 @@ class Biz_topic_manage extends CI_Model {
     }
     
     /**
+     * fixme
      * 检测主题管理的权限，可以检测多个主题，只要一个主题所属板块没有权限就返回false。
      * @param type $topic_ids
      * @param type $action
