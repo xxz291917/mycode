@@ -1,4 +1,4 @@
-	
+var editor;
 $(function(){
 	KindEditor.uploadImages={};
 	KindEditor.uploadFiles={};
@@ -35,7 +35,7 @@ $(function(){
 			'insertfile.localUrl' : '¸½¼þ',
 	});
 	
-	var editor;
+	
 	KindEditor.ready(function(K) {
 		//alert(K===KindEditor); //true
 		//alert(K.VERSION);

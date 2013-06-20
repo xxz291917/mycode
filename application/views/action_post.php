@@ -74,36 +74,62 @@ var base_url = '<?=base_url()?>';
       </ul>
       <h4>发布问答帖</h4>
       <ul class="pubQAForm">
+        <?php if($type == 'post'){?>
         <li>
           <input type="text" value="<?php echo set_value('tags', "标签间请用'空格'或'逗号'隔开，最多可添加5个标签。"); ?>" name="tags" id="tags" size="60" class="inp inpTxt pubInpW3">
           <label>最近标签：Flash、ios、android</label>
         </li>
+        <input type="hidden" name="forum_id" value="<?php echo $forum_id?>">
+  		<?php }elseif($type == 'reply'){?>
+        <input type="hidden" name="topic_id" value="<?php echo $topic_id?>">
+        <?php }?>
         <li>
-        <button name="submit" class="mainCmtBtn" type="button" />发布问题</button>
+        <input  type="submit" name="submit" class="mainCmtBtn" value="发布问题">
         <button type="button" class="mainCmtBtn btnGray" id="preview">预览</button>
-        <button type="button" class="mainCmtBtn btnGray">保存在草稿</button>
+        <button type="button" class="mainCmtBtn btnGray" id="drafts">保存草稿</button>
         </li>
       </ul>
   </div> 
   <?php echo form_close() ?>
 </div>
 <script type="text/javascript">
-$("#preview").click(function() {
-                    var K = KindEditor,
-                        html = '<div style="padding:10px 20px;">' +
-                                '<iframe class="ke-textarea" frameborder="0" style="width:708px;height:400px;"></iframe>' +
-                                '</div>',
-                        dialog = editor.createDialog({
-                                width : 750,
-                                title : '预览',
-                                body : html
-                        }),
-                        iframe = K('iframe', dialog.div),
-                        doc = K.iframeDoc(iframe);
-                doc.open();
-                doc.write(editor.fullHtml());
-                doc.close();
-                K(doc.body).css('background-color', '#FFF');
-                iframe[0].contentWindow.focus();
-        });
+
+$(function(){
+	<?php $errors = my_validation_errors();
+	  if(!empty($errors)){
+	?>
+	var error = <?php echo $errors;?>;
+	$.Alert(error.join(','),'错误提示');
+	<?php }?>
+	
+	var publish = $("#publish"),
+		drafts = $("#drafts"),
+		thisform = $("#postform");
+		
+	publish.click(function(){
+		thisform.submit();
+	});
+	
+	
+	drafts.click(function(){
+		editor.sync();
+		var url = unescape('<?php echo base_url('index.php/action/safe_drafts')?>'),
+				method = thisform.attr('method'),
+				fields = thisform.serialize(),
+				ajaxFun = method=='post'?$.post:$.get;
+		ajaxFun(url,fields,function(data){
+			if(!data.success){
+				$.Alert(data.message);
+			}else{
+				$.Alert(data.message);
+			}
+		},'json');
+		event.preventDefault();
+		return false;
+	});
+	
+});
+
+
+
 </script>

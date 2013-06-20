@@ -57,13 +57,8 @@ class Action extends MY_Controller {
             $var['is_arr'] = $is_arr;
             $var['special'] = $special;
             //如果是特殊帖子需要做相应的处理。
-            
-            $class = biz_post::$specials[$special];
-                echo $class;die;
-            
             if ($special != 1) {
                 $class = biz_post::$specials[$special];
-                echo $class;die;
                 $this->load->model($class);
                 $var['special_view'] = $class::$special_post;
                 if (method_exists($this->$class, 'init_post')) {
@@ -72,6 +67,7 @@ class Action extends MY_Controller {
                 }
             }
             $var['type'] = 'post';
+            $var['forum_id'] = $forum_id;
             $this->view('action_post', $var);
         }
     }
@@ -127,7 +123,8 @@ class Action extends MY_Controller {
                 }
             }
             $var['is_arr'] = $is_arr;
-            $var['type'] = 'replay';
+            $var['type'] = 'reply';
+            $var['topic_id'] = $topic_id;
             $this->view('action_post', $var);
         }
     }
@@ -336,6 +333,40 @@ class Action extends MY_Controller {
             $var['post_id'] = $post_id;
             $var['post_id'] = $post_id;
             $this->view('report', $var);
+        }
+    }
+    
+    public function safe_drafts(){
+        $this->load->model('drafts_model');
+        $post = $this->input->post(null);
+        
+        if(!empty($post['topic_id'])){
+            $id_type = "topic_id";
+        }elseif(!empty($post['forum_id'])){
+            $id_type = "forum_id";
+        }else{
+            $this->message('参数错误');
+        }
+        
+        $drafts['subject'] = $post['subject'];
+        $drafts['content'] = $post['content'];
+        unset($post['subject'],$post['content'],$post['submit']);
+        $drafts['remain_data'] = json_encode($post);
+        $drafts['time'] = $this->time;
+        
+        $where = array('user_id'=>$this->user['id'],$id_type=>  intval($post[$id_type]));
+        $exist = $this->drafts_model->get_one($where);
+        if(!empty($exist)){
+            $issucc = $this->drafts_model->update($drafts,$where);
+        }else{
+            $drafts['user_id'] = $this->user['id'];
+            $drafts[$id_type] = intval($post[$id_type]);
+            $issucc = $this->drafts_model->insert($drafts);
+        }
+        if($issucc){
+            $this->message('操作成功', 1);
+        }else{
+            $this->message('操作失败');
         }
     }
     
