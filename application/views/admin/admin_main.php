@@ -90,7 +90,7 @@ html, body {
           <div id='content'>
             <ul>
               <li><a href="<?=base_url()?>index.php/admin/topics/" target="main" class="on">帖子管理</a></li>
-              <li><a href="<?=base_url()?>index.php?admin_attachment" target="main">附件管理</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/attachments/" target="main">附件管理</a></li>
               <li><a href="<?=base_url()?>index.php/admin/topics/check" target="main">审核管理</a></li>
               <li><a href="<?=base_url()?>index.php/admin/reports/" target="main">举报管理</a></li>
               <li><a href="<?=base_url()?>index.php?admin_word" target="main">敏感词管理</a></li>
