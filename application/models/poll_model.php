@@ -23,7 +23,7 @@ class Poll_model extends MY_Model {
         
         $poll_options = array(
             'votes'=>':1',
-            'voterids'=>'+'.$this->user['id'],
+            //'voterids'=>'+'.$this->user['id'],
             );
         $where = " id IN(".join(',', $options).')';
         $is_poll_options = $this->poll_options_model->update_increment($poll_options, $where);

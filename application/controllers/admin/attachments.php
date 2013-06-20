@@ -17,13 +17,13 @@ class Attachments extends Admin_Controller {
         $search = $this->input->get(null, TRUE);
         $where = '';
         $where .= $this->search_where($search);
-        //联合查询表名
-        $table_a='attachments';
-        $table_b='topics';
-        $filed='a.id,a.upload_time,a.size,a.filename,a.downloads,b.author,b.subject';
+        //联合查询表
+        $table_a = 'attachments';
+        $table_b = 'topics';
+        $filed = 'a.id,a.upload_time,a.size,a.filename,a.downloads,b.author,b.subject';
         $orderby = 'a.upload_time DESC ';
         //生成分页字符串
-        $total_num = $this->attachments_model->get_count($table_a,$table_b,$where);
+        $total_num = $this->attachments_model->get_count($table_a, $table_b, $where);
         unset($search['submit'], $search['per_page']);
         $query_str = !empty($search) ? http_build_query($search, '', '&') : '';
         $base_url = current_url() . '?' . $query_str;
@@ -32,7 +32,7 @@ class Attachments extends Admin_Controller {
         $page_str = $page_obj->create_links();
         //获取用户
         $start = max(0, ($page_obj->cur_page - 1) * $per_num);
-        $topics = $this->attachments_model->get_list($table_a,$table_b,$filed,$where,$orderby, $start, $per_num);
+        $topics = $this->attachments_model->get_list($table_a, $table_b, $filed, $where, $orderby, $start, $per_num);
 
         //得到版块选项
         $default_forums = !empty($search['forums']) ? $search['forums'] : array();

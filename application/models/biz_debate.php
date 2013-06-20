@@ -76,7 +76,6 @@ class Biz_debate extends CI_Model {
                 'user_id'=>$this->user['id'],
                 'post_time'=>$this->time,
                 'voters'=>0,
-                'voterids'=>'',
             );
             $this->debate_posts_model->insert($debate_posts);
         }
@@ -109,7 +108,7 @@ class Biz_debate extends CI_Model {
             }
             
             $count_sql = "SELECT count(*) num FROM posts p LEFT JOIN debate_posts d ON d.post_id=p.id  WHERE ";
-            $list_sql = "SELECT p.*,d.stand,d.voters,d.voterids FROM posts p LEFT JOIN debate_posts d ON d.post_id=p.id  WHERE ";
+            $list_sql = "SELECT p.*,d.stand,d.voters FROM posts p LEFT JOIN debate_posts d ON d.post_id=p.id  WHERE ";
             
             $stand = $this->input->get('stand', TRUE);
             $where = $stand !== false ? " d.stand = $stand " : '1';

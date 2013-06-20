@@ -48,8 +48,13 @@ class Action extends MY_Controller {
             $var['is_arr'] = $is_arr;
             $var['special'] = $special;
             //如果是特殊帖子需要做相应的处理。
+            
+            $class = biz_post::$specials[$special];
+                echo $class;die;
+            
             if ($special != 1) {
                 $class = biz_post::$specials[$special];
+                echo $class;die;
                 $this->load->model($class);
                 $var['special_view'] = $class::$special_post;
                 if (method_exists($this->$class, 'init_post')) {
