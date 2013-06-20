@@ -336,6 +336,9 @@ class Action extends MY_Controller {
         }
     }
     
+    /**
+     * 保存草稿，帖子和回复的草稿
+     */
     public function safe_drafts(){
         $this->load->model('drafts_model');
         $post = $this->input->post(null);
