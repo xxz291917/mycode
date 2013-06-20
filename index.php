@@ -19,7 +19,6 @@
  *
  */
 	define('ENVIRONMENT', 'development');
-//        dfsdfsdf
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING
