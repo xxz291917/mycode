@@ -77,6 +77,7 @@ class Biz_post extends CI_Model {
             //插入topics表
             $tags = $this->topics_model->format_tags($post['tags']);
             $topics_data['forum_id'] = $forum_id;
+            $topics_data['category_id'] = $post['category'];
             $topics_data['author'] = $this->user['username'];
             $topics_data['author_id'] = $this->user['id'];
             $topics_data['post_time'] = $this->time;

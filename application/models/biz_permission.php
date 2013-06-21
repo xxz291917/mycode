@@ -51,6 +51,10 @@ class Biz_permission extends CI_Model {
         $this->load->model(array('forums_model', 'topics_model', 'groups_admin_model', 'users_belong_model'));
     }
 
+//    public function init_uer_permission(){
+//        $permission = array();
+//    }
+
     /**
      * 返回某个用户对某个帖子的操作权限
      * @return type

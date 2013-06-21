@@ -268,18 +268,28 @@ class Forums_model extends MY_Model {
                 $nav[$id] = $forums[$id]['name'];
             }
         }
-        return array_reverse($nav);
+        return array_reverse($nav,TRUE);
 //        var_dump($nav);die;
     }
     
     public function get_nav_str($forum_id){
         //获取导航面包屑，论坛>综合交流>活动专区>现代程序员的工作环境
-        $nav = array(array('论坛', base_url()));
+        $nav = array();
         $nav_forums = $this->get_nav_forums($forum_id);
         foreach ($nav_forums as $key => $val) {
             $nav[] = array($val, base_url('index.php/forum/show/'.$key));
         }
         return $nav;
+    }
+    
+    /**
+     * 根据id得到版块的信息，包括统计信息。
+     * @param type $forum_id
+     */
+    public function get_info_by_id($forum_id) {
+        $forum = $this->get_by_id($forum_id);
+        $forums_statistics = $this->forums_statistics_model->get_by_id($forum_id);
+        return array_merge($forum, $forums_statistics);
     }
     
 }

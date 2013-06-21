@@ -55,7 +55,7 @@ var base_url = '<?=base_url()?>';
       <h4>发布问答帖</h4>
       <ul class="pubQAForm">
         <li>
-          <select name="editcategory">
+          <select name="category">
             <?php echo $category_option;?>
           </select>
           <input type="text" value="<?php echo set_value('subject', '输入帖子标题'); ?>" name="subject" class="inp inpTxt pubInpW1">
