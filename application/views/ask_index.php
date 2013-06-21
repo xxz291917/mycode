@@ -54,8 +54,8 @@
         </h3>
         
         <span class="fl">
-        	今日：<strong><?php echo $current_forum['today_topics']?></strong>
-            主题：<strong><?php echo $current_forum['topics']?></strong>
+        	今日：<strong><?php echo isset($current_forum['today_topics'])?$current_forum['today_topics']:0?></strong>
+            主题：<strong><?php echo isset($current_forum['topics'])?$current_forum['topics']:0?></strong>
         </span>
         
         <span class="fr">
@@ -77,9 +77,13 @@
       <?php }?>
       
       <!--推荐帖子-->
-      
-      <p><strong><a href="#">本版规则及说明,新手发帖前请花两分钟了解，谢谢</a></strong></p>
-      
+      <?PHP 
+		if(!empty($recommend_topics)){
+			foreach($recommend_topics as $topic){
+				echo '<p><strong><a href="'.base_url().'index.php/topic/show/'.$topic['id'].'">'.$topic['subject'].'</a></strong></p>';
+			}
+		}
+	  ?>
     </div>
     <div class="menuPage clearfix">
     <?php if(!empty($forum_id)){?>
@@ -103,10 +107,10 @@
     </div>
     <div class="list">
       <ul class="listTag">
-        <li class="current"><a href="javascript:void(0);">全部</a></li>
-        <li><a href="javascript:void(0);">待解决</a></li>
-        <li><a href="javascript:void(0);">已解决</a></li>
-        <li><a href="javascript:void(0);">零回答</a></li>
+        <li <?php if(empty($type)){ echo 'class="current"'; }?>><a href="<?=$type_url.'0'?>">全部</a></li>
+        <li <?php if($type==1){ echo 'class="current"'; }?>><a href="<?=$type_url.'1'?>">待解决</a></li>
+        <li <?php if($type==2){ echo 'class="current"'; }?>><a href="<?=$type_url.'2'?>">已解决</a></li>
+        <li <?php if($type==3){ echo 'class="current"'; }?>><a href="<?=$type_url.'3'?>">零回答</a></li>
       </ul>
       <div class="tags">
         <strong><a href="#">全部</a></strong>
@@ -133,16 +137,22 @@
           <li><a href="#">网络通信</a></li>
         </ul>
       </div>
-      <div class="listSel">
-        <dl>
-          <dt>排序</dt>
-          <dd><span>主题</span></dd>
-          <dd><span>时间</span></dd>
-          <dd>精华</dd>
-          <dd>推荐</dd>
-        </dl>
-      </div>
+      
       <ul class="listCot listCotShow">
+       <li class="listCotShowOrder">
+          <ul>
+            <li class="td1">筛选：</li>
+            <li class="td2">
+            <a href="javascript:void(0);">发布时间</a>
+            <a href="javascript:void(0);">最高赏金</a>
+            <a href="javascript:void(0);">推荐</a>
+            </li>
+            <li class="td3">赏金</li>
+            <li class="td4">作者</li>
+            <li class="td5">回复/查看</li>
+            <li class="td6">最后发表</li>
+          </ul>
+        </li>
         <li>
           <ul>
             <li class="td1"><i class="icoAEd"></i></li>

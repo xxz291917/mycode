@@ -47,7 +47,8 @@ class Bbs extends MY_Controller {
             $var['current_forum'] = $current_forum;
             $var['mannager'] = $mannager;
             //获取此版块下的推荐帖
-            
+            $recommend_topics = $this->topics_model->get_list('recommend = 1 AND special =2');
+            $var['recommend_topics'] = $recommend_topics;
             
             //按版块搜索条件
             $where .= " AND forum_id = '$forum_id'";
@@ -66,6 +67,7 @@ class Bbs extends MY_Controller {
         }
         //已解决、待解决、零回答
         $type = intval($this->input->get('type'));
+        $var['type'] = $type;
         switch ($type) {
             case 1://已解决
                 $where .= " AND best_answer != '0'";
@@ -89,17 +91,25 @@ class Bbs extends MY_Controller {
         $order = in_array($order,array('post_time','price','lost_post_time'))?$order:'post_time';
         $topics = $this->ask_model->get_list($where, '*', $order.' DESC', $start, $per_num);
         
-        //获取需要的主题其他信息
-        $tids = array();
-        foreach ($topics as $topic) {
-            $tids[] = $topic['topic_id'];
+        if(!empty($topics)){
+            //获取需要的主题其他信息
+            $tids = array();
+            foreach ($topics as $topic) {
+                $tids[] = $topic['topic_id'];
+            }
+            $full_topics = $this->topics_model->get_list('id in('.  join(',',array_unique($tids)).')');
+            $var['full_topics'] = $full_topics;
         }
-        $full_topics = $this->topics_model->get_list('id in('.  join(',',array_unique($tids)).')');
+        
         
         //为前面获取的变量赋值到$var
         $var['topics'] = $topics;
-        $var['full_topics'] = $full_topics;
         $var['page'] = $page_str;
+        echo site_url();die;
+//        echo $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];die;
+        $connect = strpos(current_url(), '?')?'&':'?';
+        $var['type_url'] = preg_replace('/type=\d+/','',current_url()).$connect.'type=';
+        $var['order_url'] = preg_replace('/order=\d+/','',current_url()).$connect.'order=';
         
         
 //        var_dump($var['forums']);die;

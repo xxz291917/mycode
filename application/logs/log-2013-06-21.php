@@ -172,3 +172,38 @@ ERROR - 2013-06-21 17:07:23 --> Severity: Warning  --> Illegal string offset 'na
 ERROR - 2013-06-21 17:07:23 --> Severity: Warning  --> Illegal string offset 'id' D:\www\mycode\application\views\ask_index.php 11
 ERROR - 2013-06-21 17:07:23 --> Severity: Warning  --> Illegal string offset 'name' D:\www\mycode\application\views\ask_index.php 11
 ERROR - 2013-06-21 17:13:52 --> 404 Page Not Found --> bbs/images
+ERROR - 2013-06-21 17:15:07 --> Query error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') LIMIT 0,20' at line 1
+ERROR - 2013-06-21 17:16:09 --> Severity: Notice  --> Undefined variable: full_topics D:\www\mycode\application\controllers\bbs.php 104
+ERROR - 2013-06-21 17:16:09 --> Severity: Notice  --> Undefined index: today_topics D:\www\mycode\application\views\ask_index.php 57
+ERROR - 2013-06-21 17:16:09 --> Severity: Notice  --> Undefined index: topics D:\www\mycode\application\views\ask_index.php 58
+ERROR - 2013-06-21 17:16:32 --> Severity: Notice  --> Undefined index: today_topics D:\www\mycode\application\views\ask_index.php 57
+ERROR - 2013-06-21 17:16:32 --> Severity: Notice  --> Undefined index: topics D:\www\mycode\application\views\ask_index.php 58
+ERROR - 2013-06-21 17:23:47 --> Severity: Warning  --> Invalid argument supplied for foreach() D:\www\mycode\application\models\users_model.php 163
+ERROR - 2013-06-21 17:25:37 --> Severity: Notice  --> Undefined index: today_topics D:\www\mycode\application\views\ask_index.php 57
+ERROR - 2013-06-21 17:25:37 --> Severity: Notice  --> Undefined index: topics D:\www\mycode\application\views\ask_index.php 58
+ERROR - 2013-06-21 17:37:20 --> Severity: Notice  --> Undefined index: is_multiple D:\www\mycode\application\views\debate_show.php 39
+ERROR - 2013-06-21 17:37:20 --> Severity: Notice  --> Undefined index: voters D:\www\mycode\application\views\debate_show.php 45
+ERROR - 2013-06-21 17:37:20 --> Severity: Notice  --> Undefined index: is_visible D:\www\mycode\application\views\debate_show.php 45
+ERROR - 2013-06-21 17:37:20 --> Severity: Notice  --> Undefined index: expire_time D:\www\mycode\application\views\debate_show.php 46
+ERROR - 2013-06-21 17:37:20 --> Severity: Notice  --> Undefined index: is_multiple D:\www\mycode\application\views\debate_show.php 48
+ERROR - 2013-06-21 17:37:20 --> Severity: Notice  --> Undefined index: options D:\www\mycode\application\views\debate_show.php 50
+ERROR - 2013-06-21 17:37:20 --> Severity: Warning  --> Invalid argument supplied for foreach() D:\www\mycode\application\views\debate_show.php 50
+ERROR - 2013-06-21 17:37:20 --> Severity: Notice  --> Undefined index: is_vote D:\www\mycode\application\views\debate_show.php 61
+ERROR - 2013-06-21 17:37:51 --> Severity: Warning  --> Invalid argument supplied for foreach() D:\www\mycode\application\models\users_model.php 163
+ERROR - 2013-06-21 17:45:39 --> Severity: Notice  --> Undefined index: is_multiple D:\www\mycode\application\views\ask_show.php 39
+ERROR - 2013-06-21 17:45:39 --> Severity: Notice  --> Undefined index: voters D:\www\mycode\application\views\ask_show.php 45
+ERROR - 2013-06-21 17:45:39 --> Severity: Notice  --> Undefined index: is_visible D:\www\mycode\application\views\ask_show.php 45
+ERROR - 2013-06-21 17:45:39 --> Severity: Notice  --> Undefined index: expire_time D:\www\mycode\application\views\ask_show.php 46
+ERROR - 2013-06-21 17:45:39 --> Severity: Notice  --> Undefined index: is_multiple D:\www\mycode\application\views\ask_show.php 48
+ERROR - 2013-06-21 17:45:39 --> Severity: Notice  --> Undefined index: options D:\www\mycode\application\views\ask_show.php 50
+ERROR - 2013-06-21 17:45:39 --> Severity: Warning  --> Invalid argument supplied for foreach() D:\www\mycode\application\views\ask_show.php 50
+ERROR - 2013-06-21 17:45:39 --> Severity: Notice  --> Undefined index: is_vote D:\www\mycode\application\views\ask_show.php 61
+ERROR - 2013-06-21 18:30:41 --> 404 Page Not Found --> bbs/images
+ERROR - 2013-06-21 18:30:42 --> 404 Page Not Found --> bbs/images
+ERROR - 2013-06-21 18:30:44 --> 404 Page Not Found --> bbs/images
+ERROR - 2013-06-21 18:30:48 --> 404 Page Not Found --> bbs/images
+ERROR - 2013-06-21 18:30:58 --> 404 Page Not Found --> bbs/images
+ERROR - 2013-06-21 18:31:17 --> 404 Page Not Found --> bbs/images
+ERROR - 2013-06-21 18:31:29 --> 404 Page Not Found --> bbs/images
+ERROR - 2013-06-21 18:40:22 --> 404 Page Not Found --> bbs/images
+ERROR - 2013-06-21 18:55:41 --> Severity: Warning  --> Invalid argument supplied for foreach() D:\www\mycode\application\models\users_model.php 163
