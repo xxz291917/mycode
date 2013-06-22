@@ -112,32 +112,18 @@
         <li <?php if($type==2){ echo 'class="current"'; }?>><a href="<?=$type_url.'2'?>">已解决</a></li>
         <li <?php if($type==3){ echo 'class="current"'; }?>><a href="<?=$type_url.'3'?>">零回答</a></li>
       </ul>
+        
+      <?php if(!empty($topic_categorys)){?>
       <div class="tags">
         <strong><a href="#">全部</a></strong>
         <ul>
-          <li><a href="#">其他</a></li><!--当前分类下增加样式 li class="fb" 全部的 strong 增加样式 strong class="fn" -->
-          <li><a href="#">Flex</a></li>
-          <li><a href="#">AIR</a></li>
-          <li><a href="#">交互设计</a></li>
-          <li><a href="#">Android</a></li>
-          <li><a href="#">iPhone/iPad</a></li>
-          <li><a href="#">AS3</a></li>
-          <li><a href="#">flash移动开发</a></li>
-          <li><a href="#">HTML5/CSS3/JS2</a></li>
-          <li><a href="#">Silverlight</a></li>
-          <li><a href="#">网络通信</a></li>
-          <li><a href="#">AIR</a></li>
-          <li><a href="#">交互设计</a></li>
-          <li><a href="#">Android</a></li>
-          <li><a href="#">iPhone/iPad</a></li>
-          <li><a href="#">AS3</a></li>
-          <li><a href="#">flash移动开发</a></li>
-          <li><a href="#">HTML5/CSS3/JS2</a></li>
-          <li><a href="#">Silverlight</a></li>
-          <li><a href="#">网络通信</a></li>
+          <?php foreach($topic_categorys as $topic_category){
+              echo '<li><a href="'. $category_url.$topic_category['id'] .'">'.$topic_category['name'].'</a></li>';
+          }?>
         </ul>
       </div>
-      
+      <?php }?>
+        
       <ul class="listCot listCotShow">
        <li class="listCotShowOrder">
           <ul>

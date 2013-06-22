@@ -101,17 +101,21 @@ class Bbs extends MY_Controller {
             $var['full_topics'] = $full_topics;
         }
         
-        
         //为前面获取的变量赋值到$var
         $var['topics'] = $topics;
         $var['page'] = $page_str;
-        echo site_url();die;
+        
 //        echo $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];die;
-        $connect = strpos(current_url(), '?')?'&':'?';
-        $var['type_url'] = preg_replace('/type=\d+/','',current_url()).$connect.'type=';
-        $var['order_url'] = preg_replace('/order=\d+/','',current_url()).$connect.'order=';
+        $connect = strpos(my_current_url(), '?')?'&':'?';
+        $var['type_url'] = preg_replace('/.type=\d+/','',my_current_url()).$connect.'type=';
+        $var['order_url'] = preg_replace('/.order=\d+/','',my_current_url()).$connect.'order=';
+        $var['category_url'] = current_url().(!empty($forum_id)?"?forum_id=$forum_id&category_id =":"?category_id = ");
         
-        
+        //获取分类
+        $this->load->model('topics_category_model');
+        $category_where = empty($forum_id)?"":"forum_id = $forum_id";
+        $topic_categorys = $this->topics_category_model->get_list($category_where,'*','display_order');
+        $var['topic_categorys'] = $topic_categorys;
 //        var_dump($var['forums']);die;
         $this->view('ask_index',$var);
     }
