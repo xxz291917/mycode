@@ -81,4 +81,14 @@ if (!function_exists('time_span')) {
     }
 
 }
+if (!function_exists('include_view')) {
+    function include_view($file,$ext = '.php'){
+        $view_paths = APPPATH.'views/';
+        $file = $view_paths.$file.$ext;
+        if(file_exists($file)){
+            include $file;
+        }
+    }
+}
+
 ?>

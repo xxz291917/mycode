@@ -7,7 +7,7 @@ class Users_model extends MY_Model {
     function __construct() {
         parent::__construct();
         $this->table = 'users';
-        $this->load->model(array('groups_model', 'users_belong_model'));
+        $this->load->model(array('groups_model', 'users_belong_model','users_medal_model'));
     }
 
     /**
@@ -141,7 +141,7 @@ class Users_model extends MY_Model {
             $where = "u.id in($ids)";
             $result_fun = 'result_array';
         }elseif(is_numeric($ids)){
-            $where = "u.id = $ids LIMIT 0,1";
+            $where = "u.id = $ids ";
             $result_fun = 'row_array';
         }else{
             return FALSE;
@@ -159,6 +159,7 @@ class Users_model extends MY_Model {
     public function get_userinfo_by_ids($ids) {
         $users = $this->get_users_by_ids(array_unique($ids));
         $groups = $this->groups_model->get_key_groups();
+        $medals = $this->get_medal_by_ids($ids);
         $need_users = array();
         foreach ($users as $key => $value) {
             $group_id = empty($value['group_id']) ? $value['member_id'] : $value['group_id'];
@@ -166,6 +167,7 @@ class Users_model extends MY_Model {
             $need_users[$value['id']]['group'] = $groups[$group_id];
             $need_users[$value['id']]['online'] = $this->time - $value['last_active_time'] < self::$max_active;
             $need_users[$value['id']]['stars_rank'] = $this->get_star_html($groups[$group_id]['stars']);
+            $need_users[$value['id']]['medals'] = isset($medals[$value['id']])?$medals[$value['id']]:array();
         }
         return $need_users;
     }
@@ -210,6 +212,32 @@ class Users_model extends MY_Model {
         return $this->get_list($where);
     }
 
+    public function get_medal_by_ids($ids){
+        if(is_array($ids) && !empty($ids)){
+            $ids = join (',', $ids);
+            $where = "user_id in($ids)";
+        }elseif(is_numeric($ids)){
+            $where = "user_id = $ids";
+        }else{
+            return FALSE;
+        }
+        //删除过期的勋章。
+        $this->users_medal_model->delete($where." AND expired_time < {$this->time}");
+        
+        //构造sql语句。
+        $sql = "SELECT u.*,m.name,m.image FROM users_medal u LEFT JOIN medals m ON m.id=u.medal_id WHERE u.$where AND (m.expired_time=0 OR m.expired_time > {$this->time}) AND m.is_open =1 ORDER BY m.display_order";
+        $query = $this->db->query($sql);
+        $medals = $query->result_array();
+        $return = array();
+        if(is_array($medals)){
+            foreach ($medals as $medal) {
+                $return[$medal['user_id']][] = $medal;
+            }
+        }
+        return $return;
+    }
+    
+    
 }
 
 ?>

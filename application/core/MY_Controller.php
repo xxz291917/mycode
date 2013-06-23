@@ -51,13 +51,6 @@ class Base_Controller extends CI_Controller {
         return base_url("index.php/{$this->uri->segment(1)}/{$this->uri->segment(2)}");
     }
     
-    protected function include_view($file,$ext = '.php'){
-        $view_paths = APPPATH.'views/';
-        if(2){
-            
-        }
-        include '';
-    }
 }
 
 class MY_Controller extends Base_Controller {
