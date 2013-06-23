@@ -115,7 +115,7 @@ class MY_Model extends CI_Model {
     public function key_list($list,$key='') {
         empty($key) && $key = $this->id;
         $return = array();
-        if(empty($list)){
+        if(!is_array($list)){
             return $return;
         }
         foreach ($list as $value) {
@@ -129,7 +129,7 @@ class MY_Model extends CI_Model {
         return $num['num'];
     }
 
-    public function get_list($where = '', $field = '*', $orderby = '', $limit = 0, $length = 20) {
+    public function get_list($where = '', $field = '*', $orderby = '', $limit = 0, $length = 100) {
         $where = $this->create_where($where);
         $sql = "SELECT $field FROM $this->table $where ";
         if (!empty($orderby)) {

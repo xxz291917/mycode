@@ -49,11 +49,11 @@ if (!function_exists('time_span')) {
             $first_time -= $months * 2628000;
         }
         
-        $weeks = floor($first_time / 604800);
-        if ($weeks > 0) {
-            $str .= $weeks . ' ' . $CI->lang->line((($weeks > 1) ? 'date_weeks' : 'date_week')) . '';
-            $first_time -= $weeks * 604800;
-        }
+//        $weeks = floor($first_time / 604800);
+//        if ($weeks > 0) {
+//            $str .= $weeks . ' ' . $CI->lang->line((($weeks > 1) ? 'date_weeks' : 'date_week')) . '';
+//            $first_time -= $weeks * 604800;
+//        }
 
         $days = floor($first_time / 86400);
         if ($days > 0) {

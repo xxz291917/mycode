@@ -374,12 +374,12 @@ a.searchBtn{ display:inline-block; width:25px; height:26px; margin:12px 0 0 0; b
 .voteBoxTit{ padding:6px 0 0 35px; font-size:14px; color:#999;}
 .voteBoxTit strong{ color:#333;}
 .pubQAForm .voteBoxL li input{ width:500px; color:#333;}
-.voteBoxL{ float:left; width:608px; padding-left:35px; border-right:1px dashed #FFA81F; font-size:14px;}
+.voteBoxL{ float:left; width:608px; min-height:188px; height:auto !important; height:188px;padding-left:35px; border-right:1px dashed #FFA81F; font-size:14px;}
 .voteBoxL .btnCls,.voteBoxL .btnAddVote,.btnUnCheck,.btnCheck{ cursor:pointer; display:inline-block; float:left; width:21px; height:21px; margin-top:5px; background-position:-21px -1520px; line-height:21em; overflow:hidden;}
 .voteBoxL .btnCls:hover,.btnUnCheck:hover,.btnCheck:hover{ border-radius:4px; box-shadow:0 0 2px 2px rgba(0,0,0,0.2);}
 .voteBoxL .btnCls:active,.btnUnCheck:active,.btnCheck:active{border-radius:4px; box-shadow:0 0 2px 2px rgba(0,0,0,0.3);}
 .btnAddBox{ width:120px;}
-.btnAddBox .btnAddVote{ float:right; margin-top:6px;}
+.btnAddBox .btnAddVote{ float:right; margin-top:6px; background-position:0 -1520px;}
 .pubQAForm li{}
 .pubQAForm .voteBoxR li span{ margin-right:0; padding:0 0 0 26px; font-size:14px;}
 .pubQAForm .voteBoxR li input{ width:48px; text-align:center; padding-left:0; color:#333;}

@@ -45,8 +45,6 @@ class Topic extends MY_Controller {
         $nav[] = array($topic['subject'], current_url());
         $var['nav'] = $nav;
         
-        
-        
         //判断特殊主题帖子类下是否有init_show方法，如果有则调用，如果没有则调用biz_post下的方法。
         $func = 'init_show';
         $cls = method_exists($this->$class, $func)?$this->$class:$this->biz_post;

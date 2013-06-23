@@ -193,6 +193,28 @@ class Biz_debate extends CI_Model {
             return FALSE;
         }
     }
+    
+//    public function init_post() {
+//        $this->load->model('credit_name_model');
+//        //得到对应的积分名字
+//        $var['view_name'] = $this->credit_name_model->get_view_name($this->ask_credit_type);
+//        //得到当前用户的积分数
+//        $var['price'] = $this->user[$this->ask_credit_type];
+//        return $var;
+//    }
+    
+//    public function creat_time_option() {
+//        $str = '';
+//        array(
+//            ''=>'一天',
+//            ''=>'',
+//            ''=>'一天',
+//            ''=>'一天',
+//        );
+//        
+//        
+//        $str = 
+//    }
 
 }
 
