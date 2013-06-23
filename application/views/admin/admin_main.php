@@ -77,8 +77,8 @@ html, body {
             <ul>
               <li><a href="<?=base_url()?>index.php/admin/site/edit/setting" class="on" target="main">站点设置</a></li>
               <li><a href="<?=base_url()?>index.php/admin/site/edit/seo" target="main">SEO设置</a></li>
-              <li><a href="<?=base_url()?>index.php/admin/site/setting" target="main">附件设置</a></li>
-              <li><a href="<?=base_url()?>index.php/admin/site/setting" target="main">积分设置</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/attachment_config/" target="main">附件设置</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/credits/" target="main">积分设置</a></li>
             </ul>
           </div>
           <div id='users'>

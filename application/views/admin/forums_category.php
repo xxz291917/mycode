@@ -91,14 +91,7 @@ $(document).ready(function() {
 	function getHtml(){
 		global_id++;
 		var new_id = 'new_'+global_id;
-		return '<tr cid="'+new_id+'">\
-				  <td>\
-					<input type="text" name="new['+ new_id +'][display_order]" value="" class="inp_txt inp_num">\
-					<input type="text" name="new['+ new_id +'][name]" value="" class="inp_txt">\
-					</td>\
-				  <td><input type="checkbox"  name="new['+ new_id +'][moderators]" value="1"/></td>\
-				  <td><a href="#" class = "del">[删除]</a></td>\
-				</tr>';
+		return '<tr cid="'+new_id+'"><td><input type="text" name="new['+ new_id +'][display_order]" value="" ><input type="text" name="new['+ new_id +'][name]" value="" class="inp_txt"></td><td><input type="checkbox"  name="new['+ new_id +'][moderators]" value="1"/></td><td><a href="#" class = "del">[删除]</a></td></tr>';
 	}
 	
 	//版块删除
