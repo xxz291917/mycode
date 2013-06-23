@@ -141,13 +141,13 @@ $(function(){
 		var refresh = $this.attr("refresh") || false;
 		if(tagName=='A'){
 			var url = unescape($this.attr("href")),
-			    field = {}
+			    fields = {},
 				ajaxFun = $.get;
 		}else if(tagName=='FORM'){
 			var url = unescape($this.attr("action")),
 				method = $this.attr('method'),
 				fields = $this.serialize(),
-				ajaxFun = method=='post'?$.post:$.get;;
+				ajaxFun = method=='post'?$.post:$.get;
 		}
 		ajaxFun(url,fields,function(data){
 			var options = {buttons: {
@@ -167,7 +167,6 @@ $(function(){
 		event.preventDefault();
 		return false;
 	};
-
 
 	function gettagname(e){
 		if (!e) var e = window.event;

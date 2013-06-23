@@ -28,6 +28,8 @@ class Biz_Ask extends CI_Model {
         //完成ask表的数据
         $ask_data['topic_id'] = $tid;
         $ask_data['price'] = $post['price'];
+        $ask_data['forum_id'] = $post['forum_id'];
+        $ask_data['category_id'] = $post['category'];
         $is_insert = $this->ask_model->insert($ask_data);
         //从用户身上扣减分数
         $credits = array($this->ask_credit_type => 0 - $post['price']);
@@ -53,6 +55,10 @@ class Biz_Ask extends CI_Model {
         if (empty($post) || empty($pid) || empty($tid)) {
             return FALSE;
         }
+        
+        $topics_data['replies'] = ':1';
+        $this->topics_model->update_increment($topics_data, array('id' => $tid));
+        
         //插入ask_posts，为以后的回答投票做准备。
         $ask_posts = array(
             'topic_id' => $tid,

@@ -152,7 +152,7 @@ class Users_model extends MY_Model {
     }
     
     /**
-     * 根据id获取用户信息，不同的是添加了用户组信息。
+     * 根据id获取用户信息，与get_users_by_ids不同的是添加了用户组信息。
      * @param type $ids
      * @return array
      */

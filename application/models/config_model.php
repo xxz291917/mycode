@@ -10,7 +10,11 @@ class Config_model extends MY_Model {
         $this->table = 'config';
         $this->id = '';
     }
-
+    
+    /**
+     * 获取所有config，并格式化为name=>value的形式。
+     * @return type
+     */
     public function get_config() {
         $return = array();
         $configs = $this->get_all();

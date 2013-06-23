@@ -64,29 +64,20 @@ $(document).ready(function() {
 });
 //判断文本框的值是否为空，有值的情况就隐藏提示语，没有值就显示
 $(document).ready(function() {
-	var txt;
-	$('.inpTxt').live({
-		focus:function() {
-			txt = $(this).val();
-			var thisTxt = $(this).val(),
-				thisChange = $(this).attr('change');
-			if(!thisChange && txt == $(this).val()) {
-				$(this).val('');
+	$('.inpTxt').each(function() {  
+    	var txt = $(this).val(); 		
+    	$(this).focus(function() {  
+    		if(txt == $(this).val()) {
+				$(this).val("");
 				$(this).addClass('cdgray');
-			};
-		},
-		blur:function() {
-		    var thisTxt = $(this).val(),
-			thisChang = $(this).attr('chang');
-			if( thisTxt == '') {
-				$(this).val(thisChang || txt);
-				$(this).attr('chang','');
-				$(this).removeClass('cdgray');	
-			}else if( !thisChang && thisTxt !=txt) {
-			    $(this).attr('chang',txt);	
-			}
-		}
-	});
+			};  
+   		}).blur(function() {  
+    		if($(this).val() == "") {
+				$(this).val(txt);
+				$(this).removeClass('cdgray');
+			};  
+   		});  
+    }); 
 });
 /*点击回复下拉层*/
 $(document).ready(function() {
@@ -104,7 +95,6 @@ $(document).ready(function() {
 	);
 });
 //滚条提示
-/*
 var scrollUp;
 scrollUp || (scrollUp = {});
 (function(a) {
@@ -135,7 +125,6 @@ scrollUp || (scrollUp = {});
     })	
 })($);
 $('.scroll').returntop();
-*/
 //帖子列表左侧菜单展开效果
 $(document).ready(function() {
 	$('.leftNav dt a').toggle(	
@@ -190,7 +179,10 @@ $(document).ready(function(){
 		});
 	});
 });
-
+//还可输入多少个字符
+$(document).ready(function(){
+	var letter = $(".pubInpW1");	
+});
 
 
 

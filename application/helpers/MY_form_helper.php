@@ -81,6 +81,23 @@ if (!function_exists('my_set_value')) {
 
 }
 
+if (!function_exists('my_validation_errors')) {
+
+    function my_validation_errors($prefix = '', $suffix = '') {
+        if (FALSE === ($OBJ = & _get_validation_object())) {
+            return '';
+        }
+        $error = $OBJ->error_string($prefix, $suffix);
+        $errors = array_unique(preg_split('/\n+/', $error));
+        if (is_array($errors)) {
+            return json_encode($errors);
+        } else {
+            return '';
+        }
+    }
+
+}
+
 if (!function_exists('set_date')) {
 
     function my_set_date($field = '', $data = array(),$date_format='Y-m-d H:i:s') {
