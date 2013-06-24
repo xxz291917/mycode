@@ -179,7 +179,7 @@ echo $page;?>
           <li><a href="#" class="icoEdit">评分</a></li>
           <li><a href="#" class="icoCollect">收藏</a></li>
           <li><a href="#" class="icoGrade">编辑</a></li>
-          <li><a href="#" class="icoReplys">回复</a></li>
+          <li><a href="#editor_reply" class="icoReplys reply_editor">回复</a></li>
         </ul>
       </div>
     </li>
@@ -300,12 +300,9 @@ echo $page;?>
   </div>
 
 
-  <div class="mainCmt">
+  <div class="mainCmt" id="editor_reply">
     <h5>回复帖子</h5>
-    <form>
-      <textarea name="" cols="" rows="" class="inp"></textarea>
-      <button class="mainCmtBtn">回复</button>
-    </form>
+    <?php $this->load->view('action_reply_smiple');?>
   </div>
 
 </div>

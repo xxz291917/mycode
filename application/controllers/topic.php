@@ -53,7 +53,19 @@ class Topic extends MY_Controller {
         $special_var = call_user_func_array(array($cls, $func), $args);
         $var = array_merge($var, $special_var);
         
-//        var_dump($var);die;
+        //如果是特殊帖子回复需要做相应的处理。
+        $special = $topic['special'];
+        if ($special != 1) {
+            $class = biz_post::$specials[$special];
+            $this->load->model($class);
+            if(method_exists($this->$class, 'get_reply_view')){
+                $var['special_view'] = $this->$class->get_reply_view($topic['id']);
+            }
+            if (method_exists($this->$class, 'init_reply')) {
+                $special_var = $this->$class->init_reply($topic['id']);
+                $var = $var + $special_var;
+            }
+        }
 
         //获取积分名称。
         $credit_name = $this->credit_name_model->get_all_by_creditx();

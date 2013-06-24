@@ -182,7 +182,7 @@ class Action extends MY_Controller {
         $var['is_arr'] = $is_arr;
         $var['type'] = 'reply';
         $var['topic_id'] = $topic_id;
-        $this->view('action_post', $var);
+        $this->load->view('action_reply_smiple', $var);
     }
     
     /**
