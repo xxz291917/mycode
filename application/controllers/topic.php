@@ -79,6 +79,39 @@ class Topic extends MY_Controller {
         $this->view($view_template, $var);
     }
 
+    
+    public function position($topic_id,$post_id) {
+        if (!is_numeric($topic_id) || (!is_numeric($post_id) && $post_id!='last')) {
+            $this->message('参数错误！');
+        }
+        
+        if($post_id=='last'){
+            $post_id = $this->posts_model->get_last_post_id($topic_id);
+            if(!is_numeric($post_id)){
+                $this->message('参数错误!');
+            }
+        }
+        //echo $post_id;die;
+        $post = $this->posts_model->get_by_id($post_id);
+        $topic = $this->topics_model->get_by_id($topic_id);
+        if (empty($topic)||empty($post)) {
+            $this->message('参数错误，帖子不存在');
+        }
+
+        $where = " topic_id = '$topic_id' AND status =1 ";
+        if($topic['special']!=1){
+            $where .= "AND is_first != 1";
+        }
+        $where .= " AND post_time <= '{$post['post_time']}'";
+        
+        $per_num = $this->config->item('per_num');
+        $total_num = $this->posts_model->get_count($where);
+        $page_num = ceil($total_num/$per_num);
+        $redirect_url = base_url("index.php/topic/show/$topic_id/?per_page=$page_num #p_$post_id");
+        redirect($redirect_url);
+    }
+    
+    
     /**
      * 管理帖子，接收post过来的topic_id,填写删除原因，然后删除帖子。
      */

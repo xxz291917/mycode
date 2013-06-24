@@ -121,9 +121,14 @@ class Posts_model extends MY_Model {
         return $value;
     }
     
-    public function get_max_position($id) {
-        $post = $this->get_one(array('topic_id' => $id), 'position', 'position DESC');
+    public function get_max_position($topic_id) {
+        $post = $this->get_one(array('topic_id' => $topic_id), 'position', 'position DESC');
         return empty($post['position']) ? 0 : $post['position'];
+    }
+    
+    public function get_last_post_id($topic_id){
+        $post = $this->get_one(array('topic_id' => $topic_id), 'id', 'post_time DESC');
+        return empty($post['id']) ? 0 : $post['id'];
     }
 
 }

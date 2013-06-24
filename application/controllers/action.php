@@ -113,6 +113,7 @@ class Action extends MY_Controller {
             //构造post数组。
             $post = array_merge($post, array('topic_id' => $topic_id, 'forum_id' => $topic['forum_id'],'special'=>$topic['special'], 'topic_author_id' => $topic['author_id']));
             //完成回复。
+            $forum_show_url = base_url('index.php/topic/position/'.$topic_id.'/last');
             if ($this->biz_post->post($post, 'reply')) {
                 $this->message('发帖成功。', 1, $forum_show_url);
             } else {
