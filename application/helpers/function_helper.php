@@ -23,7 +23,7 @@ if (!function_exists('time_span')) {
         if (!is_numeric($max_time)) {
             $max_time=2592000;
         }
-        if (empty($first_time) || !is_numeric($first_time)) {
+        if (!is_numeric($first_time)) {
             return '';
         } elseif ( !empty($max_time) && $second_time - $first_time >= $max_time) {
             return date('Y-m-d H:i:s', $first_time);

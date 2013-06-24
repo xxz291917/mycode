@@ -30,8 +30,8 @@ class Base_Controller extends CI_Controller {
         
 //        $this->permission = $this->config_model->get_config();
         
-        if(!empty($this->user)){//如果用户登录了，则添加最后活动时间。
-            $this->users_extra_model->update_active_time();
+        if(!empty($this->user)){//如果用户登录了，则添加最后活动时间，更新在线时长。
+            $this->users_extra_model->update_user_active();
         }
 //        var_dump($this->user);die;
     }

@@ -2,7 +2,7 @@
 
 class Users_model extends MY_Model {
 
-    static $max_active = 1800;
+    static $max_active = 1800;//用户在线最大离开时间。
     
     function __construct() {
         parent::__construct();
@@ -54,7 +54,7 @@ class Users_model extends MY_Model {
                 $this->cache->save($cache_key, $user, config_item('cache_time'));
             }
         }else{
-            //为用户赋值管理组为游客。
+            //为用户赋值用户组为游客。
             $user['id'] = 0;
             $current_groups = Groups_model::$tourist_id;
             $user['groups'] = $current_groups; //用户所属的用户组
@@ -165,7 +165,9 @@ class Users_model extends MY_Model {
             $group_id = empty($value['group_id']) ? $value['member_id'] : $value['group_id'];
             $need_users[$value['id']] = $value;
             $need_users[$value['id']]['group'] = $groups[$group_id];
-            $need_users[$value['id']]['online'] = $this->time - $value['last_active_time'] < self::$max_active;
+            $online = $this->time - $value['last_active_time'] < self::$max_active;
+            $need_users[$value['id']]['online'] = $online;
+            $need_users[$value['id']]['online_time'] = $online?time_span(0,$value['online_time']):0;
             $need_users[$value['id']]['stars_rank'] = $this->get_star_html($groups[$group_id]['stars']);
             $need_users[$value['id']]['medals'] = isset($medals[$value['id']])?$medals[$value['id']]:array();
         }

@@ -164,11 +164,15 @@ class Biz_debate extends CI_Model {
         //得到辩论帖子基本信息以及双方观点数所占比例。
         $debate = $this->debate_model->get_by_id($first_post['topic_id']);
         $total_votes = $debate['affirm_votes']+$debate['negate_votes'];
-        if($total_votes>0){
-           $debate['affirm_percent'] = round($debate['affirm_votes'] / $total_votes, 2);
-            $debate['negate_votes'] = round($debate['negate_votes'] / $total_votes, 2); 
+        if ($total_votes > 0) {
+            $debate['affirm_percent'] = round($debate['affirm_votes'] / $total_votes, 2);
+            $debate['negate_percent'] = round($debate['negate_votes'] / $total_votes, 2);
+        }else{
+            $debate['affirm_percent'] = 50;
+            $debate['negate_percent'] = 50;
         }
         $first_post['debate'] = $debate;
+        
         return $first_post;
     }
     
@@ -193,28 +197,6 @@ class Biz_debate extends CI_Model {
             return FALSE;
         }
     }
-    
-//    public function init_post() {
-//        $this->load->model('credit_name_model');
-//        //得到对应的积分名字
-//        $var['view_name'] = $this->credit_name_model->get_view_name($this->ask_credit_type);
-//        //得到当前用户的积分数
-//        $var['price'] = $this->user[$this->ask_credit_type];
-//        return $var;
-//    }
-    
-//    public function creat_time_option() {
-//        $str = '';
-//        array(
-//            ''=>'一天',
-//            ''=>'',
-//            ''=>'一天',
-//            ''=>'一天',
-//        );
-//        
-//        
-//        $str = 
-//    }
 
 }
 

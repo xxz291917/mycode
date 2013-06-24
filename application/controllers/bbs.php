@@ -124,10 +124,7 @@ class Bbs extends MY_Controller {
 //        var_dump($var['forums']);die;
         $this->view('ask_index',$var);
     }
-            
-    
-    
-    
+
 }
 
 ?>

@@ -4,7 +4,7 @@
         <form method="post" action="<?= base_url() ?>index.php/admin/credits/update" id="config_form">
             <colgroup>
                 <col width="200" />
-                <col  />         
+                <col  />
             </colgroup>
 
             <tbody id="line_group"> 
@@ -13,12 +13,14 @@
                     <?php
                     for ($i = 0; $i < count($credits); $i++) {
                         ?>          
-                        <td><input type="checkbox" name="credit_x_<?php echo $i; ?>"   value="0"   <?php if ($credits[$i]->status == 0) {
-                        echo "checked=checked";
-                    } ?>><?php echo $credits[$i]->credit_x; ?></td>
-                        <?php
-                    }
-                    ?>  
+                        <td><input type="checkbox" name="credit_x_<?php echo $i; ?>"   value="0"   <?php
+                            if ($credits[$i]->status == 0) {
+                                echo "checked=checked";
+                            }
+                            ?>><?php echo $credits[$i]->credit_x; ?></td>
+                            <?php
+                        }
+                        ?>  
                 </tr> 
                 <tr height="40" >
                     <td>名称</td>

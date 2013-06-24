@@ -125,17 +125,24 @@ scrollUp || (scrollUp = {});
     })	
 })($);
 $('.scroll').returntop();
-
 //帖子列表左侧菜单展开效果
 $(document).ready(function() {
 	$('.leftNav dt a').toggle(	
 		function () {
-			$(this).parent().parent().addClass('clsLeftNav');
+			$(this).parent().parent().addClass('clsLeftNav');	
+			//设置左侧隐藏菜单的 cookie
+			document.cookie='leftNavState=isHide';		 
 		},
 		function () {
 			$(this).parent().parent().removeClass('clsLeftNav');
 		}
-	);    
+	); 
+	//获取左侧隐藏菜单的 cookie
+	var leftNavState = document.cookie;	
+	if( leftNavState = 'isHide') {
+		$('.leftNavCtrl').parent().parent().addClass('leftNavShow');
+	}
+	
 });
 //帖子列表左侧菜单隐藏效果
 $(document).ready(function() {

@@ -141,7 +141,7 @@ a.searchBtn{ display:inline-block; width:25px; height:26px; margin:12px 0 0 0; b
 .newsCot{ margin:18px 0 20px; border:1px solid #CCC; border-bottom:none; border-radius:6px; background:#FFF;}
 .newsCotL{ float:left; width:174px;}
 .newsCot li{ border-bottom:1px solid #CCC; border-radius:6px 6px 6px 6px; background:#F7F7F7;}
-.newsCot li li{ border-bottom:none; border-radius:0; background:#FFF;}
+.newsCot li li{ border-bottom:none; border-radius:0; background:#FFF; overflow:hidden;}
 .newsCotR{ z-index:10; float:right; width:783px;min-height:300px; height:auto !important; height:300px; padding-bottom:45px; border-left:1px solid #CCC; background:#FFF;}
 .usFace{ z-index:11;width:120px; height:120px; margin:20px auto 0; }
 .usFace img{ display:block; width:120px; height:120px; border-radius:6px;box-shadow:1px 2px 2px rgba(0,0,0,0.3);}
@@ -169,7 +169,7 @@ a.searchBtn{ display:inline-block; width:25px; height:26px; margin:12px 0 0 0; b
 .usFaceInfoBot a.icoUs2{ background-position:0 -644px;}
 .usFaceInfoBot a.icoUs3{ background-position:0 -674px;}
 .usTip{ padding-left:27px;}
-.usTip li{ height:22px; line-height:22px;}
+.newsCot .usTip li{ height:22px; background:#F7F7F7; line-height:22px;}
 .usTip span.fl{ float:left; color:#999;}
 .usTip span.myRank{ display:inline-block; float:left;height:22px; margin-top:3px; overflow:hidden;}
 .usTip span.myRank i{ display:inline-block; float:left; margin-right:2px;}

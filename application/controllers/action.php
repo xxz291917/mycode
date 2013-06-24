@@ -94,7 +94,7 @@ class Action extends MY_Controller {
         if (empty($topic_id) || !is_numeric($topic_id)) {
             $this->message('参数错误，请指定要发布的主题！', 0, base_url());
         }
-        $forum_show_url = base_url("index.php/topic/show/$topic_id"); //回复完成跳转到帖子的最后一页。
+        $forum_show_url = base_url("index.php/topic/show/$topic_id");
         $topic = $this->topics_model->get_by_id($topic_id);
         if (empty($topic)) {
             $this->message('参数错误，发布的主题不存在', 0, $forum_show_url);
@@ -147,6 +147,43 @@ class Action extends MY_Controller {
         }
     }
     
+    
+    public function reply_smiple($topic_id = '') {
+        if (empty($topic_id) || !is_numeric($topic_id)) {
+            $this->message('参数错误，请指定要发布的主题！', 0, base_url());
+        }
+        $forum_show_url = base_url("index.php/topic/show/$topic_id"); //回复完成跳转到帖子的最后一页。
+        $topic = $this->topics_model->get_by_id($topic_id);
+        if (empty($topic)) {
+            $this->message('参数错误，发布的主题不存在', 0, $forum_show_url);
+        }
+
+        $forum_id = $topic['forum_id'];
+        //获取导航面包屑，论坛>综合交流>活动专区>现代程序员的工作环境
+        $nav = $this->forums_model->get_nav_str($forum_id);
+        $nav[] = array('回复帖子', current_url());
+        $var['nav'] = $nav;
+
+        $is_arr = $this->biz_post->get_is($forum_id);
+        //如果是特殊帖子需要做相应的处理。
+        $special = $topic['special'];
+        $var['special'] = $special;
+        if ($special != 1) {
+            $class = biz_post::$specials[$special];
+            $this->load->model($class);
+            if(method_exists($this->$class, 'get_reply_view')){
+                $var['special_view'] = $this->$class->get_reply_view($topic_id);
+            }
+            if (method_exists($this->$class, 'init_reply')) {
+                $special_var = $this->$class->init_reply($topic_id);
+                $var = $var + $special_var;
+            }
+        }
+        $var['is_arr'] = $is_arr;
+        $var['type'] = 'reply';
+        $var['topic_id'] = $topic_id;
+        $this->view('action_post', $var);
+    }
     
     /**
      * 前台编辑器使用的图片和文件上传功能

@@ -107,9 +107,24 @@ class Users_extra_model extends MY_Model {
         return $this->update_increment($extra_data,array('user_id' => $this->user['id']));
     }
 
-    public function update_active_time() {
+    private function update_active_time() {
         return $this->update(array('last_active_time'=>$this->time), array('user_id'=>$this->user['id']));
     }
+    
+    /**
+     * 更新最后活动时间和在线时长。
+     */
+    public function update_user_active(){
+        $this->update_active_time();
+        $active_time = $this->time - $this->user['last_active_time'];
+        if($active_time <= Users_model::$max_active){
+            $this->update_increment(array('online_time'=>':'.$active_time), array('user_id'=>$this->user['id']));
+        }else{
+            $this->update_increment(array('online_time'=>'1'), array('user_id'=>$this->user['id']));
+            $this->update(array('last_login_time'=>$this->time,'last_login_ip'=>$this->ip), array('user_id'=>$this->user['id']));
+        }
+    }
+    
 }
 
 ?>
