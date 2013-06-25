@@ -81,14 +81,11 @@ if (!function_exists('time_span')) {
     }
 
 }
-if (!function_exists('include_view')) {
-    function include_view($file,$ext = '.php'){
-        $view_paths = APPPATH.'views/';
-        $file = $view_paths.$file.$ext;
-        if(file_exists($file)){
-            include $file;
-        }
+
+if (!function_exists('utf8_substr')) {
+    function utf8_substr($str, $from, $len) {
+        return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $from . '}' .
+                '((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $len . '}).*#s', '$1', $str);
     }
 }
-
 ?>

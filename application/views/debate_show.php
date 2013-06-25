@@ -302,7 +302,7 @@ echo $page;?>
 
   <div class="mainCmt" id="editor_reply">
     <h5>回复帖子</h5>
-    <?php $this->load->view('action_reply_smiple');?>
+    <?php $this->load->view('reply_smiple');?>
   </div>
 
 </div>

@@ -63,9 +63,9 @@ class Biz_poll extends CI_Model {
         $poll_data['is_overt'] = empty($post['is_overt']) ? 1 : 0;
         $poll_data['is_multiple'] = $post['max_choices'] > 1 ? 1 : 0;
         $poll_data['is_visible'] = empty($post['is_visible']) ? 1 : 0;
-        $poll_data['max_choices'] = $post['max_choices'];
+        $poll_data['max_choices'] = intval($post['max_choices']);
         $poll_data['expire_time'] = $this->time + ($post['expire_time'] * 3600 * 24);
-        $poll_data['preview'] = join('[|]', array_slice($post['poll_option'], 0, 2));
+        $poll_data['preview'] = join('[|]', array_slice(html_escape($post['poll_option']), 0, 2));
         $poll_data['voters'] = 0;
         $this->poll_model->insert($poll_data);
         //完成poll_options表的数据
@@ -73,7 +73,7 @@ class Biz_poll extends CI_Model {
         foreach ($post['poll_option'] as $k => $v) {
             $options_data[$k]['topic_id'] = $tid;
             $options_data[$k]['display_order'] = $k;
-            $options_data[$k]['option'] = $v;
+            $options_data[$k]['option'] = html_escape($v);
         }
         $this->poll_options_model->insert_batch($options_data);
     }

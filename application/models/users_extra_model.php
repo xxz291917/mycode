@@ -117,12 +117,15 @@ class Users_extra_model extends MY_Model {
     public function update_user_active(){
         $this->update_active_time();
         $active_time = $this->time - $this->user['last_active_time'];
-        if($active_time <= Users_model::$max_active){
-            $this->update_increment(array('online_time'=>':'.$active_time), array('user_id'=>$this->user['id']));
-        }else{
-            $this->update_increment(array('online_time'=>'1'), array('user_id'=>$this->user['id']));
-            $this->update(array('last_login_time'=>$this->time,'last_login_ip'=>$this->ip), array('user_id'=>$this->user['id']));
+        if ($active_time != 0) {
+            if ($active_time <= Users_model::$max_active) {
+                $this->update_increment(array('online_time' => ':' . $active_time), array('user_id' => $this->user['id']));
+            } else {
+                $this->update_increment(array('online_time' => '1'), array('user_id' => $this->user['id']));
+                $this->update(array('last_login_time' => $this->time, 'last_login_ip' => $this->ip), array('user_id' => $this->user['id']));
+            }
         }
+        
     }
     
 }

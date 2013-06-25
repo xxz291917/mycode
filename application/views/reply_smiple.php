@@ -36,9 +36,6 @@ var base_url = '<?=base_url()?>';
 	echo form_open(current_url(),$attributes);
 	?>
       <ul class="pubQAForm">
-        <li>
-          <input type="text" value="<?php echo set_value('subject', ''); ?>" placeholder="Re:投票后才可见结果"  name="subject" style="width:300px" class="inp inpTxt">
-        </li>
 	<?php 
             if(!empty($special_view)){
                 $this->load->view($special_view);

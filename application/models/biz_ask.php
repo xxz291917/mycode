@@ -27,12 +27,12 @@ class Biz_Ask extends CI_Model {
         }
         //完成ask表的数据
         $ask_data['topic_id'] = $tid;
-        $ask_data['price'] = $post['price'];
-        $ask_data['forum_id'] = $post['forum_id'];
-        $ask_data['category_id'] = $post['category'];
+        $ask_data['price'] = intval($post['price']);
+        $ask_data['forum_id'] = intval($post['forum_id']);
+        $ask_data['category_id'] = intval($post['category']);
         $is_insert = $this->ask_model->insert($ask_data);
         //从用户身上扣减分数
-        $credits = array($this->ask_credit_type => 0 - $post['price']);
+        $credits = array($this->ask_credit_type => 0 - intval($post['price']));
         $is_update_credit = $this->users_extra_model->update_credits($credits, $this->user['id'], self::$ask_credit_action);
         if ($is_insert && $is_update_credit) {
             return TRUE;

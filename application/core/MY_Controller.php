@@ -36,7 +36,7 @@ class Base_Controller extends CI_Controller {
 //        var_dump($this->user);die;
     }
 
-    protected function echo_ajax($success = 1, $message = '', $data = array()) {
+    protected function echo_ajax($success = 1, $message = '', $data = array(), $redirect='') {
         $ajax_arr = array(
             'success' => $success,
             'message' => $message,
@@ -44,6 +44,10 @@ class Base_Controller extends CI_Controller {
         if (!empty($data)) {
             $ajax_arr['data'] = $data;
         }
+        if (!empty($redirect)) {
+            $ajax_arr['redirect'] = $redirect;
+        }
+        
         return json_encode($ajax_arr);
     }
 
@@ -87,7 +91,8 @@ class MY_Controller extends Base_Controller {
     protected function message($message, $sucess = 0, $redirect = 'BACK') {
         //判断是否是ajax提交
         if ($this->input->is_ajax_request()) {
-            echo $this->echo_ajax($sucess, $message);
+            $redirect = $redirect == 'BACK' ? '' : $redirect;
+            echo $this->echo_ajax($sucess, $message, '', $redirect);
         } else {
             global $OUT;
             $vars['message'] = $message;

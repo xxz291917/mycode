@@ -58,8 +58,8 @@ class Biz_post extends CI_Model {
      */
     public function post($post, $type = 'post') {
         $post = $this->safe_filter($post); //安全过滤，不包括html转义，也就是说在一定条件下可以使用html代码
-        $forum_id = $post['forum_id'];
-        $special = $post['special'];
+        $forum_id = intval($post['forum_id']);
+        $special = intval($post['special']);
         
         //特殊贴钩子（处理业务之前调用）
         if ($special != 1) {
@@ -73,15 +73,18 @@ class Biz_post extends CI_Model {
             }
         }
         
+        //根据html权限检测是否需要过滤html
+        $is_html = $this->biz_permission->get_is('html', $forum_id);
+        
         if ('post' == $type) {
             //插入topics表
             $tags = $this->topics_model->format_tags($post['tags']);
             $topics_data['forum_id'] = $forum_id;
-            $topics_data['category_id'] = $post['category'];
+            $topics_data['category_id'] = intval($post['category']);
             $topics_data['author'] = $this->user['username'];
             $topics_data['author_id'] = $this->user['id'];
             $topics_data['post_time'] = $this->time;
-            $topics_data['subject'] = $post['subject'];
+            $topics_data['subject'] = html_escape($post['subject']);
             $topics_data['tags'] = $tags;
             $topics_data['special'] = $special;
             $topics_data['replies'] = 0;
@@ -107,7 +110,14 @@ class Biz_post extends CI_Model {
                     $this->topics_posted_model->insert(array('user_id' => $this->user['id'], 'topic_id' => $tid, 'time'=>$this->time));
                 }
             }
+            
+            if (!empty($post['post_id'])) {
+                $quote_post = $this->posts_model->get_by_id($post['post_id']);
+                $quote_content = $this->get_quote_content($quote_post);
+            }
+            
         }
+        
         //插入posts表
         $posts_data['topic_id'] = $tid;
         $posts_data['forum_id'] = $forum_id;
@@ -115,8 +125,8 @@ class Biz_post extends CI_Model {
         $posts_data['author_id'] = $this->user['id'];
         $posts_data['author_ip'] = $this->ip;
         $posts_data['post_time'] = $this->time;
-        $posts_data['subject'] = $post['subject'];
-        $posts_data['content'] = $post['content'];
+        $posts_data['subject'] = html_escape($post['subject']);
+        $posts_data['content'] = (!empty($quote_content) ? $quote_content : '') . ($is_html ? $post['content'] : html_escape($post['content']));
         $posts_data['attachment'] = 0;
         $posts_data['is_first'] = 'post' == $type ? 1 : 0;
         $posts_data['is_bbcode'] = $this->biz_permission->get_is('bbcode', $forum_id);
@@ -252,6 +262,20 @@ class Biz_post extends CI_Model {
         return $return;
     }
     
+    public function get_quote_content($post){
+        $maxlen = 20;
+        if(empty($post)){
+            return '';
+        }
+        $post['content'] = preg_replace('/<blockquote.+<\/blockquote>/i', '', $post['content']);
+        if (function_exists('mb_strlen')) {
+            $suffix = (mb_strlen($post['content']) > $maxlen) ? '……' : '';
+        }else{
+            $suffix = (strlen($post['content']) > $maxlen) ? '……' : '';
+        }
+        return '<blockquote class="blockquote">'."{$post['author']} 发表于 " . date('Y-m-d H:i:s', $post['post_time']) . "<br/>" . utf8_substr($post['content'], 0, 20).$suffix.'</blockquote>';
+    }
+
 }
 
 ?>

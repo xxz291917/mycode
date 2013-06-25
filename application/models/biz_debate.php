@@ -38,13 +38,13 @@ class Biz_debate extends CI_Model {
             return FALSE;
         }
         //完成debate表的数据
-        $debate_data['topic_id']=$tid;
-        $debate_data['user_id']=$this->user['id'];
-        $debate_data['start_time']=$this->time;
-        $debate_data['end_time']=  strtotime($post['end_time']);
-        $debate_data['umpire']=$post['umpire'];
-        $debate_data['affirm_point']=$post['affirm_point'];
-        $debate_data['negate_point']=$post['negate_point'];
+        $debate_data['topic_id'] = $tid;
+        $debate_data['user_id'] = $this->user['id'];
+        $debate_data['start_time'] = $this->time;
+        $debate_data['end_time'] = strtotime($post['end_time']);
+        $debate_data['umpire'] = $post['umpire'];
+        $debate_data['affirm_point'] = html_escape($post['affirm_point']);
+        $debate_data['negate_point'] = html_escape($post['negate_point']);
         $this->debate_model->insert($debate_data);
     }
     
@@ -72,7 +72,7 @@ class Biz_debate extends CI_Model {
             $debate_posts = array(
                 'topic_id'=>$tid,
                 'post_id'=>$pid,
-                'stand'=>$post['stand'],
+                'stand'=>  intval($post['stand']),
                 'user_id'=>$this->user['id'],
                 'post_time'=>$this->time,
                 'voters'=>0,
