@@ -199,6 +199,5 @@ border-right:1px #e7e7e7 solid;
 .blockquote {
     background: url("../images/blockquote.png") no-repeat scroll right top #F7F7F7;
     border: 1px dashed #CCCCCC;
-    margin: 1em 0;
     padding: 15px;
 }

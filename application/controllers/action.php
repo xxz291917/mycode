@@ -122,6 +122,7 @@ class Action extends MY_Controller {
                 $this->message('发帖失败。', 0, $forum_show_url);
             }
         } else {
+            $var['topic'] = $topic;
             $forum_id = $topic['forum_id'];
             //获取导航面包屑，论坛>综合交流>活动专区>现代程序员的工作环境
             $nav = $this->forums_model->get_nav_str($forum_id);
@@ -144,10 +145,10 @@ class Action extends MY_Controller {
             }
             
             $var['post_id'] = $post_id;
-            if (is_numeric($topic_id)) {
+            if (is_numeric($post_id)) {
                 $post = $this->posts_model->get_by_id($post_id);
                 if (empty($post)) {
-                    $this->message('参数错误，发布的主题不存在', 0, $forum_show_url);
+                    $this->message('参数错误，回复的帖子不存在', 0, $forum_show_url);
                 }
                 $var['post'] = $post;
                 $var['quote_content'] = $this->biz_post->get_quote_content($post);

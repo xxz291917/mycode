@@ -41,9 +41,8 @@ var base_url = '<?=base_url()?>';
                 $this->load->view($special_view);
             }
         ?>
-        <input type="hidden" name="special" value="<?php echo $topic['special']?>">
         <li class="pubQAEdit">
-          <textarea name="content" style="width:926px;height:100px;visibility:hidden;"><?php echo $this->posts_model->smiley2html(set_value('content', '')); ?></textarea>
+        <textarea name="content" style="width:926px;height:100px;visibility:hidden;"><?php echo $this->posts_model->smiley2html(set_value('content', '')); ?></textarea>
         </li>
         <input type="hidden" name="topic_id" value="<?php echo $topic['id']?>">
         <li>
