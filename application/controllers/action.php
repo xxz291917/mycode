@@ -231,6 +231,78 @@ class Action extends MY_Controller {
         }
     }
     
+    public function edit($topic_id = '',$post_id='') {
+        if (empty($topic_id) || !is_numeric($topic_id)) {
+            $this->message('参数错误，请指定要发布的主题！', 0, base_url());
+        }
+        $forum_show_url = base_url("index.php/topic/show/$topic_id");
+        $topic = $this->topics_model->get_by_id($topic_id);
+        if (empty($topic)) {
+            $this->message('参数错误，发布的主题不存在', 0, $forum_show_url);
+        }
+        //通过了check校验
+        if ($this->input->post('submit') && $this->biz_post->check_post('reply', $topic['special']) && $post = $this->input->post(null)) {
+            //检测权限。
+            $is_post = $this->biz_permission->check_base('reply', $topic['forum_id']);
+            if (!$is_post) {
+                $this->message('您没有权限回复帖子');
+            }
+            $is_post = $this->biz_permission->check_post_num();
+            if (!$is_post) {
+                $this->message('您发帖太快或者是发帖数太多。');
+            }
+            //构造post数组。
+            $post = array_merge($post, array('topic_id' => $topic_id, 'post_id' => $post_id, 'forum_id' => $topic['forum_id'],'special'=>$topic['special'], 'topic_author_id' => $topic['author_id']));
+            //完成回复。
+            $forum_show_url = base_url('index.php/topic/position/'.$topic_id.'/last');
+            if ($this->biz_post->post($post, 'reply')) {
+                $this->message('发帖成功。', 1, $forum_show_url);
+            } else {
+                $this->message('发帖失败。', 0, $forum_show_url);
+            }
+        } else {
+            $var['topic'] = $topic;
+            $forum_id = $topic['forum_id'];
+            //获取导航面包屑，论坛>综合交流>活动专区>现代程序员的工作环境
+            $nav = $this->forums_model->get_nav_str($forum_id);
+            $nav[] = array('回复帖子', current_url());
+            $var['nav'] = $nav;
+            
+            //如果是特殊帖子需要做相应的处理。
+            $special = $topic['special'];
+            $var['special'] = $special;
+            if ($special != 1) {
+                $class = biz_post::$specials[$special];
+                $this->load->model($class);
+                if(method_exists($this->$class, 'get_reply_view')){
+                    $var['special_view'] = $this->$class->get_reply_view($topic_id);
+                }
+                if (method_exists($this->$class, 'init_reply')) {
+                    $special_var = $this->$class->init_reply($topic_id);
+                    $var = $var + $special_var;
+                }
+            }
+            
+            $var['post_id'] = $post_id;
+            if (is_numeric($post_id)) {
+                $post = $this->posts_model->get_by_id($post_id);
+                if (empty($post)) {
+                    $this->message('参数错误，回复的帖子不存在', 0, $forum_show_url);
+                }
+                $var['post'] = $post;
+                $var['quote_content'] = $this->biz_post->get_quote_content($post);
+            }
+            
+            //获取当前用户在此版块下的编辑器权限。（前台过过滤编辑器，重点是对于提交的内容会做相应的处理）
+            $is_arr = $this->biz_post->get_is($forum_id);
+            $var['is_arr'] = $is_arr;
+            
+            $var['type'] = 'reply';
+            $var['topic_id'] = $topic_id;
+            $this->view('action_post', $var);
+        }
+    }
+    
     /**
      * 前台编辑器使用的图片和文件上传功能
      * //成功时

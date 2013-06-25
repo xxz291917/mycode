@@ -65,7 +65,7 @@ var base_url = '<?=base_url()?>';
             <?php echo $category_option;?>
           </select>
         <?php }?>
-          <input type="text" value="<?php echo set_value('subject', !empty($topic['subject'])?"Re:{$topic['subject']}":''); ?>" name="subject" class="inp pubInpW1">
+          <input type="text" value="<?php echo set_value('subject', ''); ?>" name="subject" class="inp pubInpW1">
           <label></label>
         </li>
         
@@ -88,7 +88,7 @@ var base_url = '<?=base_url()?>';
       
         <?php if($type == 'post'){?>
         <li>
-          <input type="text" value="<?php echo set_value('tags', "标签间请用'空格'或'逗号'隔开，最多可添加5个标签。"); ?>" name="tags" id="tags" size="60" class="inp pubInpW3">
+          <input type="text" value="<?php echo set_value('tags', ""); ?>" name="tags" id="tags" size="60" class="inp pubInpW3">
           <label>最近标签：Flash、ios、android</label>
         </li>
         <input type="hidden" name="forum_id" value="<?php echo $forum_id?>">
@@ -140,10 +140,8 @@ $(function(){
 	$.Alert(error.join(','),'错误提示');
 	<?php }?>
 	
-	
-	
 	var drafts = $("#drafts"),
-		tipsArr = {'subject':'请输入帖子标题','tags':"标签间请用'空格'或'逗号'隔开，最多可添加5个标签。"};
+		tipsArr = {'subject':'<?php echo !empty($topic['subject'])?"Re:{$topic['subject']}":'请输入帖子标题'?>','tags':"标签间请用'空格'或'逗号'隔开，最多可添加5个标签。"};
 		
 	$.each( tipsArr, function(i, n){
 		var field = thisform.find("[name='"+i+"']");
