@@ -13,9 +13,9 @@
                     <?php
                     for ($i = 0; $i < count($credits); $i++) {
                         ?>          
-                        <td><input type="checkbox" name="credit_x_<?php echo $i; ?>"   value="0"   <?php if ($credits[$i]->status == 0) {
+                        <td><input type="checkbox" name="credit_x_<?php echo $i; ?>"   value="1"   <?php if ($credits[$i]['status'] == 1) {
                         echo "checked=checked";
-                    } ?>><?php echo $credits[$i]->credit_x; ?></td>
+                    } ?>><?php echo $credits[$i]['credit_x']; ?></td>
                         <?php
                     }
                     ?>  
@@ -25,7 +25,7 @@
                     <?php
                     for ($j = 0; $j < count($credits); $j++) {
                         ?>          
-                        <td><input type="type" name="view_name_<?php echo $j; ?>"   value="<?php echo $credits[$j]->view_name; ?>" ></td>
+                        <td><input type="type" name="view_name_<?php echo $j; ?>"   value="<?php echo $credits[$j]['view_name']; ?>" ></td>
                         <?php
                     }
                     ?>  
@@ -35,7 +35,7 @@
                     <?php
                     for ($i = 0; $i < count($credits); $i++) {
                         ?>          
-                        <td><input type="text" name="unit<?php echo $i; ?>"   value="<?php echo $credits[$i]->unit; ?>"  ></td>
+                        <td><input type="text" name="unit<?php echo $i; ?>"   value="<?php echo $credits[$i]['unit']; ?>"  ></td>
                         <?php
                     }
                     ?>  
@@ -45,7 +45,7 @@
                     <?php
                     for ($k = 0; $k < count($credits); $k++) {
                         ?>          
-                        <td><input type="type" name="icon<?php echo $k; ?>"   value="<?php echo $credits[$k]->icon; ?>" ></td>
+                        <td><input type="type" name="icon<?php echo $k; ?>"   value="<?php echo $credits[$k]['icon']; ?>" ></td>
                         <?php
                     }
                     ?>  
