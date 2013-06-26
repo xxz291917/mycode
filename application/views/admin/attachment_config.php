@@ -84,8 +84,10 @@
         var str_value = "";
         for (var i = 0; i <= count; i++) {
             name = $("#name" + i).val();
+            if (name !="undefined" && name !="" ){
             value_v =parseFloat($("#value" + i).val());
             str_value += name + "," + value_v + "/";
+            }
          }
         $.post(base_url+"index.php/admin/attachment_config/update", { "str_value": str_value },
                                 function(data){

@@ -26,6 +26,31 @@ class Credit_name_model extends MY_Model {
     }
     
     
+    /* power by llw
+     * 2013-06-23
+     * 积分列表
+     */
+
+    public function get_credits_list() {
+        $result=parent::get_list('','*');      
+        return $result;
+    }
+
+    /**
+     * power by llw
+     * 2013-06-23
+     * 更新积分设置
+     */
+    public function update_credit($data, $file_id) {            
+        $this->load->database();  
+	$result =$this->db->where('credit_x', $file_id); 
+	$result =$this->db->update('credit_name', $data); 
+         //$where = " credit_x='$file_id' ";   
+       // $result = parent::update($data, $where);
+        return $result;
+    }
+    
+    
 }
 
 ?>

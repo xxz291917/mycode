@@ -33,6 +33,7 @@ class Attachment_config extends Admin_Controller {
         $str_value = $this->input->post('str_value');
         if(preg_replace("/([a-zA-Z]|d)+/", "()", $str_value)){
             $str_value=str_replace('undefined,undefined/','',$str_value);
+            $str_value=str_replace('undefined,NaN/','',$str_value);
             $this->config_model->update_config($str_value);           
         }
           $message = $this->echo_ajax(1);

@@ -48,34 +48,14 @@ class Config_model extends MY_Model {
         return $query->row_array();
     }
 
-    /* power by llw
-     * 2013-06-23
-     * 积分列表
-     */
-
-    public function get_credits_list() {
-        $sql = "SELECT * FROM credit_name  ";
-        $query = $this->db->query($sql);
-        return $query->result();
-    }
-
-    /**
-     * power by llw
-     * 2013-06-23
-     * 更新积分设置
-     */
-    public function update_credit($data, $where) {
-        $this->load->database();
-        $result = $this->db->where('credit_x', $where);
-        $result = $this->db->update('credit_name', $data);
-        return $result;
-    }
 
     /**
      * 更新附件设置
      */
     public function update_config($str_value) {
-        $result = parent::update_increment($data, $where);
+        $where=" name='attachments_config' ";
+        $file_update = array('value' => $str_value );
+        $result = parent::update_increment($file_update, $where);
         return $result;
     }
 
