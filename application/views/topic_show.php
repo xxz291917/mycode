@@ -1,5 +1,4 @@
 <!--content-->
-
 <div class="wrap">
   <div class="myPos fsong">>
   <a href="<?php echo base_url();?>">论坛</a>>
@@ -15,6 +14,7 @@
 	}
   ?>
   </div>
+  
   <div class="menuPage clearfix">
     <ul class="menuTag">
       <li class="pr hasMenu"><a href="javascript:void(0);" class="icoPost">发帖</a>
@@ -25,7 +25,6 @@
             <li><a href="<?php echo base_url('index.php/action/post/'.$topic['forum_id'].'/2');?>" class="ico3" target="_blank">发布问答</a></li>
             <li><a href="<?php echo base_url('index.php/action/post/'.$topic['forum_id'].'/3');?>" class="ico2" target="_blank">发起投票</a></li>
             <li><a href="<?php echo base_url('index.php/action/post/'.$topic['forum_id'].'/4');?>" class="ico4" target="_blank">发起辩论</a></li>
-            
             <!--<li><a href="#" class="ico5">发起活动</a></li>
             <li><a href="#" class="ico6">出售商品</a></li>-->
           </ul>
@@ -46,52 +45,57 @@
     <?php empty($page) && $page = '';
 echo $page;?>
 </div>
-  <ul class="newsCot">    
-<?php foreach ($posts as $post) { 
-  $user = $users[$post['author_id']];
-  ?>
 
-    <li>
-      <div class="newsCotL">
-        <div class="usFace pr">
-        <a href="#"><img src="<?php echo base_url(!empty($user['icon'])?$user['icon']:'images/default.png');?>" alt="头像"></a>
-        <span class="pa usFaceBg"></span>
-        <!--usFaceBg为红色背景 usFaceBg2为绿色背景 usFaceBg3为黄色背景--> 
-          <span class="pa usFaceP"><?php echo $user['group']['name'];?></span>
-          <i class="pa icoSj2"></i>
-          <div class="usFaceInfoBox pa">
-            <div class="usFaceInfo pr">
-              <div class="usFaceInfoTit"><?php if($user['online']){echo '当前在线';}else{echo '当前不在线';}?></div>
-              <!--如果是离加则加载样式：cOffLine -->
-              <ul>
-                <li class="usUid"><span>UID：</span><?php echo $user['id'];?></li>
-                <li><span>最后登录：</span><?php echo date('y-m-d',$user['last_login_time']);?></li>
-                <li><span>在线时间：</span>37 小时</li>
-                <li><span>银子：</span>94 两</li>
-                <li><span>注册时间：</span>2012-10-14</li>
-                <li><span>积分：</span>1448</li>
-                <li><span>主题：</span><a href="#">3</a></li>
-                <!--若为0则无链接-->
-                <li><span>帖子：</span><a href="#">64</a></li>
-                <!--若为0则无链接-->
-                <li><span>分享：</span><a href="#">2</a></li>
-                <!--若为0则无链接-->
-                <li><span>精华：</span>0</li>
-                <li><span>金子：</span>12 两</li>
-              </ul>
-              <div class="usFaceInfoBot"><a href="#" class="icoUs1">资料</a><a href="#" class="icoUs2">串个门</a><a href="#" class="icoUs3">加好友</a></div>
-              <i class="pa"></i> </div>
+  <ul class="newsCot">
+    <?php foreach ($posts as $post) { 
+      $user = $users[$post['author_id']];
+    ?>
+        
+<li class="clearfix">
+    
+  <div class="newsCotL">
+    <div class="usFace pr">
+    <a href="#"><img src="<?php echo base_url(!empty($user['icon'])?$user['icon']:'images/default.png');?>" alt="头像"></a>
+    <span class="pa usFaceBg"></span>
+    <!--usFaceBg为红色背景 usFaceBg2为绿色背景 usFaceBg3为黄色背景-->
+      <span class="pa usFaceP"><?php echo $user['group']['name'];?></span>
+      <i class="pa icoSj2"></i>
+      <div class="usFaceInfoBox pa">
+        <div class="usFaceInfo pr">
+
+        <?php if($user['online']){echo '<div class="usFaceInfoTit">当前在线</div>';}else{echo '<div class="usFaceInfoTit cOffLine">当前不在线</div>';}?>
+          <ul>
+            <li class="usUid"><span>UID：</span><?php echo $user['id'];?></li>
+            <li><span>注册时间：</span><?php echo date('Y-m-d H:i:s',$user['regdate']);?></li>
+            <li><span>在线时间：</span><?php echo $user['online_time']?></li>
+            <li><span>最后登录：</span><?php echo date('Y-m-d H:i:s',$user['last_login_time']);?></li>
+        	<?php foreach ($credit_name as $key => $val) {
+                echo "<li><span>{$val['view_name']}：</span>{$user[$key]} {$val['unit']}</li>";
+            }
+            ?>
+            <li><span>总积分：</span><?php echo $user['credits'];?></li>
+            <li><span>帖子：</span><a href="#"><?php echo $user['posts'];?></a></li>
+          </ul>
+          <div class="usFaceInfoBot">
+              <a href="<?=$this->config->item('user_url').$user['id']?>" class="icoUs1">资料</a>
+              <a href="<?=$this->config->item('user_url').$user['id']?>" class="icoUs2">串个门</a>
+              <a href="#" class="icoUs3">加关注</a>
           </div>
-        </div>
-        <div class="usName"><a href="#"><?php echo $user['username'];?></a></div>
-        <ul class="usTip">
-          <li><span class="fl">等级：</span><?php echo $user['stars_rank'];?></li>
-          <li><span class="fl">积分：</span><?php echo $user['credits'];?></li>
-          <li class="icoHonour"><span>荣誉学员</span></li>
-          <li class="usIco"><a class="usIco1" title="2">收藏</a><a class="usIco2" title="2">勋章</a><a class="usIco3" title="2">顶</a><a class="usIco4" title="2">编辑</a></li>
-          <!--titile和文字待定-->
-        </ul>
+          <i class="pa"></i> </div>
       </div>
+    </div>
+    <div class="usName"><a href="<?=$this->config->item('user_url').$user['id']?>"><?php echo $user['username'];?></a></div>
+    <ul class="usTip">
+      <li><span class="fl">等级：</span><?php echo $user['stars_rank'];?></li>
+      <li><span class="fl">积分：</span><?php echo $user['credits'];?></li>
+      <li class="icoHonour">
+      	<?php foreach($user['medals'] as $medal){?>
+        	<img style="vertical-align:middle" src="<?php echo base_url('/images/medals/'.my_set_value('image', $medal));?>">
+        <?php }?>
+      </li>
+    </ul>
+  </div>
+  
 
       <div class="newsCotR pr">
       <?php if($post['is_first']!=1){?>
@@ -100,14 +104,14 @@ echo $page;?>
           <div class="newsTip">
           <span>发表于 <?php echo time_span($post['post_time'],'','','前');?> |<a href="<?php echo base_url('index.php/topic/show/'.$post['topic_id'].'/?author='.$post['author_id']);?>">只看该作者</a></span>
           </div>
+          <a name="p_<?=$post['id']?>">
 		  <?php
 			if(empty($position_names[$post['position']])){
 				echo $post['position'].'#';
 			}else{
 				echo $position_names[$post['position']];
 			}
-			?>
-            
+			?></a>
         </div>
         <?php }?>
         <article class="newsCots">
@@ -129,39 +133,7 @@ echo $page;?>
           <?php echo $post['content'];?>
           </div>
         </article>
-        
-        <!--
-        <div class="download"> <span class="downloadPsw">解压密码:</span>
-          <p>浪漫的杯子，如果您要查看本帖隐藏内容请<a href="#">回复</a></p>
-          <div class="downloadUrl"><a href="#" target="_blank">Nape离线API文档.rar</a>(599.78 KB, 下载次数: 269)</div>
-          <div class="orgUrl">原文链接：<a href="#">http://bbs.9ria.com/thread-120574-1-1.html</a></div>
-        </div>
-        
-        <div class="reply clearfix pr">
-          <div class="replyL">本帖评记记录：共<em>11</em>人评分 银子<em>+42</em></div>
-          <div class="replyCot">
-            <ul>
-              <li>
-                <ul>
-                  <li class="td1"><a href="#"><img src="/images/temp.jpg" alt="我名" width="50" height="57" /></a></li>
-                  <li class="td2"><a href="#">浪漫的杯子</a></li>
-                  <li class="td3">+8</li>
-                  <li class="td4">郭美美真是个NB的人啊！~</li>
-                </ul>
-              </li>
-              <li>
-                <ul>
-                  <li class="td1"><a href="#"><img src="/images/temp.jpg" alt="我名" width="50" height="57"></a></li>
-                  <li class="td2"><a href="#">浪漫的杯子</a></li>
-                  <li class="td3">+8</li>
-                  <li class="td4">郭美美真是个NB的人啊！~</li>
-                </ul>
-              </li>
-            </ul>
-            <div class="replyCotBot"> <span class="pageRep"><a href="#">上一页</a><a href="#">1</a><a href="#">2</a><a href="#">3</a>...<a href="#">4</a><a href="#">5</a><a href="#">下一页</a></span> <span class="btnGrade">我来评分</span> </div>
-          </div>
-          <span class="icoReply pa">收起回复</span> </div>
-        -->
+          
           <?php if($post['is_first']==1 && !empty($related_posts)){?>
           <div class="related">
           <h3>相关帖子</h3>
@@ -180,7 +152,7 @@ echo $page;?>
           <?php }?>
           <!--li><a href="#" class="icoEdit">评分</a></li-->
           <li><a href="#" class="icoGrade">编辑</a></li>
-          <li><a href="#" class="icoReplys">回复</a></li>
+          <li><a href="<?php echo base_url('index.php/action/reply_dialog/'.$post['topic_id'].'/'.$post['id'])?>" target="dialog" width="464px" title="快速回复" class="icoReplys">回复</a></li>
         </ul>
         
       </div>
@@ -212,11 +184,14 @@ echo $page;?>
         <?php empty($page) && $page = '';
 echo $page;?>
    </div>
+    
   <div class="mainCmt">
+    
     <h5>回复帖子</h5>
     <form>
       <textarea name="" cols="" rows="" class="inp"></textarea>
       <button class="mainCmtBtn">回复</button>
     </form>
   </div>
+    
 </div>

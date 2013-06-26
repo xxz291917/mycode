@@ -141,7 +141,7 @@ a.searchBtn{ display:inline-block; width:25px; height:26px; margin:12px 0 0 0; b
 .newsCot{ margin:18px 0 20px; border:1px solid #CCC; border-bottom:none; border-radius:6px; background:#FFF;}
 .newsCotL{ float:left; width:174px;}
 .newsCot li{ border-bottom:1px solid #CCC; border-radius:6px 6px 6px 6px; background:#F7F7F7;}
-.newsCot li li{ border-bottom:none; border-radius:0; background:#FFF;}
+.newsCot li li{ border-bottom:none; border-radius:0; background:#FFF; overflow:hidden;}
 .newsCotR{ z-index:10; float:right; width:783px;min-height:300px; height:auto !important; height:300px; padding-bottom:45px; border-left:1px solid #CCC; background:#FFF;}
 .usFace{ z-index:11;width:120px; height:120px; margin:20px auto 0; }
 .usFace img{ display:block; width:120px; height:120px; border-radius:6px;box-shadow:1px 2px 2px rgba(0,0,0,0.3);}
@@ -169,7 +169,7 @@ a.searchBtn{ display:inline-block; width:25px; height:26px; margin:12px 0 0 0; b
 .usFaceInfoBot a.icoUs2{ background-position:0 -644px;}
 .usFaceInfoBot a.icoUs3{ background-position:0 -674px;}
 .usTip{ padding-left:27px;}
-.usTip li{ height:22px; line-height:22px;}
+.newsCot .usTip li{ height:22px; background:#F7F7F7; line-height:22px;}
 .usTip span.fl{ float:left; color:#999;}
 .usTip span.myRank{ display:inline-block; float:left;height:22px; margin-top:3px; overflow:hidden;}
 .usTip span.myRank i{ display:inline-block; float:left; margin-right:2px;}
@@ -374,12 +374,12 @@ a.searchBtn{ display:inline-block; width:25px; height:26px; margin:12px 0 0 0; b
 .voteBoxTit{ padding:6px 0 0 35px; font-size:14px; color:#999;}
 .voteBoxTit strong{ color:#333;}
 .pubQAForm .voteBoxL li input{ width:500px; color:#333;}
-.voteBoxL{ float:left; width:608px; padding-left:35px; border-right:1px dashed #FFA81F; font-size:14px;}
+.voteBoxL{ float:left; width:608px; min-height:188px; height:auto !important; height:188px;padding-left:35px; border-right:1px dashed #FFA81F; font-size:14px;}
 .voteBoxL .btnCls,.voteBoxL .btnAddVote,.btnUnCheck,.btnCheck{ cursor:pointer; display:inline-block; float:left; width:21px; height:21px; margin-top:5px; background-position:-21px -1520px; line-height:21em; overflow:hidden;}
 .voteBoxL .btnCls:hover,.btnUnCheck:hover,.btnCheck:hover{ border-radius:4px; box-shadow:0 0 2px 2px rgba(0,0,0,0.2);}
 .voteBoxL .btnCls:active,.btnUnCheck:active,.btnCheck:active{border-radius:4px; box-shadow:0 0 2px 2px rgba(0,0,0,0.3);}
 .btnAddBox{ width:120px;}
-.btnAddBox .btnAddVote{ float:right; margin-top:6px;}
+.btnAddBox .btnAddVote{ float:right; margin-top:6px; background-position:0 -1520px;}
 .pubQAForm li{}
 .pubQAForm .voteBoxR li span{ margin-right:0; padding:0 0 0 26px; font-size:14px;}
 .pubQAForm .voteBoxR li input{ width:48px; text-align:center; padding-left:0; color:#333;}

@@ -44,7 +44,7 @@ class Biz_pagination extends CI_Model {
         $config['last_link'] = '最后一页';
         
         
-        
+        $config['use_page_numbers'] = TRUE;
         $config['page_query_string']	= TRUE;
         $config['query_string_segment'] = 'per_page';
         if (!empty($my_config)) {

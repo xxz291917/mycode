@@ -38,13 +38,13 @@ class Biz_debate extends CI_Model {
             return FALSE;
         }
         //完成debate表的数据
-        $debate_data['topic_id']=$tid;
-        $debate_data['user_id']=$this->user['id'];
-        $debate_data['start_time']=$this->time;
-        $debate_data['end_time']=  strtotime($post['end_time']);
-        $debate_data['umpire']=$post['umpire'];
-        $debate_data['affirm_point']=$post['affirm_point'];
-        $debate_data['negate_point']=$post['negate_point'];
+        $debate_data['topic_id'] = $tid;
+        $debate_data['user_id'] = $this->user['id'];
+        $debate_data['start_time'] = $this->time;
+        $debate_data['end_time'] = strtotime($post['end_time']);
+        $debate_data['umpire'] = $post['umpire'];
+        $debate_data['affirm_point'] = html_escape($post['affirm_point']);
+        $debate_data['negate_point'] = html_escape($post['negate_point']);
         $this->debate_model->insert($debate_data);
     }
     
@@ -72,7 +72,7 @@ class Biz_debate extends CI_Model {
             $debate_posts = array(
                 'topic_id'=>$tid,
                 'post_id'=>$pid,
-                'stand'=>$post['stand'],
+                'stand'=>  intval($post['stand']),
                 'user_id'=>$this->user['id'],
                 'post_time'=>$this->time,
                 'voters'=>0,
@@ -164,11 +164,15 @@ class Biz_debate extends CI_Model {
         //得到辩论帖子基本信息以及双方观点数所占比例。
         $debate = $this->debate_model->get_by_id($first_post['topic_id']);
         $total_votes = $debate['affirm_votes']+$debate['negate_votes'];
-        if($total_votes>0){
-           $debate['affirm_percent'] = round($debate['affirm_votes'] / $total_votes, 2);
-            $debate['negate_votes'] = round($debate['negate_votes'] / $total_votes, 2); 
+        if ($total_votes > 0) {
+            $debate['affirm_percent'] = round($debate['affirm_votes'] / $total_votes, 2);
+            $debate['negate_percent'] = round($debate['negate_votes'] / $total_votes, 2);
+        }else{
+            $debate['affirm_percent'] = 50;
+            $debate['negate_percent'] = 50;
         }
         $first_post['debate'] = $debate;
+        
         return $first_post;
     }
     

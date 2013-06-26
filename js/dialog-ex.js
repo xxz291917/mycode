@@ -97,8 +97,14 @@ $(function(){
 				var url = unescape($this.attr("action"));
 				var field = $this.serializeArray();
 			}
-			var html = '<div id="'+rel+'" title="提示信息"></div>';
-			html = $(html);
+			
+			if ($("#"+rel).length > 0) {
+				var html = $("#"+rel);
+			} else {
+				var html = '<div id="'+rel+'" title="提示信息"></div>';
+				html = $(html);
+			}
+
 			html.load(url,field, function() {
 				//为一个表单添加ajax提交。
 				var form = $('#' + rel).find("form");
@@ -109,10 +115,22 @@ $(function(){
 							fields = form.serialize(),
 							ajaxFun = method=='post'?$.post:$.get;
 						ajaxFun(action,fields,function(data){
-							if(!data.success){
-								alert(data.message);
+							
+							if(data.redirect){
+								var options = {buttons: {
+									"确定": function() {
+											$(this).dialog("close");
+											window.location.href = data.redirect;
+										}
+								}};
 							}else{
-								alert(data.message);
+								var options = {};
+							}
+							
+							if(!data.success){
+								$.Alert(data.message,'',options);
+							}else{
+								$.Alert(data.message,'',options);
 								html.dialog("close");
 							}
 						},'json');

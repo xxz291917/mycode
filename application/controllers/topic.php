@@ -45,8 +45,6 @@ class Topic extends MY_Controller {
         $nav[] = array($topic['subject'], current_url());
         $var['nav'] = $nav;
         
-        
-        
         //判断特殊主题帖子类下是否有init_show方法，如果有则调用，如果没有则调用biz_post下的方法。
         $func = 'init_show';
         $cls = method_exists($this->$class, $func)?$this->$class:$this->biz_post;
@@ -55,7 +53,19 @@ class Topic extends MY_Controller {
         $special_var = call_user_func_array(array($cls, $func), $args);
         $var = array_merge($var, $special_var);
         
-//        var_dump($var);die;
+        //如果是特殊帖子回复需要做相应的处理。
+        $special = $topic['special'];
+        if ($special != 1) {
+            $class = biz_post::$specials[$special];
+            $this->load->model($class);
+            if(method_exists($this->$class, 'get_reply_view')){
+                $var['special_view'] = $this->$class->get_reply_view($topic['id']);
+            }
+            if (method_exists($this->$class, 'init_reply')) {
+                $special_var = $this->$class->init_reply($topic['id']);
+                $var = $var + $special_var;
+            }
+        }
 
         //获取积分名称。
         $credit_name = $this->credit_name_model->get_all_by_creditx();
@@ -69,6 +79,39 @@ class Topic extends MY_Controller {
         $this->view($view_template, $var);
     }
 
+    
+    public function position($topic_id,$post_id) {
+        if (!is_numeric($topic_id) || (!is_numeric($post_id) && $post_id!='last')) {
+            $this->message('参数错误！');
+        }
+        
+        if($post_id=='last'){
+            $post_id = $this->posts_model->get_last_post_id($topic_id);
+            if(!is_numeric($post_id)){
+                $this->message('参数错误!');
+            }
+        }
+        //echo $post_id;die;
+        $post = $this->posts_model->get_by_id($post_id);
+        $topic = $this->topics_model->get_by_id($topic_id);
+        if (empty($topic)||empty($post)) {
+            $this->message('参数错误，帖子不存在');
+        }
+
+        $where = " topic_id = '$topic_id' AND status =1 ";
+        if($topic['special']!=1){
+            $where .= "AND is_first != 1";
+        }
+        $where .= " AND post_time <= '{$post['post_time']}'";
+        
+        $per_num = $this->config->item('per_num');
+        $total_num = $this->posts_model->get_count($where);
+        $page_num = ceil($total_num/$per_num);
+        $redirect_url = base_url("index.php/topic/show/$topic_id/?per_page=$page_num #p_$post_id");
+        redirect($redirect_url);
+    }
+    
+    
     /**
      * 管理帖子，接收post过来的topic_id,填写删除原因，然后删除帖子。
      */

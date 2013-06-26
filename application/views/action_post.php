@@ -47,37 +47,48 @@ var base_url = '<?=base_url()?>';
   ?>
   </div>
   
-  <div class="pubQA">    
+  <div class="pubQA">
     <?php
 	$attributes = array('id' => 'postform');
 	echo form_open(current_url(),$attributes);
 	?>
-      <h4>发布问答帖</h4>
+      <h4>
+		<?php
+		$special_names = array(1=>'普通',2=>'问答',3=>'投票',4=>'辩论');
+		if($type == 'post'){echo '发布'.$special_names[$special].'帖';}else{echo '回复帖子';}
+		?>
+      </h4>
       <ul class="pubQAForm">
         <li>
+        <?php if($type == 'post'){?>
           <select name="category">
             <?php echo $category_option;?>
           </select>
-          <input type="text" value="<?php echo set_value('subject', '输入帖子标题'); ?>" name="subject" class="inp inpTxt pubInpW1">
+        <?php }?>
+          <input type="text" value="<?php echo set_value('subject', ''); ?>" name="subject" class="inp pubInpW1">
           <label></label>
         </li>
+        
+		<?php if(!empty($quote_content)){ ?>
+            <li>
+            <?php echo $quote_content; ?>
+            </li>
+        <?php } ?>
         
 		<?php 
             if(!empty($special_view)){
                 $this->load->view($special_view);
             }
         ?>
+        
         <input type="hidden" name="special" value="<?php echo $special?>">
         <li class="pubQAEdit">
-          <textarea name="content" style="width:958px;height:360px;visibility:hidden;"><?php echo $this->posts_model->smiley2html(set_value('content', '')); ?></textarea>
+          <textarea name="content" style="width:958px;height:340px;visibility:hidden;"><?php echo $this->posts_model->smiley2html(set_value('content', '')); ?></textarea>
         </li>
-      </ul>
-      <h4>发布问答帖</h4>
-      <ul class="pubQAForm">
       
         <?php if($type == 'post'){?>
         <li>
-          <input type="text" value="<?php echo set_value('tags', "标签间请用'空格'或'逗号'隔开，最多可添加5个标签。"); ?>" name="tags" id="tags" size="60" class="inp inpTxt pubInpW3">
+          <input type="text" value="<?php echo set_value('tags', ""); ?>" name="tags" id="tags" size="60" class="inp pubInpW3">
           <label>最近标签：Flash、ios、android</label>
         </li>
         <input type="hidden" name="forum_id" value="<?php echo $forum_id?>">
@@ -111,7 +122,11 @@ $(function(){
 			if(i=='content'){
 				editor.html(n);
 			}else{
-				thisform.find("[name='"+i+"']").val(n);
+				var field = thisform.find("[name='"+i+"']");
+				field.val(n);
+				if(field.attr('change')==='0'){
+					field.attr('change',1);
+				}
 			}
 		});
 	});
@@ -125,15 +140,46 @@ $(function(){
 	$.Alert(error.join(','),'错误提示');
 	<?php }?>
 	
-	var publish = $("#publish"),
-		drafts = $("#drafts");
+	var drafts = $("#drafts"),
+		tipsArr = {'subject':'<?php echo !empty($topic['subject'])?"Re:{$topic['subject']}":'请输入帖子标题'?>','tags':"标签间请用'空格'或'逗号'隔开，最多可添加5个标签。"};
 		
-	publish.click(function(){
-		thisform.submit();
+	$.each( tipsArr, function(i, n){
+		var field = thisform.find("[name='"+i+"']");
+		
+		if(field.val()==''){
+			field.val(tipsArr[i]);
+		}
+		
+		field.focus(function() {
+			if(field.val()==tipsArr[i]){
+				field.val('');
+			}
+		}).blur(function() {
+			if(field.val()==''){
+				field.val(tipsArr[i]);
+			}
+		});  
+	});
+		
+	thisform.submit(function(){
+		$.each( tipsArr, function(i, n){
+			var field = thisform.find("[name='"+i+"']");
+			if(field.val()==tipsArr[i]){
+				field.val('');
+			}
+		});
 	});
 	
 	drafts.click(function(event){
 		editor.sync();
+		
+		$.each( tipsArr, function(i, n){
+			var field = thisform.find("[name='"+i+"']");
+			if(field.val()==tipsArr[i]){
+				field.val('');
+			}
+		});
+		
 		var url = unescape('<?php echo base_url('index.php/action/safe_drafts')?>'),
 				method = thisform.attr('method'),
 				fields = thisform.serialize(),
@@ -150,7 +196,5 @@ $(function(){
 	});
 	
 });
-
-
 
 </script>

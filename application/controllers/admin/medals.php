@@ -112,10 +112,10 @@ class Medals extends Admin_Controller {
                     $log_data[$key.'_'.$k]['medal_id'] = $medal_id;
                     $log_data[$key.'_'.$k]['time'] = $this->time;
                     $log_data[$key.'_'.$k]['expired_time'] = $expired_time;
-                    $log_data[$key.'_'.$k]['status'] = 1;
                     
                     $user_medal_data[$key.'_'.$k]['user_id'] = $user['id'];
                     $user_medal_data[$key.'_'.$k]['medal_id'] = $medal_id;
+                    $user_medal_data[$key.'_'.$k]['expired_time'] = $expired_time;
                 }
             }
             if(empty($log_data) || empty($user_medal_data)){

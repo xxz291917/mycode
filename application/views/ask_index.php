@@ -102,6 +102,7 @@
         </li>
       </ul>
       <?php }?>
+      
       <?php empty($page) && $page = ''; echo $page;?>
 
     </div>
@@ -128,268 +129,73 @@
        <li class="listCotShowOrder">
           <ul>
             <li class="td1">筛选：</li>
+            
             <li class="td2">
-            <a href="javascript:void(0);">发布时间</a>
-            <a href="javascript:void(0);">最高赏金</a>
-            <a href="javascript:void(0);">推荐</a>
+            <a href="<?=$order_url.'post_time'?>">发布时间</a>
+            <a href="<?=$order_url.'price'?>">最高赏金</a>
+            <a href="<?=$order_url.'last_post_time'?>">最后回复</a>
             </li>
+            
             <li class="td3">赏金</li>
             <li class="td4">作者</li>
             <li class="td5">回复/查看</li>
             <li class="td6">最后发表</li>
           </ul>
         </li>
+        <?php if(!empty($topics)){?>
+			<?php
+				$icons = array(1=>'icoAEd',2=>'icoAIng',3=>'icoANo');
+				foreach($topics as $topic){
+					if($topic['best_answer']!=0){
+						$icon_type = 1;
+					}elseif($topic['replies']==0){
+						$icon_type = 3;
+					}else{
+						$icon_type = 2;
+					}
+					$icon_class = $icons[$icon_type];
+					if(!empty($topic['category_id'])){
+						$topic_category = $topic_categorys[$topic['category_id']];
+					}else{
+						$topic_category = false;
+					}
+				?>
         <li>
           <ul>
-            <li class="td1"><i class="icoAEd"></i></li>
-            <li class="td2"><strong><a href="#">[交互设计]</a></strong><a href="#" title="郭美美澳门包场办奢华派对庆生惹众怒">郭美美澳门包场办奢华派对庆生惹众怒</a></li>
-            <li class="td3"><i class="icoCoin"></i>50</li>
+            <li class="td1"><i class="<?=$icon_class?>"></i></li>
+            <li class="td2">
+            
+            <strong>
+			<?php if(!empty($topic_category)){?>
+            <a href="<?=$category_url.$topic_category['id']?>">[<?=$topic_category['name']?>]</a>
+            <?php }else{?>
+            [<?='暂无分类'?>]
+            <?php }?>
+            </strong>
+            
+            <a href="<?=base_url().'index.php/topic/show/'.$topic['id']?>" title="<?=$topic['subject']?>"><?=$topic['subject']?></a></li>
+            <li class="td3"><i class="icoCoin"></i><?=$topic['price']?></li>
             <li class="td4">
-              <a href="#"><img src="images/temp.jpg" alt="大猫"></a>
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">2013-6-17</span>
+              <a href="#"><img src="<?=$this->config->item('user_icon').$topic['author_id']?>" alt="大猫"></a>
+              <span class="tdSpan1"><a href="<?=$this->config->item('user_url').$topic['author_id']?>"><?=$topic['author']?></a></span>
+              <span class="tdSpan2"><?php echo time_span($topic['post_time'],'',3600*24,'前');?></span>
             </li>
             <li class="td5">
-              <span class="tdSpan1"><a href="#">30</a></span>
-              <span class="tdSpan2">5455</span>
+              <span class="tdSpan1"><a href="<?=base_url().'index.php/action/reply/'.$topic['id']?>"><?=$topic['replies']?></a></span>
+              <span class="tdSpan2"><?=$topic['views']?></span>
             </li>
-            <li class="td6">              
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">3分钟前</span>
+            <li class="td6">
+              <span class="tdSpan1"><a href="<?=$this->config->item('user_url').$topic['last_author_id']?>"><?=$topic['last_author']?></a></span>
+              <span class="tdSpan2"><?=$topic['last_post_time']?></span>
             </li>
           </ul>
         </li>
-        <li>
-          <ul>
-            <li class="td1"><i class="icoAIng"></i></li>
-            <li class="td2"><strong><a href="#">[Android]</a></strong><a href="#" title="郭美美澳门包场办奢华派对庆生惹众怒">郭美美澳美美澳美美澳美美澳美美澳美美澳美美澳美美澳美美澳美美澳门包场办奢华派对庆生惹众怒</a></li>
-            <li class="td3"><i class="icoCoin"></i>5240</li>
-            <li class="td4">
-              <a href="#"><img src="images/temp.jpg" alt="大猫"></a>
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">2013-6-17</span>
-            </li>
-            <li class="td5">
-              <span class="tdSpan1"><a href="#">30</a></span>
-              <span class="tdSpan2">5455</span>
-            </li>
-            <li class="td6">              
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">3分钟前</span>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <ul>
-            <li class="td1"><i class="icoANo"></i></li>
-            <li class="td2"><strong><a href="#">[HTML5/CSS3/JS2]</a></strong><a href="#" title="郭美美澳门包场办奢华派对庆生惹众怒">郭美美澳门包场办奢华派对庆生惹众怒</a></li>
-            <li class="td3"><i class="icoCoin"></i>113</li>
-            <li class="td4">
-              <a href="#"><img src="images/temp.jpg" alt="大猫"></a>
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">2013-6-17</span>
-            </li>
-            <li class="td5">
-              <span class="tdSpan1"><a href="#">30</a></span>
-              <span class="tdSpan2">5455</span>
-            </li>
-            <li class="td6">              
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">3分钟前</span>
-            </li>
-          </ul>
-        </li>
+        	<?php }?>
+        <?php }else{?>
+        <li>没有符合条件的帖子。</li>
+        <?php }?>
       </ul>
-      <ul class="listCot">
-        <li>
-          <ul>
-            <li class="td1"><i class="icoAIng"></i></li>
-            <li class="td2"><strong><a href="#">[交互设计]</a></strong><a href="#" title="郭美美澳门包场办奢华派对庆生惹众怒">郭美美澳门包场办奢华派对庆生惹众怒</a></li>
-            <li class="td3"><i class="icoCoin"></i>50</li>
-            <li class="td4">
-              <a href="#"><img src="images/temp.jpg" alt="大猫"></a>
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">2013-6-17</span>
-            </li>
-            <li class="td5">
-              <span class="tdSpan1"><a href="#">30</a></span>
-              <span class="tdSpan2">5455</span>
-            </li>
-            <li class="td6">              
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">3分钟前</span>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <ul>
-            <li class="td1"><i class="icoAIng"></i></li>
-            <li class="td2"><strong><a href="#">[Android]</a></strong><a href="#" title="郭美美澳门包场办奢华派对庆生惹众怒">郭美美澳美美澳美美澳美美澳美美澳美美澳美美澳美美澳美美澳美美澳门包场办奢华派对庆生惹众怒</a></li>
-            <li class="td3"><i class="icoCoin"></i>5240</li>
-            <li class="td4">
-              <a href="#"><img src="images/temp.jpg" alt="大猫"></a>
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">2013-6-17</span>
-            </li>
-            <li class="td5">
-              <span class="tdSpan1"><a href="#">30</a></span>
-              <span class="tdSpan2">5455</span>
-            </li>
-            <li class="td6">              
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">3分钟前</span>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <ul>
-            <li class="td1"><i class="icoAIng"></i></li>
-            <li class="td2"><strong><a href="#">[HTML5/CSS3/JS2]</a></strong><a href="#" title="郭美美澳门包场办奢华派对庆生惹众怒">郭美美澳门包场办奢华派对庆生惹众怒</a></li>
-            <li class="td3"><i class="icoCoin"></i>113</li>
-            <li class="td4">
-              <a href="#"><img src="images/temp.jpg" alt="大猫"></a>
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">2013-6-17</span>
-            </li>
-            <li class="td5">
-              <span class="tdSpan1"><a href="#">30</a></span>
-              <span class="tdSpan2">5455</span>
-            </li>
-            <li class="td6">              
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">3分钟前</span>
-            </li>
-          </ul>
-        </li>
-      </ul>
-      <ul class="listCot">
-        <li>
-          <ul>
-            <li class="td1"><i class="icoAEd"></i></li>
-            <li class="td2"><strong><a href="#">[交互设计]</a></strong><a href="#" title="郭美美澳门包场办奢华派对庆生惹众怒">郭美美澳门包场办奢华派对庆生惹众怒</a></li>
-            <li class="td3"><i class="icoCoin"></i>50</li>
-            <li class="td4">
-              <a href="#"><img src="images/temp.jpg" alt="大猫"></a>
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">2013-6-17</span>
-            </li>
-            <li class="td5">
-              <span class="tdSpan1"><a href="#">30</a></span>
-              <span class="tdSpan2">5455</span>
-            </li>
-            <li class="td6">              
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">3分钟前</span>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <ul>
-            <li class="td1"><i class="icoAEd"></i></li>
-            <li class="td2"><strong><a href="#">[Android]</a></strong><a href="#" title="郭美美澳门包场办奢华派对庆生惹众怒">郭美美澳美美澳美美澳美美澳美美澳美美澳美美澳美美澳美美澳美美澳门包场办奢华派对庆生惹众怒</a></li>
-            <li class="td3"><i class="icoCoin"></i>5240</li>
-            <li class="td4">
-              <a href="#"><img src="images/temp.jpg" alt="大猫"></a>
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">2013-6-17</span>
-            </li>
-            <li class="td5">
-              <span class="tdSpan1"><a href="#">30</a></span>
-              <span class="tdSpan2">5455</span>
-            </li>
-            <li class="td6">              
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">3分钟前</span>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <ul>
-            <li class="td1"><i class="icoAEd"></i></li>
-            <li class="td2"><strong><a href="#">[HTML5/CSS3/JS2]</a></strong><a href="#" title="郭美美澳门包场办奢华派对庆生惹众怒">郭美美澳门包场办奢华派对庆生惹众怒</a></li>
-            <li class="td3"><i class="icoCoin"></i>113</li>
-            <li class="td4">
-              <a href="#"><img src="images/temp.jpg" alt="大猫"></a>
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">2013-6-17</span>
-            </li>
-            <li class="td5">
-              <span class="tdSpan1"><a href="#">30</a></span>
-              <span class="tdSpan2">5455</span>
-            </li>
-            <li class="td6">              
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">3分钟前</span>
-            </li>
-          </ul>
-        </li>
-      </ul>
-      <ul class="listCot">
-        <li>
-          <ul>
-            <li class="td1"><i class="icoANo"></i></li>
-            <li class="td2"><strong><a href="#">[交互设计]</a></strong><a href="#" title="郭美美澳门包场办奢华派对庆生惹众怒">郭美美澳门包场办奢华派对庆生惹众怒</a></li>
-            <li class="td3"><i class="icoCoin"></i>50</li>
-            <li class="td4">
-              <a href="#"><img src="images/temp.jpg" alt="大猫"></a>
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">2013-6-17</span>
-            </li>
-            <li class="td5">
-              <span class="tdSpan1"><a href="#">30</a></span>
-              <span class="tdSpan2">5455</span>
-            </li>
-            <li class="td6">              
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">3分钟前</span>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <ul>
-            <li class="td1"><i class="icoANo"></i></li>
-            <li class="td2"><strong><a href="#">[Android]</a></strong><a href="#" title="郭美美澳门包场办奢华派对庆生惹众怒">郭美美澳美美澳美美澳美美澳美美澳美美澳美美澳美美澳美美澳美美澳门包场办奢华派对庆生惹众怒</a></li>
-            <li class="td3"><i class="icoCoin"></i>5240</li>
-            <li class="td4">
-              <a href="#"><img src="images/temp.jpg" alt="大猫"></a>
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">2013-6-17</span>
-            </li>
-            <li class="td5">
-              <span class="tdSpan1"><a href="#">30</a></span>
-              <span class="tdSpan2">5455</span>
-            </li>
-            <li class="td6">              
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">3分钟前</span>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <ul>
-            <li class="td1"><i class="icoANo"></i></li>
-            <li class="td2"><strong><a href="#">[HTML5/CSS3/JS2]</a></strong><a href="#" title="郭美美澳门包场办奢华派对庆生惹众怒">郭美美澳门包场办奢华派对庆生惹众怒</a></li>
-            <li class="td3"><i class="icoCoin"></i>113</li>
-            <li class="td4">
-              <a href="#"><img src="images/temp.jpg" alt="大猫"></a>
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">2013-6-17</span>
-            </li>
-            <li class="td5">
-              <span class="tdSpan1"><a href="#">30</a></span>
-              <span class="tdSpan2">5455</span>
-            </li>
-            <li class="td6">              
-              <span class="tdSpan1"><a href="#">浪漫的杯子</a></span>
-              <span class="tdSpan2">3分钟前</span>
-            </li>
-          </ul>
-        </li>
-      </ul>
-      
-      
-      
-      
+
     </div>
     <div class="menuPage clearfix">
     
@@ -410,7 +216,8 @@
       </ul>
       <?php }?>
       
-      <div class="pagenum"><a href="../2.html" class="btnPre"></a><a href="#" class="current">1</a><a href="../2.html">2</a><a href="../3.html">3</a><a href="../4.html">4</a><a href="../5.html">5</a><a href="../6.html">6</a><a href="../7.html">7</a><a href="../8.html">8</a>...<a href="../100.html">100</a><a href="../2.html" class="btnNext"></a></div>
+<?php empty($page) && $page = ''; echo $page;?>
+
     </div>
   </div>
 

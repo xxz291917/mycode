@@ -30,13 +30,13 @@ class Base_Controller extends CI_Controller {
         
 //        $this->permission = $this->config_model->get_config();
         
-        if(!empty($this->user)){//如果用户登录了，则添加最后活动时间。
-            $this->users_extra_model->update_active_time();
+        if(!empty($this->user)){//如果用户登录了，则添加最后活动时间，更新在线时长。
+            $this->users_extra_model->update_user_active();
         }
 //        var_dump($this->user);die;
     }
 
-    protected function echo_ajax($success = 1, $message = '', $data = array()) {
+    protected function echo_ajax($success = 1, $message = '', $data = array(), $redirect='') {
         $ajax_arr = array(
             'success' => $success,
             'message' => $message,
@@ -44,13 +44,17 @@ class Base_Controller extends CI_Controller {
         if (!empty($data)) {
             $ajax_arr['data'] = $data;
         }
+        if (!empty($redirect)) {
+            $ajax_arr['redirect'] = $redirect;
+        }
+        
         return json_encode($ajax_arr);
     }
 
     protected function get_current_url() {
         return base_url("index.php/{$this->uri->segment(1)}/{$this->uri->segment(2)}");
     }
-
+    
 }
 
 class MY_Controller extends Base_Controller {
@@ -87,7 +91,8 @@ class MY_Controller extends Base_Controller {
     protected function message($message, $sucess = 0, $redirect = 'BACK') {
         //判断是否是ajax提交
         if ($this->input->is_ajax_request()) {
-            echo $this->echo_ajax($sucess, $message);
+            $redirect = $redirect == 'BACK' ? '' : $redirect;
+            echo $this->echo_ajax($sucess, $message, '', $redirect);
         } else {
             global $OUT;
             $vars['message'] = $message;

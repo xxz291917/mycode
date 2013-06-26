@@ -23,7 +23,7 @@ if (!function_exists('time_span')) {
         if (!is_numeric($max_time)) {
             $max_time=2592000;
         }
-        if (empty($first_time) || !is_numeric($first_time)) {
+        if (!is_numeric($first_time)) {
             return '';
         } elseif ( !empty($max_time) && $second_time - $first_time >= $max_time) {
             return date('Y-m-d H:i:s', $first_time);
@@ -49,11 +49,11 @@ if (!function_exists('time_span')) {
             $first_time -= $months * 2628000;
         }
         
-        $weeks = floor($first_time / 604800);
-        if ($weeks > 0) {
-            $str .= $weeks . ' ' . $CI->lang->line((($weeks > 1) ? 'date_weeks' : 'date_week')) . '';
-            $first_time -= $weeks * 604800;
-        }
+//        $weeks = floor($first_time / 604800);
+//        if ($weeks > 0) {
+//            $str .= $weeks . ' ' . $CI->lang->line((($weeks > 1) ? 'date_weeks' : 'date_week')) . '';
+//            $first_time -= $weeks * 604800;
+//        }
 
         $days = floor($first_time / 86400);
         if ($days > 0) {
@@ -80,5 +80,12 @@ if (!function_exists('time_span')) {
         return trim($str).$view_str;
     }
 
+}
+
+if (!function_exists('utf8_substr')) {
+    function utf8_substr($str, $from, $len) {
+        return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $from . '}' .
+                '((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $len . '}).*#s', '$1', $str);
+    }
 }
 ?>

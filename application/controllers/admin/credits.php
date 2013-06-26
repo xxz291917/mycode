@@ -11,7 +11,7 @@ class Credits extends Admin_Controller {
     }
 
     /**
-     * 附件设置
+     * 积分设置
      */
     public function index() {
 
@@ -47,8 +47,12 @@ class Credits extends Admin_Controller {
                 'icon' => $str_value[$ic],
                 'unit' => $str_value[$un],
             );
+
             $this->credit_name_model->update_credit($data, $file);
          }
+
+            $this->load->model('credit_name_model');
+            $this->credit_name_model->update($data, $where);
             echo "<script type=text/javascript>alert('设置成功');history.back();</script>";
             die;
       

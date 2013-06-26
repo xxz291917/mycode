@@ -4,7 +4,7 @@
         <form method="post" action="<?= base_url() ?>index.php/admin/credits/update" id="config_form">
             <colgroup>
                 <col width="200" />
-                <col  />         
+                <col  />
             </colgroup>
 
             <tbody id="line_group"> 
