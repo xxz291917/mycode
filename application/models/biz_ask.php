@@ -150,6 +150,36 @@ class Biz_Ask extends CI_Model {
         return $this->ask_posts_model->update_increment($update_data, array('id'=>$post['topic_id']));
     }
     
+    public function init_edit($topic_id,$post_id){
+        //添加上ask表里的附加字段
+        $ask = $this->ask_model->get_by_id($topic_id, 'price');
+        return $ask;
+    }
+    
+    public function edit($tid, $post, $pid) {
+        if (empty($tid) || empty($post)) {
+            return FALSE;
+        }
+        //完成ask表的数据更新
+        $ask_data['price'] = intval($post['price']);
+        $ask_data['category_id'] = intval($post['category']);
+        $is_update = $this->ask_model->update($ask_data,array('topic_id' => $tid));
+        
+        //得到用户原来的扣减积分。
+        $ask = $this->ask_model->get_by_id(array('topic_id' => $tid));
+        $old_price = !empty($ask['price'])?$ask['price']:0;
+        
+        //从用户身上扣减分数(多退少补)
+        $credits = array($this->ask_credit_type => $old_price - intval($post['price']));
+        $is_update_credit = $this->users_extra_model->update_credits($credits, $this->user['id'], self::$ask_credit_action);
+        if ($is_update && $is_update_credit) {
+            return TRUE;
+        } else {
+            log_message('error', '发表问题，扣减积分出错。');
+            return false;
+        }
+    }
+    
 }
 
 ?>

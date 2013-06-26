@@ -195,6 +195,61 @@ class Biz_post extends CI_Model {
         
         return TRUE;
     }
+    
+    public function edit($post){
+        $post = $this->safe_filter($post); //安全过滤，不包括html转义，也就是说在一定条件下可以使用html代码
+        $forum_id = intval($post['forum_id']);
+        $special = intval($post['special']);
+        $tid = $post['topic_id'];
+        $pid = $post['post_id'];
+        
+        //特殊贴编辑钩子
+        if ($special != 1) {
+            $special_class = self::$specials[$special];
+            if(!empty($special_class)){
+                $this->load->model($special_class);
+            }
+        }
+        
+        
+        if(!empty($post['is_first']) && $post['is_first']==1){
+            //主题帖需要更新topic标题
+            $topics_data['subject'] = html_escape($post['subject']);
+            $this->topics_model->update($topics_data, array('id' => $tid));
+            
+            //特殊贴钩子（完成基本业务后调用）
+            if(!empty($special_class)){
+                $method = 'edit';
+                if(method_exists($this->$special_class, $method)){
+                    $this->$special_class->$method($tid,$post,$pid);
+                }
+            }
+            
+        }else{
+            //特殊贴钩子（完成基本业务后调用）
+            if(!empty($special_class)){
+                $method = 'reply_edit';
+                if(method_exists($this->$special_class, $method)){
+                    $this->$special_class->$method($tid,$post,$pid);
+                }
+            }
+        }
+        
+        //根据html权限检测是否需要过滤html
+        $is_html = $this->biz_permission->get_is('html', $forum_id);
+        
+        //更新post表
+        $update_post_data['edit_user'] = $this->user['username'];
+        $update_post_data['edit_user_id'] = $this->user['id'];
+        $update_post_data['edit_time'] = $this->time;
+        $update_post_data['subject'] = html_escape($post['subject']);
+        $update_post_data['content'] = $is_html ? $post['content'] : html_escape($post['content']);
+        $update_post_data['attachment'] = 0;
+        $is_update_succ = $this->posts_model->update($update_post_data, array('id' => $post['post_id']));
+        if (!$is_update_succ) {
+            $this->message('更新数据表posts失败。');
+        }
+    }
 
     /**
      * 递归循环处理html，使其成为安全的代码。主要是过滤可执行的代码。并不过滤html。

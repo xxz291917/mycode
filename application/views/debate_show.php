@@ -3,7 +3,7 @@
   <a href="<?php echo base_url();?>">论坛</a>>
   <?php 
   	$position_names = array(1=>'沙发',2=>'板凳',3=>'地板');
-        $point_names = array(1=>'红方',2=>'蓝方');
+    $point_names = array(1=>'红方',2=>'蓝方');
   	$nav_num = count($nav);
 	foreach($nav as $key=>$val){
 		$link = '<a href="'.$val[1].'">'.$val[0].'</a>>';

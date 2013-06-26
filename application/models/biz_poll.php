@@ -139,7 +139,50 @@ class Biz_poll extends CI_Model {
         $options = empty($options) ? array() : $options;
         $post['options'] = $options;
     }
+    
+    public function init_edit($topic_id,$post_id){
+        //添加上poll表里的附加字段
+        $poll = $this->poll_model->get_by_id($topic_id, 'is_overt,is_visible,max_choices,expire_time');
+        $poll['expire_time'] = date('Y-m-d',$poll['expire_time']);
+        
+        $options = $this->poll_options_model->get_list($topic_id, 'option,display_order');
+        $poll['poll_option'] = array();
+        foreach($options as $option){
+            $poll['poll_option'][] = $option['option'];
+        }
+        return $poll;
+    }
 
+    public function edit($tid, $post, $pid) {
+        if (empty($tid) || empty($post)) {
+            return FALSE;
+        }
+        //完成poll表的数据
+        $poll_data['is_overt'] = empty($post['is_overt']) ? 1 : 0;
+        $poll_data['is_multiple'] = $post['max_choices'] > 1 ? 1 : 0;
+        $poll_data['is_visible'] = empty($post['is_visible']) ? 1 : 0;
+        $poll_data['max_choices'] = intval($post['max_choices']);
+        $poll_data['expire_time'] = $this->time + ($post['expire_time'] * 3600 * 24);
+        $poll_data['preview'] = join('[|]', array_slice(html_escape($post['poll_option']), 0, 2));
+        $this->poll_model->update($poll_data, array('topic_id' => $tid));
+        //完成poll_options表的数据
+        $poll_options = $this->poll_options_model->get_list(array('topic_id' => $tid));
+        $new_options = array();
+        foreach ($post['poll_option'] as $k => $v) {
+            $new_options['display_order'] = $k;
+            $new_options['option'] = html_escape($v);
+            $this->update_options($poll_options[$k], $new_options);
+        }
+    }
+    
+    private function update_options($options, $new_options) {
+        if(!empty($options['id'])){
+            $this->poll_options_model->update($new_options, array('id' => $options['id']));
+        }else{
+            $this->poll_options_model->insert($new_options);
+        }
+    }
+    
 }
 
 ?>

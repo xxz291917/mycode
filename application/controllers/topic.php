@@ -80,7 +80,7 @@ class Topic extends MY_Controller {
     }
 
     
-    public function position($topic_id,$post_id) {
+    public function position($topic_id,$post_id='last') {
         if (!is_numeric($topic_id) || (!is_numeric($post_id) && $post_id!='last')) {
             $this->message('参数错误！');
         }
