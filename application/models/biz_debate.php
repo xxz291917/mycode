@@ -123,7 +123,7 @@ class Biz_debate extends CI_Model {
         $total_num = $num['num'];
 
         //生成分页字符串
-        $base_url = current_url();
+        $base_url = page_url();
         $per_num = $this->config->item('per_num');
         $page_obj = $this->biz_pagination->init_page($base_url, $total_num, $per_num);
         $page_str = $page_obj->create_links();
@@ -132,7 +132,6 @@ class Biz_debate extends CI_Model {
         $order_by = ' ORDER BY post_time';
         $list_sql .= $where . $order_by . " LIMIT $start,$per_num";
 
-//            echo $list_sql;die;
         $query = $this->db->query($list_sql);
         $posts = $query->result_array();
         if (!empty($posts)) {
@@ -174,8 +173,39 @@ class Biz_debate extends CI_Model {
             $debate['affirm_percent'] = 50;
             $debate['negate_percent'] = 50;
         }
+        
+        $topic_id = $first_post['topic_id'];
+        
+        //得到红方观点10人
+        $affirm_users = $this->debate_posts_model->get_list(array('topic_id'=>$topic_id,'stand'=>1),'post_id,user_id','post_time', 0, 11);
+        //得到蓝方观点10人
+        $negate_users = $this->debate_posts_model->get_list(array('topic_id'=>$topic_id,'stand'=>2),'post_id,user_id','post_time', 0, 11);
+        //得到红方和蓝方第一个人的观点
+        $affirm_first = array_shift($affirm_users);
+        $negate_first = array_shift($negate_users);
+        !empty($affirm_first) && $debate['affirm_first'] = $this->posts_model->get_by_id($affirm_first['post_id']);
+        !empty($negate_first) && $debate['negate_first'] = $this->posts_model->get_by_id($negate_first['post_id']);
+        
+        //得到观点人的用户名。
+        $uids = array();
+        foreach ((array)$affirm_users+(array)$negate_users as $key => $value) {
+            $uids[] = $value['user_id'];
+        }
+        $uids = array_unique($uids);
+        if(!empty($uids)){
+            $users = $this->users_model->get_names_by_ids($uids);
+            $users = $this->users_model->key_list($users);
+            foreach ($affirm_users as $key => &$value) {
+                $value['username'] = $users[$value['user_id']]['username'];
+            }
+            foreach ($negate_users as $key => &$value) {
+                $value['username'] = $users[$value['user_id']]['username'];
+            }
+        }
+        $debate['affirm_users'] = $affirm_users;
+        $debate['negate_users'] = $negate_users;
+        
         $first_post['debate'] = $debate;
-
         return $first_post;
     }
 

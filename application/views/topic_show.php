@@ -74,7 +74,7 @@ echo $page;?>
             }
             ?>
             <li><span>总积分：</span><?php echo $user['credits'];?></li>
-            <li><span>帖子：</span><a href="#"><?php echo $user['posts'];?></a></li>
+            <li><span>帖子：</span><?php echo $user['posts'];?></li>
           </ul>
           <div class="usFaceInfoBot">
               <a href="<?=$this->config->item('user_url').$user['id']?>" class="icoUs1">资料</a>

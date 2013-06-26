@@ -239,6 +239,22 @@ class Users_model extends MY_Model {
         return $return;
     }
     
+   
+    public function get_names_by_ids($ids){
+        if(is_array($ids) && !empty($ids)){
+            $ids = join (',', $ids);
+            $where = "id in($ids)";
+            $result_fun = 'result_array';
+        }elseif(is_numeric($ids)){
+            $where = "id = $ids ";
+            $result_fun = 'row_array';
+        }else{
+            return FALSE;
+        }
+        $sql = "SELECT id,username FROM {$this->table} WHERE $where";
+        $query = $this->db->query($sql);
+        return $query->$result_fun();
+    }
     
 }
 
