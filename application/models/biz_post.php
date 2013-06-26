@@ -246,9 +246,7 @@ class Biz_post extends CI_Model {
         $update_post_data['content'] = $is_html ? $post['content'] : html_escape($post['content']);
         $update_post_data['attachment'] = 0;
         $is_update_succ = $this->posts_model->update($update_post_data, array('id' => $post['post_id']));
-        if (!$is_update_succ) {
-            $this->message('更新数据表posts失败。');
-        }
+        return $is_update_succ;
     }
 
     /**

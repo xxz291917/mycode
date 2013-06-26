@@ -199,6 +199,7 @@ class Action extends MY_Controller {
             }
             
         }else{
+            $var['topic_id'] = $topic_id;
             $var['topic'] = $topic;
             $var['post_id'] = $post_id;
             if (is_numeric($topic_id)) {
