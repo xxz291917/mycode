@@ -33,6 +33,15 @@ class Biz_debate extends CI_Model {
             return '';
         }
     }
+    
+    /**
+     * 因为有些情况是需要返回为空的，所以用一个方法来获取这个数值。
+     * @param type $topic_id
+     * @return string
+     */
+    public function get_edit_view() {
+        return self::$special_reply;
+    }
 
     public function post($tid, $post) {
         if (empty($tid) || empty($post)) {
@@ -54,7 +63,7 @@ class Biz_debate extends CI_Model {
             return FALSE;
         }
         $tid = $post['topic_id'];
-        if (isset($post['stand'])) {
+        if (isset($post['stand']) && in_array($post['stand'], array(0,1,2))) {
             //检测当前用户之前为回复过。
             if ($this->debate_posts_model->check_is_posted($tid)) {
                 return false;
@@ -115,7 +124,7 @@ class Biz_debate extends CI_Model {
 
         $stand = $this->input->get('stand', TRUE);
         $where = $stand !== false ? " d.stand = $stand " : '1';
-        $where .= " AND d.topic_id = '$id' AND p.is_first != 1 AND p.status =1 ";
+        $where .= " AND p.topic_id = '$id' AND p.is_first != 1 AND (p.status =1 or p.status =4) ";
 
         $count_sql .= $where . "LIMIT 0,1";
         $query = $this->db->query($count_sql);
@@ -233,8 +242,11 @@ class Biz_debate extends CI_Model {
     public function init_reply_edit($topic_id, $post_id) {
         //添加上ask表里的附加字段
         $debate = array();
-        $debate = $this->debate_posts_model->get_by_id($post_id, 'stand');
-        return $debate;
+        $debate = $this->debate_posts_model->get_by_id($post_id);
+        if(!empty($debate)){
+            return array('stand'=>$debate['stand']);
+        }
+        return array();
     }
 
     public function edit($tid, $post, $pid) {
@@ -251,9 +263,9 @@ class Biz_debate extends CI_Model {
 
     public function reply_edit($tid, $post, $pid) {
         //得到当前帖子的观点状态。
-        $debate_posts = $this->debate_posts_model->get_by_id($pid, 'stand');
+        $debate_posts = $this->debate_posts_model->get_by_id($pid);
         $stand_type = array(1 => 'affirm', 2 => 'negate');
-        if (!empty($debate_posts) && $debate_posts['stand'] != $post['stand']) {
+        if (!empty($debate_posts) && isset($post['stand']) && $debate_posts['stand'] != $post['stand']) {
             if (!empty($debate_posts['stand'])) {
                 $old_type = $stand_type[$debate_posts['stand']];
                 $new_type = $stand_type[$post['stand']];

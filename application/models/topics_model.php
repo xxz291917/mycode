@@ -25,7 +25,7 @@ class Topics_model extends MY_Model {
         if (!empty($tags)) {
             $tags = preg_split('/[\s,]+/', $tags);
             foreach ($tags as &$tag) {
-                $tag = html_escape(utf8_substr($tag, 0, 20));//标签最多允许10个字符。
+                $tag = html_escape(utf8_substr($tag, 0, 10));//标签最多允许10个字符。
             }
             $tags = join(',', array_slice(array_unique(array_filter($tags)), 0, 5));
         }

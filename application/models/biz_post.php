@@ -79,6 +79,7 @@ class Biz_post extends CI_Model {
         if ('post' == $type) {
             //插入topics表
             $tags = $this->topics_model->format_tags($post['tags']);
+            
             $topics_data['forum_id'] = $forum_id;
             $topics_data['category_id'] = intval($post['category']);
             $topics_data['author'] = $this->user['username'];
@@ -125,7 +126,7 @@ class Biz_post extends CI_Model {
         $posts_data['author_id'] = $this->user['id'];
         $posts_data['author_ip'] = $this->ip;
         $posts_data['post_time'] = $this->time;
-        $posts_data['subject'] = html_escape($post['subject']);
+        $posts_data['subject'] = html_escape(isset($post['subject']) ? trim($post['subject']) : '');
         $posts_data['content'] = (!empty($quote_content) ? $quote_content : '') . ($is_html ? $post['content'] : html_escape($post['content']));
         $posts_data['attachment'] = 0;
         $posts_data['is_first'] = 'post' == $type ? 1 : 0;
@@ -136,7 +137,7 @@ class Biz_post extends CI_Model {
         $posts_data['is_anonymous'] = $this->biz_permission->get_is('anonymous', $forum_id);
         $posts_data['is_hide'] = $this->biz_permission->get_is('hide', $forum_id);
         $posts_data['is_sign'] = $this->biz_permission->get_is('sign', $forum_id);
-        $posts_data['position'] = $this->posts_model->get_max_position($tid)+1;
+        $posts_data['position'] = 'post' == $type ? 0 :($this->posts_model->get_max_position($tid)+1);
         $posts_data['status'] = $this->biz_permission->get_check($forum_id) == 2 ? 4 : 1; //回复帖子也审核
         $this->posts_model->insert($posts_data);
         $pid = $this->db->insert_id();
@@ -211,11 +212,16 @@ class Biz_post extends CI_Model {
             }
         }
         
-        
         if(!empty($post['is_first']) && $post['is_first']==1){
             //主题帖需要更新topic标题
             $topics_data['subject'] = html_escape($post['subject']);
+            $tags = $this->topics_model->format_tags($post['tags']);
+            $topics_data['tags'] = $tags;
             $this->topics_model->update($topics_data, array('id' => $tid));
+            
+            //更新tags
+            $this->tags_model->delete(array('topic_id'=>$tid));
+            $this->tags_model->insert_tags($tags, $tid);
             
             //特殊贴钩子（完成基本业务后调用）
             if(!empty($special_class)){
@@ -326,7 +332,7 @@ class Biz_post extends CI_Model {
         }else{
             $suffix = (strlen($post['content']) > $maxlen) ? '……' : '';
         }
-        return '<blockquote class="blockquote">'."{$post['author']} 发表于 " . date('Y-m-d H:i:s', $post['post_time']) . "<br/>" . utf8_substr($post['content'], 0, 20).$suffix.'</blockquote>';
+        return '<blockquote class="blockquote">'."{$post['author']} 发表于 " . date('Y-m-d H:i:s', $post['post_time']) . "<br/>" . html_escape(utf8_substr($post['content'], 0, 20)).$suffix.'</blockquote>';
     }
 
 }

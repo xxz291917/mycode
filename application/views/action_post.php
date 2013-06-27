@@ -61,7 +61,6 @@
                 echo '编辑帖子';
                 if (empty($_POST)) {
                     $_POST = $edit_data;
-					//var_dump($_POST);
                 }
             } else {
                 echo '回复帖子';
@@ -70,7 +69,7 @@
         </h4>
         <ul class="pubQAForm">
             <li>
-                <?php if ($type == 'post') { ?>
+                <?php if ($type == 'post' || ( $type == 'edit' && $post['is_first']==1)) { ?>
                     <select name="category">
                         <?php echo $category_option; ?>
                     </select>
@@ -97,7 +96,7 @@
                 <textarea name="content" style="width:958px;height:340px;visibility:hidden;"><?php echo $this->posts_model->smiley2html(set_value('content', '')); ?></textarea>
             </li>
 
-            <?php if ($type == 'post' || $type == 'edit') { ?>
+            <?php if ($type == 'post' || ($type == 'edit' && $post['is_first']==1)) { ?>
                 <li>
                     <input type="text" value="<?php echo set_value('tags', ""); ?>" name="tags" id="tags" size="60" class="inp pubInpW3">
                     <label>最近标签：Flash、ios、android</label>
@@ -110,7 +109,9 @@
             <li>
                 <input  type="submit" name="submit" class="mainCmtBtn" value="提交">
                 <button type="button" class="mainCmtBtn btnGray" id="preview">预览</button>
+                <?php if ($type != 'edit') {?>
                 <button type="button" class="mainCmtBtn btnGray" id="drafts">保存草稿</button>
+                <?php }?>
             </li>
         </ul>
     </div> 
@@ -143,14 +144,14 @@ if (!empty($draft)) {
             });
 <?php } ?>
 
-        //提交错误提示
-<?php
-$errors = my_validation_errors();
-if (!empty($errors)) {
-    ?>
+		//提交错误提示
+		<?php
+		$errors = my_validation_errors();
+		if (!empty($errors)) {
+		?>
             var error = <?php echo $errors; ?>;
             $.Alert(error.join(','), '错误提示');
-<?php } ?>
+		<?php } ?>
 
         var drafts = $("#drafts"),
             tipsArr = {'subject': '<?php echo!empty($topic['subject']) ? "Re:{$topic['subject']}" : '请输入帖子标题' ?>', 'tags': "标签间请用'空格'或'逗号'隔开，最多可添加5个标签。"};
@@ -181,31 +182,33 @@ if (!empty($errors)) {
                 }
             });
         });
-
-        drafts.click(function(event) {
-            editor.sync();
-
-            $.each(tipsArr, function(i, n) {
-                var field = thisform.find("[name='" + i + "']");
-                if (field.val() == tipsArr[i]) {
-                    field.val('');
-                }
-            });
-
-            var url = unescape('<?php echo base_url('index.php/action/safe_drafts') ?>'),
-                    method = thisform.attr('method'),
-                    fields = thisform.serialize(),
-                    ajaxFun = method == 'post' ? $.post : $.get;
-            ajaxFun(url, fields, function(data) {
-                if (!data.success) {
-                    $.Alert(data.message);
-                } else {
-                    $.Alert(data.message);
-                }
-            }, 'json');
-            event.preventDefault();
-            return false;
-        });
+		
+		if(drafts.length>0){
+			drafts.click(function(event) {
+				editor.sync();
+	
+				$.each(tipsArr, function(i, n) {
+					var field = thisform.find("[name='" + i + "']");
+					if (field.val() == tipsArr[i]) {
+						field.val('');
+					}
+				});
+	
+				var url = unescape('<?php echo base_url('index.php/action/safe_drafts') ?>'),
+						method = thisform.attr('method'),
+						fields = thisform.serialize(),
+						ajaxFun = method == 'post' ? $.post : $.get;
+				ajaxFun(url, fields, function(data) {
+					if (!data.success) {
+						$.Alert(data.message);
+					} else {
+						$.Alert(data.message);
+					}
+				}, 'json');
+				event.preventDefault();
+				return false;
+			});
+		}
 
     });
 

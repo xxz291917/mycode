@@ -27,6 +27,7 @@ class Topic extends MY_Controller {
         if (empty($topic)) {
             $this->message('参数错误，主题不存在');
         }
+        $topic['tags'] = array_filter(explode(',', $topic['tags']));
         //获取本主题
         $var['topic'] = $topic;
         //获取当前用户管理帖子的链接。
@@ -98,7 +99,7 @@ class Topic extends MY_Controller {
             $this->message('参数错误，帖子不存在');
         }
 
-        $where = " topic_id = '$topic_id' AND status =1 ";
+        $where = " topic_id = '$topic_id' AND (status =1 or status =4) ";
         if($topic['special']!=1){
             $where .= "AND is_first != 1";
         }

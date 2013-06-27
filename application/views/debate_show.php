@@ -3,7 +3,6 @@
   <a href="<?php echo base_url();?>">论坛</a>>
   <?php 
   	$position_names = array(1=>'沙发',2=>'板凳',3=>'地板');
-    $point_names = array(1=>'红方',2=>'蓝方');
   	$nav_num = count($nav);
 	foreach($nav as $key=>$val){
 		$link = '<a href="'.$val[1].'">'.$val[0].'</a>>';
@@ -24,8 +23,6 @@
             <li><a href="<?php echo base_url('index.php/action/post/'.$topic['forum_id'].'/2');?>" class="ico3" target="_blank">发布问答</a></li>
             <li><a href="<?php echo base_url('index.php/action/post/'.$topic['forum_id'].'/3');?>" class="ico2" target="_blank">发起投票</a></li>
             <li><a href="<?php echo base_url('index.php/action/post/'.$topic['forum_id'].'/4');?>" class="ico4" target="_blank">发起辩论</a></li>
-            <!--<li><a href="#" class="ico5">发起活动</a></li>
-            <li><a href="#" class="ico6">出售商品</a></li>-->
           </ul>
         </div>
       </li>
@@ -119,13 +116,22 @@ echo $page;?>
             </div>
             <span class="btnUp2">顶</span>
           </div>
+          
+          
           <div class="debateCot pr">
             <div class="debateCotLi">
               <p class="thesis pr"><?=$first_post['debate']['affirm_point']?><span></span><i class="icoSj pa"></i></p>
               <div  class="thesisUs">
               <?php if(!empty($first_post['debate']['affirm_first'])){?>
-                <a href="<?= $this->config->item('user_url').$first_post['debate']['affirm_first']['author_id']?>"><img src="<?= $this->config->item('user_icon').$first_post['debate']['affirm_first']['author_id']?>" alt="<?=$first_post['debate']['affirm_first']['author']?>"></a>
-                <p><a href="<?= $this->config->item('user_url').$first_post['debate']['affirm_first']['author_id']?>"><?=$first_post['debate']['affirm_first']['author']?></a>：<?php echo utf8_substr($first_post['debate']['affirm_first']['content'],0,30)?> </p>
+                <a href="<?= $this->config->item('user_url').$first_post['debate']['affirm_first']['author_id']?>">
+                    <img src="<?= $this->config->item('user_icon').$first_post['debate']['affirm_first']['author_id']?>" alt="<?=$first_post['debate']['affirm_first']['author']?>">
+                </a>
+                <p>
+                    <a href="<?= $this->config->item('user_url').$first_post['debate']['affirm_first']['author_id']?>">
+                      <?=$first_post['debate']['affirm_first']['author']?>
+                    </a>：
+                        <?php echo html_escape(utf8_substr($first_post['debate']['affirm_first']['content'],0,30))?> 
+                </p>
               <?php }?>
               </div>
               <ul>
@@ -134,7 +140,7 @@ echo $page;?>
                     <img src="<?= $this->config->item('user_icon').$user['user_id']?>" alt="<?=$user['username']?>"></a></li>
                 <?php }?>
               </ul>
-              <a href="javascript:void(0);" class="postView">发表红方观点</a>
+              <a href="<?php echo base_url('index.php/action/reply_dialog/'.$first_post['topic_id'].'/?stand=1')?>" target="dialog" width="464px" title="发表观点" class="postView">发表红方观点</a>
             </div>
               
             <div class="debateCotLi userBlue">
@@ -142,7 +148,7 @@ echo $page;?>
               <div  class="thesisUs">
               <?php if(!empty($first_post['debate']['negate_first'])){?>
                 <a href="<?= $this->config->item('user_url').$first_post['debate']['negate_first']['author_id']?>"><img src="<?= $this->config->item('user_icon').$first_post['debate']['negate_first']['author_id']?>" alt="<?=$first_post['debate']['negate_first']['author']?>"></a>
-                <p><a href="<?= $this->config->item('user_url').$first_post['debate']['negate_first']['author_id']?>"><?=$first_post['debate']['negate_first']['author']?></a>：<?php echo utf8_substr($first_post['debate']['negate_first']['content'],0,30)?> </p>
+                <p><a href="<?= $this->config->item('user_url').$first_post['debate']['negate_first']['author_id']?>"><?=$first_post['debate']['negate_first']['author']?></a>：<?php echo html_escape(utf8_substr($first_post['debate']['negate_first']['content'],0,30))?> </p>
               <?php }?>
               </div>
               <ul>
@@ -151,29 +157,33 @@ echo $page;?>
                     <img src="<?= $this->config->item('user_icon').$user['user_id']?>" alt="<?=$user['username']?>"></a></li>
                 <?php }?>
               </ul>
-              <a href="javascript:void(0);" class="postView">发表蓝方观点</a>
+              <a href="<?php echo base_url('index.php/action/reply_dialog/'.$first_post['topic_id'].'/?stand=2')?>" target="dialog" width="464px" title="发表观点" class="postView">发表蓝方观点</a>
             </div>
               
             <span class="debateCotHr pa"></span>
           </div>
         </div>
-          
-        <div class="myTag pr"><a href="#">Photoshop</a>,<a href="#">Dota</a>,<a href="#">物理</a>,<a href="#">化学</a><i class="pa"></i></div>  
+        
+        <?php if(!empty($topic['tags'])){?>
+            <div class="myTag pr">
+            <!--a href="#">Photoshop</a>,-->
+                <?php echo join(' , ',$topic['tags']);?>
+            <i class="pa"></i></div>
+        <?php }?>
+        
         <div class="orderBy">
           <span>回复排序列：</span>
           <ul>
-            <li><a href="#" class="btnUserDeft">默认</a></li>
-            <li><a href="#" class="btnUserRed">红方</a></li>
-            <li><a href="#" class="btnUserBlue">蓝方</a></li>
+            <li><a href="<?php echo base_url('index.php/topic/show/'.$first_post['topic_id']);?>" class="btnUserDeft">默认</a></li>
+            <li><a href="<?php echo base_url('index.php/topic/show/'.$first_post['topic_id'].'/?stand=1');?>" class="btnUserRed">红方</a></li>
+            <li><a href="<?php echo base_url('index.php/topic/show/'.$first_post['topic_id'].'/?stand=2');?>" class="btnUserBlue">蓝方</a></li>
           </ul>
         </div>
         
         <ul class="newsBot pa">
-          <li class="fl"><a href="#">举报</a></li>
-          <li><a href="#" class="icoEdit">评分</a></li>
-          <li><a href="#" class="icoCollect">收藏</a></li>
-          <li><a href="#" class="icoGrade">编辑</a></li>
-          <li><a href="#editor_reply" class="icoReplys reply_editor">回复</a></li>
+          <li class="fl"><a href="<?php echo base_url('index.php/action/report/'.$first_post['id'])?>" target="dialog">举报</a></li>
+          <li><a href="<?php echo base_url('index.php/action/edit/'.$first_post['topic_id'].'/'.$first_post['id'])?>" class="icoGrade">编辑</a></li>
+          <li><a href="<?php echo base_url('index.php/action/reply_dialog/'.$first_post['topic_id'].'/'.$first_post['id'])?>" target="dialog" width="464px" title="快速回复" class="icoReplys">回复</a></li>
         </ul>
       </div>
     </li>
@@ -182,15 +192,13 @@ echo $page;?>
 
 
 <!--回复帖子循环展示-->
-    
+
 <ul class="newsCot">
-    
-<?php foreach ($posts as $post) { 
+<?php foreach ($posts as $post) {
     $user = $users[$post['author_id']];
 ?>
 <li class="clearfix">
-
-  <div class="newsCotL">
+  <div class="newsCotL"><!--user-->
     <div class="usFace pr">
     <a href="#"><img src="<?php echo base_url(!empty($user['icon'])?$user['icon']:'images/default.png');?>" alt="头像"></a>
     <span class="pa usFaceBg"></span>
@@ -231,67 +239,71 @@ echo $page;?>
         <?php }?>
       </li>
     </ul>
-  </div>
+  </div><!--userend-->
         
       <div class="newsCotR pr">
           
         <div class="tr myState myState2">
-            <span class="btnLBlue"><?php echo $point_names[$post['stand']];?></span>
+          <?php if(!empty($post['stand'])){?>
+            <?php if(1==$post['stand']){?>
+            <span class="btnLRed">红方</span>
+            <?php }elseif(2==$post['stand']){?>
+            <span class="btnLBlue">蓝方</span>
+            <?php }?>
+           <?php }?>
+            
             <div class="newsTip">
             <span>发表于 <?php echo time_span($post['post_time'],'','','前');?> |<a href="<?php echo base_url('index.php/topic/show/'.$post['topic_id'].'/?author='.$post['author_id']);?>">只看该作者</a></span>
             </div>
+            <a name="p_<?=$post['id']?>">
             <?php if(empty($position_names[$post['position']])){
                           echo $post['position'].'#';
                   }else{
                           echo $position_names[$post['position']];
                   }?>
+                  </a>
         </div>
         
         <article class="newsCots">
-          <h2 class="fyahei">现代程序员的工作环境</h2>          
+          <h2 class="fyahei"><?php echo $post['subject']?></h2>          
           <div class="newsCotIn">
-            <p>7天前，32岁的漯河人周三江倒在郑州东区的马路边上，再也没有醒来。周三江72岁的老父亲来郑州商都路派出所办理死亡证明时被索要3000元运尸费，而且不开发票，这个数字顿时吓住了老人。从周三江的死亡地点到医院太平间区区15公里，为何会花费3000元运尸费？警察和太平间工作人员均表示，这是"不成文的规定"。<em>(今天10:17)</em></p>
+            <?php echo $post['content'];?>
           </div>
         </article>
                 
-               
-        <div class="cmtCot">
-          <span class="btnCmt">点评</span>
-          <a href="#"><img src="images/temp.jpg" alt="名称"></a>
-          <div class="cmtCotR"><a href="#">浪漫的杯子</a>从周三江的死亡地点到医院太平间区区15公里，为何会花费3000元运尸费？<span><em>发表于：</em>2012-12-12 15：22</span><span><em>IP：</em>158.236.232.232</span></div>
-        </div>
+        <!-- 广告
         <div class="newsAD fsong"><i></i>本次大会更注难，并分享实战经验。为庆祝此次大会<cite>|</cite><a href="#">本次大会更注重交流与互难，并分享实</a><cite>|</cite><a href="#">本次大会更注重交流与互难，并分享实</a></div>
-        
+        -->
         <ul class="newsBot pa">
-          <li class="fl"><a href="#">举报</a></li>
-          <li><a href="#" class="icoEdit">评分</a></li>
-          <li><a href="#" class="icoCite">引用不着</a></li>
-          <li><a href="#" class="icoReplys">回复</a></li>
+          <li class="fl"><a href="<?php echo base_url('index.php/action/report/'.$post['id'])?>" target="dialog">举报</a></li>
+          <li><a href="<?php echo base_url('index.php/action/edit/'.$post['topic_id'].'/'.$post['id'])?>" class="icoGrade">编辑</a></li>
+          <li><a href="<?php echo base_url('index.php/action/reply_dialog/'.$post['topic_id'].'/'.$post['id'])?>" target="dialog" width="464px" title="快速回复" class="icoReplys">回复</a></li>
         </ul>
       </div>
     </li>
 <?php } ?>
-  </ul>
+</ul>
     
   <div class="menuPage clearfix">
     <ul class="menuTag">
       <li class="pr hasMenu"><a href="javascript:void(0);" class="icoPost">发帖</a>
+      
         <div class="menuBox pa">
           <ul>
             <li class="icoSj"></li>
-            <li><a href="#" class="ico1">发表帖子</a></li>
-            <li><a href="#" class="ico2">发起投票</a></li>
-            <li><a href="#" class="ico3">发布悬赏</a></li>
-            <li><a href="#" class="ico4">发起辩论</a></li>
-            <li><a href="#" class="ico5">发起活动</a></li>
-            <li><a href="#" class="ico6">出售商品</a></li>
+            <li><a href="<?php echo base_url('index.php/action/post/'.$topic['forum_id'].'/1');?>" class="ico1" target="_blank">发表帖子</a></li>
+            <li><a href="<?php echo base_url('index.php/action/post/'.$topic['forum_id'].'/2');?>" class="ico3" target="_blank">发布问答</a></li>
+            <li><a href="<?php echo base_url('index.php/action/post/'.$topic['forum_id'].'/3');?>" class="ico2" target="_blank">发起投票</a></li>
+            <li><a href="<?php echo base_url('index.php/action/post/'.$topic['forum_id'].'/4');?>" class="ico4" target="_blank">发起辩论</a></li>
           </ul>
-        </div>        
+        </div>
+        
       </li>
-      <li><a href="javascript:void(0);">回复</a></li>
+      <li><a href="<?php echo base_url('index.php/action/reply/'.$topic['id']);?>">回复</a></li>
     </ul>
-    <div class="pagenum"><a href="../2.html" class="btnPre"></a><a href="#" class="current">1</a><a href="../2.html">2</a><a href="../3.html">3</a><a href="../4.html">4</a><a href="../5.html">5</a><a href="../6.html">6</a><a href="../7.html">7</a><a href="../8.html">8</a>...<a href="../100.html">100</a><a href="../2.html" class="btnNext"></a></div>
-  </div>
+        <?php empty($page) && $page = '';
+echo $page;?>
+   </div>
 
 
   <div class="mainCmt" id="editor_reply">
@@ -300,3 +312,29 @@ echo $page;?>
   </div>
 
 </div>
+<script>
+$(function(){
+  $('.btnUp').click(function(){
+	  var url = '<?php echo base_url('index.php/action/debate_vote/'.$topic['id'].'/1');?>';
+	  $.getJSON(url, function(data){
+		  if(!data.success){
+				$.Alert(data.message);
+			}else{
+				$.Alert(data.message);
+				html.dialog("close");
+			}
+		});
+	});
+  $('.btnUp2').click(function(){
+	  var url = '<?php echo base_url('index.php/action/debate_vote/'.$topic['id'].'/2');?>';
+	  	  $.getJSON(url, function(data){
+		  if(!data.success){
+				$.Alert(data.message);
+			}else{
+				$.Alert(data.message);
+				html.dialog("close");
+			}
+		});
+	});
+});
+</script>

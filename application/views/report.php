@@ -12,6 +12,6 @@
     </tr>
   </table>
   <p class="div_bottom">
-    <input class="inp_btn" type="submit" value="确定" />
+    <input class="mainCmtBtn" type="submit" value="确定" />
   </p>
 </form>

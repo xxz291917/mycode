@@ -1,5 +1,10 @@
 <style>
 .pubQAForm2 li{padding:3px 0;}
+.pubQAForm2 li select {
+    border: 1px solid #8F939C;
+    line-height: 30px;
+    padding: 5px 5px 5px;
+}
 </style>
 
 <!--content-->

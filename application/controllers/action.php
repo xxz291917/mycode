@@ -202,7 +202,7 @@ class Action extends MY_Controller {
             $var['topic_id'] = $topic_id;
             $var['topic'] = $topic;
             $var['post_id'] = $post_id;
-            if (is_numeric($topic_id)) {
+            if (is_numeric($post_id)) {
                 $post = $this->posts_model->get_by_id($post_id);
                 if (empty($post)) {
                     $this->message('参数错误，发布的主题不存在', 0, $forum_show_url);
@@ -213,6 +213,16 @@ class Action extends MY_Controller {
             //如果是特殊帖子需要做相应的处理。
             $special = $topic['special'];
             if ($special != 1) {
+                $stand = intval($this->input->get('stand',TRUE));
+                if(!empty($stand)){
+                    $this->load->model('debate_posts_model');
+                    $is_posted = $this->debate_posts_model->check_is_posted($topic_id);
+                    if($is_posted){
+                        echo '您已经发表过观点！';die;
+                    }
+                    $_POST['stand'] = $stand;
+                }
+                
                 $class = biz_post::$specials[$special];
                 $this->load->model($class);
                 if (method_exists($this->$class, 'get_reply_view')) {
@@ -260,7 +270,7 @@ class Action extends MY_Controller {
         $var['post'] = $db_post;
         
         //通过了check校验
-        if ($this->input->post('submit') && $this->biz_post->check_post('post', $topic['special']) && $post = $this->input->post(null)) {
+        if ($this->input->post('submit') && $this->biz_post->check_post($db_post['is_first']==1?'post':'reply', $topic['special']) && $post = $this->input->post(null)) {
             //构造post数组。
             $post = array_merge($post, array('topic_id' => $topic_id, 'is_first'=>$db_post['is_first'], 'post_id' => $db_post['id'], 'forum_id' => $topic['forum_id'],'special'=>$topic['special'], 'topic_author_id' => $topic['author_id']));
             //完成编辑。
@@ -287,10 +297,6 @@ class Action extends MY_Controller {
                 $class = biz_post::$specials[$special];
                 $this->load->model($class);
                 if($db_post['is_first']==1){//主题帖子
-                    $this->load->model('topics_category_model');
-                    $category_option = $this->topics_category_model->create_options($forum_id);
-                    $var['category_option'] = $category_option;
-                    
                     $var['special_view'] = $class::$special_post;
                     if (method_exists($this->$class, 'init_post')) {
                         $special_var = $this->$class->init_post();
@@ -301,9 +307,6 @@ class Action extends MY_Controller {
                         $edit_data = $edit_data + $special_data;
                     }
                 }else{//回复帖子
-                    if (method_exists($this->$class, 'get_reply_view')) {
-                        $var['special_view'] = $this->$class->get_reply_view($topic_id);
-                    }
                     if (method_exists($this->$class, 'init_reply')) {
                         $special_var = $this->$class->init_reply($topic_id);
                         $var = $var + $special_var;
@@ -312,9 +315,18 @@ class Action extends MY_Controller {
                         $special_data = $this->$class->init_reply_edit($topic_id,$post_id);//取出特殊帖子的关联表内容。
                         $edit_data = $edit_data + $special_data;
                     }
+                    if (isset($edit_data['stand']) && method_exists($this->$class, 'get_edit_view')) {
+                        $var['special_view'] = $this->$class->get_edit_view($topic_id);
+                    }
                 }
             }
-            $edit_data['subject'] = $topic['subject'];
+            if ($db_post['is_first'] == 1) {//主题帖子
+                $this->load->model('topics_category_model');
+                $category_option = $this->topics_category_model->create_options($forum_id);
+                $var['category_option'] = $category_option;
+            }
+            
+            $edit_data['subject'] = $db_post['subject'];
             $edit_data['content'] = $db_post['content'];
             $edit_data['tags'] = $topic['tags'];
             $var['edit_data'] = $edit_data;
@@ -532,7 +544,7 @@ class Action extends MY_Controller {
         } else {
             $var['post_id'] = $post_id;
             $var['post_id'] = $post_id;
-            $this->view('report', $var);
+            $this->load->view('report', $var);
         }
     }
     
@@ -572,6 +584,34 @@ class Action extends MY_Controller {
             $this->message('操作成功', 1);
         }else{
             $this->message('操作失败');
+        }
+    }
+
+    /**
+     * 辩论帖子投票
+     */
+    public function debate_vote($topic_id,$stand){
+        //判断是否已经支持过。
+        $this->load->model('debate_model');
+        $debate = $this->debate_model->get_by_id(intval($topic_id));
+        if(empty($debate)){
+            $this->message('参数错误！');
+        }
+        $debate['affirm_voterids'] = explode(',', $debate['affirm_voterids']);
+        $debate['negate_voterids'] = explode(',', $debate['negate_voterids']);
+        $users = ($debate['affirm_voterids']+$debate['negate_voterids']);
+        if(!empty($supported) || in_array($this->user['id'], $users)){
+            $this->message('您已经投过票！');
+        }
+        $stand = intval($stand);
+        $field = $stand=='1'?'affirm':'negate';
+        $update_data[$field.'_votes'] = ':1';
+        $update_data[$field.'_voterids'] = '+'.$this->user['id'];
+        $is_succ = $this->debate_model->update_increment($update_data, array('topic_id'=>$topic_id));
+        if($is_succ){
+            $this->message('投票成功',1);
+        }else{
+            $this->message('投票失败');
         }
     }
     

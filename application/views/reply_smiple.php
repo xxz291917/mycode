@@ -33,7 +33,7 @@ var base_url = '<?=base_url()?>';
 <!--content-->
     <?php
 	$attributes = array('id' => 'postform');
-	echo form_open(current_url(),$attributes);
+	echo form_open(base_url("index.php/action/reply/{$topic['id']}"),$attributes);
 	?>
       <ul class="pubQAForm">
 	<?php 
@@ -45,16 +45,13 @@ var base_url = '<?=base_url()?>';
         <textarea name="content" style="width:926px;height:100px;visibility:hidden;"><?php echo $this->posts_model->smiley2html(set_value('content', '')); ?></textarea>
         </li>
         <input type="hidden" name="topic_id" value="<?php echo $topic['id']?>">
-        <li>
+        <li style="text-align:right;">
         <input  type="submit" name="submit" class="mainCmtBtn" value="回复">
         </li>
       </ul>
   <?php echo form_close() ?>
 <script type="text/javascript">
 $(function(){
-    	var publish = $("#publish");
-	publish.click(function(){
-		thisform.submit();
-	});
+
 });
 </script>

@@ -25,12 +25,10 @@
             <li><a href="<?php echo base_url('index.php/action/post/'.$topic['forum_id'].'/2');?>" class="ico3" target="_blank">发布问答</a></li>
             <li><a href="<?php echo base_url('index.php/action/post/'.$topic['forum_id'].'/3');?>" class="ico2" target="_blank">发起投票</a></li>
             <li><a href="<?php echo base_url('index.php/action/post/'.$topic['forum_id'].'/4');?>" class="ico4" target="_blank">发起辩论</a></li>
-            <!--<li><a href="#" class="ico5">发起活动</a></li>
-            <li><a href="#" class="ico6">出售商品</a></li>-->
           </ul>
         </div>
       </li>
-      <li><a href="javascript:void(0);" onClick="location.href='<?php echo base_url('index.php/action/reply/'.$topic['id']);?>'">回复</a></li>
+      <li><a href="<?php echo base_url('index.php/action/reply/'.$topic['id']);?>">回复</a></li>
       <li class="pr hasMenu"><a href="javascript:void(0);" class="icoMag">管理菜单</a>
         <div class="menuBox pa">
           <ul class="menuList">
@@ -120,7 +118,7 @@ echo $page;?>
           <?php }elseif(!empty($post['subject'])){?>
           <h2 class="fyahei"><?php echo $post['subject'];?></h2>
           <?php }?>
-<?php if($post['is_first']==1){?>
+        <?php if($post['is_first']==1){?>
           <div class="newsTip">
           <span>发表于 <?php echo time_span($post['post_time'],'','','前');?> |<a href="<?php echo base_url('index.php/topic/show/'.$post['topic_id'].'/?author='.$post['author_id']);?>">只看该作者</a></span>
           <?php if($post['is_first']==1){?>
@@ -128,7 +126,7 @@ echo $page;?>
           <span title="回复数" class="icoMsg2"><?php echo $topic['replies']?></span>
           <?php }?>
           </div>
-<?php }?>
+        <?php }?>
           <div class="newsCotIn">
           <?php echo $post['content'];?>
           </div>
@@ -145,6 +143,13 @@ echo $page;?>
           </div>
           <?php }?>
           
+        <?php if(!empty($topic['tags'])){?>
+            <div class="myTag pr">
+            <!--a href="#">Photoshop</a>,-->
+                <?php echo join(' , ',$topic['tags']);?>
+            <i class="pa"></i></div>
+        <?php }?>
+          
         <ul class="newsBot pa">
           <li class="fl"><a href="<?php echo base_url('index.php/action/report/'.$post['id'])?>" target="dialog">举报</a></li>
           <?php if($post['is_first']==1){?>
@@ -154,11 +159,8 @@ echo $page;?>
           <li><a href="<?php echo base_url('index.php/action/edit/'.$post['topic_id'].'/'.$post['id'])?>" class="icoGrade">编辑</a></li>
           <li><a href="<?php echo base_url('index.php/action/reply_dialog/'.$post['topic_id'].'/'.$post['id'])?>" target="dialog" width="464px" title="快速回复" class="icoReplys">回复</a></li>
         </ul>
-        
       </div>
-      
     </li>
-
   <?php  
     }
     ?>
@@ -177,9 +179,8 @@ echo $page;?>
             <li><a href="<?php echo base_url('index.php/action/post/'.$topic['forum_id'].'/4');?>" class="ico4" target="_blank">发起辩论</a></li>
           </ul>
         </div>
-        
       </li>
-      <li><a href="javascript:void(0);">回复</a></li>
+      <li><a href="<?php echo base_url('index.php/action/reply/'.$topic['id']);?>">回复</a></li>
     </ul>
         <?php empty($page) && $page = '';
 echo $page;?>
@@ -188,10 +189,7 @@ echo $page;?>
   <div class="mainCmt">
     
     <h5>回复帖子</h5>
-    <form>
-      <textarea name="" cols="" rows="" class="inp"></textarea>
-      <button class="mainCmtBtn">回复</button>
-    </form>
+    <?php $this->load->view('reply_smiple');?>
   </div>
     
 </div>
