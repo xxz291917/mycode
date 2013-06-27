@@ -1,3 +1,4 @@
+
 <li class="voteBox">    
   <div class="voteBoxTit"><strong>投票选项：</strong>(最多可选50项)</div>
   <div class="voteBoxL">
@@ -31,14 +32,36 @@
       </li>
       <li>
         <span>投票后可查看结果：</span>
-        <input class="hidden" type="checkbox" value="0"  <?php echo set_radio('is_visible', 0); ?> name="is_visible">
-        <i class="btnUnCheck"></i>
+        <input id="is_visible" type="hidden" value="<?php echo set_value('is_visible', 0); ?>" name="is_visible">
+        <i></i>
       </li>
       <li>
         <span>公开投票人信息：</span>
-        <i class="btnCheck"></i>
-        <input type="checkbox" class="hidden" value="1" <?php echo set_radio('is_overt', 1); ?> name="is_overt">
+        <input id="is_overt" type="hidden" value="<?php echo set_value('is_overt', 0); ?>" name="is_overt">
+        <i></i>
       </li>
     </ul>
   </div>
 </li>
+<script>
+$(function(){
+	var is_overt = $('#is_overt'),
+		is_visible = $('#is_visible'),
+	    overtclass = is_overt.val()==0?'btnUnCheck':'btnCheck',
+		visibleclass = is_visible.val()==0?'btnUnCheck':'btnCheck',
+		changeCls = function(obj,currentCls){
+				var newCls = currentCls == 'btnUnCheck'?'btnCheck':'btnUnCheck';
+				obj.removeClass(currentCls);
+				obj.addClass(newCls);
+				var newval = currentCls == 'btnUnCheck'?1:0;
+				obj.prev().val(newval);
+			};
+	is_overt.next().addClass(overtclass).click(function(){
+		changeCls($(this),$(this).attr('class'));
+	});
+	is_visible.next().addClass(visibleclass).click(function(){
+		changeCls($(this),$(this).attr('class'));
+	});
+})
+
+</script>

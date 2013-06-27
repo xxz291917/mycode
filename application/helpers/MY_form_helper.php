@@ -61,7 +61,7 @@ if (!function_exists('my_set_select')) {
                 return '';
             }
         } else {
-            if (($field == '' OR $value == '') OR ($field != $value)) {
+            if ($field != $value) {
                 return '';
             }
         }
@@ -108,4 +108,29 @@ if (!function_exists('set_date')) {
     }
 
 }
+
+if ( ! function_exists('set_value'))
+{
+	function set_value($field = '', $default = '')
+	{
+		if (FALSE === ($OBJ =& _get_validation_object()))
+		{
+                        if(substr($field, -2)=='[]'){
+                            $field = substr($field, 0,-2);
+                        }
+			if ( ! isset($_POST[$field]))
+			{
+				return $default;
+			}
+                        if (is_array($_POST[$field]))
+                        {
+                                return array_shift($_POST[$field]);
+                        }
+			return form_prep($_POST[$field], $field);
+		}
+
+		return form_prep($OBJ->set_value($field, $default), $field);
+	}
+}
+
 ?>

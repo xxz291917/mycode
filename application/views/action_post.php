@@ -61,6 +61,7 @@
                 echo '编辑帖子';
                 if (empty($_POST)) {
                     $_POST = $edit_data;
+					//var_dump($_POST);
                 }
             } else {
                 echo '回复帖子';

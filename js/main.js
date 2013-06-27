@@ -148,28 +148,8 @@ $(document).ready(function() {
 	$('.btnAddVote').click(function() {
 		$('.voteBoxL li:last').clone().appendTo('ol').find('input').val('');
 	});
-	//发布投票模拟checkbox
-	$('.btnUnCheck').toggle(	
-		function () {
-			$(this).parent().find('input').val('1');
-			$(this).removeClass('btnUnCheck').addClass('btnCheck');
-			
-		},
-		function () {
-			$(this).parent().find('input').val('0');
-			$(this).removeClass('btnCheck').addClass('btnUnCheck');
-		}
-	); 
-	$('.btnCheck').toggle(	
-		function () {
-			$(this).parent().find('input').val('0');
-			$(this).removeClass('btnCheck').addClass('btnUnCheck');
-		},
-		function () {
-			$(this).parent().find('input').val('1');
-			$(this).removeClass('btnUnCheck').addClass('btnCheck');
-		}
-	);
+	
+
 	
 	
 	

@@ -268,7 +268,6 @@ class Biz_debate extends CI_Model {
         if (!empty($debate_posts) && isset($post['stand']) && $debate_posts['stand'] != $post['stand']) {
             if (!empty($debate_posts['stand'])) {
                 $old_type = $stand_type[$debate_posts['stand']];
-                $new_type = $stand_type[$post['stand']];
                 $debate = array(
                     $old_type . '_debaters' => ':-1',
                     $old_type . '_replies' => ':-1',
