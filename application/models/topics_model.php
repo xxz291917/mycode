@@ -25,7 +25,7 @@ class Topics_model extends MY_Model {
         if (!empty($tags)) {
             $tags = preg_split('/[\s,]+/', $tags);
             foreach ($tags as &$tag) {
-                $tag = html_escape(utf8_substr($tag, 0, 20));//标签最多允许10个字符。
+                $tag = html_escape(utf8_substr($tag, 0, 20)); //标签最多允许10个字符。
             }
             $tags = join(',', array_slice(array_unique(array_filter($tags)), 0, 5));
         }
@@ -55,6 +55,28 @@ class Topics_model extends MY_Model {
             $posts = false;
         }
         return $posts;
+    }
+
+    /**
+     * 获取我的帖子列表。
+     * @param int $start
+     * @param int $per_num
+     */
+    public function get_topic_list($start, $per_num) {
+        $userid = $this->user['id'];
+        $where = "author_id='$userid' ";
+        $result = parent::get_list($where, '*', '', $start, $per_num);
+        return $result;
+    }
+
+    /**
+     * 获取我的帖子记录数。
+     */
+    public function get_topic_count() {
+        $userid = $this->user['id'];
+        $where = "author_id='$userid' ";
+        $num = $this->get_one($where, 'count(*) num');
+        return $num['num'];
     }
 
 }

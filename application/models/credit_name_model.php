@@ -50,6 +50,15 @@ class Credit_name_model extends MY_Model {
         return $result;
     }
     
+   /**
+     * 获取积分的名称
+     */ 
+    public function get_credit_name() {
+        $where="status=1";
+        $result = parent::get_list($where);
+        return $result;
+    }
+    
     
 }
 

@@ -62,29 +62,27 @@ $(document).ready(function() {
 		$(this).removeClass('menuShow');
 	});	
 });
-
 //判断文本框的值是否为空，有值的情况就隐藏提示语，没有值就显示
 $(document).ready(function() {
-	$('.inpTxt').each(function() {
+	$('.inpTxt').each(function() {  
     	var txt = $(this).val();
-		$(this).attr('change',0);
-    	$(this).focus(function() {
-    		if($(this).attr('change') == 0) {
+		$(this).attr('change',0);	
+    	$(this).focus(function() {  
+    		if($(this).attr('change') == 0) {				
 				$(this).val("");
 				$(this).addClass('cdgray');
-			};
-   		}).blur(function() {
+			};  
+   		}).blur(function() {  
     		if($(this).val() == "") {
 				$(this).attr('change',0);
 				$(this).val(txt);
 				$(this).removeClass('cdgray');
 			}else{
 				$(this).attr('change',1);
-			}
+			};  
    		});  
     }); 
 });
-
 /*点击回复下拉层*/
 $(document).ready(function() {
 	$('.icoReply').toggle(
