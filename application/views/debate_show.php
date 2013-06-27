@@ -3,7 +3,7 @@
   <a href="<?php echo base_url();?>">论坛</a>>
   <?php 
   	$position_names = array(1=>'沙发',2=>'板凳',3=>'地板');
-        $point_names = array(1=>'红方',2=>'蓝方');
+    $point_names = array(1=>'红方',2=>'蓝方');
   	$nav_num = count($nav);
 	foreach($nav as $key=>$val){
 		$link = '<a href="'.$val[1].'">'.$val[0].'</a>>';
@@ -72,7 +72,7 @@ echo $page;?>
             }
             ?>
             <li><span>总积分：</span><?php echo $user['credits'];?></li>
-            <li><span>帖子：</span><a href="#"><?php echo $user['posts'];?></a></li>
+            <li><span>帖子：</span><?php echo $user['posts'];?></li>
           </ul>
           <div class="usFaceInfoBot">
               <a href="<?=$this->config->item('user_url').$user['id']?>" class="icoUs1">资料</a>
@@ -123,43 +123,37 @@ echo $page;?>
             <div class="debateCotLi">
               <p class="thesis pr"><?=$first_post['debate']['affirm_point']?><span></span><i class="icoSj pa"></i></p>
               <div  class="thesisUs">
-                <a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a>
-                <p><a href="#">浪漫的杯子</a>：海南小学女生开房案学女生开房案学女生开房案家长称判决太轻将抗诉</p>
+              <?php if(!empty($first_post['debate']['affirm_first'])){?>
+                <a href="<?= $this->config->item('user_url').$first_post['debate']['affirm_first']['author_id']?>"><img src="<?= $this->config->item('user_icon').$first_post['debate']['affirm_first']['author_id']?>" alt="<?=$first_post['debate']['affirm_first']['author']?>"></a>
+                <p><a href="<?= $this->config->item('user_url').$first_post['debate']['affirm_first']['author_id']?>"><?=$first_post['debate']['affirm_first']['author']?></a>：<?php echo utf8_substr($first_post['debate']['affirm_first']['content'],0,30)?> </p>
+              <?php }?>
               </div>
               <ul>
-                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
-                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
-                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
-                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
-                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
-                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
-                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
-                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
-                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
-                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
+              	<?php foreach($first_post['debate']['affirm_users'] as $user){?>
+                	<li><a href="<a href="<?= $this->config->item('user_url').$user['user_id']?>"><?=$user['username']?></a>">
+                    <img src="<?= $this->config->item('user_icon').$user['user_id']?>" alt="<?=$user['username']?>"></a></li>
+                <?php }?>
               </ul>
               <a href="javascript:void(0);" class="postView">发表红方观点</a>
             </div>
+              
             <div class="debateCotLi userBlue">
               <p class="thesis pr"><?=$first_post['debate']['negate_point']?><span></span><i class="icoSj pa"></i></p>
               <div  class="thesisUs">
-                <a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a>
-                <p><a href="#">浪漫的杯子</a>：海南小学女生开房案学女生开房案学女生开房案家长称判决太轻将抗诉</p>
+              <?php if(!empty($first_post['debate']['negate_first'])){?>
+                <a href="<?= $this->config->item('user_url').$first_post['debate']['negate_first']['author_id']?>"><img src="<?= $this->config->item('user_icon').$first_post['debate']['negate_first']['author_id']?>" alt="<?=$first_post['debate']['negate_first']['author']?>"></a>
+                <p><a href="<?= $this->config->item('user_url').$first_post['debate']['negate_first']['author_id']?>"><?=$first_post['debate']['negate_first']['author']?></a>：<?php echo utf8_substr($first_post['debate']['negate_first']['content'],0,30)?> </p>
+              <?php }?>
               </div>
               <ul>
-                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
-                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
-                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
-                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
-                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
-                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
-                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
-                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
-                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
-                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
+              	<?php foreach($first_post['debate']['negate_users'] as $user){?>
+                	<li><a href="<a href="<?= $this->config->item('user_url').$user['user_id']?>"><?=$user['username']?></a>">
+                    <img src="<?= $this->config->item('user_icon').$user['user_id']?>" alt="<?=$user['username']?>"></a></li>
+                <?php }?>
               </ul>
               <a href="javascript:void(0);" class="postView">发表蓝方观点</a>
             </div>
+              
             <span class="debateCotHr pa"></span>
           </div>
         </div>
@@ -217,7 +211,7 @@ echo $page;?>
             }
             ?>
             <li><span>总积分：</span><?php echo $user['credits'];?></li>
-            <li><span>帖子：</span><a href="#"><?php echo $user['posts'];?></a></li>
+            <li><span>帖子：</span><?php echo $user['posts'];?></li>
           </ul>
           <div class="usFaceInfoBot">
               <a href="<?=$this->config->item('user_url').$user['id']?>" class="icoUs1">资料</a>

@@ -95,7 +95,7 @@ class Bbs extends MY_Controller {
         $per_num = $this->config->item('per_num');
         $total_num = $this->ask_model->get_count($where);
         //生成分页字符串
-        $base_url = preg_replace('/.per_page=[^&]+/','',my_current_url());
+        $base_url = page_url();
         $page_obj = $this->biz_pagination->init_page($base_url, $total_num, $per_num);
         $page_str = $page_obj->create_links();
         $start = max(0, ($page_obj->cur_page - 1) * $per_num);
