@@ -38,6 +38,31 @@ class Credit_log_model extends MY_Model {
         }
         return TRUE;
     }
+    
+    
+      /**
+     * 获取我的帖子列表。
+     * @param int $start
+     * @param int $per_num
+     */
+    public function get_credit_list($type_name,$start, $per_num) {
+        $userid = $this->user['id'];
+        $where = "type='$type_name' and user_id='$userid' ";
+        $result = parent::get_list($where, '*', '', $start, $per_num);
+        return $result;
+    }
+
+    /**
+     * 获取我的帖子记录数。
+     */
+    public function get_credit_count($type_name) {
+        $userid = $this->user['id'];
+        $where = "type='$type_name' and user_id='$userid' ";
+        $num = $this->get_one($where, 'count(*) num');
+        return $num['num'];
+    }
+    
+
 
 }
 
