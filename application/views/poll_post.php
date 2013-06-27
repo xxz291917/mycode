@@ -37,7 +37,7 @@
       </li>
       <li>
         <span>公开投票人信息：</span>
-        <input id="is_overt" type="hidden" value="<?php echo set_value('is_overt', 0); ?>" name="is_overt">
+        <input id="is_overt" type="hidden" value="<?php echo set_value('is_overt', 1); ?>" name="is_overt">
         <i></i>
       </li>
     </ul>
