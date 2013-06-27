@@ -15,7 +15,8 @@ class Base_Controller extends CI_Controller {
         parent::__construct();
         //aotoload.php中自动加载了$autoload['libraries'] = array('database');$autoload['helper'] = array('url','form');
         $this->load->model(array('users_model', 'groups_model', 'forums_model','users_extra_model'));
-        $this->load->library(array('user_agent'));
+        $this->load->library(array('user_agent','encrypt'));
+        $this->load->helper('cookie');
         $this->config->load('my_config');
         if(config_item('enable_cache')){
             $this->enable_cache = true;
@@ -109,12 +110,26 @@ class Admin_Controller extends Base_Controller {
 
     protected $admin_dir = 'admin';
     protected $date_format = 'Y-m-d H:i:s';
+    protected $admin;
 
     public function __construct() {
         parent::__construct();
         $this->load->vars('date_format', $this->date_format);
-//        $this->config->load('admin');
-//        var_dump($this->config->item('query_string_segment'));die;
+        //检查是否是登录用户
+        $user_info = get_cookie('user_info');
+        if(!empty($user_info)){
+            $user_info = $this->encrypt->decode($user_info);
+            $user_info = json_decode($user_info, TRUE);
+            if(!empty($user_info['id']) && $user_info['id']==$this->user['id']){
+                $this->admin = true;
+            }
+        }
+        if(!$this->admin){
+            global $OUT;
+            $this->load->view('admin/admin_login');
+            $OUT->_display();
+            die;
+        }
     }
 
     public function view($view, $vars = array(), $string = false) {
