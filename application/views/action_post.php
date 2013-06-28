@@ -30,6 +30,10 @@
 </style>
 <script type="text/javascript">
     var base_url = '<?= base_url() ?>';
+	$(function(){
+		KindEditor.uploadImages={};
+		KindEditor.uploadFiles={};
+	});
 </script>
 <script type="text/javascript" src="<?= base_url() ?>js/editor.js"></script>
 <!--content-->
@@ -96,11 +100,10 @@
             <li class="pubQAEdit">
                 <textarea name="content" style="width:958px;height:340px;visibility:hidden;"><?php echo $this->posts_model->smiley2html(set_value('content', '')); ?></textarea>
             </li>
-
             <?php if ($type == 'post' || ($type == 'edit' && $post['is_first']==1)) { ?>
                 <li>
                     <input type="text" value="<?php echo set_value('tags', ""); ?>" name="tags" id="tags" size="60" class="inp pubInpW3">
-                    <label>最近标签：Flash、ios、android</label>
+                    <label></label>
                 </li>
                 <input type="hidden" name="forum_id" value="<?php echo $forum_id ?>"><!--保存草稿使用-->
             <?php } elseif ($type == 'reply') { ?>
@@ -108,7 +111,10 @@
             <?php } ?>
 
             <li>
-                <input  type="submit" name="submit" class="mainCmtBtn" value="提交">
+            	<input type="hidden" name="attachments[]" value="" />
+                <input type="hidden" name="attachments[]" value="" />
+                
+                <input  type="submit" name="submit" class="mainCmtBtn" value="提交" />
                 <button type="button" class="mainCmtBtn btnGray" id="preview">预览</button>
                 <?php if ($type != 'edit') {?>
                 <button type="button" class="mainCmtBtn btnGray" id="drafts">保存草稿</button>

@@ -116,7 +116,6 @@ class Biz_post extends CI_Model {
                 $quote_post = $this->posts_model->get_by_id($post['post_id']);
                 $quote_content = $this->get_quote_content($quote_post);
             }
-            
         }
         
         //插入posts表
@@ -156,8 +155,20 @@ class Biz_post extends CI_Model {
         //更新用户上传的附件（图片和文件）
         if (!empty($post['attachments'])) {
             $this->load->model(array('attachments_unused_model', 'attachments_model'));
-            $aids = join(',', $post['attachments']);
-            $attachments = $this->attachments_unused_model->get_list("id in($aids)");
+            //取出内容中的附件，不在内容中的附件，一律被删除。
+            $real_attachments = $this->get_attachments_in_content($post['content']);
+            $aids = array();
+            foreach($post['attachments'] as $k => &$aid){
+                $aid = intval($aid);
+                if(empty($aid)){
+                    unset($post['attachments'][$k]);
+                }
+                if(in_array($aid, $real_attachments)){
+                    $aids[] = $aid;
+                }
+            }
+            $aids = join(',', $aids);//在内容中出现过的附件id
+            $attachments = $this->attachments_unused_model->get_list("id in($aids)");//所有的上传上来的附件。
             foreach ($attachments as &$attachment) {
                 $attachment['topic_id'] = $tid;
                 $attachment['post_id'] = $pid;
@@ -167,7 +178,8 @@ class Biz_post extends CI_Model {
             if (!$this->attachments_model->insert_batch($attachments)) {
                 $this->message('插入附件表失败。');
             } else {
-                $this->attachments_unused_model->delete("id in($aids)");
+                $all_aids = join(',', $post['attachments']);
+                $this->attachments_unused_model->delete("id in($all_aids)");
             }
         }
         
@@ -195,6 +207,20 @@ class Biz_post extends CI_Model {
         $this->forums_statistics_model->post_increment($forum_id, $tid, $type);
         
         return TRUE;
+    }
+    
+    /**
+     * 得到内容中的使用附件id。
+     * @param type $content
+     * @return type
+     */
+    public function get_attachments_in_content($content) {
+        $match_num = preg_match_all("/\[(attach|attachimg)\](\d+)\[\/\\1\]/is", $content, $matches);
+        if(intval($match_num)>0){
+            return $matches[2];
+        }else{
+            return array();
+        }
     }
     
     public function edit($post){

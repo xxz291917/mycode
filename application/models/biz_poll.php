@@ -167,19 +167,16 @@ class Biz_poll extends CI_Model {
         $this->poll_model->update($poll_data, array('topic_id' => $tid));
         //完成poll_options表的数据
         $poll_options = $this->poll_options_model->get_list(array('topic_id' => $tid));
-        $new_options = array();
         foreach ($post['poll_option'] as $k => $v) {
+            $new_options = array();
             $new_options['display_order'] = $k;
             $new_options['option'] = html_escape($v);
-            $this->update_options($poll_options[$k], $new_options);
-        }
-    }
-    
-    private function update_options($options, $new_options) {
-        if(!empty($options['id'])){
-            $this->poll_options_model->update($new_options, array('id' => $options['id']));
-        }else{
-            $this->poll_options_model->insert($new_options);
+            if(isset($poll_options[$k])){
+                $this->poll_options_model->update($new_options, array('id' => $poll_options[$k]['id']));
+            }else{
+                $new_options['topic_id'] = $tid;
+                $this->poll_options_model->insert($new_options);
+            }
         }
     }
     

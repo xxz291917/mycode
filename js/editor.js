@@ -1,7 +1,7 @@
 var editor;
 $(function(){
-	KindEditor.uploadImages={};
-	KindEditor.uploadFiles={};
+	//KindEditor.uploadImages={};
+	//KindEditor.uploadFiles={};
 	KindEditor.smileUrl = base_url+"index.php/action/get_smiley_json";
 	KindEditor.smileys=null;
 	$.ajax({

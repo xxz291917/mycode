@@ -83,20 +83,26 @@ class Posts_model extends MY_Model {
 
     public function attachments2html($value) {
         //[attach][attachimg]
-        $value['content'] = preg_replace("/\[(attach|attachimg)\](\d+)\[\/\\1\]/ies", "\$this->get_html_for_attach('\\2','\\1')", $value['content']);
+        $key = $value['topic_id'].'_'.$value['id'];
+        if(empty($this->attachments[$key])){
+            $attachments = $this->attachments_model->get_list(array('topic_id' => $value['topic_id'], 'post_id' => $value['id']));
+            $attachments = $this->key_list($attachments, 'id');
+            $this->attachments[$key] = $attachments;
+        }
+        $attachments = $this->attachments[$key];
+        $value['content'] = preg_replace("/\[(attach|attachimg)\](\d+)\[\/\\1\]/ies", "\$this->get_html_for_attach('\\2','\\1',\$attachments)", $value['content']);
         return $value;
     }
-    private function get_html_for_attach($aid, $type = 'attach') {
+    
+    private function get_html_for_attach($aid, $type = 'attach',$attachments) {
         //cache
-        $attachments = $this->attachments_model->get_list(array('topic_id' => $value['topic_id'], 'post_id' => $value['id']));
-        $attachments = $this->key_list($attachments, 'id');
-        
         if (!empty($attachments[$aid])) {
             $attachment = $attachments[$aid];
             $html = '';
             if ('attach' == $type) {
                 $href = base_url("index.php/attachment/download/$aid");
                 $title = $attachment['description'];
+                $title = empty($title)?$attachment['filename']:$title;
                 $html = '<a href="' . $href . '" title="' . $title . '">' . $title . '</a>';
             } elseif ('attachimg' == $type) {
                 $src = base_url($attachment['path']);

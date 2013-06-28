@@ -6,7 +6,6 @@ class Attachment extends MY_Controller {
             
     function __construct() {
         parent::__construct();
-        $this->load->model(array('topic_manage', 'forums_statistics_model', 'posts_model', 'credit_name_model'));
         $this->load->model(array('attachments_model'));
         $this->get_mime();
     }
@@ -19,6 +18,8 @@ class Attachment extends MY_Controller {
         if (empty($attachments)) {
             $this->message('参数错误，附件不存在');
         }
+        //更新下载次数
+        $this->attachments_model->update_increment(array('downloads'=>':1'),array('id'=>$aid));
         $this->download_file($attachments['path']);
     }
 
