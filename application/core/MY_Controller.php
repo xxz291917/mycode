@@ -110,7 +110,7 @@ class Admin_Controller extends Base_Controller {
 
     protected $admin_dir = 'admin';
     protected $date_format = 'Y-m-d H:i:s';
-    protected $admin;
+    protected $admin = false;
 
     public function __construct() {
         parent::__construct();
@@ -120,15 +120,16 @@ class Admin_Controller extends Base_Controller {
         if(!empty($user_info)){
             $user_info = $this->encrypt->decode($user_info);
             $user_info = json_decode($user_info, TRUE);
-            if(!empty($user_info['id']) && $user_info['id']==$this->user['id']){
+            if(!empty($user_info['user_id']) && $user_info['user_id']==$this->user['id']){
                 $this->admin = true;
             }
         }
-        if(!$this->admin){
-            global $OUT;
-            $this->load->view('admin/admin_login');
-            $OUT->_display();
-            die;
+        if(!$this->admin ){
+            if($this->uri->segment(1)!=='admin' ||
+            $this->uri->segment(2)!=='main' ||
+            $this->uri->segment(3)!=='login'){
+                redirect(base_url('index.php/admin/main/login'));
+            }
         }
     }
 

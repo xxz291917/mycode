@@ -51,7 +51,7 @@ html, body {
 </colgroup>
   <tr>
     <td colspan="2" height="56px"><div class="head">
-        <p class="r a-r t-tips"> <a href="<?php echo base_url()?>" target="_blank">前台首页</a>|<a href="index.php?admin_main-logout">退出管理中心</a> </p>
+        <p class="r a-r t-tips"> <a href="<?php echo base_url()?>" target="_blank">前台首页</a>|<a href="<?php echo base_url()?>index.php/admin/main/logout">退出管理中心</a> </p>
         <ul id="nav">
           <li onclick="getMenu('index',this)" 	 id="indexmenu" ><a href="javascript:void(0);"><span>首页</span></a></li>
           <li onclick="getMenu('global',this)" 	 id="globalmenu"><a href="javascript:void(0);"><span>全局</span></a></li>
@@ -85,6 +85,7 @@ html, body {
             <ul>
               <li><a href="<?=base_url()?>index.php/admin/users" class="on" target="main" >用户管理</a></li>
               <li><a href="<?=base_url()?>index.php/admin/groups" target="main">用户组管理</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/users_admin" target="main" >管理员管理</a></li>
             </ul>
           </div>
           <div id='content'>
@@ -93,20 +94,20 @@ html, body {
               <li><a href="<?=base_url()?>index.php/admin/attachments/" target="main">附件管理</a></li>
               <li><a href="<?=base_url()?>index.php/admin/topics/check" target="main">审核管理</a></li>
               <li><a href="<?=base_url()?>index.php/admin/reports/" target="main">举报管理</a></li>
-              <li><a href="<?=base_url()?>index.php?admin_word" target="main">敏感词管理</a></li>
-              <li><a href="<?=base_url()?>index.php/admin/topics/recycle" target="main">回收站</a></li>
+              <!--li><a href="<?=base_url()?>index.php?admin_word" target="main">敏感词管理</a></li>
+              <li><a href="<?=base_url()?>index.php/admin/topics/recycle" target="main">回收站</a></li-->
             </ul>
           </div>
           <div id='forums'>
             <ul>
               <li><a href="<?=base_url()?>index.php/admin/forums" class="on" target="main">版块管理</a></li>
-              <li><a href="<?=base_url()?>index.php/admin/forums/merge" target="main">版块合并</a></li>
+              <!--li><a href="<?=base_url()?>index.php/admin/forums/merge" target="main">版块合并</a></li-->
             </ul>
           </div>
           <div id='busines'>
             <ul>
               <li><a href="<?=base_url()?>index.php/admin/medals" class="on" target="main">勋章管理</a></li>
-              <li><a href="<?=base_url()?>index.php/admin/forums/merge" target="main">版块合并</a></li>
+              <!--li><a href="<?=base_url()?>index.php/admin/forums/merge" target="main">版块合并</a></li-->
             </ul>
           </div>
         </div></td>
