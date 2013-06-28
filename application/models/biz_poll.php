@@ -158,9 +158,9 @@ class Biz_poll extends CI_Model {
             return FALSE;
         }
         //完成poll表的数据
-        $poll_data['is_overt'] = empty($post['is_overt']) ? 1 : 0;
+        $poll_data['is_overt'] = !empty($post['is_overt']) ? 1 : 0;
         $poll_data['is_multiple'] = $post['max_choices'] > 1 ? 1 : 0;
-        $poll_data['is_visible'] = empty($post['is_visible']) ? 1 : 0;
+        $poll_data['is_visible'] = !empty($post['is_visible']) ? 1 : 0;
         $poll_data['max_choices'] = intval($post['max_choices']);
         $poll_data['expire_time'] = $this->time + (intval($post['expire_time']) * 3600 * 24);
         $poll_data['preview'] = join('[|]', array_slice(html_escape($post['poll_option']), 0, 2));

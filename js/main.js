@@ -143,8 +143,9 @@ $(document).ready(function() {
 		if( $('.voteBoxL li').length > 1 ) {
 			$(this).parent().remove();
 			return false;
-		}	
+		}
 	});	 
+	/*
 	$('.btnAddVote').click(function() {
 		$('.voteBoxL li:last').clone().appendTo('ol').find('input').val('');
 	});
@@ -170,7 +171,7 @@ $(document).ready(function() {
 			$(this).removeClass('btnUnCheck').addClass('btnCheck');
 		}
 	);
-	
+	*/
 	
 	
 });

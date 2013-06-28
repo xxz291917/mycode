@@ -3,6 +3,16 @@
   <div class="voteBoxTit"><strong>投票选项：</strong>(最多可选50项)</div>
   <div class="voteBoxL">
     <ol>
+    <?php if(!empty($_POST['poll_option'])){?>
+		<?php foreach($_POST['poll_option'] as $option){?>
+        <li>
+            <input name="poll_option[]" class="inp" value="<?php echo set_value('poll_option[]', ''); ?>">
+            <?php if($type != 'edit'){?>
+            	<span class="btnCls">关闭</span>
+            <?php }?>
+        </li>
+        <?php } ?>
+    <?php }else{ ?>
       <li>
       	<input name="poll_option[]" class="inp" value="<?php echo set_value('poll_option[]', ''); ?>">
         <span class="btnCls">关闭</span>
@@ -15,6 +25,7 @@
         <input name="poll_option[]" class="inp" value="<?php echo set_value('poll_option[]', ''); ?>">
         <span class="btnCls">关闭</span>
       </li>
+    <?php } ?>
     </ol>
     <div class="btnAddBox"><i class="btnAddVote"></i>增加一个选项</div>
   </div>
@@ -62,6 +73,12 @@ $(function(){
 	is_visible.next().addClass(visibleclass).click(function(){
 		changeCls($(this),$(this).attr('class'));
 	});
+	
+	$('.btnAddVote').click(function() {
+		var html = '<li><input name="poll_option[]" class="inp" value=""><span class="btnCls">关闭</span></li>';
+		$(".voteBoxL ol").append(html);
+	});
+	
 })
 
 </script>
