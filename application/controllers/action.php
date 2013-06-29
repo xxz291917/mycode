@@ -27,7 +27,11 @@ class Action extends MY_Controller {
         if (empty($forum) || $forum['type'] == 'group') {
             $this->message('参数错误，发布的版块不存在或者不是子版块', 0, $forum_show_url);
         }
-        if ($this->input->post('submit') && $this->biz_post->check_post('post', $special) && $post = $this->input->post(null)) {
+        if ($this->input->post('submit') && $post = $this->input->post(null)) {
+            if(!$this->biz_post->check_post('post', $special)){
+                $errors = validation_errors();
+                $this->message(nl2br($errors), 0);
+            }
             //检测权限。
             $is_post = $this->biz_permission->check_base('post', $forum_id);
             if (!$is_post) {
@@ -102,7 +106,11 @@ class Action extends MY_Controller {
             $this->message('参数错误，发布的主题不存在', 0, $forum_show_url);
         }
         //通过了check校验
-        if ($this->input->post('submit') && $this->biz_post->check_post('reply', $topic['special']) && $post = $this->input->post(null)) {
+        if ($this->input->post('submit') && $post = $this->input->post(null)) {
+            if(!$this->biz_post->check_post('reply', $topic['special'])){
+                $errors = validation_errors();
+                $this->message(nl2br($errors), 0);
+            }
             //检测权限。
             $is_post = $this->biz_permission->check_base('reply', $topic['forum_id']);
             if (!$is_post) {
@@ -177,7 +185,8 @@ class Action extends MY_Controller {
         if ($this->input->post('submit') && $post = $this->input->post(null)) {
             //检测字段
             if(!$this->biz_post->check_post('reply', $topic['special'])){
-                $this->message('您输入的参数有问题，请检查。');
+                $errors = validation_errors();
+                $this->message(nl2br($errors), 0);
             }
             //检测权限。
             $is_post = $this->biz_permission->check_base('reply', $topic['forum_id']);
@@ -270,7 +279,11 @@ class Action extends MY_Controller {
         $var['post'] = $db_post;
         
         //通过了check校验
-        if ($this->input->post('submit') && $this->biz_post->check_post($db_post['is_first']==1?'post':'reply', $topic['special']) && $post = $this->input->post(null)) {
+        if ($this->input->post('submit') && $post = $this->input->post(null)) {
+            if(!$this->biz_post->check_post($db_post['is_first']==1?'post':'reply', $topic['special'])){
+                $errors = validation_errors();
+                $this->message(nl2br($errors), 0);
+            }
             //构造post数组。
             $post = array_merge($post, array('topic_id' => $topic_id, 'is_first'=>$db_post['is_first'], 'post_id' => $db_post['id'], 'forum_id' => $topic['forum_id'],'special'=>$topic['special'], 'topic_author_id' => $topic['author_id']));
             //完成编辑。
@@ -325,6 +338,26 @@ class Action extends MY_Controller {
                 $category_option = $this->topics_category_model->create_options($forum_id);
                 $var['category_option'] = $category_option;
             }
+            
+            $db_post = $this->posts_model->output_filter($db_post);
+            //获取可能存在的附件
+            $attachments = $this->posts_model->get_attachments($db_post);
+            $uploadImages=$uploadFiles=array();
+            if(!empty($attachments)){
+                foreach ($attachments as $key => $attachment) {
+                    if($attachment['is_image'] == 1){
+                        $uploadImages[$key] = $this->posts_model->get_html_for_attach($key, 'attachimg', $attachments);
+                    }else{
+                        $uploadFiles[$key] = $this->posts_model->get_html_for_attach($key, 'attach', $attachments);
+                    }
+                }
+                $edit_data['attachments'] = array_keys($attachments);
+            }
+            $edit_data['uploadImages'] = json_encode($uploadImages);
+            $edit_data['uploadFiles'] = json_encode($uploadFiles);
+            
+//            echo $edit_data['uploadFiles'];
+//            echo $edit_data['uploadImages'];die;
             
             $edit_data['subject'] = $db_post['subject'];
             $edit_data['content'] = $db_post['content'];

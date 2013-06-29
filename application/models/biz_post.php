@@ -23,7 +23,7 @@ class Biz_post extends CI_Model {
             //获取本主题下的回复和分页
             $author = $this->input->get('author', TRUE);
             $where = !empty($author) ? " author_id = '$author' " : '1';
-            $where .= " AND topic_id = '$id' AND status =1";
+            $where .= " AND topic_id = '$id' AND (status =1 or status =4)";
             $per_num = $this->config->item('per_num');
             $total_num = $this->posts_model->get_count($where);
             //生成分页字符串
@@ -118,6 +118,34 @@ class Biz_post extends CI_Model {
             }
         }
         
+        //是否有附件，得到附件的类型。并顺便初始化几个变量。$attachments $aids
+        if(!empty($post['attachments'])){
+            $this->load->model(array('attachments_unused_model', 'attachments_model'));
+            //取出内容中的附件，不在内容中的附件，将一律被删除。
+            $real_attachments = $this->get_attachments_in_content($post['content']);
+            $aids = array();
+            foreach($post['attachments'] as $k => &$aid){
+                $aid = intval($aid);
+                if(empty($aid)){
+                    unset($post['attachments'][$k]);
+                }
+                if(in_array($aid, $real_attachments)){
+                    $aids[] = $aid;
+                }
+            }
+            $aids = join(',', $aids);//在内容中出现过的附件id
+            $attachments = $this->attachments_unused_model->get_list("id in($aids)");//所有附件在数据表中的内容。
+            $attachment_type = 2;
+            foreach ($attachments as $key => $value) {
+                if($value['is_image']==1){
+                    $attachment_type = 1;
+                    break;
+                }
+            }
+        }else{
+            $attachment_type = 0;
+        }
+        
         //插入posts表
         $posts_data['topic_id'] = $tid;
         $posts_data['forum_id'] = $forum_id;
@@ -127,7 +155,7 @@ class Biz_post extends CI_Model {
         $posts_data['post_time'] = $this->time;
         $posts_data['subject'] = html_escape(isset($post['subject']) ? trim($post['subject']) : '');
         $posts_data['content'] = (!empty($quote_content) ? $quote_content : '') . ($is_html ? $post['content'] : html_escape($post['content']));
-        $posts_data['attachment'] = 0;
+        $posts_data['attachment'] = $attachment_type;
         $posts_data['is_first'] = 'post' == $type ? 1 : 0;
         $posts_data['is_bbcode'] = $this->biz_permission->get_is('bbcode', $forum_id);
         $posts_data['is_smilies'] = $this->biz_permission->get_is('smilies', $forum_id);
@@ -154,21 +182,7 @@ class Biz_post extends CI_Model {
         
         //更新用户上传的附件（图片和文件）
         if (!empty($post['attachments'])) {
-            $this->load->model(array('attachments_unused_model', 'attachments_model'));
-            //取出内容中的附件，不在内容中的附件，一律被删除。
-            $real_attachments = $this->get_attachments_in_content($post['content']);
-            $aids = array();
-            foreach($post['attachments'] as $k => &$aid){
-                $aid = intval($aid);
-                if(empty($aid)){
-                    unset($post['attachments'][$k]);
-                }
-                if(in_array($aid, $real_attachments)){
-                    $aids[] = $aid;
-                }
-            }
-            $aids = join(',', $aids);//在内容中出现过的附件id
-            $attachments = $this->attachments_unused_model->get_list("id in($aids)");//所有的上传上来的附件。
+            //$attachments 在前面已经被赋值了，得到的是内容中所有真正使用的附件。
             foreach ($attachments as &$attachment) {
                 $attachment['topic_id'] = $tid;
                 $attachment['post_id'] = $pid;
@@ -245,7 +259,7 @@ class Biz_post extends CI_Model {
             $topics_data['tags'] = $tags;
             $this->topics_model->update($topics_data, array('id' => $tid));
             
-            //更新tags
+            //更新tags表
             $this->tags_model->delete(array('topic_id'=>$tid));
             $this->tags_model->insert_tags($tags, $tid);
             
@@ -256,7 +270,6 @@ class Biz_post extends CI_Model {
                     $this->$special_class->$method($tid,$post,$pid);
                 }
             }
-            
         }else{
             //特殊贴钩子（完成基本业务后调用）
             if(!empty($special_class)){
@@ -267,9 +280,45 @@ class Biz_post extends CI_Model {
             }
         }
         
+        //得到当前正在使用的附件的id。
+        //初始化几个变量。$attachments $aids
+        $aids = array();
+        if(!empty($post['attachments'])){
+            $this->load->model(array('attachments_unused_model', 'attachments_model'));
+            //取出内容中的附件
+            $real_attachments = $this->get_attachments_in_content($post['content']);
+            foreach($post['attachments'] as $k => &$aid){
+                $aid = intval($aid);
+                if(empty($aid)){
+                    unset($post['attachments'][$k]);
+                }
+                if(in_array($aid, $real_attachments)){
+                    $aids[] = $aid;
+                }
+            }
+        }
+        $aids = join(',', $aids);
+        //删除不在当前使用附件id中的附件。
+        $this->attachments_model->delete("id not in($aids)"); 
+        //将unused的附件挪到正式附件表中。
+        if(!empty($aids)){
+            $attachments = $this->attachments_unused_model->get_list("id in($aids)");//所有未使用附件表中正在使用的附件。
+            foreach ($attachments as &$attachment) {
+                $attachment['topic_id'] = $tid;
+                $attachment['post_id'] = $pid;
+                $attachment['is_remote'] = 0;
+                $attachment['downloads'] = 0;
+            }
+            if ( !empty($attachments) && !$this->attachments_model->insert_batch($attachments)) {
+                $this->message('插入附件表失败。');
+            } else {
+                $all_aids = join(',', $post['attachments']);
+                $this->attachments_unused_model->delete("id in($all_aids)");
+            }
+        }
+        
         //根据html权限检测是否需要过滤html
         $is_html = $this->biz_permission->get_is('html', $forum_id);
-        
         //更新post表
         $update_post_data['edit_user'] = $this->user['username'];
         $update_post_data['edit_user_id'] = $this->user['id'];
@@ -311,6 +360,11 @@ class Biz_post extends CI_Model {
                 'field' => 'content',
                 'label' => '帖子内容',
                 'rules' => 'trim|required'
+            ),
+            array(
+                'field' => 'attachments[]',
+                'label' => '上传附件',
+                'rules' => 'intval'
             )
         );
         if ('post' == $type) {
@@ -318,6 +372,11 @@ class Biz_post extends CI_Model {
                 'field' => 'subject',
                 'label' => '标题',
                 'rules' => 'trim|required|min_length[5]|max_length[80]'
+            );
+            $config[] = array(
+                'field' => 'tags',
+                'label' => '标签',
+                'rules' => 'trim'
             );
         }
         
@@ -359,6 +418,11 @@ class Biz_post extends CI_Model {
             $suffix = (strlen($post['content']) > $maxlen) ? '……' : '';
         }
         return '<blockquote class="blockquote">'."{$post['author']} 发表于 " . date('Y-m-d H:i:s', $post['post_time']) . "<br/>" . html_escape(utf8_substr($post['content'], 0, 20)).$suffix.'</blockquote>';
+    }
+    
+    public function message($message, $sucess = 0, $redirect = 'BACK'){
+        $CI = &get_instance();
+        $CI->message($message, $sucess, $redirect);
     }
 
 }

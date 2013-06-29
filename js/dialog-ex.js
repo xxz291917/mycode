@@ -115,7 +115,6 @@ $(function(){
 							fields = form.serialize(),
 							ajaxFun = method=='post'?$.post:$.get;
 						ajaxFun(action,fields,function(data){
-							
 							if(data.redirect){
 								var options = {buttons: {
 									"确定": function() {

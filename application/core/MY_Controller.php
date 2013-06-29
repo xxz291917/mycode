@@ -89,7 +89,7 @@ class MY_Controller extends Base_Controller {
         }
     }
 
-    protected function message($message, $sucess = 0, $redirect = 'BACK') {
+    public function message($message, $sucess = 0, $redirect = 'BACK') {
         //判断是否是ajax提交
         if ($this->input->is_ajax_request()) {
             $redirect = $redirect == 'BACK' ? '' : $redirect;
@@ -149,7 +149,7 @@ class Admin_Controller extends Base_Controller {
         }
     }
     
-    protected function message($message, $success = 0, $redirect = 'BACK') {
+    public function message($message, $success = 0, $redirect = 'BACK') {
         //判断是否是ajax提交
         if ($this->input->is_ajax_request()) {
             echo $this->echo_ajax($redirect, $message);

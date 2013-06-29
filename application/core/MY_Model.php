@@ -172,7 +172,10 @@ class MY_Model extends CI_Model {
             return array('list'=>$list,'page_str'=>$page_str);
     }
     
-    
+    public function message($message, $sucess = 0, $redirect = 'BACK'){
+        $CI = &get_instance();
+        $CI->message($message, $sucess, $redirect);
+    }
 
 }
 

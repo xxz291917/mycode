@@ -97,7 +97,7 @@ $(function(){
 							'.text-align', '.color', '.background-color', '.font-size', '.font-family', '.font-weight',
 							'.font-style', '.text-decoration', '.vertical-align', '.background', '.border'
 						],
-						a : ['id', 'class', 'href', 'target', 'name'],
+						a : ['id', 'class', 'href', 'target', 'name','aid'],
 						embed : ['id', 'class', 'src', 'width', 'height', 'type', 'loop', 'autostart', 'quality', '.width', '.height', 'align', 'allowscriptaccess'],
 						img : ['id', 'class', 'src', 'width', 'height', 'border', 'alt', 'title', 'align', '.width', '.height', '.border','smileid','aid'],
 						'p,ol,ul,li,blockquote,h1,h2,h3,h4,h5,h6' : [

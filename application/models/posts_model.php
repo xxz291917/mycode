@@ -82,19 +82,23 @@ class Posts_model extends MY_Model {
     }
 
     public function attachments2html($value) {
-        //[attach][attachimg]
+        $attachments = $this->get_attachments($value);
+        $value['content'] = preg_replace("/\[(attach|attachimg)\](\d+)\[\/\\1\]/ies", "\$this->get_html_for_attach('\\2','\\1',\$attachments)", $value['content']);
+        return $value;
+    }
+    
+    public function get_attachments($value){
         $key = $value['topic_id'].'_'.$value['id'];
         if(empty($this->attachments[$key])){
             $attachments = $this->attachments_model->get_list(array('topic_id' => $value['topic_id'], 'post_id' => $value['id']));
             $attachments = $this->key_list($attachments, 'id');
             $this->attachments[$key] = $attachments;
         }
-        $attachments = $this->attachments[$key];
-        $value['content'] = preg_replace("/\[(attach|attachimg)\](\d+)\[\/\\1\]/ies", "\$this->get_html_for_attach('\\2','\\1',\$attachments)", $value['content']);
-        return $value;
+        return $this->attachments[$key];
     }
-    
-    private function get_html_for_attach($aid, $type = 'attach',$attachments) {
+
+
+    public function get_html_for_attach($aid, $type = 'attach',$attachments) {
         //cache
         if (!empty($attachments[$aid])) {
             $attachment = $attachments[$aid];
@@ -103,11 +107,11 @@ class Posts_model extends MY_Model {
                 $href = base_url("index.php/attachment/download/$aid");
                 $title = $attachment['description'];
                 $title = empty($title)?$attachment['filename']:$title;
-                $html = '<a href="' . $href . '" title="' . $title . '">' . $title . '</a>';
+                $html = '<a href="' . $href . '" aid="'.$aid.'" title="' . $title . '">' . $title . '</a>';
             } elseif ('attachimg' == $type) {
                 $src = base_url($attachment['path']);
                 $title = $attachment['description'];
-                $html = '<img src="' . $src . '" title="' . $title . '" alt="' . $title . '" />';
+                $html = '<img src="' . $src . '" aid="'.$aid.'" title="' . $title . '" alt="' . $title . '" />';
             }
             return $html;
         } else {

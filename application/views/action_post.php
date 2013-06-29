@@ -30,10 +30,15 @@
 </style>
 <script type="text/javascript">
     var base_url = '<?= base_url() ?>';
-	$(function(){
-		KindEditor.uploadImages={};
-		KindEditor.uploadFiles={};
-	});
+    $(function(){
+			<?php if($type == 'edit'){?>
+				KindEditor.uploadImages=<?=$edit_data['uploadImages']?>;
+				KindEditor.uploadFiles=<?=$edit_data['uploadFiles']?>;
+			<?php }else{?>
+				KindEditor.uploadImages={};
+				KindEditor.uploadFiles={};
+			<?php }?>
+    });
 </script>
 <script type="text/javascript" src="<?= base_url() ?>js/editor.js"></script>
 <!--content-->
@@ -65,7 +70,6 @@
                 echo '编辑帖子';
                 if (empty($_POST)) {
                     $_POST = $edit_data;
-					//var_dump($_POST);
                 }
             } else {
                 echo '回复帖子';
@@ -102,7 +106,7 @@
             </li>
             <?php if ($type == 'post' || ($type == 'edit' && $post['is_first']==1)) { ?>
                 <li>
-                    <input type="text" value="<?php echo set_value('tags', ""); ?>" name="tags" id="tags" size="60" class="inp pubInpW3">
+                    <input type="text" value="<?php echo set_value('tags', ''); ?>" name="tags" id="tags" size="60" class="inp pubInpW3">
                     <label></label>
                 </li>
                 <input type="hidden" name="forum_id" value="<?php echo $forum_id ?>"><!--保存草稿使用-->
@@ -111,9 +115,12 @@
             <?php } ?>
 
             <li>
-            	<input type="hidden" name="attachments[]" value="" />
-                <input type="hidden" name="attachments[]" value="" />
-                
+					<?php //$edit_push
+					 	if(!empty($_POST['attachments'])){?>
+                        <?php foreach($_POST['attachments'] as $attachments){?>
+                    	<input type="hidden" name="attachments[]" value="<?php echo set_value('attachments[]', ''); ?>" />
+                    	<?php }?>
+                    <?php }?>
                 <input  type="submit" name="submit" class="mainCmtBtn" value="提交" />
                 <button type="button" class="mainCmtBtn btnGray" id="preview">预览</button>
                 <?php if ($type != 'edit') {?>
@@ -161,7 +168,7 @@ if (!empty($draft)) {
 		<?php } ?>
 
         var drafts = $("#drafts"),
-            tipsArr = {'subject': '<?php echo!empty($topic['subject']) ? "Re:{$topic['subject']}" : '请输入帖子标题' ?>', 'tags': "标签间请用'空格'或'逗号'隔开，最多可添加5个标签。"};
+            tipsArr = {'subject': '<?php echo !empty($topic['subject']) ? "Re:{$topic['subject']}" : '请输入帖子标题' ?>', 'tags': "标签间请用'空格'或'逗号'隔开，最多可添加5个标签。"};
 
         $.each(tipsArr, function(i, n) {
             var field = thisform.find("[name='" + i + "']");
@@ -181,13 +188,39 @@ if (!empty($draft)) {
             });
         });
 
-        thisform.submit(function() {
+        thisform.submit(function(event) {
+			editor.sync();
             $.each(tipsArr, function(i, n) {
                 var field = thisform.find("[name='" + i + "']");
                 if (field.val() == tipsArr[i]) {
                     field.val('');
                 }
             });
+			var url = thisform.attr('action'),
+				method = thisform.attr('method'),
+				fields = thisform.serialize(),
+				ajaxFun = method == 'post' ? $.post : $.get;
+				fields+='&submit=1';
+			ajaxFun(url, fields, function(data) {
+				if(data.redirect){
+					var options = {buttons: {
+						"确定": function() {
+								$(this).dialog("close");
+								window.location.href = data.redirect;
+							}
+					}};
+				}else{
+					var options = {};
+				}
+				if(!data.success){
+					$.Alert(data.message,'',options);
+				}else{
+					$.Alert(data.message,'',options);
+					html.dialog("close");
+				}
+			}, 'json');
+			event.preventDefault();
+			return false;
         });
 		
 		if(drafts.length>0){
