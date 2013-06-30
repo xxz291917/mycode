@@ -12,6 +12,12 @@ class Attachments_model extends MY_Model {
         $num = $this->get_one('', 'max(id) maxid');
         return $num['maxid'];
     }
+    
+    public function get_last_topic($num = 10) {
+        $sql = "select from posts p left join attachments a on a.post_id=p.id where "
+    }
+
+
 
 //    /**
 //     * 获取上传附件列表   

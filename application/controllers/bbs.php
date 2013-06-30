@@ -11,10 +11,38 @@ class Bbs extends MY_Controller {
      * 论坛首页
      */
     public function index() {
+        //获取统计数据。
+//        $this->
         //获取所有版块
         $forums = $this->forums_model->get_forums();
         $forums = $this->forums_statistics_model->append_to_forums($forums);
         $var['forums'] = $this->forums_model->get_format_forums($forums);
+        $totals = array(
+            'posts' =>0,
+            'topics' =>0,
+            'today_posts' =>0,
+            'today_topics' =>0,
+        );
+        foreach($forums as $forum){
+            foreach ($totals as $key => $val) {
+                if(isset($forum[$key]))
+                $totals[$key] += $forum[$key];
+            }
+        }
+        //获取总用户数
+        $totals['users'] = $this->users_model->get_count();
+        $var['totals'] = $totals;
+        //获取最后用户数
+        $last_user = $this->users_model->get_one(1, 'id,username', 'regdate desc');
+        $var['last_user'] = $last_user;
+        //获取最新帖子
+        $new_topics = $this->topics_model->get_list(1, 'id,subject', 'post_time desc',0,8);
+        //获取最新回复的topic_id
+        $last_post_topics_ids = $this->posts_model->get_list('is_first !=1', 'distinct topic_id', 'post_time desc',0,8);
+        //获取带图片的最新帖子
+        $last_image_topics_ids = $this->attachments_model->get_list('is_first !=1', 'distinct topic_id', 'post_time desc',0,8);
+        //今日发帖量用户排行
+        $this->users_model->get_one(1, 'id,username', 'regdate desc',0,14);
         //var_dump($var['forums']);die;
         //var_dump($this->user);
         $this->view('bbs_index',$var);
