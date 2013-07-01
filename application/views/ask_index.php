@@ -85,8 +85,8 @@
 		}
 	  ?>
     </div>
+      <?php if(!empty($forum_id)){?>
     <div class="menuPage clearfix">
-    <?php if(!empty($forum_id)){?>
       <ul class="menuTag">
         <li class="pr hasMenu"><a href="javascript:void(0);" class="icoPost">发帖</a>
           <div class="menuBox pa">
@@ -101,11 +101,10 @@
           </div>
         </li>
       </ul>
-      <?php }?>
       
       <?php empty($page) && $page = ''; echo $page;?>
-
     </div>
+        <?php }?>
     <div class="list">
       <ul class="listTag">
         <li <?php if(empty($type)){ echo 'class="current"'; }?>><a href="<?=$type_url.'0'?>">全部</a></li>
@@ -185,8 +184,18 @@
               <span class="tdSpan2"><?=$topic['views']?></span>
             </li>
             <li class="td6">
-              <span class="tdSpan1"><a href="<?=user_url($topic['last_author_id'])?>"><?=$topic['last_author']?></a></span>
-              <span class="tdSpan2"><?=$topic['last_post_time']?></span>
+                <span class="tdSpan1">
+                    <?php if(!empty($topic['last_author'])){?>
+                    <a href="<?= user_url($topic['last_author_id']) ?>"><?= $topic['last_author'] ?></a>
+                    <?php }else{?>
+                    无
+                    <?php }?>
+                </span>
+                <span class="tdSpan2">
+                    <?php if(!empty($topic['last_post_time'])){?>
+                    <?php echo time_span($topic['last_post_time'], '', 3600 * 24, '前'); ?>
+                    <?php }?>
+                </span>
             </li>
           </ul>
         </li>

@@ -87,6 +87,7 @@ $(document).ready(function() {
 			$(this).text('收起回复');
 		}
 	);
+	
 	//帖子列表左侧菜单展开效果
 	$('.leftNav dt a').toggle(	
 		function () {
@@ -97,12 +98,13 @@ $(document).ready(function() {
 		function () {
 			$(this).parent().parent().removeClass('clsLeftNav');
 		}
-	); 
+	); /*
 	//获取左侧隐藏菜单的 cookie
 	var leftNavState = document.cookie;	
 	if( leftNavState = 'isHide') {
 		$('.leftNavCtrl').parent().parent().addClass('leftNavShow');
 	}
+	*/
 	//帖子列表左侧菜单隐藏效果
 	$('.leftNavCtrl').toggle(	
 		function () {

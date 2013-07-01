@@ -7,7 +7,7 @@ class Groups extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model(array('groups_model', 'groups_admin_model'));
+        $this->load->model(array('groups_model', 'groups_admin_model','biz_image'));
     }
 
     //'system', 'special', 'member'
@@ -60,6 +60,10 @@ class Groups extends Admin_Controller {
             $this->message('参数错误！');
         } elseif ($this->input->post('submit')) {
             $groups = $this->input->post();
+            $icon_upload = $this->biz_image->icon_upload();
+            if($icon_upload){
+                $groups['icon'] = $icon_upload;
+            }
             $groups = $this->groups_model->form_filter($groups, 'en');
             if ($this->groups_model->update($groups, array('id' => $id))) {
                 $this->message('修改成功！');

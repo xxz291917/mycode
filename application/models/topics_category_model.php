@@ -15,7 +15,7 @@ class Topics_category_model extends MY_Model {
     public function create_options($forum_id, $check_arr = array()) {
         $option = '';
         $categorys = $this->get_list(array('forum_id'=>$forum_id));
-        if(empty($categorys)){
+        if(!empty($categorys)){
             foreach ($categorys as $key => $category) {
                 $checked = in_array($category['id'], $check_arr) ? ' selected="selected"' : '';
                 $option .= '<option value="' . $category['id'] . '"' . $checked . '>' . $category['name'] . '</option>';

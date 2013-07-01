@@ -280,8 +280,7 @@ class Biz_post extends CI_Model {
             }
         }
         
-        //得到当前正在使用的附件的id。
-        //初始化几个变量。$attachments $aids
+        //得到当前正在使用的附件的id。初始化几个变量。$attachments $aids
         $aids = array();
         if(!empty($post['attachments'])){
             $this->load->model(array('attachments_unused_model', 'attachments_model'));
@@ -299,7 +298,11 @@ class Biz_post extends CI_Model {
         }
         $aids = join(',', $aids);
         //删除不在当前使用附件id中的附件。
-        $this->attachments_model->delete("id not in($aids)"); 
+        $where = "post_id = $pid ";
+        if(!empty($aids)){
+            $where .= "AND id not in($aids)";
+        }
+        $this->attachments_model->update(array('status'=>2),$where);
         //将unused的附件挪到正式附件表中。
         if(!empty($aids)){
             $attachments = $this->attachments_unused_model->get_list("id in($aids)");//所有未使用附件表中正在使用的附件。
@@ -314,7 +317,18 @@ class Biz_post extends CI_Model {
             } else {
                 $all_aids = join(',', $post['attachments']);
                 $this->attachments_unused_model->delete("id in($all_aids)");
+                
+                $attachments = $this->attachments_model->get_list("id in($aids)");//所有附件在数据表中的内容。
+                $attachment_type = 2;
+                foreach ($attachments as $key => $value) {
+                    if($value['is_image']==1){
+                        $attachment_type = 1;
+                        break;
+                    }
+                }
             }
+        }else{
+            $attachment_type = 0;
         }
         
         //根据html权限检测是否需要过滤html
@@ -325,7 +339,7 @@ class Biz_post extends CI_Model {
         $update_post_data['edit_time'] = $this->time;
         $update_post_data['subject'] = html_escape($post['subject']);
         $update_post_data['content'] = $is_html ? $post['content'] : html_escape($post['content']);
-        $update_post_data['attachment'] = 0;
+        $update_post_data['attachment'] = $attachment_type;
         $is_update_succ = $this->posts_model->update($update_post_data, array('id' => $post['post_id']));
         return $is_update_succ;
     }

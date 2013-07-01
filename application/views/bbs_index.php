@@ -8,7 +8,8 @@
         <span class="fr">
             <a href="#">我的帖子</a><i>|</i><a href="#">查看新帖</a>
         </span>-->
-        <em>今日:</em><?=$totals['today_posts']?><i>|</i><em>总帖子:</em><?=$totals['posts']?><i>|</i><em>会员:</em><?=$totals['users']?><i>|</i><em>欢迎新会员:</em><?=$last_user['username']?></div>
+        <em>今日:</em><?=$totals['today_posts']?><i>|</i><em>总帖子:</em><?=$totals['posts']?><i>|</i><em>会员:</em><?=$totals['users']?><i>|</i><em>欢迎新会员:</em><?=$last_user['username']?>
+    </div>
     <div class="hTop">    
         <div id="lunbo">
             <div id="lunbo_bg"></div> 
@@ -22,7 +23,7 @@
             </ul>
             <div id="lunbo_list">
                 <?php foreach ($last_image_topics as $key => $topic) {?>
-                <a href="<?php echo base_url('index.php/topic/show/'.$topic['id'])?>" target="_blank"><img src="<?php echo $topic['path']?>" title="<?php echo $topic['subject']?>" alt="<?php echo $topic['description']?>" /></a>
+                <a href="<?php echo base_url('index.php/topic/show/'.$topic['topic_id'])?>" target="_blank"><img src="<?php echo $topic['path']?>" title="<?php echo $topic['subject']?>" alt="<?php echo $topic['description']?>" /></a>
                 <?php }?>
             </div>
         </div>    
@@ -67,10 +68,12 @@
         </dl>
     </div>
     
-    <?php foreach ($forums as $key => $forum) {?>
+    <?php 
+    $num = count($forums);
+    foreach ($forums as $key => $forum) {?>
         <h2 class="homeH2"><a href="<?php echo base_url('index.php/forum/show/'.$forum['id'])?>"><?=$forum['name']?></a></h2>
         
-        <ul class="homeList">
+        <ul class="homeList  <?php if($key+1==$num){?>lastLi<?php }?>  ">
             <?php foreach ($forum['sub'] as $key => $sub) {?>
             <li class="pr">
                 <h3><a href="<?=base_url()?>index.php/forum/show/<?=$sub['id']?>"><?=$sub['name']?></a><?php echo !empty($sub['today_posts'])?$sub['today_posts']:0?></h3>

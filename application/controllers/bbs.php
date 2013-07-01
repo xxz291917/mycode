@@ -11,8 +11,6 @@ class Bbs extends MY_Controller {
      * 论坛首页
      */
     public function index() {
-        //获取统计数据。
-//        $this->
         //获取所有版块
         $forums = $this->forums_model->get_forums();
         $forums = $this->forums_statistics_model->append_to_forums($forums);
@@ -50,7 +48,7 @@ class Bbs extends MY_Controller {
         $var['last_post_topics'] = $last_post_topics;
         //获取带图片的最新帖子
         $last_image_topics = $this->posts_model->get_list('is_first =1 AND attachment=1', 'id,topic_id,subject', 'post_time desc',0,10);
-        //var_dump($last_image_topics_ids);die;
+//        var_dump($last_image_topics);die;
         $post_ids = array();
         foreach ($last_image_topics as $key => $topic) {
             $post_ids[] = $topic['id'];
@@ -58,7 +56,9 @@ class Bbs extends MY_Controller {
         $last_images = $this->attachments_model->get_images($post_ids);
         $last_images = $this->attachments_model->key_list($last_images,'post_id');
         foreach ($last_image_topics as $key => &$topic) {
-            $topic += $last_images[$topic['id']];
+            if(!empty($last_images[$topic['id']])){
+                $topic += $last_images[$topic['id']];
+            }
         }
         $var['last_image_topics'] = $last_image_topics;
         //今日发帖量用户排行
@@ -70,8 +70,6 @@ class Bbs extends MY_Controller {
         $posts_users = $this->users_model->get_names_by_ids($user_ids);
         $var['posts_users'] = $posts_users;
         
-        //var_dump($var['forums']);die;
-        //var_dump($this->user);
         $this->view('bbs_index',$var);
     }
     
@@ -156,7 +154,7 @@ class Bbs extends MY_Controller {
         $start = max(0, ($page_obj->cur_page - 1) * $per_num);
         //添加排序高赏金、最新发布、最后回复
         $order = trim($this->input->get('order',TRUE));
-        $order = in_array($order,array('post_time','price','last_post_time'))?$order:'post_time';
+        $order = in_array($order,array('post_time','price','last_post_time'))?$order:'last_post_time';
         $topics = $this->ask_model->get_list($where, '*', $order.' DESC', $start, $per_num);
         if(!empty($topics)){
             //获取需要的主题其他信息

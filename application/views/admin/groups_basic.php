@@ -35,7 +35,7 @@
   <?php }?>
   <tr>
     <th>用户组图标</th>
-    <td><input type="file" value="<?php echo my_set_value('icon', $data)?>" name="icon"></td>
+    <td><input type="file" value="<?php echo my_set_value('icon', $data)?>" name="icon"> <img src="<?php echo base_url().my_set_value('icon', $data)?>"></td>
     <td>用户组图标</td>
   </tr>
   <tr>
