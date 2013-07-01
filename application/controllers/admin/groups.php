@@ -61,9 +61,12 @@ class Groups extends Admin_Controller {
         } elseif ($this->input->post('submit')) {
             $groups = $this->input->post();
             $icon_upload = $this->biz_image->icon_upload();
-            if($icon_upload){
-                $groups['icon'] = $icon_upload;
+            if(isset($icon_upload['error'])){
+                if($icon_upload['error']==0){
+                    $forums['icon'] = $icon_upload['data'];
+                }
             }
+            
             $groups = $this->groups_model->form_filter($groups, 'en');
             if ($this->groups_model->update($groups, array('id' => $id))) {
                 $this->message('修改成功！');

@@ -87,12 +87,16 @@ class Forums extends Admin_Controller {
                 }
             }elseif($type == 'basic'){
                 $icon_upload = $this->biz_image->icon_upload();
-                $forums['icon'] = $icon_upload;
+                if($icon_upload['error']==0){
+                    $forums['icon'] = $icon_upload['data'];
+                }else{
+                    $this->message($icon_upload['message']);
+                }
             }
             
             $forums = $this->forums_model->form_filter($forums, 'en');
             if ($this->forums_model->update($forums, array('id' => $id))) {
-                $this->message('修改成功！');
+                $this->message('修改成功！',1);
             } else {
                 $this->message('修改失败！');
             }

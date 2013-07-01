@@ -38,9 +38,11 @@ class Biz_image extends CI_Model {
             $thumb = $this->create_thumb($data['full_path']);
             if($thumb){
                 $file_path = trim($config['upload_path'], './') . '/' . $thumb;
-                return $file_path;
+                $return = array('error' => 0, 'message' => '生成缩略图失败','data'=>$file_path);
+                return $return;
             }else{
-                return FALSE;
+                $return = array('error' => 1, 'message' => '生成缩略图失败');
+                return $return;
             }
         }
     }
