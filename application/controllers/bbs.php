@@ -4,7 +4,7 @@ class Bbs extends MY_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model(array('forums_statistics_model'));
+        $this->load->model(array('posts_model','users_extra_model','forums_statistics_model'));
     }
 
     /**
@@ -17,6 +17,7 @@ class Bbs extends MY_Controller {
         $forums = $this->forums_model->get_forums();
         $forums = $this->forums_statistics_model->append_to_forums($forums);
         $var['forums'] = $this->forums_model->get_format_forums($forums);
+//        var_dump($var['forums']);die;
         $totals = array(
             'posts' =>0,
             'topics' =>0,
@@ -35,14 +36,40 @@ class Bbs extends MY_Controller {
         //获取最后用户数
         $last_user = $this->users_model->get_one(1, 'id,username', 'regdate desc');
         $var['last_user'] = $last_user;
+        
         //获取最新帖子
         $new_topics = $this->topics_model->get_list(1, 'id,subject', 'post_time desc',0,8);
+        $var['new_topics'] = $new_topics;
         //获取最新回复的topic_id
-        $last_post_topics_ids = $this->posts_model->get_list('is_first !=1', 'distinct topic_id', 'post_time desc',0,8);
+        $last_post_topics_ids = $this->posts_model->get_list('is_first !=1', 'distinct topic_id', 'post_time desc',0,10);
+        $topic_ids = array();
+        foreach ($last_post_topics_ids as $key => $topic) {
+            $topic_ids[] = $topic['topic_id'];
+        }
+        $last_post_topics = $this->topics_model->get_list("id in (".join(',', $topic_ids).") AND status in(1,4)",'id,subject','',0,8);
+        $var['last_post_topics'] = $last_post_topics;
         //获取带图片的最新帖子
-        $last_image_topics_ids = $this->attachments_model->get_list('is_first !=1', 'distinct topic_id', 'post_time desc',0,8);
+        $last_image_topics = $this->posts_model->get_list('is_first =1 AND attachment=1', 'id,topic_id,subject', 'post_time desc',0,10);
+        //var_dump($last_image_topics_ids);die;
+        $post_ids = array();
+        foreach ($last_image_topics as $key => $topic) {
+            $post_ids[] = $topic['id'];
+        }
+        $last_images = $this->attachments_model->get_images($post_ids);
+        $last_images = $this->attachments_model->key_list($last_images,'post_id');
+        foreach ($last_image_topics as $key => &$topic) {
+            $topic += $last_images[$topic['id']];
+        }
+        $var['last_image_topics'] = $last_image_topics;
         //今日发帖量用户排行
-        $this->users_model->get_one(1, 'id,username', 'regdate desc',0,14);
+        $uses = $this->users_extra_model->get_list(1, 'user_id', 'today_posts desc',0,14);
+        $user_ids =array();
+        foreach ($uses as $key => $user) {
+            $user_ids[] = $user['user_id'];
+        }
+        $posts_users = $this->users_model->get_names_by_ids($user_ids);
+        $var['posts_users'] = $posts_users;
+        
         //var_dump($var['forums']);die;
         //var_dump($this->user);
         $this->view('bbs_index',$var);

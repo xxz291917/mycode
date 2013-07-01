@@ -124,7 +124,7 @@ echo $page;?>
               <div  class="thesisUs">
               <?php if(!empty($first_post['debate']['affirm_first'])){?>
                 <a href="<?= $this->config->item('user_url').$first_post['debate']['affirm_first']['author_id']?>">
-                    <img src="<?= $this->config->item('user_icon').$first_post['debate']['affirm_first']['author_id']?>" alt="<?=$first_post['debate']['affirm_first']['author']?>">
+                    <img src="<?php echo user_icon($first_post['debate']['affirm_first']['author_id'])?>" alt="<?=$first_post['debate']['affirm_first']['author']?>">
                 </a>
                 <p>
                     <a href="<?= $this->config->item('user_url').$first_post['debate']['affirm_first']['author_id']?>">
@@ -137,7 +137,7 @@ echo $page;?>
               <ul>
               	<?php foreach($first_post['debate']['affirm_users'] as $user){?>
                 	<li><a href="<a href="<?= $this->config->item('user_url').$user['user_id']?>"><?=$user['username']?></a>">
-                    <img src="<?= $this->config->item('user_icon').$user['user_id']?>" alt="<?=$user['username']?>"></a></li>
+                    <img src="<?php echo user_icon($user['user_id'])?>" alt="<?=$user['username']?>"></a></li>
                 <?php }?>
               </ul>
               <a href="<?php echo base_url('index.php/action/reply_dialog/'.$first_post['topic_id'].'/?stand=1')?>" target="dialog" width="464px" title="发表观点" class="postView">发表红方观点</a>
@@ -147,14 +147,14 @@ echo $page;?>
               <p class="thesis pr"><?=$first_post['debate']['negate_point']?><span></span><i class="icoSj pa"></i></p>
               <div  class="thesisUs">
               <?php if(!empty($first_post['debate']['negate_first'])){?>
-                <a href="<?= $this->config->item('user_url').$first_post['debate']['negate_first']['author_id']?>"><img src="<?= $this->config->item('user_icon').$first_post['debate']['negate_first']['author_id']?>" alt="<?=$first_post['debate']['negate_first']['author']?>"></a>
+                <a href="<?= $this->config->item('user_url').$first_post['debate']['negate_first']['author_id']?>"><img src="<?php echo user_icon($first_post['debate']['negate_first']['author_id'])?>" alt="<?=$first_post['debate']['negate_first']['author']?>"></a>
                 <p><a href="<?= $this->config->item('user_url').$first_post['debate']['negate_first']['author_id']?>"><?=$first_post['debate']['negate_first']['author']?></a>：<?php echo html_escape(utf8_substr($first_post['debate']['negate_first']['content'],0,30))?> </p>
               <?php }?>
               </div>
               <ul>
               	<?php foreach($first_post['debate']['negate_users'] as $user){?>
                 	<li><a href="<a href="<?= $this->config->item('user_url').$user['user_id']?>"><?=$user['username']?></a>">
-                    <img src="<?= $this->config->item('user_icon').$user['user_id']?>" alt="<?=$user['username']?>"></a></li>
+                    <img src="<?php echo user_icon($topic['user_id'])?>" alt="<?=$user['username']?>"></a></li>
                 <?php }?>
               </ul>
               <a href="<?php echo base_url('index.php/action/reply_dialog/'.$first_post['topic_id'].'/?stand=2')?>" target="dialog" width="464px" title="发表观点" class="postView">发表蓝方观点</a>

@@ -91,4 +91,19 @@ if (!function_exists('utf8_substr')) {
                 '((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $len . '}).*#s', '$1', $str);
     }
 }
+
+
+if (!function_exists('user_icon')) {
+    function user_icon($uid) {
+        return 'images/default.png';
+    }
+}
+
+if (!function_exists('user_url')) {
+    function user_url($uid) {
+        return '#';
+    }
+}
+
+
 ?>

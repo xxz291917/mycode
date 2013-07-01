@@ -69,7 +69,7 @@
           <div class="boardMsgr">
           <strong>版主：</strong>
 			<?php foreach($mannager as $user){
-            	$users[] = '<a href="'.$this->config->item('user_url').$user['id'].'">'.$user['username'].'</a>,';
+            	$users[] = '<a href="'.user_url($user['id']).'">'.$user['username'].'</a>,';
             }
 				echo join(',',$users);
 			?>
@@ -176,8 +176,8 @@
             <a href="<?=base_url().'index.php/topic/show/'.$topic['id']?>" title="<?=$topic['subject']?>"><?=$topic['subject']?></a></li>
             <li class="td3"><i class="icoCoin"></i><?=$topic['price']?></li>
             <li class="td4">
-              <a href="#"><img src="<?=$this->config->item('user_icon').$topic['author_id']?>" alt="大猫"></a>
-              <span class="tdSpan1"><a href="<?=$this->config->item('user_url').$topic['author_id']?>"><?=$topic['author']?></a></span>
+                <a href="#"><img src="<?php echo user_icon($topic['author_id'])?>" alt="<?=$topic['author']?>"></a>
+              <span class="tdSpan1"><a href="<?=user_url($topic['author_id'])?>"><?=$topic['author']?></a></span>
               <span class="tdSpan2"><?php echo time_span($topic['post_time'],'',3600*24,'前');?></span>
             </li>
             <li class="td5">
@@ -185,7 +185,7 @@
               <span class="tdSpan2"><?=$topic['views']?></span>
             </li>
             <li class="td6">
-              <span class="tdSpan1"><a href="<?=$this->config->item('user_url').$topic['last_author_id']?>"><?=$topic['last_author']?></a></span>
+              <span class="tdSpan1"><a href="<?=user_url($topic['last_author_id'])?>"><?=$topic['last_author']?></a></span>
               <span class="tdSpan2"><?=$topic['last_post_time']?></span>
             </li>
           </ul>

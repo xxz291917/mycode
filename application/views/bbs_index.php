@@ -21,302 +21,63 @@
                 <li>5</li>
             </ul>
             <div id="lunbo_list">
-                <a href="#" target="_blank"><img src="images/lunbo/01.jpg" title="橡树小屋的blog" alt="橡树小屋的blog" /></a>
-                <a href="#" target="_blank"><img src="images/lunbo/02.jpg" title="wwwwwwwwwwwww" alt="2222222222" /></a>
-                <a href="#" target="_blank"><img src="images/lunbo/03.jpg" title="橡树小屋的blog" alt="橡树小屋的blog" /></a>
-                <a href="#" target="_blank"><img src="images/lunbo/04.jpg" title="橡树小屋的blog" alt="橡树小屋的blog" /></a>
-                <a href="#" target="_blank"><img src="images/lunbo/05.jpg" title="橡树小屋的blog" alt="橡树小屋的blog" /></a>
+                <?php foreach ($last_image_topics as $key => $topic) {?>
+                <a href="<?php echo base_url('index.php/topic/show/'.$topic['id'])?>" target="_blank"><img src="<?php echo $topic['path']?>" title="<?php echo $topic['subject']?>" alt="<?php echo $topic['description']?>" /></a>
+                <?php }?>
             </div>
         </div>    
         <div class="topList">
             <h2>最新帖子</h2>
             <ol>
-                <li><i class="topC">1</i><a href="#" title="如何成为一名职业的独立游戏开发者">如何成为一名职业的独立游戏开发者</a></li>
-                <li><i class="topC">2</i><a href="#" title="如何成为一名职业的独立游戏开发者">如何成为一名职业的独立游戏开发者</a></li>
-                <li><i class="topC">3</i><a href="#" title="如何成为一名职业的独立游戏开发者">如何成为一名职业的独立游戏开发者</a></li>
-                <li><i>4</i><a href="#" title="如何成为一名职业的独立游戏开发者">如何成为一名职业的独立游戏开发者</a></li>
-                <li><i>5</i><a href="#" title="如何成为一名职业的独立游戏开发者">如何成为一名职业的独立游戏开发者</a></li>
-                <li><i>6</i><a href="#" title="如何成为一名职业的独立游戏开发者">如何成为一名职业的独立游戏开发者</a></li>
-                <li><i>7</i><a href="#" title="如何成为一名职业的独立游戏开发者">如何成为一名职业的独立游戏开发者</a></li>
-                <li><i>8</i><a href="#" title="如何成为一名职业的独立游戏开发者">如何成为一名职业的独立游戏开发者</a></li>
+                <?php foreach ($new_topics as $key => $topic) {
+                    $k = $key + 1;
+                    $class = $k <= 3 ? 'class="topC"' : '';
+                    if ($k > 8) {
+                        break;
+                    }
+                ?>
+                <li><i <?=$class?>><?=$k?></i><a href="<?php echo base_url('index.php/topic/show/'.$topic['id'])?>" title="<?php echo $topic['subject']?>"><?php echo $topic['subject']?></a></li>
+                <?php }?>
             </ol>
         </div>
         <div class="topList">
             <h2>最新回复</h2>
             <ol>
-                <li><i class="topC">1</i><a href="#" title="如何成为一名职业的独立游戏开发者">如何成为一名职业的独立游戏开发者</a></li>
-                <li><i class="topC">2</i><a href="#" title="如何成为一名职业的独立游戏开发者">如何成为一名职业的独立游戏开发者</a></li>
-                <li><i class="topC">3</i><a href="#" title="如何成为一名职业的独立游戏开发者">如何成为一名职业的独立游戏开发者</a></li>
-                <li><i>4</i><a href="#" title="如何成为一名职业的独立游戏开发者">如何成为一名职业的独立游戏开发者</a></li>
-                <li><i>5</i><a href="#" title="如何成为一名职业的独立游戏开发者">如何成为一名职业的独立游戏开发者</a></li>
-                <li><i>6</i><a href="#" title="如何成为一名职业的独立游戏开发者">如何成为一名职业的独立游戏开发者</a></li>
-                <li><i>7</i><a href="#" title="如何成为一名职业的独立游戏开发者">如何成为一名职业的独立游戏开发者</a></li>
-                <li><i>8</i><a href="#" title="如何成为一名职业的独立游戏开发者">如何成为一名职业的独立游戏开发者</a></li>
+                <?php foreach ($last_post_topics as $key => $topic) {
+                    $k = $key + 1;
+                    $class = $k <= 3 ? 'class="topC"' : '';
+                    if ($k > 8) {
+                        break;
+                    }
+                ?>
+                <li><i <?=$class?>><?=$k?></i><a href="<?php echo base_url('index.php/topic/show/'.$topic['id'])?>" title="<?php echo $topic['subject']?>"><?php echo $topic['subject']?></a></li>
+                <?php }?>
             </ol>
         </div>
         <dl class="topToday">
             <dt>今日排行</dt>
+            <?php foreach($posts_users as $user){ ?>
             <dd>
                 <figure>
-                    <a href="#"><img src="images/temp.jpg" alt="李小龙"></a>
-                    <figcaption><a href="#" title="李小龙">李小龙</a></figcaption>
+                    <a href="#"><img src="<?php echo user_icon($user['id'])?>" alt="<?=$user['username']?>"></a>
+                    <figcaption><a href="<?php echo user_url($user['id'])?>" title="<?=$user['username']?>"><?=$user['username']?></a></figcaption>
                 </figure>
             </dd>
-            <dd>
-                <figure>
-                    <a href="#"><img src="images/temp.jpg" alt="李小龙龙龙龙"></a>
-                    <figcaption><a href="#" title="李小龙龙龙龙">李小龙龙龙龙</a></figcaption>
-                </figure>
-            </dd>
-            <dd>
-                <figure>
-                    <a href="#"><img src="images/temp.jpg" alt="李小龙"></a>
-                    <figcaption><a href="#" title="李小龙">李小龙</a></figcaption>
-                </figure>
-            </dd>
-            <dd>
-                <figure>
-                    <a href="#"><img src="images/temp.jpg" alt="李小龙龙龙龙"></a>
-                    <figcaption><a href="#" title="李小龙龙龙龙">李小龙龙龙龙</a></figcaption>
-                </figure>
-            </dd>
-            <dd>
-                <figure>
-                    <a href="#"><img src="images/temp.jpg" alt="李小龙"></a>
-                    <figcaption><a href="#" title="李小龙">李小龙</a></figcaption>
-                </figure>
-            </dd>
-            <dd>
-                <figure>
-                    <a href="#"><img src="images/temp.jpg" alt="李小龙龙龙龙"></a>
-                    <figcaption><a href="#" title="李小龙龙龙龙">李小龙龙龙龙</a></figcaption>
-                </figure>
-            </dd>
-            <dd>
-                <figure>
-                    <a href="#"><img src="images/temp.jpg" alt="李小龙"></a>
-                    <figcaption><a href="#" title="李小龙">李小龙</a></figcaption>
-                </figure>
-            </dd>
-            <dd>
-                <figure>
-                    <a href="#"><img src="images/temp.jpg" alt="李小龙龙龙龙"></a>
-                    <figcaption><a href="#" title="李小龙龙龙龙">李小龙龙龙龙</a></figcaption>
-                </figure>
-            </dd>
-            <dd>
-                <figure>
-                    <a href="#"><img src="images/temp.jpg" alt="李小龙"></a>
-                    <figcaption><a href="#" title="李小龙">李小龙</a></figcaption>
-                </figure>
-            </dd>
-            <dd>
-                <figure>
-                    <a href="#"><img src="images/temp.jpg" alt="李小龙龙龙龙"></a>
-                    <figcaption><a href="#" title="李小龙龙龙龙">李小龙龙龙龙</a></figcaption>
-                </figure>
-            </dd>
-            <dd>
-                <figure>
-                    <a href="#"><img src="images/temp.jpg" alt="李小龙龙龙龙"></a>
-                    <figcaption><a href="#" title="李小龙龙龙龙">李小龙龙龙龙</a></figcaption>
-                </figure>
-            </dd>
-            <dd>
-                <figure>
-                    <a href="#"><img src="images/temp.jpg" alt="李小龙龙龙龙"></a>
-                    <figcaption><a href="#" title="李小龙龙龙龙">李小龙龙龙龙</a></figcaption>
-                </figure>
-            </dd>
-            <dd>
-                <figure>
-                    <a href="#"><img src="images/temp.jpg" alt="李小龙龙龙龙"></a>
-                    <figcaption><a href="#" title="李小龙龙龙龙">李小龙龙龙龙</a></figcaption>
-                </figure>
-            </dd>
-            <dd>
-                <figure>
-                    <a href="#"><img src="images/temp.jpg" alt="李小龙龙龙龙"></a>
-                    <figcaption><a href="#" title="李小龙龙龙龙">李小龙龙龙龙</a></figcaption>
-                </figure>
-            </dd>
-        </dl>    
+            <?php } ?>
+        </dl>
     </div>
-    <h2 class="homeH2"><a href="#">综合交流区</a></h2>
-    <ul class="homeList">
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-    </ul>
-    <h2 class="homeH2"><a href="#">RIA技术</a></h2>
-    <ul class="homeList">
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-    </ul>
-    <h2 class="homeH2"><a href="#">RIA行业解决方案</a></h2>
-    <ul class="homeList">
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-    </ul>
-    <h2 class="homeH2"><a href="#">RIA周边生态</a></h2>
-    <ul class="homeList">
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-    </ul>
-    <h2 class="homeH2"><a href="#">社区服务</a></h2>
-    <ul class="homeList lastLi">
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-        <li class="pr">
-            <h3><a href="#">问答求助</a>126</h3>
-            <p><strong>主题：</strong>36373,<strong> 帖数：</strong>241896</p>
-            <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
-        </li>
-    </ul>
-
-
+    
+    <?php foreach ($forums as $key => $forum) {?>
+        <h2 class="homeH2"><a href="<?php echo base_url('index.php/forum/show/'.$forum['id'])?>"><?=$forum['name']?></a></h2>
+        
+        <ul class="homeList">
+            <?php foreach ($forum['sub'] as $key => $sub) {?>
+            <li class="pr">
+                <h3><a href="<?=base_url()?>index.php/forum/show/<?=$sub['id']?>"><?=$sub['name']?></a><?php echo !empty($sub['today_posts'])?$sub['today_posts']:0?></h3>
+                <p><strong>主题：</strong><?= !empty($sub['topics'])?$sub['topics']:0;?>,<strong> 帖数：</strong><?php echo !empty($sub['posts'])?$sub['posts']:0?></p>
+                <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
+            </li>
+            <?php }?>
+        </ul>
+    <?php }?>
 </div>

@@ -13,8 +13,11 @@ class Attachments_model extends MY_Model {
         return $num['maxid'];
     }
     
-    public function get_last_topic($num = 10) {
-        $sql = "select from posts p left join attachments a on a.post_id=p.id where "
+    public function get_images($post_ids) {
+        $post_ids = join(',', $post_ids);
+        $sql = "select min(upload_time) upload_time,post_id,filename,path,description from attachments where post_id in($post_ids) and is_image=1 group by post_id";
+        $query = $this->db->query($sql);
+        return $query->result_array();
     }
 
 
