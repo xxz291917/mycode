@@ -75,7 +75,7 @@
             <li class="pr">
                 <h3><a href="<?=base_url()?>index.php/forum/show/<?=$sub['id']?>"><?=$sub['name']?></a><?php echo !empty($sub['today_posts'])?$sub['today_posts']:0?></h3>
                 <p><strong>主题：</strong><?= !empty($sub['topics'])?$sub['topics']:0;?>,<strong> 帖数：</strong><?php echo !empty($sub['posts'])?$sub['posts']:0?></p>
-                <a href="#"><img src="images/ico01.gif" class="pa" alt="主题"></a>
+                <a href="<?=base_url()?>index.php/forum/show/<?=$sub['id']?>"><img src="<?php echo base_url().my_set_value('icon',$sub,$this->config->item('forum_icon'))?>" class="pa" alt="图标"></a>
             </li>
             <?php }?>
         </ul>

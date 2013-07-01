@@ -95,7 +95,7 @@ if (!function_exists('utf8_substr')) {
 
 if (!function_exists('user_icon')) {
     function user_icon($uid) {
-        return 'images/default.png';
+        return base_url('/images/default.png');
     }
 }
 

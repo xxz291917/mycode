@@ -7,7 +7,7 @@ class Forums extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model(array('forums_model'));
+        $this->load->model(array('forums_model','biz_image'));
     }
 
     public function index() {
@@ -85,6 +85,9 @@ class Forums extends Admin_Controller {
                         $this->message('添加分类失败');
                     }
                 }
+            }elseif($type == 'basic'){
+                $icon_upload = $this->biz_image->icon_upload();
+                $forums['icon'] = $icon_upload;
             }
             
             $forums = $this->forums_model->form_filter($forums, 'en');

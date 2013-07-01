@@ -40,7 +40,7 @@
   </tr>
   <tr>
     <th >版块图标</th>
-    <td><input type="file" value="<?php echo my_set_value('icon', $data)?>" name="icon"></td>
+    <td><input type="file" value="<?php echo my_set_value('icon', $data)?>" name="icon"><img src="<?php echo base_url().$data['icon']?>"></td>
     <td ></td>
   </tr>
   <tr>

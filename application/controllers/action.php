@@ -421,7 +421,7 @@ class Action extends MY_Controller {
             $insert_data['upload_time'] = $this->time;
             $insert_data['size'] = $data['file_size'];
             $insert_data['extension'] = trim($data['file_ext'], '.');
-            $insert_data['filename'] = $data['file_name'];
+            $insert_data['filename'] = $data['client_name'];//保存文件的原始名
             $insert_data['path'] = $file_path;
             $insert_data['is_image'] = $data['is_image'];
             $insert_data['description'] = $title;

@@ -15,4 +15,6 @@ $config['per_num'] = 10;
 $config['user_url'] = base_url().'index.php/user/show/';
 $config['user_icon'] = base_url().'index.php/user/icon/';
 
+$config['forum_icon'] = 'uploads/icon/forum/default.png';
+
 ?>
