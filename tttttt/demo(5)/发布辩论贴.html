@@ -26,21 +26,24 @@
         <li><a href="#">下载</a></li>
       </ul>
       <div class="mainNavR">
-        <!--
-        <ul class="logInfo pa">
+        <!--  
+        <ul class="logInfo">
           <li class="fsong"><a href="#">登录</a>|<a href="#">注册</a></li>
         </ul>
         -->
-        <ul class="logInfo fr">
-          <li class="icoEmail"><a href="#">250</a></li>
-          <li class="icoUser pr">
-            <a href="#"><img src="images/userSmall.gif" alt="作者名字" title="作者名字"></a>
+        <ul class="logInfo">
+          <li><a href="#" class="icoNote"></a></li>
+          <li><a href="#" class="icoEmail"></a></li>
+          <li class="pr subShow"><a href="#" class="icoNote pa"><span>99+</span></a></li>
+          <li class="pr subShow"><a href="#" class="icoEmail pa"><span>12</span></a></li>
+          <li class="pr ml10"><a href="#" class="icoSet"></a>
             <ul class="pa">
               <li><a href="#">账号设置</a></li>
               <li><a href="#">退出</a></li>
             </ul>
-          </li>
-        </ul>
+          </li>          
+          <li class="welTip"><a href="#"><img src="images/userSmall.gif" alt="作者名字" title="作者名字"></a></li>
+        </ul>         
         <a href="javascript:void(0);" class="searchBtn fr">搜索</a>
       </div>
       <div class="searchBox pa">
@@ -67,48 +70,25 @@
           <input type="text" value="输入问答概述" class="inp inpTxt pubInpW1">
           <!--<label>（还可输入80字符）</label>-->
         </li>
-        <li class="voteBox">    
-          <div class="voteBoxTit"><strong>投票选项：</strong>(最多可选50项)</div>
-          <div class="voteBoxL">
-            <ol>
-              <li>
-                <input type="text" value="" class="inp">
-                <span class="btnCls">关闭</span>
-              </li>
-              <li>
-                <input type="text" value="" class="inp">
-                <span class="btnCls">关闭</span>
-              </li>              
-              <li>
-                <input type="text" value="" class="inp">
-                <span class="btnCls">关闭</span>
-              </li>
-            </ol>
-            <div class="btnAddBox"><i class="btnAddVote"></i>增加一个选项</div>
+        <li class="viewpoint">
+          <div class="viewpointBlk">
+            <h5 class="fyahei">红方观点</h5>
+            <textarea id="" name="" cols="" rows="" maxlength="" value="" class="inp"></textarea> 
+          </div>          
+          <div class="viewpointBlk">
+            <h5 class="fyahei cblue">蓝方观点</h5>
+            <textarea cols="" rows="" maxlength="" value="" class="inp"></textarea> 
           </div>
-          <div class="voteBoxR">
-            <ul>
-              <li>
-                <span>最多可选：</span>
-                <input type="text" value="" class="inp">
-                <label>项</label>
-              </li>
-              <li>
-                <span>持续时间：</span>
-                <input type="text" value="" class="inp">
-                <label>天</label>
-              </li>
-              <li>
-                <span>投票后可查看结果：</span>
-                <input name="" type="checkbox" value="0" class="hidden">
-                <i class="btnUnCheck"></i>
-              </li>
-              <li>
-                <span>公开投票人信息：</span>
-                <i class="btnCheck"></i>                
-                <input name="" type="checkbox" value="1" class="hidden">
-              </li>
-            </ul>
+          <div class="viewpointLi">
+            <label>辩论结束时间：</label>
+            <select>
+              <option value="0" selected>一天</option>
+              <option value="1">二天</option>
+            </select>
+          </div>
+          <div class="viewpointLi">
+            <label>裁判：</label>
+            <input type="text" value="" class="inp">
           </div>
           
         </li>
@@ -122,7 +102,7 @@
           <input type="text" value="标签间请用“空格”或“逗号”隔开，最多可添加5个标签。" class="inp inpTxt pubInpW3">
           <label>最近标签：Flash、ios、android</label>
         </li>
-        <li><input type="button"  class="mainCmtBtn" value="发布问题"><button type="button" class="mainCmtBtn btnGray">预览</button><button type="button" class="mainCmtBtn btnGray">保存草稿</button></li>
+        <li><input type="button"  class="mainCmtBtn" value="发布问题"><button type="button" class="mainCmtBtn btnGray">预览</button><button type="button" class="mainCmtBtn btnGray">保存在草稿</button></li>
       </ul>      
     </form>
   </div> 

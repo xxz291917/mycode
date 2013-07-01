@@ -143,7 +143,7 @@ echo $page;?>
           </div>
           <?php }?>
           
-        <?php if(!empty($topic['tags'])){?>
+        <?php if($post['is_first']==1 && !empty($topic['tags'])){?>
             <div class="myTag pr">
             <!--a href="#">Photoshop</a>,-->
                 <?php echo join(' , ',$topic['tags']);?>

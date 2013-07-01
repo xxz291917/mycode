@@ -30,6 +30,9 @@ class Biz_Ask extends CI_Model {
         $ask_data['price'] = intval($post['price']);
         $ask_data['forum_id'] = intval($post['forum_id']);
         $ask_data['category_id'] = intval($post['category']);
+        $ask_data['post_time'] = $this->time;
+        $ask_data['last_post_time'] = $this->time;
+        $ask_data['replies'] = 0;
         $is_insert = $this->ask_model->insert($ask_data);
         //从用户身上扣减分数
         $credits = array($this->ask_credit_type => 0 - intval($post['price']));
@@ -55,6 +58,12 @@ class Biz_Ask extends CI_Model {
         if (empty($post) || empty($pid) || empty($tid)) {
             return FALSE;
         }
+        
+        //更新ask的最后回复时间和回复总数。
+        $ask_data['replies'] = ':1';
+        $ask_data['last_post_time'] = $this->time;
+        $this->asks_model->update_increment($ask_data, array('topic_id' => $tid));
+        
         
         $topics_data['replies'] = ':1';
         $this->topics_model->update_increment($topics_data, array('id' => $tid));
@@ -88,18 +97,18 @@ class Biz_Ask extends CI_Model {
         if (method_exists($this, 'append_first_post')) {
             $var['first_post'] = $this->append_first_post($var['first_post']);
         }
-
+//        var_dump($var['first_post']);die;
         $count_sql = "SELECT count(*) num FROM posts p LEFT JOIN ask_posts a ON a.post_id=p.id  WHERE ";
         $list_sql = "SELECT p.*,a.supports,a.opposes FROM posts p LEFT JOIN ask_posts a ON a.post_id=p.id  WHERE ";
 
-        $where = " p.topic_id = '$id' AND p.is_first != 1 AND p.status =1 ";
+        $where = " p.topic_id = '$id' AND p.is_first != 1 AND p.status in (1,4)";
         $count_sql .= $where . " LIMIT 0,1";
         $query = $this->db->query($count_sql);
         $num = $query->row_array();
         $total_num = $num['num'];
 
         //生成分页字符串
-        $base_url = current_url();
+        $base_url = page_url();
         $per_num = $this->config->item('per_num');
         $page_obj = $this->biz_pagination->init_page($base_url, $total_num, $per_num);
         $page_str = $page_obj->create_links();

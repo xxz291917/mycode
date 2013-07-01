@@ -26,21 +26,24 @@
         <li><a href="#">下载</a></li>
       </ul>
       <div class="mainNavR">
-        <!--
-        <ul class="logInfo pa">
+        <!--  
+        <ul class="logInfo">
           <li class="fsong"><a href="#">登录</a>|<a href="#">注册</a></li>
         </ul>
         -->
-        <ul class="logInfo fr">
-          <li class="icoEmail"><a href="#">250</a></li>
-          <li class="icoUser pr">
-            <a href="#"><img src="images/userSmall.gif" alt="作者名字" title="作者名字"></a>
+        <ul class="logInfo">
+          <li><a href="#" class="icoNote"></a></li>
+          <li><a href="#" class="icoEmail"></a></li>
+          <li class="pr subShow"><a href="#" class="icoNote pa"><span>99+</span></a></li>
+          <li class="pr subShow"><a href="#" class="icoEmail pa"><span>12</span></a></li>
+          <li class="pr ml10"><a href="#" class="icoSet"></a>
             <ul class="pa">
               <li><a href="#">账号设置</a></li>
               <li><a href="#">退出</a></li>
             </ul>
-          </li>
-        </ul>
+          </li>          
+          <li class="welTip"><a href="#"><img src="images/userSmall.gif" alt="作者名字" title="作者名字"></a></li>
+        </ul>         
         <a href="javascript:void(0);" class="searchBtn fr">搜索</a>
       </div>
       <div class="searchBox pa">
@@ -124,9 +127,15 @@
         <article class="newsCots">
           <h1 class="fyahei">现代程序员的工作环境</h1>
           <div class="newsTip"><span>发表于 5 天前 | <a href="#">只看该作者</a></span><span title="阅读" class="icoEye">2012</span><span title="评论" class="icoMsg2">2018</span></div>
+          <div class="endInfo">
+            <p class="tc fb">结束时间：2012-12-12 12:22&nbsp;&nbsp;&nbsp;&nbsp;裁判：浪漫的杯子</p>
+            <a href="javascript:void(0);">结束此次辩论 </a>
+          </div>
           <div class="newsCotIn">
             <blockquote>本次大会更注重交流与互动，解答开发者们的实际困难，并分享实战经验。为庆祝此次大会的召开，特组织征集笑脸活动，将会在大会现场播放笑脸墙，关注我们大会但因地域无法来到现场的朋友们，或已报名出席大会的朋友们，都可积极参与，说不定在现场都可以看到你的朋友或同事的笑脸呦。</blockquote>
+            <span class="btnLRed">红方</span>
             <p>一查暴露的问题更多，红会信任危机越大？假如郭美美就只有这些问题，接下来能证明红会的清白，能不查吗？简单的道理，犹如XX想立牌坊，谁都明白。反正红会不彻底清查，我是不会再给他捐款的！！！</p>
+            <span class="btnLBlue">蓝方</span>
             <p>真相帝来给你爆个料吧：美美是王某的私生女，王某是某元勋的儿子。当王某得知自己还有这么漂亮的一个女儿的时候顿感亏欠母女多年，对美美宠爱有加，总觉得对美美母女无法弥补，所以事事都由着美美性子来。结果美美胸大无脑玩出了滔天大祸。这时候考验了“亲爹”的护犊之情。
 红十字会是副部级单位，你想想按照国情至少得是部级以上的领导才能查他吧？问题是现在的监管部门级别低得连给人家端茶倒水的级别都不够，怎么查？</p>
             <p>美美刚刚出了一张A，手上还拽着四个2和大小王。开始我们是从一张照片认识了美美的背景，所以，有心人不妨仔细分析下美美现在发的图片的背景。我一直认为美美在这宗情况下还傻B似得的拍照炫富，要么她是真脑残，要么，是在释放什么信号，譬如，照片中的细节，让某人知道，她是有底牌的。</p>
@@ -140,38 +149,60 @@
             <div class="downloadUrl"><a href="#" target="_blank">Nape离线API文档.rar</a>(599.78 KB, 下载次数: 269)</div>
             <div class="orgUrl">原文链接：<a href="#">http://bbs.9ria.com/thread-120574-1-1.html</a></div>
           </div>
-        </article>          
-        <!--投票 start-->
-        <div class="vote">
-          <p>单选投票，共有999名用户参与了投票<a href="#">（查看投票参与人）</a></p>
-          <p>距离投票结束还有：<strong>99天99小时99分钟</strong></p>
-          <form>
-            <ol>
-              <li>
-                <label>
-                  <span class="fl"><input type="radio" id="RadioGroup1_0" name="RadioGroup1"  value="单选" class=""></span> 
-                  <p>1. 女老师暴打学生头部 称:“大姨妈”来了心情不好</p> 
-                </label>
-                <div class="voteNums"><!--目前共有七种色彩，分别如下： #FF641F #E60000 #5F9E14 #11A5E3 #FFA81F #7218BF #B200B2 -->
-                  <span><i style="width:50%;background:#FF641F;"></i></span>
-                  <em>50%</em>
-                </div>
-              </li>
-              <li>
-                <label>
-                  <span class="fl"><input type="radio" id="RadioGroup1_0" name="RadioGroup1"  value="单选" class=""></span> 
-                  <p>2. 女老师暴打学生头部 称:“大姨妈”来了心情不好</p> 
-                </label>
-                <div class="voteNums">
-                  <span><i style="width:50%;background:#090;"></i></span>
-                  <em>50%</em>
-                </div>
-              </li>
-            </ol>
-            <button class="mainCmtBtn">回复</button>
-          </form>
-        </div>
-        <!--投票 end-->            
+        </article>  
+        <div class="debate">          
+          <div class="debateTit">
+            <span class="btnUp">顶</span>
+            <div class="voteNum">
+              <span class="voteNumL" style="width:60%;">999票</span>
+              <span class="voteNumR" style="width:40%">500票面</span>
+            </div>
+            <span class="btnUp2">顶</span>
+          </div>
+          <div class="debateCot pr">
+            <div class="debateCotLi">
+              <p class="thesis pr">共青团十七届中央书记处第一书记秦宜智汇报了共青团第十七次全国代表大会和十七届一中全会的召开情况<span>2012-12-12 12:22</span><i class="icoSj pa"></i></p>
+              <div  class="thesisUs">
+                <a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a>
+                <p><a href="#">浪漫的杯子</a>：海南小学女生开房案学女生开房案学女生开房案家长称判决太轻将抗诉</p>
+              </div>
+              <ul>
+                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
+                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
+                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
+                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
+                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
+                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
+                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
+                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
+                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
+                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
+              </ul>
+              <a href="javascript:void(0);" class="postView">发表红方观点</a>
+            </div>
+            <div class="debateCotLi userBlue">
+              <p class="thesis pr">共青团十七届中央书记处第一书记秦宜智汇报了共青团第十七次全国代表大会和十七届一中全会的召开情况<span>2012-12-12 12:22</span><i class="icoSj pa"></i></p>
+              <div  class="thesisUs">
+                <a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a>
+                <p><a href="#">浪漫的杯子</a>：海南小学女生开房案学女生开房案学女生开房案家长称判决太轻将抗诉</p>
+              </div>
+              <ul>
+                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
+                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
+                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
+                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
+                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
+                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
+                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
+                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
+                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
+                <li><a href="#"><img src="images/temp.jpg" alt="浪漫的杯子"></a></li>
+              </ul>
+              <a href="javascript:void(0);" class="postView">发表红方观点</a>
+            </div>
+            <span class="debateCotHr pa"></span>
+          </div>
+        </div>   
         <div class="orderBy">
           <span>回复排序列：</span>
           <ul>
@@ -239,7 +270,7 @@
             <li><a href="#" title="全称">福州村民被两三千名政府武装人员殴打</a></li>
             <li><a href="#" title="全称">福州村民被两三千名政府武装人员殴打</a></li>
           </ul>
-        </div>
+        </div> 
         <div class="myTag pr"><a href="#">Photoshop</a>,<a href="#">Dota</a>,<a href="#">物理</a>,<a href="#">化学</a><i class="pa"></i></div>  
         <ul class="newsBot pa">
           <li class="fl"><a href="#">举报</a></li>

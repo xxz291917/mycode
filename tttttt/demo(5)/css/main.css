@@ -69,7 +69,9 @@ table{border-collapse:collapse;border-spacing:0}
 .content{overflow:hidden}
 .col1{float:left;width:170px;}
 .col2{float:left;width:790px}
-.nav,.nav .mainNav li a:hover,.nav .mainNav li.current a,a.searchBtn,.icoEmail,.icoEmail a,.searchCls,.myPos,.pagenum a.btnPre,.pagenum a.btnNext,a.icoPost,a.icoMag,.hasMenu a,.icoSj,.usFaceInfo i,.usFaceInfoBot a,.usTip span.myRank i,.usIco a,.icoHonour span,.icoSj2,.newsTip .icoEye,.newsTip .icoMsg2,.newsTip .icoMsg a,.showHide,.downloadUrl,.newsBot a,.btnCmt,.newsAD i,.icoReply,.btnGrade,.leftNav dt a,.leftNavCtrl,.boardInfoTop span.fr a,.noticeShow i,a.icoSecurity,.tags li,.listCot i,.voteBoxL .btnCls,.voteBoxL .btnAddVote,.btnUnCheck,.btnCheck,.btnLRed,.btnLBlue,.debateTit .btnUp,.debateTit .btnUp2,.myTag i,.myInfo a.icoSet,.myMsg li a,.tagACot i,.tblList li.td5{background:url(../images/bbs.png) no-repeat}/*背景*/
+.logInfo a.icoNote,.logInfo a.icoEmail,.logInfo a.icoSet,.nav,a.searchBtn,.searchCls,
+/*头部背景*/
+.myPos,.pagenum a.btnPre,.pagenum a.btnNext,a.icoPost,a.icoMag,.hasMenu a,.icoSj,.usFaceInfo i,.usFaceInfoBot a,.usTip span.myRank i,.usIco a,.icoHonour span,.icoSj2,.newsTip .icoEye,.newsTip .icoMsg2,.newsTip .icoMsg a,.showHide,.downloadUrl,.newsBot a,.btnCmt,.newsAD i,.icoReply,.btnGrade,.leftNav dt a,.leftNavCtrl,.boardInfoTop span.fr a,.noticeShow i,a.icoSecurity,.tags li,.listCot i,.voteBoxL .btnCls,.voteBoxL .btnAddVote,.btnUnCheck,.btnCheck,.btnLRed,.btnLBlue,.debateTit .btnUp,.debateTit .btnUp2,.myTag i,.myInfo a.icoSet,.myMsg li a,.tagACot i,.tblList li.td5,.qaTop i,.qaBorLi dd,.bestA,.bestA i,.btnDig span{background:url(../images/bbs.png) no-repeat}/*背景*/
 /*header*/
 .navBox{ z-index:1; height:49px;}
 .navWrap{ z-index:2; width:960px; margin:0 auto;}
@@ -84,17 +86,27 @@ table{border-collapse:collapse;border-spacing:0}
 .nav .mainNav li a:hover,.nav .mainNav li.current a{ background:#676767;}
 .mainNavR{ float:right;}
 a.searchBtn{ display:inline-block; width:25px; height:26px; margin:12px 0 0 0; background-position:0 -49px; line-height:47em; overflow:hidden;}
-.icoEmail{ display:inline; height:27px; margin:11px 10px 0 13px;background-position:0 -75px;}
-.icoEmail a{ display:inline-block; height:27px; padding:0 12px 0 9px; background-position:right -102px; line-height:27px; color:#FFF; text-decoration:none;}
-.icoUser{ padding:8px 8px 0 0;}
-.icoUser img{ width:31px; height:31px; box-shadow:0 1px 2px #333;}
-.icoUser ul{ display:none;right:0; top:39px; background:#2D2D2D; color:#FFF;}
-.icoUser li a{ display:block; width:60px; height:30px; padding-left:15px; line-height:30px; color:#FFF;}
-.icoUser li a:hover{ background-color:#111;}
-.logInfo .icoUser li{ float:none;}
-.logInfo .current ul{ display:block;}
-.logInfo li{ float:left;}
-.logInfo .fsong{ padding-left:10px; line-height:48px;}
+.logInfo{ display:inline; float:right; height:47px; margin-left:21px; border-left:2px solid #4B4B4B;}
+.logInfo .fsong{ width:auto;color:#AAA}
+.logInfo .fsong a{margin:0 10px; line-height:50px; font-size:14px;}
+.logInfo li{ display:inline;float:left; width:50px;margin-left:1px;}
+.logInfo li.welTip{ width:auto; padding:8px 0 0 0;}
+.logInfo li.welTip img{ display:block; width:31px; height:31px;}
+.logInfo a.icoNote{ display:inline-block; float:left; width:18px; height:16px; margin:16px 0 0 16px; background-position:0 -2044px; overflow:hidden;}
+.logInfo a.icoEmail{ display:inline-block; float:left; width:18px; height:14px; margin:17px 0 0 16px; background-position:0 -2120px; overflow:hidden;}
+.logInfo li span{ display:none; width:50px;height:20px; margin-top:40px;background:#FFA81F; color:#3D3D3D; text-align:center; line-height:20px; font-size:14px;}
+.logInfo li.subShow{ height:47px;background:#FFA81F;}
+.logInfo li.subShow span{ display:block;}
+.logInfo li.subShow a{ cursor:pointer; width:50px; height:66px; margin:0; text-decoration:none;}
+.logInfo li.subShow a.icoNote{left:0; top:0; background-color:#FFA81F;background-position:15px -2245px;}
+.logInfo li.subShow a.icoEmail{ left:0; top:0;background-color:#FFA81F;background-position:14px -2320px;}
+.logInfo a.icoSet{ display:inline-block; float:left; width:50px; height:47px; margin:0; background-position:16px -2173px;text-align:left;}
+.logInfo li ul{ right:0; top:47px; clear:both; display:none; width:116px; background:#616161;}
+.logInfo li.current ul{ display:block;}
+.logInfo li.current a.icoSet{ background-color:#616161; }
+.logInfo li li{ display:block; float:none; height:40px; margin-left:0; font-size:12px;}
+.logInfo li li a{ display:block; float:none; width:101px; height:40px;padding-left:15px; border-bottom:1px solid #4B4B4B; line-height:40px; background:none;}
+.logInfo li li a:hover{ background:#3D3D3D;}
 .searchBox{ right:0; top:-50px; display:none; padding-bottom:5px; clear:both; overflow:hidden; _zoom:1;}
 .searchBox input{ float:left; width:390px; height:30px; padding-left:11px; border-width:1px; border-style:solid; border-color:#767676 #575757 #ADADAD #D1D1D1; border-radius:5px; background-color:#FFF; box-shadow:1px 2px 3px #BBB inset; font-size:14px; color:#999; line-height:30px; color:#999;}
 .searchBox button{ display:inline; float:left; width:85px; height:32px; margin:0 0 0 8px; border-top:1px solid #444;border-right:1px solid #393939;border-bottom:1px solid #444;border-left:1px solid #383838; border-radius:5px; background:#363636; box-shadow:2px 2px 2px #2B2B2B; text-align:center; line-height:32px; color:#FFF; font-weight:bold; letter-spacing:2px; font-size:14px; text-shadow:2px 2px 2px #151516;}
@@ -110,7 +122,7 @@ a.searchBtn{ display:inline-block; width:25px; height:26px; margin:12px 0 0 0; b
 .menuPage{ height:36px;}
 .menuTag{ float:left;}
 .menuTag li{ z-index:12; display:inline; float:left;}
-.menuTag li a,.mainCmtBtn{ display:inline-block; height:30px; margin-right:10px; padding:0 23px; border-width:1px; border-style:solid; border-color:#EE8E15 #EE8E15 #E37C0F #EE8E15; border-radius:4px; background-color:#FFA81F; box-shadow:1px 2px 2px #BBB; text-align:center; line-height:30px; color:#FFF; font-size:14px; text-decoration:none; font-weight:bold; text-shadow:1px 1px 0 #FF7D0B; outline:none;}
+.menuTag li a,.mainCmtBtn,.btnBlue{ display:inline-block; height:30px; margin-right:10px; padding:0 23px; border-width:1px; border-style:solid; border-color:#EE8E15 #EE8E15 #E37C0F #EE8E15; border-radius:4px; background-color:#FFA81F; box-shadow:1px 2px 2px #BBB; text-align:center; line-height:30px; color:#FFF; font-size:14px; text-decoration:none; font-weight:bold; text-shadow:1px 1px 0 #FF7D0B; outline:none;}
 .menuTag li a:hover,.mainCmtBtn:hover{ border-color:#E57F00 #E57F00 #D96C00 #E57F00; background-color:#F79A09; font-weight:bold; color:#FFF; text-decoration:none;}
 .menuTag li a:active,.mainCmtBtn:active{ background-color:#EF8C00;box-shadow:0 0 2px #999;}
 .hasMenu ul {border:1px solid #CCC; border-radius:4px; background-color:#FFF; box-shadow:1px 2px 2px rgba(0,0,0,0.1);}
@@ -200,7 +212,7 @@ a.searchBtn{ display:inline-block; width:25px; height:26px; margin:12px 0 0 0; b
 .newsCotR blockquote{ margin-bottom:18px;padding:10px 13px 9px;border:1px dashed #CCC;background:#F7F7F7; line-height:21px; text-indent:2em; color:#5B5B5B; font-size:12px;}
 .newsCotR .blot { margin:5px 20px 15px; text-indent:0; color:#999;}
 .newsCotR .blot{ color:#808080;}
-.newsCotIn{ padding:15px 0 5px; font-size:14px; line-height:25px;}
+.newsCotIn{ clear:both; padding:15px 0 5px; font-size:14px; line-height:25px;}
 .newsCotIn p{ text-indent:2em; padding-bottom:10px;}
 .showHide,.showHideCot{ height:18px; margin-top:10px; padding:9px 10px 7px 24px; border:1px dashed #FF9A98; border-radius:4px; background-position:6px -870px; line-height:18px; font-size:12px;}
 .showHide a{ margin-left:4px;}
@@ -333,9 +345,9 @@ a.searchBtn{ display:inline-block; width:25px; height:26px; margin:12px 0 0 0; b
 .listCot .td5{ width:70px;}
 .listCot .td6{ width:80px;}
 .listCot i{ display:inline-block; float:left; margin-top:9px;}
-.listCot i.icoAEd{ width:19px; height:17px; margin-left:4px; background-position:-19px -1351px;}
-.listCot i.icoAIng{ width:16px; height:16px; margin-left:6px; background-position:-19px -1368px;}
-.listCot i.icoANo{ width:16px; height:16px; margin-left:6px; background-position:-19px -1384px;}
+i.icoAEd{ width:19px; height:17px; margin-left:4px; background-position:-19px -1351px;}
+i.icoAIng{ width:16px; height:16px; margin-left:6px; background-position:-19px -1368px;}
+i.icoANo{ width:16px; height:16px; margin-left:6px; background-position:-19px -1384px;}
 .listCot i.icoCoin{ width:11px; height:14px; margin:12px 4px 0 0; background-position:-38px -1322px;}
 .listCot .td2 strong{ padding-right:6px; font-weight:normal;}
 .listCot .td2 strong a{ color:#07C;}
@@ -441,6 +453,13 @@ a.postView:active{border-color:#C83C00 #BF3300 #BF3300 #C83C00; background:#E652
 .myState2 .btnLRed,.myState2 .btnLBlue{ position:absolute; right:-7px; top:-1px;  margin:0; background-position:0 -1600px;}
 .myState2 .btnLBlue{ background-position:0 -1676px;}
 .myState2{ padding-right:64px;}
+.endInfo{ padding-top:20px; text-align:center;}
+.endInfo a{ display:inline-block; width:124px; height:27px; margin:10px; border:1px solid #999; border-radius:4px; background:#F1F1F0; box-shadow:1px 2px 2px rgba(0,0,0,0.1); text-align:center; line-height:27px; text-decoration:none; color:#333; outline:none;}
+.endInfo a:hover{ border-color:#888; background:#EAEAEA;}
+.endInfo a:active{ border-color:#777; background:#E0E0E0;box-shadow:1px 2px 2px rgba(0,0,0,0.2);}
+.endInfo ul{ padding-bottom:10px; font-size:14px; text-align:left;}
+.endInfo li{ padding-top:8px; line-height:26px;}
+.endInfo li p{ text-indent:2em;}
 /*投票帖*/
 .vote{ margin:15px 20px 0; padding-bottom:25px; font-size:14px; overflow:hidden;}
 .vote p{ line-height:28px;}
@@ -543,12 +562,50 @@ dl.topToday figcaption{ height:22px; line-height:22px; overflow:hidden;}
 .homeH2 a{ color:#FFF;}
 .homeList{ padding:8px 10px 25px 7px;  border-right:1px solid #CCC;border-left:1px solid #CCC; background:#E9EDF0; overflow:hidden;_zoom:1;}
 .lastLi{border:1px solid #CCC; border-top:none;}
-.homeList li{ display:inline; float:left; width:174px; height:60px; margin:18px 0 0 8px; padding-left:50px; border:1px solid #D0E5EF; border-radius:6px;background:#FFF; box-shadow:2px 2px 2px rgba(0,0,0,0.04);}
+.homeList li{ display:inline; float:left; width:220px; height:60px; margin:18px 0 0 32px; padding-left:50px; border:1px solid #D0E5EF; border-radius:6px;background:#FFF; box-shadow:2px 2px 2px rgba(0,0,0,0.04);}
 .homeList li h3{ height:20px; padding-top:10px; line-height:20px; color:#E20000;}
 .homeList li h3 a{ margin-right:13px;}
 .homeList li p{ line-height:20px; color:#777;}
 .homeList li p strong{ font-weight:normal;}
 .homeList li img{ left:13px; top:13px; display:block; width:25px; height:25px;}
+/*问答帖*/
+.qaTop{ float:left; height:33px; margin-top:10px; padding:0 10px; border:1px dashed #FFB238; border-radius:4px; background:#FFFDF5; line-height:33px; color:#848484;}
+.qaTop i{ display:inline-block; float:left; margin:9px 6px 0 0;}
+.qaTop span{ display:inline-block; float:left;}
+.qaTop em{ padding:0 4px; font-weight:bold; color:#F36C20;}
+.qaTop .icoMark{ display:inline-block; width:16px; height:16px; margin-left:20px; background-position:0 -1787px;}
+.qa{ padding:20px 0; overflow:hidden}
+.qa .mainCmtBtn{ float:none; margin-left:20px;}
+.qaBor{ margin:20px 20px 0; padding:10px 0; border:1px solid #CCC; border-radius:6px; overflow:hidden;_zoom:1;}
+.qaBorLi{ display:inline; float:left; width:334px; margin-left:20px; padding-right:15px; border-right:1px solid #CCC;}
+.qaBorLi img{ float:left; width:48px; height:48px; margin-right:10px;}
+.qaBorLi h4{ padding:2px 0 6px; color:#666; font-size:14px;}
+.qaBorLiTop{ width:334px; padding:15px 0; border-top:1px dashed #E7E7E7;border-bottom:1px dashed #E7E7E7; overflow:hidden;}
+.qaBorLiTop strong{ display:block; padding-top:2px; color:#666; font-weight:normal;}
+.qaBorLiTop a{ font-size:14px;}
+.qaBorLiTop a.pa{ right:0; top:34px; display:inline-block; width:83px; height:26px; border-radius:4px; background:#D4ECFC; line-height:26px; text-align:center; text-decoration:none;}
+.qaBorLi dl{ padding:10px 0;}
+.qaBorLi dt{ padding-botom:3px;}
+.qaBorLi dd{ height:24px; padding-left:13px; background-position:-61px 12px; line-height:24px; overflow:hidden;}
+.tcTop{ text-align:center; color:#666;}
+.tcTop a{ margin:0 6px; color:#666;}
+.tcTop em{ color:red;}
+.btnBlue{ cursor:pointer; border-color:#2E70A2 #035593 #035593 #2E70A2; background-color:#2688D2;font-weight:bold; color:#FFF; text-decoration:none;text-shadow:1px 1px 0 #0A3D80;}
+.btnBlue:hover{ border-color:#17639C #00448A #00448A #17639C; background-color:#0E7ED2; }
+.btnBlue:active{ background-color:#0271C6;box-shadow:0 0 2px #999;}
+.qa .btnBlue{ margin-left:20px;}
+.bestA{ position:absolute; right:-7px; top:-1px; margin:0;}
+.bestA,.bestA i{ display:inline-block; width:102px; height:38px; background-position:0 -2421px; line-height:38em; overflow:hidden;}
+.bestA i{ float:right; width:39px; background-position:0 -2459px;}
+.haveDig{ padding-right:80px;}
+.btnDig{ right:0; top:14px;}
+.btnDig span{ cursor:pointer; display:block;clear:both; float:right; height:23px; margin-top:5px;_margin-right:10px; border:1px solid #CCC; border-radius:4px; background-color:#F8F8F8; line-height:23px; color:#777; font-size:12px;}
+.btnDig span.btnUp{ padding:0 5px 0 24px; background-position:5px -2525px;}
+.btnDig span.btnDown{ clear:both;padding:0 22px 0 6px; background-position:right -2561px;}
+.btnDig span:hover{ border-color:#BBB; background-color:#EFEFEF; box-shadow:0 0 2px rgba(0,0,0,0.2);}
+.btnDig span:active{ border-color:#AAA; background-color:#E6E6E6; box-shadow:0 0 2px rgba(0,0,0,0.3);}
+.bgBest{ background:#FAFDFE;}
+/**/
 
 
 

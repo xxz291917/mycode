@@ -38,8 +38,8 @@ $(document).ready(function() {
 		$('.searchBox').fadeOut('slow');
 	});
 	//顶部导航下拉菜单
-	$('.icoUser').hover(function() {
-		$(this).addClass('current');
+	$('.icoSet').parent().hover(function() {
+		$(this).addClass('current');		
 	},function(){
 		$(this).removeClass('current');
 	});	
@@ -87,24 +87,22 @@ $(document).ready(function() {
 			$(this).text('收起回复');
 		}
 	);
-	
 	//帖子列表左侧菜单展开效果
 	$('.leftNav dt a').toggle(	
 		function () {
 			$(this).parent().parent().addClass('clsLeftNav');	
 			//设置左侧隐藏菜单的 cookie
-			document.cookie='leftNavState=isHide';		 
+			//document.cookie='leftNavState=isHide';		 
 		},
 		function () {
 			$(this).parent().parent().removeClass('clsLeftNav');
 		}
-	); /*
+	); 
 	//获取左侧隐藏菜单的 cookie
-	var leftNavState = document.cookie;	
-	if( leftNavState = 'isHide') {
-		$('.leftNavCtrl').parent().parent().addClass('leftNavShow');
-	}
-	*/
+	//var leftNavState = document.cookie;	
+	//if( leftNavState = 'isHide') {
+	//	$('.leftNavCtrl').parent().parent().addClass('leftNavShow');
+	//}
 	//帖子列表左侧菜单隐藏效果
 	$('.leftNavCtrl').toggle(	
 		function () {
@@ -145,9 +143,8 @@ $(document).ready(function() {
 		if( $('.voteBoxL li').length > 1 ) {
 			$(this).parent().remove();
 			return false;
-		}
+		}	
 	});	 
-	/*
 	$('.btnAddVote').click(function() {
 		$('.voteBoxL li:last').clone().appendTo('ol').find('input').val('');
 	});
@@ -173,7 +170,7 @@ $(document).ready(function() {
 			$(this).removeClass('btnUnCheck').addClass('btnCheck');
 		}
 	);
-	*/
+	
 	
 	
 });

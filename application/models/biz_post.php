@@ -85,6 +85,7 @@ class Biz_post extends CI_Model {
             $topics_data['author'] = $this->user['username'];
             $topics_data['author_id'] = $this->user['id'];
             $topics_data['post_time'] = $this->time;
+            $topics_data['last_post_time'] = $this->time;
             $topics_data['subject'] = html_escape($post['subject']);
             $topics_data['tags'] = $tags;
             $topics_data['special'] = $special;
