@@ -155,6 +155,7 @@ $(function(){
 	});
 	var superAjax = function(event,$this){
 		var tagName = gettagname(event);
+		var rel = $this.attr("rel") || "my_dialog";
 		var refresh = $this.attr("refresh") || false;
 		if(tagName=='A'){
 			var url = unescape($this.attr("href")),
@@ -166,6 +167,7 @@ $(function(){
 				fields = $this.serialize(),
 				ajaxFun = method=='post'?$.post:$.get;
 		}
+		$.Alert('正在努力……');
 		ajaxFun(url,fields,function(data){
 			var options = {buttons: {
 					"确定": function() {

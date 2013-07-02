@@ -14,6 +14,7 @@ class Action extends MY_Controller {
             'tags_model',
             'topics_posted_model',
             'posts_model',
+            'biz_user',
             'users_extra_model',
             'forums_statistics_model'));
     }
@@ -125,6 +126,11 @@ class Action extends MY_Controller {
             //完成回复。
             $forum_show_url = base_url('index.php/topic/position/'.$topic_id.'/last');
             if ($this->biz_post->post($post, 'reply')) {
+                /* start */
+                $title = empty($post['subject'])?$post['subject']:"re:".$topic['subject'];
+                $content = utf8_substr($post['content'], 0, 255);
+                $this->biz_user->publish('1', $topic_id, $this->user['id'], $topic['author_id'], $forum_show_url, $title, $content, $this->time);
+                /* end */
                 $this->message('发帖成功。', 1, $forum_show_url);
             } else {
                 $this->message('发帖失败。', 0, $forum_show_url);
@@ -202,6 +208,11 @@ class Action extends MY_Controller {
             //完成回复。
             $forum_show_url = base_url('index.php/topic/position/'.$topic_id.'/last');
             if ($this->biz_post->post($post, 'reply')) {
+                /* start */
+                $title = empty($post['subject'])?$post['subject']:"re:".$topic['subject'];
+                $content = utf8_substr($post['content'], 0, 255);
+                $this->biz_user->publish('1', $topic_id, $this->user['id'], $topic['author_id'], $forum_show_url, $title, $content, $this->time);
+                /* end */
                 $this->message('回复成功，现在查看？', 1, $forum_show_url);
             } else {
                 $this->message('回复失败。', 0);
@@ -648,6 +659,19 @@ class Action extends MY_Controller {
         }
     }
     
+    public function follow($user_id) {
+        $user_id = intval($user_id);
+        if(empty($user_id)){
+            $this->message('参数错误！'); 
+        }
+        $data = $this->biz_user->follow($user_id);
+        if (isset($data['succ']) && $data['succ'] <= 0) {
+            $message = !empty($data['message'])?$data['message']:'关注失败！';
+            $this->message($message);
+        } else {
+            $this->message('关注成功！',1);
+        }
+    }
 }
 
 ?>

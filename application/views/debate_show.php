@@ -74,7 +74,7 @@ echo $page;?>
           <div class="usFaceInfoBot">
               <a href="<?=$this->config->item('user_url').$user['id']?>" class="icoUs1">资料</a>
               <a href="<?=$this->config->item('user_url').$user['id']?>" class="icoUs2">串个门</a>
-              <a href="#" class="icoUs3">加关注</a>
+              <a href="<?=base_url('index.php/action/follow/'.$user['id'])?>" class="icoUs3" target="ajax">加关注</a>
           </div>
           <i class="pa"></i> </div>
       </div>
@@ -224,7 +224,7 @@ echo $page;?>
           <div class="usFaceInfoBot">
               <a href="<?=$this->config->item('user_url').$user['id']?>" class="icoUs1">资料</a>
               <a href="<?=$this->config->item('user_url').$user['id']?>" class="icoUs2">串个门</a>
-              <a href="#" class="icoUs3">加关注</a>
+              <a href="<?=base_url('index.php/action/follow/'.$user['id'])?>" class="icoUs3" target="ajax">加关注</a>
           </div>
           <i class="pa"></i> </div>
       </div>
