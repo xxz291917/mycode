@@ -133,6 +133,10 @@ echo $page;?>
         </article>
           
           <?php if($post['is_first']==1 && !empty($related_posts)){?>
+        <?php if(!empty($topic['log'])){?>
+        <div class="tcTop">本主题由<a href="<?php echo user_url($topic['log']['user_id'])?>"><?php echo $topic['log']['username'];?></a>于 <?php echo time_span($topic['log']['time'],'','','前');?>  <em><?php echo $topic['log']['action_name'];?></em></div>
+        <?php }?>
+          
           <div class="related">
           <h3>相关帖子</h3>
           <ul>

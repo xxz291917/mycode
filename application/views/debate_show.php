@@ -105,7 +105,9 @@ echo $page;?>
           <?php echo $first_post['content'];?>
           </div>
         </article>
-          
+        <?php if(!empty($topic['log'])){?>
+        <div class="tcTop">本主题由<a href="<?php echo user_url($topic['log']['user_id'])?>"><?php echo $topic['log']['username'];?></a>于 <?php echo time_span($topic['log']['time'],'','','前');?>  <em><?php echo $topic['log']['action_name'];?></em></div>
+        <?php }?>
 <!-- 辩论帖特有的展示-->
         <div class="debate">
           <div class="debateTit">

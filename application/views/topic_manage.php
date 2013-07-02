@@ -35,17 +35,18 @@ empty($action_url) && $action_url = 'index.php/topic/manage/';
           </select></td>
         <?php } elseif ($action == 'highlight') {
 			$highlight = explode(',',$topic['highlight']);
+			if(count($highlight)==1){ $highlight =array();}
 			for($i=1;$i<=3;$i++){
 				$cnt[$i] = !empty($highlight[$i])?'cnt':'';
 			}
 			?>
         <th>高亮</th>
         <td><div class="dopt"> <span class="hasd">
-            <input type="hidden" value="<?php echo my_set_value('0',$highlight);?>" name="highlight[0]" id="highlight_color" >
+            <input type="hidden" value="<?php echo my_set_value('0',$highlight,'#ff00ff');?>" name="highlight[0]" id="highlight_color" >
             <input type="hidden" value="<?php echo my_set_value('1',$highlight,0);?>" name="highlight[1]" id="highlight_style_B" >
             <input type="hidden" value="<?php echo my_set_value('2',$highlight,0);?>" name="highlight[2]" id="highlight_style_I" >
             <input type="hidden" value="<?php echo my_set_value('3',$highlight,0);?>" name="highlight[3]" id="highlight_style_U" >
-            <a style="background-color:<?php echo my_set_value('0',$highlight);?>" class="pn colorwd" onclick="showHighLightColor('highlight_color')" id="highlight_color" href="javascript:;" ></a> </span>
+            <a style="background-color:<?php echo my_set_value('0',$highlight,'#ff00ff');?>" class="pn colorwd" onclick="showHighLightColor('highlight_color')" id="highlight_color" href="javascript:;" ></a> </span>
             <a title="文字加粗" style="text-indent:0;text-decoration:none;font-weight:700;" class="dopt_a <?=$cnt[1]?>" href="javascript:;" >B</a>
             <a title="文字斜体" style="text-indent:0;text-decoration:none;font-style:italic;" class="dopt_a <?=$cnt[2]?>" href="javascript:;" >I</a>
             <a title="文字加下划线" style="text-indent:0;text-decoration:underline;" class="dopt_a <?=$cnt[3]?>" href="javascript:;" >U</a> </div>

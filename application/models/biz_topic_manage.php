@@ -142,7 +142,7 @@ class Biz_topic_manage extends CI_Model {
                     $topics_endtime[] = array(
                         'topic_id' => $topic_id,
                         'action' => $action,
-                        'end_time' => $post['end_time']
+                        'end_time' => $post['end_time']+3600*24-1
                     );
                 }
                 $this->topics_endtime_model->insert_batch($topics_endtime); 

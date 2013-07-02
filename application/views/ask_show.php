@@ -117,7 +117,9 @@ echo $page;?>
           </div>
         </article>
         
-        <div class="tcTop">本主题由<a href="#">李小龙</a>于 昨天11：11 <em>置顶</em></div>
+        <?php if(!empty($topic['log'])){?>
+        	<div class="tcTop">本主题由<a href="<?php echo user_url($topic['log']['user_id'])?>"><?php echo $topic['log']['username'];?></a>于 <?php echo time_span($topic['log']['time'],'','','前');?>  <em><?php echo $topic['log']['action_name'];?></em></div>
+        <?php }?>
         
         <div class="qa">
           <span class="mainCmtBtn">我来回答</span>

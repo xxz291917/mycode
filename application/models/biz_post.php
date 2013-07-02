@@ -439,6 +439,23 @@ class Biz_post extends CI_Model {
         $CI = &get_instance();
         $CI->message($message, $sucess, $redirect);
     }
+    
+    public function update_thdr($id) {
+        $this->load->model('topics_endtime_model');
+        $end_where = "topic_id = '$id' && (end_time !=0 and end_time <{$this->time})";
+        $topics_endtime = $this->topics_endtime_model->get_list($end_where);
+        if (!empty($topics_endtime)) {
+            $this->topics_endtime_model->delete($end_where);
+            $update_data = array();
+            foreach ($topics_endtime as $topics_end) {
+                $update_data[$topics_end['action']] = 0;
+            }
+            if($this->topics_model->update($update_data, 'id = '.$id)){
+                return $update_data;
+            }
+        }
+        return FALSE;
+    }
 
 }
 

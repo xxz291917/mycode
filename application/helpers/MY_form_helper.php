@@ -74,6 +74,7 @@ if (!function_exists('my_set_value')) {
 
     function my_set_value($field = '', $data = array(),$default='') {
         if (!isset($data[$field]) || $data[$field]=='') {
+//            file_put_contents('xxz.txt', $default, 8);
             return $default;
         }
         return form_prep($data[$field]);
