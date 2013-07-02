@@ -90,7 +90,7 @@ class Forums extends Admin_Controller {
                 if($icon_upload['error']==0){
                     $forums['icon'] = $icon_upload['data'];
                 }else{
-                    $this->message($icon_upload['message']);
+                    //$this->message($icon_upload['message']);
                 }
             }
             

@@ -27,6 +27,10 @@ class Forums_model extends MY_Model {
         $option = '';
         $current_type = '';
         foreach ($forums as $key => $forum) {
+            //redirect后，过滤。
+            if($forum['redirect']!=0){
+                continue;
+            }
             empty($current_type) && $current_type = $forum['type'];
             if ($forum['type'] == 'group') {
                 if(!empty($option)){
@@ -290,6 +294,25 @@ class Forums_model extends MY_Model {
         $forum = $this->get_by_id($forum_id);
         $forums_statistics = $this->forums_statistics_model->get_by_id($forum_id);
         return array_merge($forum, $forums_statistics);
+    }
+    
+    /**
+     * 处理redirect的版块的信息，除了名称，层级，描述外。其余的都替换成redirect的信息。
+     * @param type $forums
+     */
+    public function handle_redirect($forums){
+        $remain = array('parent_id','name','description','icon','display_order','create_user','create_user_id','create_time');
+        foreach($forums as &$forum){
+            if($forum['redirect']!=0){
+                $redirect_forum = $forums[$forum['redirect']];
+                foreach($forum as $key=>$val){
+                    if(!in_array($key, $remain)){
+                        $forum[$key] = $redirect_forum[$key];
+                    }
+                }
+            }
+        }
+        return $forums;
     }
     
 }
