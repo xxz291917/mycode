@@ -236,15 +236,10 @@ echo $page;?>
         
       <div class="newsCotR pr">
           
-        <div class="tr myState myState2">
-          <?php if(!empty($post['stand'])){?>
-            <?php if(1==$post['stand']){?>
-            <span class="btnLRed">红方</span>
-            <?php }elseif(2==$post['stand']){?>
-            <span class="btnLBlue">蓝方</span>
-            <?php }?>
+        <div class="tr myState">
+          <?php if(!empty($first_post['best_answer']) && $first_post['best_answer']==$post['id']){?>
+            <span class="bestA"><i></i>最佳答案</span>
            <?php }?>
-            
             <div class="newsTip">
             <span>发表于 <?php echo time_span($post['post_time'],'','','前');?> |<a href="<?php echo base_url('index.php/topic/show/'.$post['topic_id'].'/?author='.$post['author_id']);?>">只看该作者</a></span>
             </div>
@@ -258,9 +253,13 @@ echo $page;?>
         </div>
         
         <article class="newsCots">
-          <h2 class="fyahei"><?php echo $post['subject']?></h2>          
-          <div class="newsCotIn">
+          <h2 class="fyahei"><?php echo $post['subject']?></h2>
+          <div class="newsCotIn haveDig pr">
             <?php echo $post['content'];?>
+            <div class="btnDig pa">
+              <span class="btnUp"><a refresh="true" href="<?php echo base_url('index.php/action/support/'.$post['id'])?>" target="ajax">赞 <?php echo $post['supports'];?></a></span>
+              <span class="btnDown"><a refresh="true" href="<?php echo base_url('index.php/action/oppose/'.$post['id'])?>" target="ajax">踩 <?php echo $post['opposes'];?></a></span>
+            </div>
           </div>
         </article>
                 
@@ -271,6 +270,9 @@ echo $page;?>
           <li class="fl"><a href="<?php echo base_url('index.php/action/report/'.$post['id'])?>" target="dialog">举报</a></li>
           <li><a href="<?php echo base_url('index.php/action/edit/'.$post['topic_id'].'/'.$post['id'])?>" class="icoGrade">编辑</a></li>
           <li><a href="<?php echo base_url('index.php/action/reply_dialog/'.$post['topic_id'].'/'.$post['id'])?>" target="dialog" width="464px" title="快速回复" class="icoReplys">回复</a></li>
+          <?php if($this->user['id']==$topic['author_id'] && !empty($first_post['best_answer'])){?>
+          <li><a confirm="确定选择这个帖子为最佳答案么？" href="<?php echo base_url('index.php/action/select_answer/'.$post['id'])?>" target="ajax" title="选为最佳答案" class="icoEdit">最佳答案</a></li>
+          <?php }?>
         </ul>
       </div>
     </li>

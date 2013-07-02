@@ -62,8 +62,7 @@ class Biz_Ask extends CI_Model {
         //更新ask的最后回复时间和回复总数。
         $ask_data['replies'] = ':1';
         $ask_data['last_post_time'] = $this->time;
-        $this->asks_model->update_increment($ask_data, array('topic_id' => $tid));
-        
+        $this->ask_model->update_increment($ask_data, array('topic_id' => $tid));
         
         $topics_data['replies'] = ':1';
         $this->topics_model->update_increment($topics_data, array('id' => $tid));
@@ -125,7 +124,7 @@ class Biz_Ask extends CI_Model {
                 $value = $this->posts_model->output_filter($value);
             }
         }
-
+//        var_dump($posts);die;
         //获取需要的用户信息
         $uids = array($var['first_post']['author_id']);
         foreach ($posts as $post) {
@@ -156,7 +155,7 @@ class Biz_Ask extends CI_Model {
     public function deal_support($post_id,$type){
         $field = $type=='support'?'supports':'opposes';
         $update_data[$field] = ':1';
-        return $this->ask_posts_model->update_increment($update_data, array('id'=>$post['topic_id']));
+        return $this->ask_posts_model->update_increment($update_data, array('post_id'=>$post_id));
     }
     
     public function init_edit($topic_id,$post_id){

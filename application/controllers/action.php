@@ -127,7 +127,7 @@ class Action extends MY_Controller {
             $forum_show_url = base_url('index.php/topic/position/'.$topic_id.'/last');
             if ($this->biz_post->post($post, 'reply')) {
                 /* start */
-                $title = empty($post['subject'])?$post['subject']:"re:".$topic['subject'];
+                $title = !empty($post['subject'])?$post['subject']:"re:".$topic['subject'];
                 $content = utf8_substr($post['content'], 0, 255);
                 $this->biz_user->publish('1', $topic_id, $this->user['id'], $topic['author_id'], $forum_show_url, $title, $content, $this->time);
                 /* end */
