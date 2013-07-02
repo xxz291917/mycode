@@ -11,9 +11,9 @@ class Forums extends Admin_Controller {
     }
 
     public function index() {
-        if ($posts = $this->input->post()) {
-            $is_update = $this->forums_model->update_old($this->input->post('old'));
-            $is_insert = $this->forums_model->insert_new($this->input->post('new'));
+        if ($posts = $this->input->post(null,TRUE)) {
+            $is_update = $this->forums_model->update_old($this->input->post('old',TRUE));
+            $is_insert = $this->forums_model->insert_new($this->input->post('new',TRUE));
             if ($is_update && $is_insert) {
                 $this->message('操作成功');
             } else {
@@ -90,7 +90,7 @@ class Forums extends Admin_Controller {
                 if($icon_upload['error']==0){
                     $forums['icon'] = $icon_upload['data'];
                 }else{
-                    $this->message($icon_upload['message']);
+                    //$this->message($icon_upload['message']);
                 }
             }
             
@@ -130,7 +130,7 @@ class Forums extends Admin_Controller {
         if (empty($id)) {
             $this->message('参数错误！');
         } elseif ($this->input->post('submit')) {
-            $forums = $this->input->post();
+            $forums = $this->input->post(null,TRUE);
             $forums = $this->forums_model->form_filter($forums, 'en');
             if ($this->forums_model->update($forums, array('id' => $id))) {
                 $this->message('修改成功！');

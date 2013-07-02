@@ -74,7 +74,7 @@ echo $page;?>
           <div class="usFaceInfoBot">
               <a href="<?=$this->config->item('user_url').$user['id']?>" class="icoUs1">资料</a>
               <a href="<?=$this->config->item('user_url').$user['id']?>" class="icoUs2">串个门</a>
-              <a href="#" class="icoUs3">加关注</a>
+              <a href="<?=base_url('index.php/action/follow/'.$user['id'])?>" class="icoUs3" target="ajax">加关注</a>
           </div>
           <i class="pa"></i> </div>
       </div>
@@ -105,7 +105,9 @@ echo $page;?>
           <?php echo $first_post['content'];?>
           </div>
         </article>
-          
+        <?php if(!empty($topic['log'])){?>
+        <div class="tcTop">本主题由<a href="<?php echo user_url($topic['log']['user_id'])?>"><?php echo $topic['log']['username'];?></a>于 <?php echo time_span($topic['log']['time'],'','','前');?>  <em><?php echo $topic['log']['action_name'];?></em></div>
+        <?php }?>
         <!--投票 start-->
         <div class="vote">
           <p>
@@ -203,7 +205,7 @@ echo $page;?>
           <div class="usFaceInfoBot">
               <a href="<?=$this->config->item('user_url').$user['id']?>" class="icoUs1">资料</a>
               <a href="<?=$this->config->item('user_url').$user['id']?>" class="icoUs2">串个门</a>
-              <a href="#" class="icoUs3">加关注</a>
+              <a href="<?=base_url('index.php/action/follow/'.$user['id'])?>" class="icoUs3" target="ajax">加关注</a>
           </div>
           <i class="pa"></i> </div>
       </div>

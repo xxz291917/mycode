@@ -14,29 +14,29 @@
  */
 if (!function_exists('time_span')) {
 
-    function time_span($first_time = 1, $second_time = '',$max_time=2592000,$view_str = '') {
+    function time_span($first_time = 1, $second_time = '', $max_time = 2592000, $view_str = '') {
         $CI = & get_instance();
         $CI->lang->load('date');
         if (!is_numeric($second_time)) {
             $second_time = time();
         }
         if (!is_numeric($max_time)) {
-            $max_time=2592000;
+            $max_time = 2592000;
         }
         if (!is_numeric($first_time)) {
             return '';
-        } elseif ( !empty($max_time) && $second_time - $first_time >= $max_time) {
+        } elseif (!empty($max_time) && $second_time - $first_time >= $max_time) {
             return date('Y-m-d H:i:s', $first_time);
         }
 
-        if ($first_time>=$second_time) {
+        if ($first_time >= $second_time) {
             return '';
         } else {
             $first_time = $second_time - $first_time;
         }
 
         $str = '';
-        
+
         $years = floor($first_time / 31536000);
         if ($years > 0) {
             $str .= $years . ' ' . $CI->lang->line((($years > 1) ? 'date_years' : 'date_year')) . '';
@@ -48,7 +48,7 @@ if (!function_exists('time_span')) {
             $str .= $months . ' ' . $CI->lang->line((($months > 1) ? 'date_months' : 'date_month')) . '';
             $first_time -= $months * 2628000;
         }
-        
+
 //        $weeks = floor($first_time / 604800);
 //        if ($weeks > 0) {
 //            $str .= $weeks . ' ' . $CI->lang->line((($weeks > 1) ? 'date_weeks' : 'date_week')) . '';
@@ -77,33 +77,75 @@ if (!function_exists('time_span')) {
             $str .= $first_time . ' ' . $CI->lang->line((($first_time > 1) ? 'date_seconds' : 'date_second')) . '';
         }
 
-        return trim($str).$view_str;
+        return trim($str) . $view_str;
     }
 
 }
 
 if (!function_exists('utf8_substr')) {
+
     function utf8_substr($str, $from, $len) {
-        if(function_exists('mb_substr')){
-            return mb_substr($str, $from, $len,'utf-8');
+        if (function_exists('mb_substr')) {
+            return mb_substr($str, $from, $len, 'utf-8');
         }
         return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $from . '}' .
                 '((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $len . '}).*#s', '$1', $str);
     }
+
 }
 
+if (!function_exists('highlight')) {
+    function highlight($highlight, $subject) {
+        if (empty($subject)) {
+            return '';
+        }
+        $highlight = explode(',', $highlight);
+        if (count($highlight) == 1) {
+            $highlight = array();
+        }
+        $highlight = array_reverse($highlight);
+        foreach ($highlight as $key => $val) {
+            switch ($key) {
+                case 0:
+                    if ($val) {
+                        $subject = '<u>' . $subject . '</u>';
+                    }
+                    break;
+                case 1:
+                    if ($val) {
+                        $subject = '<em>' . $subject . '</em>';
+                    }
+                    break;
+                case 2:
+                    if ($val) {
+                        $subject = '<b>' . $subject . '</b>';
+                    }
+                    break;
+                case 3:
+                    if ($val) {
+                        $subject = '<font color="' . $val . '">' . $subject . '</font>';
+                    }
+                    break;
+            }
+        }
+        return $subject;
+    }
+
+}
 
 if (!function_exists('user_icon')) {
+
     function user_icon($uid) {
         return base_url('/images/default.png');
     }
+
 }
 
 if (!function_exists('user_url')) {
+
     function user_url($uid) {
         return '#';
     }
+
 }
-
-
 ?>

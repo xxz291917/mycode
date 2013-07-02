@@ -60,7 +60,7 @@ class Users_admin extends Admin_Controller {
         if (empty($id)) {
             $this->message('参数错误！');
         } elseif ($this->input->post('submit')) {
-            $users = $this->input->post();
+            $users = $this->input->post(null,true);
             $users['password'] = trim($users['password']);
             $users['repassword'] = trim($users['repassword']);
             if(empty($users['password'])){
@@ -85,7 +85,7 @@ class Users_admin extends Admin_Controller {
     
     public function add() {
         if ($this->input->post('submit')) {
-            $users = $this->input->post();
+            $users = $this->input->post(null,true);
             $users['username'] = trim($users['username']);
             $users['email'] = trim($users['email']);
             $users['password'] = trim($users['password']);

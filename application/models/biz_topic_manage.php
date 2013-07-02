@@ -85,7 +85,7 @@ class Biz_topic_manage extends CI_Model {
      */
     public function check_manager_permission($topic_ids, $action, $post = '') {
         !is_array($topic_ids) && $topic_ids = array($topic_ids);
-        empty($post) && $post = $this->input->post();
+        empty($post) && $post = $this->input->post(null,true);
         $topics = $this->topics_model->get_list('id in(' . join(',', $topic_ids) . ')');
         $permission = array();
         foreach ($topics as $topic) {
@@ -121,7 +121,7 @@ class Biz_topic_manage extends CI_Model {
      */
     public function manage($topic_ids, $action, $post = '') {
         $this->load->model(array('topics_log_model','topics_endtime_model'));
-        empty($post) && $post = $this->input->post();
+        empty($post) && $post = $this->input->post(null,true);
         
         //置顶、高亮、推荐精华
         if (in_array($action, array('top', 'highlight', 'digest'))) {
@@ -142,7 +142,7 @@ class Biz_topic_manage extends CI_Model {
                     $topics_endtime[] = array(
                         'topic_id' => $topic_id,
                         'action' => $action,
-                        'end_time' => $post['end_time']
+                        'end_time' => $post['end_time']+3600*24-1
                     );
                 }
                 $this->topics_endtime_model->insert_batch($topics_endtime); 

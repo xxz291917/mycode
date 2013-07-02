@@ -16,22 +16,23 @@
         </ul>
         <h3 class="tagA mt20">
             <?php
-            
             !isset($credit_name) && $credit_name = array();
             foreach ($credit_name as $key => $name) {
                 ?>          
-                <a href="<?= base_url() ?>index.php/space/my_credit/t/<?php echo $name['credit_x']; ?>" <?php if ($name['credit_x'] == $type_name) {
+                <a href="<?= base_url() ?>index.php/space/my_credit/t/<?php echo $name['credit_x']; ?>" <?php
+            if ($name['credit_x'] == $type_name) {
                 echo "class=current";
-            } ?> ><?php echo $name['view_name']; ?></a>
-          <?php } ?>
+            }
+                ?> ><?php echo $name['view_name']; ?></a>
+<?php } ?>
         </h3>
         <div class="tagACot">
             <ul class="tblList">
                 <li class="th">
                     <ul>
-                        <li class="td1">类别</li>
-                        <li class="td2">积分</li>
-                        <li class="td3">说明</li>
+                        <li class="td1">操作类型</li>
+                        <li class="td2">变化</li>
+                        <li class="td3">描述</li>
                         <li class="td4">时间</li>
                     </ul>
                 </li>
@@ -44,13 +45,13 @@
                             <li class="td1"><?php echo $credit['action']; ?></li>
                             <li class="td2"><?php echo $credit['affect']; ?></li>
                             <li class="td3"><?php echo $credit['description']; ?></li>
-                            <li class="td4"><?php echo date('Y-m-d H:i:s',$credit['time']); ?></li>
+                            <li class="td4"><?php echo date('Y-m-d H:i:s', $credit['time']); ?></li>
                         </ul>
                     </li>
 
-<?php } ?>
+            <?php } ?>
             </ul>
-            <div class="pagenum"><?php echo $page; ?></div>
+<?php echo $page; ?>
         </div>
     </div>  
     <div class="col4">

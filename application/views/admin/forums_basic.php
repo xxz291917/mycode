@@ -49,6 +49,11 @@
     <td >支持HTML代码<br/></td>
   </tr>
   <tr>
+    <th >版块重定向</th>
+    <td><input type="text" class="inp_txt" value="<?php echo my_set_value('redirect', $data)?>" name="redirect"></td>
+    <td >此版块将不能再发布帖子，将转向到重定向版块。<br/></td>
+  </tr>
+  <tr>
     <th >关闭版块</th>
     <td><label>
         <input type="radio"  name="status" value="0" <?php echo my_set_radio('status', 0, $data)?>/>

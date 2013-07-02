@@ -22,32 +22,35 @@
 <div class="navBox pr">
   <div class="nav pa">
     <div class="navWrap pr">
-      <h1 class="pa"><a href="#">9Tech开发者社区</a></h1>
+      <h1 class="pa"><a href="http://www.9tech.com">9Tech开发者社区</a></h1>
       <ul class="mainNav">
         <li class="mainNavHome"><a href="#">首页</a></li>
-        <li class="current"><a href="#">论坛</a></li>
+        <li class="current"><a href="<?=base_url()?>">论坛</a></li>
         <li><a href="#">博客</a></li>
         <li><a href="#">专题</a></li>
         <li><a href="#">活动</a></li>
         <li><a href="#">下载</a></li>
       </ul>
       <div class="mainNavR">
-        <!--
-        <ul class="logInfo pa">
+        <!--  
+        <ul class="logInfo">
           <li class="fsong"><a href="#">登录</a>|<a href="#">注册</a></li>
         </ul>
         -->
-        <ul class="logInfo fr">
-          <li class="icoEmail"><a href="#">250</a></li>
-          <li class="icoUser pr">
-            <a href="#"><img src="/images/userSmall.gif" alt="作者名字" title="作者名字"></a>
+        <ul class="logInfo">
+          <li><a href="#" class="icoNote"></a></li>
+          <li><a href="#" class="icoEmail"></a></li>
+          <li class="pr subShow"><a href="#" class="icoNote pa"><span>99+</span></a></li>
+          <li class="pr subShow"><a href="#" class="icoEmail pa"><span>12</span></a></li>
+          <li class="pr ml10"><a href="#" class="icoSet"></a>
             <ul class="pa">
               <li><a href="#">账号设置</a></li>
               <li><a href="#">退出</a></li>
             </ul>
-          </li>
-        </ul>
-        <a href="javascript:void(0);" class="searchBtn fr">搜索</a>
+          </li>          
+          <li class="welTip"><a href="<?php echo user_url($this->user['id'])?>"><img src="<?php echo user_icon($this->user['id'])?>" alt="<?php echo $this->user['username']?>" title="<?php echo $this->user['username']?>"></a></li>
+        </ul>         
+        <!--a href="javascript:void(0);" class="searchBtn fr">搜索</a-->
       </div>
       <div class="searchBox pa">
         <input type="tel" value="请输入关键字" class="inpTxt">

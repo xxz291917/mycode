@@ -92,7 +92,7 @@ $(function(){
 			if(minWidth) options.minWidth = minWidth;
 			if(tagName=='A'){
 				var url = unescape($this.attr("href"));
-				var field = {};
+				var field = null;
 			}else if(tagName=='FORM'){
 				var url = unescape($this.attr("action"));
 				var field = $this.serializeArray();
@@ -156,9 +156,11 @@ $(function(){
 	var superAjax = function(event,$this){
 		var tagName = gettagname(event);
 		var refresh = $this.attr("refresh") || false;
+		var confirm = $this.attr("confirm") || false;
+		var title = $this.attr("title") || $this.text()||'';
 		if(tagName=='A'){
 			var url = unescape($this.attr("href")),
-			    fields = {},
+			    fields = null,
 				ajaxFun = $.get;
 		}else if(tagName=='FORM'){
 			var url = unescape($this.attr("action")),
@@ -166,21 +168,29 @@ $(function(){
 				fields = $this.serialize(),
 				ajaxFun = method=='post'?$.post:$.get;
 		}
-		ajaxFun(url,fields,function(data){
-			var options = {buttons: {
-					"确定": function() {
-								$(this).dialog("close");
-								if(refresh){
-									window.location.reload();
+		var handle = function(){
+			$.Alert('正在努力……');
+			ajaxFun(url,fields,function(data){
+				var options = {buttons: {
+						"确定": function() {
+									$(this).dialog("close");
+									if(refresh){
+										window.location.reload();
+									}
 								}
-							}
-				}};
-			if(!data.success){
-				$.Alert(data.message);
-			}else{
-				$.Alert(data.message,'',options);
-			}
-		},'json');
+					}};
+				if(!data.success){
+					$.Alert(data.message,title);
+				}else{
+					$.Alert(data.message,title,options);
+				}
+			},'json');
+		}
+		if(confirm){
+			$.Confirm(confirm, title, handle);
+		}else{
+			handle();
+		}
 		event.preventDefault();
 		return false;
 	};

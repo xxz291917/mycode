@@ -14,6 +14,7 @@ class Action extends MY_Controller {
             'tags_model',
             'topics_posted_model',
             'posts_model',
+            'biz_user',
             'users_extra_model',
             'forums_statistics_model'));
     }
@@ -27,7 +28,7 @@ class Action extends MY_Controller {
         if (empty($forum) || $forum['type'] == 'group') {
             $this->message('参数错误，发布的版块不存在或者不是子版块', 0, $forum_show_url);
         }
-        if ($this->input->post('submit') && $post = $this->input->post(null)) {
+        if ($this->input->post('submit') && $post = $this->input->post(null,TRUE)) {
             if(!$this->biz_post->check_post('post', $special)){
                 $errors = validation_errors();
                 $this->message(nl2br($errors), 0);
@@ -106,7 +107,7 @@ class Action extends MY_Controller {
             $this->message('参数错误，发布的主题不存在', 0, $forum_show_url);
         }
         //通过了check校验
-        if ($this->input->post('submit') && $post = $this->input->post(null)) {
+        if ($this->input->post('submit') && $post = $this->input->post(null,TRUE)) {
             if(!$this->biz_post->check_post('reply', $topic['special'])){
                 $errors = validation_errors();
                 $this->message(nl2br($errors), 0);
@@ -125,6 +126,11 @@ class Action extends MY_Controller {
             //完成回复。
             $forum_show_url = base_url('index.php/topic/position/'.$topic_id.'/last');
             if ($this->biz_post->post($post, 'reply')) {
+                /* start */
+                $title = !empty($post['subject'])?$post['subject']:"re:".$topic['subject'];
+                $content = utf8_substr($post['content'], 0, 255);
+                $this->biz_user->publish('1', $topic_id, $this->user['id'], $topic['author_id'], $forum_show_url, $title, $content, $this->time);
+                /* end */
                 $this->message('发帖成功。', 1, $forum_show_url);
             } else {
                 $this->message('发帖失败。', 0, $forum_show_url);
@@ -182,7 +188,7 @@ class Action extends MY_Controller {
             $this->message('参数错误，发布的主题不存在', 0, $forum_show_url);
         }
         
-        if ($this->input->post('submit') && $post = $this->input->post(null)) {
+        if ($this->input->post('submit') && $post = $this->input->post(null,TRUE)) {
             //检测字段
             if(!$this->biz_post->check_post('reply', $topic['special'])){
                 $errors = validation_errors();
@@ -202,6 +208,11 @@ class Action extends MY_Controller {
             //完成回复。
             $forum_show_url = base_url('index.php/topic/position/'.$topic_id.'/last');
             if ($this->biz_post->post($post, 'reply')) {
+                /* start */
+                $title = empty($post['subject'])?$post['subject']:"re:".$topic['subject'];
+                $content = utf8_substr($post['content'], 0, 255);
+                $this->biz_user->publish('1', $topic_id, $this->user['id'], $topic['author_id'], $forum_show_url, $title, $content, $this->time);
+                /* end */
                 $this->message('回复成功，现在查看？', 1, $forum_show_url);
             } else {
                 $this->message('回复失败。', 0);
@@ -279,7 +290,7 @@ class Action extends MY_Controller {
         $var['post'] = $db_post;
         
         //通过了check校验
-        if ($this->input->post('submit') && $post = $this->input->post(null)) {
+        if ($this->input->post('submit') && $post = $this->input->post(null,TRUE)) {
             if(!$this->biz_post->check_post($db_post['is_first']==1?'post':'reply', $topic['special'])){
                 $errors = validation_errors();
                 $this->message(nl2br($errors), 0);
@@ -412,7 +423,7 @@ class Action extends MY_Controller {
             $this->load->model(array('attachments_unused_model', 'attachments_model'));
             $data = $this->upload->data();
             $file_path = trim($config['upload_path'], './') . '/' . $data['file_name'];
-            $title = $this->input->post('title');
+            $title = $this->input->post('title',TRUE);
 
             //将文件保存到未使用附件表。
             //$id = $this->attachments_model->get_max_id();
@@ -424,7 +435,7 @@ class Action extends MY_Controller {
             $insert_data['filename'] = $data['client_name'];//保存文件的原始名
             $insert_data['path'] = $file_path;
             $insert_data['is_image'] = $data['is_image'];
-            $insert_data['description'] = $title;
+            $insert_data['description'] = trim($title);
             $insert_data['is_thumb'] = 0;
 
             $this->attachments_unused_model->insert($insert_data);
@@ -556,7 +567,7 @@ class Action extends MY_Controller {
             $this->message('参数错误');
         }
         if ($this->input->post('submit')) {
-            $report_post = $this->input->post();
+            $report_post = $this->input->post(null,TRUE);
             //检测权限。
             if (!$this->biz_permission->check_base('report', $topic['forum_id'])) {
                 $this->message('没有权限。', 0);
@@ -586,7 +597,7 @@ class Action extends MY_Controller {
      */
     public function safe_drafts(){
         $this->load->model('drafts_model');
-        $post = $this->input->post(null);
+        $post = $this->input->post(null,TRUE);
         
         if(!empty($post['topic_id'])){
             $id_type = "topic_id";
@@ -648,6 +659,19 @@ class Action extends MY_Controller {
         }
     }
     
+    public function follow($user_id) {
+        $user_id = intval($user_id);
+        if(empty($user_id)){
+            $this->message('参数错误！'); 
+        }
+        $data = $this->biz_user->follow($user_id);
+        if (isset($data['succ']) && $data['succ'] <= 0) {
+            $message = !empty($data['message'])?$data['message']:'关注失败！';
+            $this->message($message);
+        } else {
+            $this->message('关注成功！',1);
+        }
+    }
 }
 
 ?>

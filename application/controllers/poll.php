@@ -12,7 +12,7 @@ class Bbs extends MY_Controller {
      */
     public function submit($topic_id) {
         $post_key = 'option_'.$topic_id;
-        $options = $this->input->post($post_key);
+        $options = $this->input->post($post_key,TRUE);
         if(empty($options)||empty($topic_id)){
             $this->message('参数错误，请重新检查');
         }

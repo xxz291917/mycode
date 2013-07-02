@@ -25,7 +25,7 @@ class Credits extends Admin_Controller {
      * 更新用户的积分设置。
      */
     public function update() {
-        $str_value = $this->input->post();
+        $str_value = $this->input->post(null,TRUE);
        // print_r($str_value);
         for ($i = 0; $i < 8; $i++) {
             $cx = "credit_x_" . $i;

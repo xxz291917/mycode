@@ -28,7 +28,27 @@ class Topic extends MY_Controller {
             $this->message('参数错误，主题不存在');
         }
         $topic['tags'] = array_filter(explode(',', $topic['tags']));
-        //获取本主题
+        
+        //如果是置顶，高亮，推荐精华。则获取时间。
+        if($topic['top']>0 || $topic['highlight']!='' || $topic['digest']>0 || $topic['recommend']=1){
+            //删除过期的设置
+            $update_data = $this->biz_post->update_thdr($id);
+            if(!empty($update_data)){
+                $topic = array_merge($topic,$update_data);
+            }
+            $action_names = array('top'=>'置顶','highlight'=>'高亮','digest'=>'推荐精华');
+            $this->load->model('topics_log_model');
+            foreach(array('top','highlight','digest') as $action){
+                if(!empty($topic[$action])){
+                    $topic['log'] = $this->topics_log_model->get_one("topic_id = $id AND action = '$action'",'user_id,username,time','time desc');
+                    if(!empty($topic['log'])){
+                        $topic['log']['action_name'] = $action_names[$action];
+                    }
+                    break;
+                }
+            }
+        }
+        
         $var['topic'] = $topic;
         //获取当前用户管理帖子的链接。
         $var['manage_arr'] = $this->biz_topic_manage->get_permission_manage($topic['forum_id']);
@@ -138,7 +158,7 @@ class Topic extends MY_Controller {
                 $error_message = $this->form_validation->error_string(); //ajax显示错误信息。
                 $this->message($error_message, 0);
             }
-            $post = $this->input->post();
+            $post = $this->input->post(null,true);
             //检测权限。
             if (!$this->biz_topic_manage->check_manager_permission($topic_id, $action, $post)) {
                 $this->message('操作的主题，没有权限。', 0);

@@ -147,7 +147,13 @@ echo $page; ?>
                                             [<?= '暂无分类' ?>]
         <?php } ?>
                                     </strong>
-                                    <a href="<?= base_url() . 'index.php/topic/show/' . $topic['id'] ?>" title="<?= $topic['subject'] ?>"><?= $topic['subject'] ?></a>
+                                    <a href="<?= base_url() . 'index.php/topic/show/' . $topic['id'] ?>" title="<?= $topic['subject'] ?>">
+									<?php if(!empty($topic['highlight'])){
+										echo highlight($topic['highlight'],$topic['subject']);
+                                    }else{
+										echo 	$topic['subject'];
+									}?>
+                                    </a>
                                 </li>
                                 <li class="td4">
                                     <a href="#"><img src="<?php echo user_icon($topic['author_id']) ?>" alt="<?= $topic['author'] ?>"></a>
