@@ -12,7 +12,7 @@ class Groups extends Admin_Controller {
 
     //'system', 'special', 'member'
     public function index($type = 'member') {
-        if ($posts = $this->input->post()) {
+        if ($posts = $this->input->post(null,true)) {
             $is_update = $this->groups_model->update_old($this->input->post('old'), $type);
             $is_insert = $this->groups_model->insert_new($this->input->post('new'), $type);
             if ($is_update && $is_insert) {
@@ -59,7 +59,7 @@ class Groups extends Admin_Controller {
         if (empty($id)) {
             $this->message('参数错误！');
         } elseif ($this->input->post('submit')) {
-            $groups = $this->input->post();
+            $groups = $this->input->post(null,true);
             $icon_upload = $this->biz_image->icon_upload();
             if(isset($icon_upload['error'])){
                 if($icon_upload['error']==0){
@@ -86,7 +86,7 @@ class Groups extends Admin_Controller {
         if (empty($id)) {
             $this->message('参数错误！');
         } elseif ($this->input->post('submit')) {
-            $groups = $this->input->post();
+            $groups = $this->input->post(null,true);
             $groups = $this->groups_admin_model->form_filter($groups);
             if ($this->groups_admin_model->update($groups, array('group_id' => $id))) {
                 $this->message('修改成功！');

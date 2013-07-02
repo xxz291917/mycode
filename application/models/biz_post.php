@@ -57,7 +57,7 @@ class Biz_post extends CI_Model {
      * @return boolean
      */
     public function post($post, $type = 'post') {
-        $post = $this->safe_filter($post); //安全过滤，不包括html转义，也就是说在一定条件下可以使用html代码
+        //$post = $this->safe_filter($post); //安全过滤，不包括html转义，也就是说在一定条件下可以使用html代码
         $forum_id = intval($post['forum_id']);
         $special = intval($post['special']);
         
@@ -239,7 +239,7 @@ class Biz_post extends CI_Model {
     }
     
     public function edit($post){
-        $post = $this->safe_filter($post); //安全过滤，不包括html转义，也就是说在一定条件下可以使用html代码
+        //$post = $this->safe_filter($post); //安全过滤，不包括html转义，也就是说在一定条件下可以使用html代码
         $forum_id = intval($post['forum_id']);
         $special = intval($post['special']);
         $tid = $post['topic_id'];
@@ -422,7 +422,7 @@ class Biz_post extends CI_Model {
     }
     
     public function get_quote_content($post){
-        $maxlen = 20;
+        $maxlen = 30;
         if(empty($post)){
             return '';
         }

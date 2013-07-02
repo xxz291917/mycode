@@ -3,7 +3,7 @@
 empty($action_url) && $action_url = 'index.php/topic/manage/';
 ?>
 
-<form action="<?php echo base_url($action_url . $action); ?>" method="post" id="topic_manage">
+<?php echo form_open(base_url($action_url . $action), array('id'=>"topic_manage"))?>
   <input type="hidden" name="submit" value="1">
   <input type="hidden" name="topic_id" value="<?= $topic_id ?>">
   <table class="table2" width="400px">

@@ -18,7 +18,7 @@ class Site extends Admin_Controller {
                 'seo_topic_title','seo_topic_keywords','seo_topic_description',
                 'seo_post_title','seo_post_keywords','seo_post_description');
             $this_arr = $$type;
-            $settings = $this->input->post();
+            $settings = $this->input->post(null,true);
             foreach ($settings as $name => $value) {
                 if(!in_array($name, $this_arr)){
                     unset($settings[$name]);

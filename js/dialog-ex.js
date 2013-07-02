@@ -92,7 +92,7 @@ $(function(){
 			if(minWidth) options.minWidth = minWidth;
 			if(tagName=='A'){
 				var url = unescape($this.attr("href"));
-				var field = {};
+				var field = null;
 			}else if(tagName=='FORM'){
 				var url = unescape($this.attr("action"));
 				var field = $this.serializeArray();

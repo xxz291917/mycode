@@ -4,10 +4,9 @@
     
     
     <div class="siteTip">
-        <!--
         <span class="fr">
-            <a href="#">我的帖子</a><i>|</i><a href="#">查看新帖</a>
-        </span>-->
+            <a href="<?php echo base_url('/index.php/space/my_topic')?>">我的帖子</a>
+        </span>
         <em>今日:</em><?=$totals['today_posts']?><i>|</i><em>总帖子:</em><?=$totals['posts']?><i>|</i><em>会员:</em><?=$totals['users']?><i>|</i><em>欢迎新会员:</em><?=$last_user['username']?>
     </div>
     <div class="hTop">    

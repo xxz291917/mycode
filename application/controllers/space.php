@@ -2,14 +2,6 @@
 
 class Space extends MY_Controller {
 
-    static $per_num = 10;
-    static $post_view = array(
-        1 => 'topic_show',
-        2 => 'ask_show',
-        3 => 'poll_show',
-        4 => 'debate_show',
-    );
-
     function __construct() {
         parent::__construct();
         $this->load->model(array('topics_model', 'topics_posted_model', 'biz_pagination', 'credit_name_model'));
@@ -25,7 +17,7 @@ class Space extends MY_Controller {
         unset($search['submit'], $search['per_page']);
         $query_str = !empty($search) ? http_build_query($search, '', '&') : '';
         $base_url = current_url() . '?' . $query_str;
-        $per_num = 10;
+        $per_num = $this->config->item('per_num');
         $page_obj = $this->biz_pagination->init_page($base_url, $total_num, $per_num);
         $page_str = $page_obj->create_links();
         $start = max(0, ($page_obj->cur_page - 1) * $per_num);

@@ -30,7 +30,7 @@ class Attachment_config extends Admin_Controller {
      */
     public function update() {
         //格式化ids并检测，两种方式获取ids，get或者post数组。        
-        $str_value = $this->input->post('str_value');
+        $str_value = $this->input->post('str_value',TRUE);
         if(preg_replace("/([a-zA-Z]|d)+/", "()", $str_value)){
             $str_value=str_replace('undefined,undefined/','',$str_value);
             $str_value=str_replace('undefined,NaN/','',$str_value);

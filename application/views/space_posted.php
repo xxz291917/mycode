@@ -12,4 +12,4 @@
 
     <?php } ?>
 </ul>
-<div class="pagenum"><a href="#" class="btnPre"></a></div>
+<?php echo $page; ?>

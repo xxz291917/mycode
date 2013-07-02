@@ -138,7 +138,7 @@ class Topic extends MY_Controller {
                 $error_message = $this->form_validation->error_string(); //ajax显示错误信息。
                 $this->message($error_message, 0);
             }
-            $post = $this->input->post();
+            $post = $this->input->post(null,true);
             //检测权限。
             if (!$this->biz_topic_manage->check_manager_permission($topic_id, $action, $post)) {
                 $this->message('操作的主题，没有权限。', 0);

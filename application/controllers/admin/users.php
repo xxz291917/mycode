@@ -51,7 +51,7 @@ class Users extends Admin_Controller {
         if (empty($id)) {
             $this->message('参数错误！');
         } elseif ($this->input->post('submit')) {
-            $users = $this->input->post();
+            $users = $this->input->post(null,true);
             
             if($type == 'group'){
                 !isset($users['groups']) && $users['groups'] = array();

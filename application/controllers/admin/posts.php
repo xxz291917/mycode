@@ -137,7 +137,7 @@ class Posts extends Admin_Controller {
             }
         }
         if ($this->input->post('submit')) {
-            $post = $this->input->post();
+            $post = $this->input->post(null,true);
             $this->biz_topic_manage->manage_post($post_id,$action,$post);
             $this->message('操作完成！', 1);
         } else {

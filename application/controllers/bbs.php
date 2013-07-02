@@ -16,7 +16,7 @@ class Bbs extends MY_Controller {
         $forums = $this->forums_statistics_model->append_to_forums($forums);
         $forums = $this->forums_model->handle_redirect($forums);//处理redirect
         $var['forums'] = $this->forums_model->get_format_forums($forums);
-//        var_dump($var['forums']);die;
+
         $totals = array(
             'posts' =>0,
             'topics' =>0,
@@ -40,16 +40,10 @@ class Bbs extends MY_Controller {
         $new_topics = $this->topics_model->get_list(1, 'id,subject', 'post_time desc',0,8);
         $var['new_topics'] = $new_topics;
         //获取最新回复的topic_id
-        $last_post_topics_ids = $this->posts_model->get_list('is_first !=1', 'distinct topic_id', 'post_time desc',0,10);
-        $topic_ids = array();
-        foreach ($last_post_topics_ids as $key => $topic) {
-            $topic_ids[] = $topic['topic_id'];
-        }
-        $last_post_topics = $this->topics_model->get_list("id in (".join(',', $topic_ids).") AND status in(1,4)",'id,subject','',0,8);
+        $last_post_topics = $this->topics_model->get_list('1', 'id,subject', 'last_post_time desc',0,8);
         $var['last_post_topics'] = $last_post_topics;
         //获取带图片的最新帖子
         $last_image_topics = $this->posts_model->get_list('is_first =1 AND attachment=1', 'id,topic_id,subject', 'post_time desc',0,10);
-//        var_dump($last_image_topics);die;
         $post_ids = array();
         foreach ($last_image_topics as $key => $topic) {
             $post_ids[] = $topic['id'];

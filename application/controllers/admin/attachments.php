@@ -85,7 +85,7 @@ class Attachments extends Admin_Controller {
     public function del() {
 
         //格式化ids并检测，两种方式获取ids，get或者post数组。
-        empty($file_id) && $file_id = $this->input->post('file_id');
+        empty($file_id) && $file_id = $this->input->post('file_id',TRUE);
         is_string($file_id) && $file_id = array_unique(array_filter(explode(',', $file_id)));
         if (empty($file_id)) {
             $this->message('参数错误，请指定您的操作id！', 0);
