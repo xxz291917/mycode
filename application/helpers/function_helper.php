@@ -142,9 +142,22 @@ if (!function_exists('user_icon')) {
 }
 
 if (!function_exists('user_url')) {
-
     function user_url($uid) {
         return '#';
+    }
+}
+
+if (!function_exists('my_strtotime')) {
+
+    function my_strtotime($time) {
+        if(empty($time)){
+            return 0;
+        }
+        $time2 = strtotime($time);
+        if(!empty($time2)){
+            $time = $time2;
+        }
+        return $time + 3600*24-1;
     }
 
 }

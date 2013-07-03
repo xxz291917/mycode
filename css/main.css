@@ -143,7 +143,7 @@ a.searchBtn{ display:inline-block; width:25px; height:26px; margin:12px 0 0 0; b
 .menuTag li a.icoPost{ padding-right:34px; background-position:60px -392px;}
 .menuTag li a.icoMag{padding-right:34px;background-position:90px -392px;}
 .menuPage .pagenum{ float:right; margin-top:4px;}
-.menuTag .hasMenu .menuList li a{ width:80px; padding:0; text-align:center;}
+.menuTag .hasMenu .menuList li a{ width:80px; padding:0; background-image:none; text-align:center;}
 /*分页*/
 .pagenum{ height:26px;}
 .pagenum a{display:inline-block;height:23px;margin:0 2px 0 3px;padding:0 8px;border:1px solid #C4C4C4;box-shadow:1px 1px 1px #DDD;border-radius:2px;background:#F0F0F0;color:#717171 !important;text-align:center;line-height:23px;vertical-align:middle;text-decoration:none;}
@@ -605,8 +605,12 @@ dl.topToday figcaption{ height:22px; line-height:22px; overflow:hidden;}
 .btnDig span:hover{ border-color:#BBB; background-color:#EFEFEF; box-shadow:0 0 2px rgba(0,0,0,0.2);}
 .btnDig span:active{ border-color:#AAA; background-color:#E6E6E6; box-shadow:0 0 2px rgba(0,0,0,0.3);}
 .bgBest{ background:#FAFDFE;}
-/**/
-
+/*颜色拾取*/
+div.colorPicker-picker {cursor:pointer; display:inline; float:left; width:21px;height:21px; margin-right:3px;padding:0 !important;border:1px solid #CCC; background:url(../images/pn_color.png) no-repeat;line-height:21px;font-size:12px;font-weight:bold; text-align:center;}
+div.colorPicker-palette {position:absolute;z-index:9999;width:110px;padding:2px; border:1px solid #598FEF; background-color:#EFEFEF;}
+div.colorPicker_hexWrap { float:left;width:100%; }
+div.colorPicker_hexWrap input {width:65%;margin:5px 2px; padding:0; border:1px solid #000;font-size:95%;}
+div.colorPicker-swatch { cursor:pointer;float:left;width:12px;height:12px;margin:2px;  border:1px solid #000;line-height:12px;}
 
 
 

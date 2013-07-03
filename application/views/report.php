@@ -1,4 +1,4 @@
-<form action="<?php echo current_url() ?>" method="post">
+<?php echo form_open(current_url()) ?>
   <input type="hidden" name="submit" value="1">
   <input type="hidden" name="post_id" value="<?= $post_id ?>">
   <table class="table2" width="400px">

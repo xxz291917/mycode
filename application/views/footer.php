@@ -1,7 +1,7 @@
 <!--footer-->
 <footer class="footer wrap">
-  <p><span>Powered by <strong><a target="_blank" href="http://www.discuz.net">Discuz!</a></strong> X2</span><a href="archiver/">Archiver</a>|<a href="forum.php?mobile=yes">手机版</a>|<strong><a target="_blank" href="http://www.9RIA.com/">9RIA.com</a></strong>|( <a target="_blank" href="http://www.miitbeian.gov.cn/">京ICP备11007422号-2</a> )<a title="防水墙保卫网站远离侵害" target="_blank" href="http://discuz.qq.com/service/security"><img src="/static/image/common/security.png"></a></p>
-  <p><span>&copy; 2001-2011 <a target="_blank" href="http://www.comsenz.com <http://www.comsenz.com/> ">Comsenz Inc.</a></span><span id="debuginfo">, Processed in 0.113182 second(s), 22 queries.</span>GMT+8, 2013-6-15 12:03</p> 
+  <p><span>Powered by <strong><a target="_blank" href="http://www.9RIA.com/">9RIA.com</a></strong></span>( <a target="_blank" href="http://www.miitbeian.gov.cn/">京ICP备000000000号</a> )</p>
+  <p><span>&copy; 2013-2014 <a target="_blank" href="http://www.changyou.com">畅游天下</a></span><span id="debuginfo"> </span>GMT+8, <?php echo date('Y-m-d H:i:s',$this->time)?></p> 
 </footer> 
 <!--滚动-->
 <div class="scroll pa">

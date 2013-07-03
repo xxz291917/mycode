@@ -138,11 +138,14 @@ class Biz_topic_manage extends CI_Model {
             if(!empty($post[$action])){
                //需要更新topics_endtime表
                 $this->topics_endtime_model->delete('topic_id in(' . join(',', $topic_ids) . ') AND action=\''.$action.'\'');
+                if(!empty($post['end_time'])){
+                    $post['end_time']+=3600*24-1;
+                }
                 foreach ($topic_ids as $topic_id) {
                     $topics_endtime[] = array(
                         'topic_id' => $topic_id,
                         'action' => $action,
-                        'end_time' => $post['end_time']+3600*24-1
+                        'end_time' => $post['end_time']
                     );
                 }
                 $this->topics_endtime_model->insert_batch($topics_endtime); 

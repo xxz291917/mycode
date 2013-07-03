@@ -35,14 +35,13 @@ empty($action_url) && $action_url = 'index.php/topic/manage/';
           </select></td>
         <?php } elseif ($action == 'highlight') {
 			$highlight = explode(',',$topic['highlight']);
-			if(count($highlight)==1){ $highlight =array();}
 			for($i=1;$i<=3;$i++){
 				$cnt[$i] = !empty($highlight[$i])?'cnt':'';
 			}
 			?>
         <th>高亮</th>
         <td><div class="dopt"> <span class="hasd">
-            <input type="hidden" value="<?php echo my_set_value('0',$highlight,'#ff00ff');?>" name="highlight[0]" id="highlight_color" >
+            <input id="color5" type="text" name="color5" value="#FF00FF" />
             <input type="hidden" value="<?php echo my_set_value('1',$highlight,0);?>" name="highlight[1]" id="highlight_style_B" >
             <input type="hidden" value="<?php echo my_set_value('2',$highlight,0);?>" name="highlight[2]" id="highlight_style_I" >
             <input type="hidden" value="<?php echo my_set_value('3',$highlight,0);?>" name="highlight[3]" id="highlight_style_U" >
@@ -152,11 +151,15 @@ empty($action_url) && $action_url = 'index.php/topic/manage/';
             dateFormat: 'yy-mm-dd'
         });
         <?php if ($action == 'highlight') { ?>
-
-		$(function() {
-		    $('#highlight_color').colorPicker({showHexField: false});
-		});
-
+		
+		
+		
+		
+		$(function() {    
+    $('#color5').colorPicker({showHexField: false});
+  });
+		
+		
         $(".dopt_a").click(
 		function () {
 			if($("#highlight_style_"+$(this).text()).val()==0){

@@ -31,13 +31,14 @@
 <script type="text/javascript">
     var base_url = '<?= base_url() ?>';
     $(function(){
-			<?php if($type == 'edit'){?>
-				KindEditor.uploadImages=<?=$edit_data['uploadImages']?>;
-				KindEditor.uploadFiles=<?=$edit_data['uploadFiles']?>;
-			<?php }else{?>
-				KindEditor.uploadImages={};
-				KindEditor.uploadFiles={};
-			<?php }?>
+        <?php if($type == 'edit'){?>
+                KindEditor.uploadImages=<?=$edit_data['uploadImages']?>;
+                KindEditor.uploadFiles=<?=$edit_data['uploadFiles']?>;
+        <?php }else{?>
+                KindEditor.uploadImages={};
+                KindEditor.uploadFiles={};
+        <?php }?>
+        KindEditor.isArr = {};
     });
 </script>
 <script type="text/javascript" src="<?= base_url() ?>js/editor.js"></script>

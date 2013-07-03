@@ -101,6 +101,36 @@ echo $page;?>
             <span title="回复数" class="icoMsg2"><?php echo $topic['replies']?></span>
             </div>
           
+          <div class="endInfo">
+            <?php if(!empty($first_post['debate']['best_debater'])){
+                $isend = true;
+                $result = array(0=>'平局',1=>'红方获胜',2=>'蓝方获胜');
+                ?>
+              <ul>
+                 <li><strong>辩论结果：</strong><strong><?php echo $result[$first_post['debate']['winner']]?></strong></li>
+                 <li><strong>评判时间：</strong><?php echo time_span($first_post['debate']['end_time'],'','',' 前')?></li>
+                 <li><strong>裁判观点：</strong>
+                     <?php echo $first_post['debate']['umpire_point']?>
+                 </li>
+                 <li><strong>最佳辩手：</strong><?php echo $first_post['debate']['best_debater']?></li>
+             </ul>
+            <?php }?>
+              <p class="tc fb">结束时间：<?php if(!empty($first_post['debate']['end_time'])){
+                echo date('Y-m-d H:i:s',$first_post['debate']['end_time']);
+              }else{
+                echo '等待裁判判决';
+              }?>&nbsp;&nbsp;&nbsp;&nbsp;裁判：<?php echo $first_post['debate']['umpire']?></p>
+            <?php if($first_post['debate']['umpire'] == $this->user['username']){?>
+              <a href="<?php echo base_url('index.php/action/debate_end/'.$first_post['topic_id']);?>" target="dialog">
+                  <?php if($isend){
+                    echo '编辑裁判观点';
+                  }else{
+                    echo '结束此次辩论';
+                  }?>
+              </a>
+            <?php }?>
+          </div>
+          
           <div class="newsCotIn">
           <?php echo $first_post['content'];?>
           </div>

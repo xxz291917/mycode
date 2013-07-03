@@ -51,7 +51,7 @@ class Biz_debate extends CI_Model {
         $debate_data['topic_id'] = $tid;
         $debate_data['user_id'] = $this->user['id'];
         $debate_data['start_time'] = $this->time;
-        $debate_data['end_time'] = strtotime($post['end_time']);
+        $debate_data['end_time'] = my_strtotime($post['end_time']);
         $debate_data['umpire'] = $post['umpire'];
         $debate_data['affirm_point'] = html_escape($post['affirm_point']);
         $debate_data['negate_point'] = html_escape($post['negate_point']);
@@ -176,8 +176,8 @@ class Biz_debate extends CI_Model {
         $debate = $this->debate_model->get_by_id($first_post['topic_id']);
         $total_votes = $debate['affirm_votes'] + $debate['negate_votes'];
         if ($total_votes > 0) {
-            $debate['affirm_percent'] = round($debate['affirm_votes'] / $total_votes, 2);
-            $debate['negate_percent'] = round($debate['negate_votes'] / $total_votes, 2);
+            $debate['affirm_percent'] = round($debate['affirm_votes'] / $total_votes, 2)*100;
+            $debate['negate_percent'] = round($debate['negate_votes'] / $total_votes, 2)*100;
         } else {
             $debate['affirm_percent'] = 50;
             $debate['negate_percent'] = 50;
@@ -254,7 +254,7 @@ class Biz_debate extends CI_Model {
             return FALSE;
         }
         //完成debate表的数据更新
-        $debate_data['end_time'] = strtotime($post['end_time']);
+        $debate_data['end_time'] = my_strtotime($post['end_time']);
         $debate_data['umpire'] = $post['umpire'];
         $debate_data['affirm_point'] = html_escape($post['affirm_point']);
         $debate_data['negate_point'] = html_escape($post['negate_point']);

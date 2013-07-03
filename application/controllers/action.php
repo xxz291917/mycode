@@ -60,7 +60,7 @@ class Action extends MY_Controller {
             
             //获取当前用户在此版块下的编辑器权限。（前台过过滤编辑器，重点是对于提交的内容会做相应的处理）
             $is_arr = $this->biz_post->get_is($forum_id);
-            $var['is_arr'] = $is_arr;
+            $var['is_arr'] = json_encode($is_arr);
             
             $var['special'] = $special;
             //如果是特殊帖子需要做相应的处理。
@@ -168,7 +168,7 @@ class Action extends MY_Controller {
             
             //获取当前用户在此版块下的编辑器权限。（前台过过滤编辑器，重点是对于提交的内容会做相应的处理）
             $is_arr = $this->biz_post->get_is($forum_id);
-            $var['is_arr'] = $is_arr;
+            $var['is_arr'] = json_encode($is_arr);
             
             $var['type'] = 'reply';
             $var['forum_id'] = $forum_id;
@@ -255,7 +255,7 @@ class Action extends MY_Controller {
             }
             //获取当前用户在此版块下的编辑器权限。（前台过过滤编辑器，重点是对于提交的内容会做相应的处理）
             $is_arr = $this->biz_post->get_is($topic['forum_id']);
-            $var['is_arr'] = $is_arr;
+            $var['is_arr'] = json_encode($is_arr);
             $var['forum_id'] = $topic['forum_id'];
             $var['special'] = $special;
             $this->load->view('reply_dialog', $var);
@@ -377,7 +377,7 @@ class Action extends MY_Controller {
             
             //获取当前用户在此版块下的编辑器权限。（前台过过滤编辑器，重点是对于提交的内容会做相应的处理）
             $is_arr = $this->biz_post->get_is($forum_id);
-            $var['is_arr'] = $is_arr;
+            $var['is_arr'] = json_encode($is_arr);
             
             $var['type'] = 'edit';
             $var['forum_id'] = $forum_id;
@@ -543,20 +543,87 @@ class Action extends MY_Controller {
     public function select_answer($post_id) {
         $this->load->model(array('ask_model','users_extra_model'));
         $post = $this->posts_model->get_by_id($post_id);
+        $topic = $this->posts_model->get_by_id($post['topic_id']);
+        if($post['topic_id'] !== $this->user['id']){
+            $this->message('您不是帖子所有者，无权操作。');
+        }
         $ask = $this->ask_model->get_by_id($post['topic_id']);
-        if(empty($post) || empty($ask) || $ask['price']){
+        if(empty($post) || empty($ask) ){
             $this->message('参数错误');
         }
+        if($ask['best_answer']!=0){
+            $this->message('此问答已经有了最佳答案！');
+        }
         //为最佳答案用户添加积分
-        $credits = array($this->ask_credit_type => intval($ask['price']));
+        $this->load->model('biz_ask');
+        $credits = array($this->biz_ask->ask_credit_type => intval($ask['price']));
         $ask_action = 'best_answer'; //发表问题积分动作关键字
         $is_update_credit = $this->users_extra_model->update_credits($credits, $post['author_id'], $ask_action);
-        
+        //var_dump($is_update_credit);die;
         $update_data = array('best_answer'=>$post_id);
         if($this->ask_model->update($update_data,array('topic_id'=>$post['topic_id']))){
             $this->message('操作成功',1);
         }else{
             $this->message('操作失败');
+        }
+    }
+    
+    /**
+     * 问答帖选择最佳答案，将出入的post_id选为本帖子的最佳答案。
+     * @param type $post_id
+     */
+    public function debate_end($topic_id) {
+        $this->load->model(array('debate_model','debate_posts_model'));
+        $topic = $this->topics_model->get_by_id($topic_id);
+        if(empty($topic)){
+            $this->message('参数错误');
+        }
+        $debate = $this->debate_model->get_by_id($topic_id);
+        if(empty($debate)){
+            $this->message('参数错误');
+        }elseif($debate['umpire']!=$this->user['username']){
+            $this->message('您不是指定裁判，暂无权限！');
+        }
+        $isend = empty($debate['best_debater'])?0:1;
+        if ($this->input->post('submit')) {
+            $post = $this->input->post(null,TRUE);
+            if(trim($post['best_debater2'])!=''){
+                $post['best_debater'] = $post['best_debater2'];
+            }
+            $update_data['winner'] = intval($post['winner']);
+            $update_data['best_debater'] = trim($post['best_debater']);
+            $update_data['umpire_point'] = trim($post['umpire_point']);
+            if(!$isend){
+                $update_data['end_time'] = $this->time;
+            }
+            if(empty($update_data['best_debater'])){
+                $this->message('参数错误，最佳辩手不能为空！');
+            }elseif(!$this->users_model->get_user_by_name($update_data['best_debater'])){
+                $this->message('参数错误，最佳辩手不是有效的用户！');
+            }elseif(empty($update_data['umpire_point'])){
+                $this->message('裁判员观点不能为空');
+            }
+            $suc1 = $this->debate_model->update($update_data,array('topic_id'=>$topic_id));
+            $suc2 = $this->topics_model->update(array('status'=>5),array('id'=>$topic_id));
+            if($suc1 && $suc2){
+                $this->message('操作完成！', 1);
+            }else{
+                $this->message('操作失败！');
+            }
+        } else {
+            //拿到当前发表观点的用户id
+            $user_ids = $this->debate_posts_model->get_userids_of_stand($topic_id);
+            if(!empty($user_ids)){
+                $usernames = $this->users_model->get_names_by_ids($user_ids);
+                $var['usernames'] = $usernames;
+            }else{
+                $var['usernames'] = array();
+            }
+            if(!empty($debate['best_debater']) && !in_array($debate['best_debater'], $var['usernames'])){
+                $debate['best_debater2'] = $debate['best_debater'];
+            }
+            $var['debate'] = $debate;
+            $this->load->view('debate_end', $var);
         }
     }
     

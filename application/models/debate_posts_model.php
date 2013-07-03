@@ -46,7 +46,20 @@ class Debate_posts_model extends MY_Model {
         return $result;
     }
     
-    
+    /**
+     * 得到某个帖子的发表过观点的用户的id，并按照支持数排序，取出前20来。
+     * @param type $topic_id
+     */
+    public function get_userids_of_stand($topic_id) {
+        $user_ids = $this->get_list(array('topic_id'=>$topic_id),'user_id','voters desc',0,20);
+        $ids = array();
+        if(!empty($user_ids)){
+            foreach ($user_ids as $key => $value) {
+                $ids[] = $value['user_id'];
+            }
+        }
+        return $ids;
+    }
 }
 
 ?>
