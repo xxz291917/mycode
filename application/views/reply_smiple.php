@@ -28,6 +28,12 @@
 </style>
 <script type="text/javascript">
 var base_url = '<?=base_url()?>';
+$(function(){
+        KindEditor.uploadImages={};
+        KindEditor.uploadFiles={};
+        KindEditor.isArr = {};
+        KindEditor.hidden_token = '<input type="hidden" name="<?=$this->security->get_csrf_token_name()?>" value="<?=$this->security->get_csrf_hash()?>">';
+    });
 </script>
 <script type="text/javascript" src="<?=base_url()?>js/editor_simple.js"></script>
 <!--content-->

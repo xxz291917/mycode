@@ -39,6 +39,7 @@
                 KindEditor.uploadFiles={};
         <?php }?>
         KindEditor.isArr = {};
+        KindEditor.hidden_token = '<input type="hidden" name="<?=$this->security->get_csrf_token_name()?>" value="<?=$this->security->get_csrf_hash()?>">';
     });
 </script>
 <script type="text/javascript" src="<?= base_url() ?>js/editor.js"></script>

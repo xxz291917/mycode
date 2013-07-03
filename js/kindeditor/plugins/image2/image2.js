@@ -89,7 +89,7 @@ KindEditor.plugin('image2', function(K) {
                             '<iframe name="' + target + '" style="display:none;"></iframe>',
                             '<form class="ke-upload-area ke-form" method="post" enctype="multipart/form-data" target="' + target + '" action="' + K.addParam(uploadJson, 'dir=image') + '">',
                             //file
-                            '<div class="ke-dialog-row">',
+                            KindEditor.hidden_token+'<div class="ke-dialog-row">',
                             hiddenElements.join(''),
                             '<label style="width:60px;">' + lang.localUrl + '</label>',
                             '<input type="text" name="localUrl" class="ke-input-text" tabindex="-1" style="width:200px;" readonly="true" /> &nbsp;',
