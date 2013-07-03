@@ -157,6 +157,9 @@ class Users_model extends MY_Model {
      * @return array
      */
     public function get_userinfo_by_ids($ids) {
+        if(empty($ids)){
+            return FALSE;
+        }
         $users = $this->get_users_by_ids(array_unique($ids));
         $groups = $this->groups_model->get_key_groups();
         $medals = $this->get_medal_by_ids($ids);

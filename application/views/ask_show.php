@@ -102,11 +102,11 @@ echo $page;?>
             </div>
           
           <div class="qaTop">
-            <span><i class="icoAIng"></i>
+            <span>
                 <?php if($first_post['best_answer'] == 0){
-                    echo '未解决';
+                    echo '<i class="icoAIng"></i>未解决';
                 }else{
-                    echo '已解决';
+                    echo '<i class="icoAEd"></i>已解决';
                 } ?>
             </span>
             <span><i class="icoMark"></i>赏金<em>   <?php echo $first_post['price'] ?>   </em>两</span>
@@ -122,9 +122,14 @@ echo $page;?>
         <?php }?>
         
         <div class="qa">
-          <span class="mainCmtBtn">我来回答</span>
-          <a style="display:none" href="<?php echo base_url('index.php/action/reply_dialog/'.$first_post['topic_id'].'/'.$first_post['id'])?>" target="dialog" width="464px" title="我来回答"> </a>
-          <div class="qaBor">
+          <?php if($first_post['best_answer'] != 0){?>
+          <span class="btnBlue" id="eventClick">查看最佳答案</span>
+          <a style="display:none" href="<?php echo base_url('index.php/topic/position/'.$first_post['topic_id'].'/'.$first_post['best_answer'])?>">最佳答案</a>
+          <?php }else{?>
+          <span class="mainCmtBtn" id="eventClick">我来回答</span>
+          <a style="display:none" href="<?php echo base_url('index.php/action/reply_dialog/'.$first_post['topic_id'].'/'.$first_post['id'])?>" target="dialog" width="464px" title="我来回答">我来回答</a>
+          <?php } ?>
+          <!--<div class="qaBor">
             <div class="qaBorLi">
               <h4>问问专家</h4>
               <div class="qaBorLiTop pr">
@@ -155,7 +160,7 @@ echo $page;?>
                 <dd><a href="#" title="标题">江苏常熟“天上人间”酷似人民大会堂【高清组图】</a></dd>
               </dl>
             </div>
-          </div>
+          </div>-->
         </div> 
           
         <?php if(!empty($topic['tags'])){?>
@@ -310,8 +315,12 @@ echo $page;?>
 </div>
 <script>
 $(function(){
-  $('.mainCmtBtn').click(function(){
-	  $(this).next('a').click();
-	});
+  $('#eventClick').click(function(){
+    if($(this).attr('class')=='btnBlue'){
+        window.location.href=$(this).next('a').attr('href');
+    }else{
+        $(this).next('a').click();
+    }
+  });
 });
 </script>

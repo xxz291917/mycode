@@ -141,7 +141,7 @@ echo $page;?>
           <h3>相关帖子</h3>
           <ul>
             <?php foreach ($related_posts as $key => $related) {?>
-              <li><a href="" title="<?php echo $related['subject'];?>"><?php echo $related['subject'];?></a></li>
+              <li><a href="<?php echo base_url('index.php/topic/show/'.$related['id'])?>" title="<?php echo $related['subject'];?>"><?php echo $related['subject'];?></a></li>
             <?php }?>
           </ul>
           </div>

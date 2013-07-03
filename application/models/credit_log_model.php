@@ -48,7 +48,7 @@ class Credit_log_model extends MY_Model {
     public function get_credit_list($type_name,$start, $per_num) {
         $userid = $this->user['id'];
         $where = "type='$type_name' and user_id='$userid' ";
-        $result = parent::get_list($where, '*', '', $start, $per_num);
+        $result = parent::get_list($where, '*', 'time desc', $start, $per_num);
         return $result;
     }
 

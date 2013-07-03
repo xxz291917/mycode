@@ -541,12 +541,17 @@ class Action extends MY_Controller {
      * @param type $post_id
      */
     public function select_answer($post_id) {
-        $this->load->model(array('ask_model'));
+        $this->load->model(array('ask_model','users_extra_model'));
         $post = $this->posts_model->get_by_id($post_id);
-        $topic = $this->topics_model->get_by_id($post['topic_id']);
-        if(empty($post) || empty($topic) || $topic['special']!=2){
+        $ask = $this->ask_model->get_by_id($post['topic_id']);
+        if(empty($post) || empty($ask) || $ask['price']){
             $this->message('参数错误');
         }
+        //为最佳答案用户添加积分
+        $credits = array($this->ask_credit_type => intval($ask['price']));
+        $ask_action = 'best_answer'; //发表问题积分动作关键字
+        $is_update_credit = $this->users_extra_model->update_credits($credits, $post['author_id'], $ask_action);
+        
         $update_data = array('best_answer'=>$post_id);
         if($this->ask_model->update($update_data,array('topic_id'=>$post['topic_id']))){
             $this->message('操作成功',1);

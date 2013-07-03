@@ -75,8 +75,9 @@ class Topic extends MY_Controller {
         $var = array_merge($var, $special_var);
         
         //如果是特殊帖子回复需要做相应的处理。
+        empty($topic['special']) && $topic['special'] = 1;
         $special = $topic['special'];
-        if ($special != 1) {
+        if (intval($special) > 1 ) {
             $class = biz_post::$specials[$special];
             $this->load->model($class);
             if(method_exists($this->$class, 'get_reply_view')){
