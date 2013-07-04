@@ -53,8 +53,13 @@ class Users_model extends MY_Model {
                 $insert_data['username'] = $passport_user['name'];
                 $insert_data['email'] = $passport_user['email'];
                 $insert_data['regdate'] = $passport_user['register_date'];
-                $insert_data['member_id'] = '10';
+                $insert_data['member_id'] = 10;
+                //var_dump($insert_data);die;
                 $this->insert($insert_data);
+//                $this->load->model('users_extra_model');
+                $extra_data['user_id'] = $passport_user['id'];
+                $this->users_extra_model->insert($extra_data);
+                
                 $user = $this->get_users_by_ids($user_id);
             }
 //            var_dump($user);die;

@@ -22,14 +22,14 @@
 <div class="navBox pr">
   <div class="nav pa">
     <div class="navWrap pr">
-      <h1 class="pa"><a href="http://www.9tech.com">9Tech开发者社区</a></h1>
+      <h1 class="pa"><a href="http://test.9tech.cn">9Tech开发者社区</a></h1>
       <ul class="mainNav">
-        <li class="mainNavHome"><a href="#">首页</a></li>
+        <li class="mainNavHome"><a href="<?=base_url()?>">首页</a></li>
         <li class="current"><a href="<?=base_url()?>">论坛</a></li>
-        <li><a href="#">博客</a></li>
-        <li><a href="#">专题</a></li>
-        <li><a href="#">活动</a></li>
-        <li><a href="#">下载</a></li>
+        <li><a href="<?php echo $this->config->item('url_blog')?>" target="_blank">博客</a></li>
+        <li><a href="<?php echo $this->config->item('url_blog')?>" target="_blank">专题</a></li>
+        <li><a href="<?php echo $this->config->item('url_blog')?>" target="_blank">活动</a></li>
+        <li><a href="<?php echo $this->config->item('url_download')?>" target="_blank">下载</a></li>
       </ul>
       <div class="mainNavR">
         <?php if($this->user['id']>0){?>

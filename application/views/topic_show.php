@@ -161,7 +161,8 @@ echo $page;?>
           <?php }?>
           <!--li><a href="#" class="icoEdit">评分</a></li-->
           <li><a href="<?php echo base_url('index.php/action/edit/'.$post['topic_id'].'/'.$post['id'])?>" class="icoGrade">编辑</a></li>
-          <li><a href="<?php echo base_url('index.php/action/reply_dialog/'.$post['topic_id'].'/'.$post['id'])?>" target="dialog" width="464px" title="快速回复" class="icoReplys">回复</a></li>
+          <li><a class="icoCite" href="<?php echo base_url('index.php/action/reply_dialog/'.$post['topic_id'].'/'.$post['id'])?>" target="dialog" width="464px" >引用</a></li>
+          <li><a class="icoReplys" href="<?php echo base_url('index.php/action/reply_dialog/'.$post['topic_id'].'/')?>" target="dialog" width="464px" title="快速回复">回复</a></li>
         </ul>
       </div>
     </li>

@@ -106,8 +106,8 @@ class Biz_poll extends CI_Model {
         $first_post['options'] = $options;
 
         //获取当前用户是否投过票，是否允许再投票。
-        $mypoll = $this->poll_voter_model->get_one(array('topic_id' => 1, 'user_id' => $this->user['id']));
-        $first_post['is_vote'] = !empty($mypoll) ? TRUE : false;
+        $mypoll = $this->poll_voter_model->get_one(array('topic_id' => $first_post['topic_id'], 'user_id' => $this->user['id']));
+        $first_post['is_vote'] = empty($mypoll) ? TRUE : false;
 
         //根据当前用户获取投票数。（有编辑权利的用户和已经投票有权利查看投票数。）
         if (empty($mypoll)) {

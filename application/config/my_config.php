@@ -33,4 +33,11 @@ $config['passport_login'] = 'http://test.9tech.cn/passport/login.php';
 //passport 退出
 $config['passport_logout'] = 'http://test.9tech.cn/passport/logout.php';
 
+//博客地址
+$config['url_blog'] = 'http://test.9tech.cn/blog';
+//下载地址
+$config['url_download'] = 'http://test.9tech.cn/download';
+//专题地址
+$config['url_xxxx'] = 'http://test.9tech.cn/passport/logout.php';
+
 ?>

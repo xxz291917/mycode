@@ -138,7 +138,8 @@ $(document).ready(function() {
 			$('.listCotShow li ul:last').addClass('bordNo');
 		});
 	});
-	//发布投票贴删除添加投票效果
+        
+	/*//发布投票贴删除添加投票效果
 	$('.voteBoxL li span.btnCls').live('click',function() {
 		if( $('.voteBoxL li').length > 1 ) {
 			$(this).parent().remove();
@@ -149,6 +150,7 @@ $(document).ready(function() {
 		$('.voteBoxL li:last').clone().appendTo('ol').find('input').val('');
 	});
 	//发布投票模拟checkbox
+        
 	$('.btnUnCheck').toggle(	
 		function () {
 			$(this).parent().find('input').val('1');
@@ -170,7 +172,7 @@ $(document).ready(function() {
 			$(this).removeClass('btnUnCheck').addClass('btnCheck');
 		}
 	);
-	
+	*/
 	
 	
 });

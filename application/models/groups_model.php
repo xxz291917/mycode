@@ -151,8 +151,8 @@ class Groups_model extends MY_Model {
      * @return int 所属用户组id
      */
     public function rank_by_credits($credits) {
-        $where = "credits <=$credits";
-        $group = $this->get_one($where, $field = 'id', 'credits desc');
+        $where = "credits <=$credits AND type = 'member'";
+        $group = $this->get_one($where, 'id', 'credits desc');
         if ($group) {
             return $group['id'];
         }

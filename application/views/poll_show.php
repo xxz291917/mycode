@@ -111,7 +111,7 @@ echo $page;?>
         <!--投票 start-->
         <div class="vote">
           <p>
-			<?php if($first_post['is_multiple']){
+		<?php if($first_post['is_multiple']){
                     echo '多选';
                 }else{
                     echo '单选';
