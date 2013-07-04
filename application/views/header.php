@@ -40,8 +40,10 @@
         <ul class="logInfo">
           <li><a href="#" class="icoNote"></a></li>
           <li><a href="#" class="icoEmail"></a></li>
+          <!--
           <li class="pr subShow"><a href="#" class="icoNote pa"><span>99+</span></a></li>
           <li class="pr subShow"><a href="#" class="icoEmail pa"><span>12</span></a></li>
+          -->
           <li class="pr ml10"><a href="#" class="icoSet"></a>
             <ul class="pa">
               <li><a href="#">账号设置</a></li>
