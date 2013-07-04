@@ -18,8 +18,8 @@
     <tr>
     	<th>最佳辩手</th>
     	<td><select id="stand" name="best_debater" >
-            <?php foreach($usernames as $username){ ?>
                 <option value="">推荐名单</option>
+            <?php foreach($usernames as $username){ ?>
                 <option value="<?=$username['username']?>" <?php echo my_set_select('best_debater', $username['username'],$debate)?>><?=$username['username']?></option>
             <?php }?>
           </select>

@@ -102,7 +102,9 @@ echo $page;?>
             </div>
           
           <div class="endInfo">
-            <?php if(!empty($first_post['debate']['best_debater'])){
+            <?php 
+            $isend = false;
+            if(!empty($first_post['debate']['best_debater'])){
                 $isend = true;
                 $result = array(0=>'平局',1=>'红方获胜',2=>'蓝方获胜');
                 ?>

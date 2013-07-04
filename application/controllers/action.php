@@ -157,7 +157,7 @@ class Action extends MY_Controller {
                 }
             }
             
-            if (is_numeric($post_id)) {
+            if (is_numeric($post_id) && $post_id>0) {
                 $post = $this->posts_model->get_by_id($post_id);
                 if (empty($post)) {
                     $this->message('参数错误，回复的帖子不存在', 0, $forum_show_url);
@@ -182,7 +182,7 @@ class Action extends MY_Controller {
         if (empty($topic_id) || !is_numeric($topic_id)) {
             $this->message('参数错误，请指定要发布的主题！', 0, base_url());
         }
-        
+        $post_id = intval($post_id);
         $topic = $this->topics_model->get_by_id($topic_id);
         if (empty($topic)) {
             $this->message('参数错误，发布的主题不存在', 0, $forum_show_url);
@@ -222,10 +222,10 @@ class Action extends MY_Controller {
             $var['topic_id'] = $topic_id;
             $var['topic'] = $topic;
             $var['post_id'] = $post_id;
-            if (is_numeric($post_id)) {
+            if (is_numeric($post_id) && $post_id>0) {
                 $post = $this->posts_model->get_by_id($post_id);
                 if (empty($post)) {
-                    $this->message('参数错误，发布的主题不存在', 0, $forum_show_url);
+                    $this->message('参数错误，发布的主题不存在', 0);
                 }
                 $var['post'] = $post;
                 $var['quote_content'] = $this->biz_post->get_quote_content($post);

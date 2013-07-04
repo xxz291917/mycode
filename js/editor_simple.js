@@ -5,7 +5,7 @@ $(function(){
 	KindEditor.smileUrl = base_url+"index.php/action/get_smiley_json";
 	KindEditor.smileys=null;
 	$.ajax({
-		type: "POST",
+		type: "GET",
 		url: KindEditor.smileUrl,
 		success: function(json){
 			KindEditor.smileys = json.data;
