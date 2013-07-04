@@ -22,6 +22,7 @@ class Base_Controller extends CI_Controller {
             $this->enable_cache = true;
             $this->load->driver('cache', array('adapter' => 'file', 'backup' => 'apc'));
         }
+        
         $this->output->enable_profiler(config_item('enable_profiler')); //是否开启profiler。
         
         //初始化用户信息（包括所属用户组）
@@ -31,7 +32,7 @@ class Base_Controller extends CI_Controller {
         
 //        $this->permission = $this->config_model->get_config();
         
-        if(!empty($this->user)){//如果用户登录了，则添加最后活动时间，更新在线时长。
+        if(!empty($this->user['id'])){//如果用户登录了，则添加最后活动时间，更新在线时长。
             $this->users_extra_model->update_user_active();
         }
 //        var_dump($this->user);die;

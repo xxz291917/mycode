@@ -15,14 +15,30 @@ class Users_model extends MY_Model {
      * @return type
      */
     function get_userinfo() {
-        //用户信息从cookie中获取。
-        $user_id = '1';
+        /** 用户信息从cookie中获取。
+         * array(4) {
+          ["id"]=>
+          string(2) "14"
+          ["name"]=>
+          string(9) "xxz291917"
+          ["email"]=>
+          string(17) "xxz291917@163.com"
+          ["register_date"]=>
+          string(10) "1372916951"
+          }
+         */
+        
+        $this->load->library('user_lib');
+        $passport_user = $this->user_lib->getUser();
+        //$userInfo = $this->user_lib->getUserInfo(14,1);
+//        var_dump($user);
+        $user_id = !empty($passport_user['id'])?$passport_user['id']:0;
         //否则从passport获取登录信息。
-        if(empty($user_id)){
-            $user_id = '1';
-            //更新最后登录时间。
-            $this->users_extra_model->update(array('last_login_time'=>$this->time), array('user_id'=>$this->user['id']));
-        }
+//        if(empty($user)){
+//            $user_id = '1';
+//            //更新最后登录时间。
+//            $this->users_extra_model->update(array('last_login_time'=>$this->time), array('user_id'=>$this->user['id']));
+//        }
         if(!empty($user_id)){//已经登录了，获取登录信息。
             if($this->enable_cache){
                 $cache_key = "get_userinfo_$user_id";
@@ -32,9 +48,16 @@ class Users_model extends MY_Model {
                 }
             }
             $user = $this->get_users_by_ids($user_id);
-            if($user){
-                //插入用户的操作在这里哦。
+            if(empty($user)){
+                $insert_data['id'] = $passport_user['id'];
+                $insert_data['username'] = $passport_user['name'];
+                $insert_data['email'] = $passport_user['email'];
+                $insert_data['regdate'] = $passport_user['register_date'];
+                $insert_data['member_id'] = '10';
+                $this->insert($insert_data);
+                $user = $this->get_users_by_ids($user_id);
             }
+//            var_dump($user);die;
             $current_groups = array(empty($user['group_id']) ? $user['member_id'] : $user['group_id']);
             //检测是否有过期的扩展组，更新。
             if (!empty($user['groups'])) {
@@ -56,7 +79,9 @@ class Users_model extends MY_Model {
         }else{
             //为用户赋值用户组为游客。
             $user['id'] = 0;
-            $current_groups = Groups_model::$tourist_id;
+            $user['username'] = '游客'; //所属管理组id
+            $user['group_id'] = 0; //所属管理组id
+            $current_groups[] = Groups_model::$tourist_id;
             $user['groups'] = $current_groups; //用户所属的用户组
             $user['group'] = $this->groups_model->get_user_group($current_groups);
         }

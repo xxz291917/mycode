@@ -67,7 +67,7 @@ class Biz_permission extends CI_Model {
         }
         //获取管理权限
         $admin_permission = $this->groups_model->get_admin_permission($topic['forum_id']);
-        return $admin_permission[$action];
+        return !empty($admin_permission[$action])?$admin_permission[$action]:false;
     }
 
     /**

@@ -26,4 +26,11 @@ $config['user_get_fans'] = 'http:// hi.9tech.cn/index.php/services/userinfo/get_
 //回复通知接口
 $config['user_publish'] = 'http://hi.9tech.cn/index.php/services/notice/do_publish';
 
+//passport 注册
+$config['passport_register'] = 'http://test.9tech.cn/passport/register.php';
+//passport 登录
+$config['passport_login'] = 'http://test.9tech.cn/passport/login.php';
+//passport 退出
+$config['passport_logout'] = 'http://test.9tech.cn/passport/logout.php';
+
 ?>

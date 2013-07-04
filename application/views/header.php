@@ -32,11 +32,7 @@
         <li><a href="#">下载</a></li>
       </ul>
       <div class="mainNavR">
-        <!--  
-        <ul class="logInfo">
-          <li class="fsong"><a href="#">登录</a>|<a href="#">注册</a></li>
-        </ul>
-        -->
+        <?php if($this->user['id']>0){?>
         <ul class="logInfo">
           <li><a href="#" class="icoNote"></a></li>
           <li><a href="#" class="icoEmail"></a></li>
@@ -44,14 +40,20 @@
           <li class="pr subShow"><a href="#" class="icoNote pa"><span>99+</span></a></li>
           <li class="pr subShow"><a href="#" class="icoEmail pa"><span>12</span></a></li>
           -->
-          <li class="pr ml10"><a href="#" class="icoSet"></a>
+          <li class="pr ml10">
+              <a href="#" class="icoSet"></a>
             <ul class="pa">
               <li><a href="#">账号设置</a></li>
-              <li><a href="#">退出</a></li>
+              <li><a href="<?php echo $this->config->item('passport_logout')?>">退出</a></li>
             </ul>
-          </li>          
+          </li>
           <li class="welTip"><a href="<?php echo user_url($this->user['id'])?>"><img src="<?php echo user_icon($this->user['id'])?>" alt="<?php echo $this->user['username']?>" title="<?php echo $this->user['username']?>"></a></li>
-        </ul>         
+        </ul>
+        <?php }else{?>
+          <ul class="logInfo">
+              <li class="fsong"><a href="<?php echo $this->config->item('passport_login')?>">登录</a>|<a href="<?php echo $this->config->item('passport_register')?>">注册</a></li>
+          </ul>
+        <?php }?>
         <!--a href="javascript:void(0);" class="searchBtn fr">搜索</a-->
       </div>
       <div class="searchBox pa">
