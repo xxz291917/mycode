@@ -2,7 +2,7 @@
 
 class Space extends MY_Controller {
 
-    function __construct() {
+    public function __construct() {
         parent::__construct();
         $this->load->model(array('topics_model', 'topics_posted_model', 'biz_pagination', 'credit_name_model'));
     }

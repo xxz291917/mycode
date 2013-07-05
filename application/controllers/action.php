@@ -44,6 +44,13 @@ class Action extends MY_Controller {
             }
             $post = array_merge($post, array('forum_id' => $forum_id, 'special' => $special));
             if ($this->biz_post->post($post)) {
+                
+                    /* 用户动态 */
+                $title = $post['subject'];
+                $content = utf8_substr($post['content'], 0, 255);
+                $this->biz_user->feed('post',$special, $this->user['id'], $forum_show_url, $title, $content, $this->time);
+                    /* 用户动态结束 */
+                
                 $this->message('发帖成功。', 0, $forum_show_url);
             } else {
                 $this->message('发帖失败。', 0, $forum_show_url);
@@ -130,6 +137,9 @@ class Action extends MY_Controller {
                 $title = !empty($post['subject'])?$post['subject']:"re:".$topic['subject'];
                 $content = utf8_substr($post['content'], 0, 255);
                 $this->biz_user->publish('1', $topic_id, $this->user['id'], $topic['author_id'], $forum_show_url, $title, $content, $this->time);
+                    /* 用户动态 */
+                $this->biz_user->feed('reply',$topic['special'], $this->user['id'], $forum_show_url, $title, $content, $this->time);
+                    /* 用户动态结束 */
                 /* end */
                 $this->message('发帖成功。', 1, $forum_show_url);
             } else {
@@ -212,6 +222,9 @@ class Action extends MY_Controller {
                 $title = empty($post['subject'])?$post['subject']:"re:".$topic['subject'];
                 $content = utf8_substr($post['content'], 0, 255);
                 $this->biz_user->publish('1', $topic_id, $this->user['id'], $topic['author_id'], $forum_show_url, $title, $content, $this->time);
+                    /* 用户动态 */
+                $this->biz_user->feed('reply',$topic['special'], $this->user['id'], $forum_show_url, $title, $content, $this->time);
+                    /* 用户动态结束 */
                 /* end */
                 $this->message('回复成功，现在查看？', 1, $forum_show_url);
             } else {
@@ -731,6 +744,10 @@ class Action extends MY_Controller {
         }
     }
     
+    /**
+     * 关注我
+     * @param type $user_id
+     */
     public function follow($user_id) {
         $user_id = intval($user_id);
         if(empty($user_id)){
@@ -744,6 +761,10 @@ class Action extends MY_Controller {
             $this->message('关注成功！',1);
         }
     }
+    
+    
+    
+    
 }
 
 ?>

@@ -59,7 +59,7 @@
             <?php foreach($posts_users as $user){ ?>
             <dd>
                 <figure>
-                    <a href="#"><img src="<?php echo user_icon($user['id'])?>" alt="<?=$user['username']?>"></a>
+                    <a href="<?php echo user_url($user['id'])?>"><img src="<?php echo user_icon($user['id'])?>" alt="<?=$user['username']?>"></a>
                     <figcaption><a href="<?php echo user_url($user['id'])?>" title="<?=$user['username']?>"><?=$user['username']?></a></figcaption>
                 </figure>
             </dd>

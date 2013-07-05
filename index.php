@@ -58,7 +58,7 @@ if (defined('ENVIRONMENT'))
  * as this file.
  *
  */
-	$system_path = 'system';
+	//$system_path = 'system';
         $system_path = '../CodeIgniter_2.1.3/system';
 
 /*
