@@ -252,18 +252,17 @@ class Biz_post extends CI_Model {
                 $this->load->model($special_class);
             }
         }
-        
         if(!empty($post['is_first']) && $post['is_first']==1){
             //主题帖需要更新topic标题
             $topics_data['subject'] = html_escape($post['subject']);
             $tags = $this->topics_model->format_tags($post['tags']);
             $topics_data['tags'] = $tags;
             $this->topics_model->update($topics_data, array('id' => $tid));
-            
+
             //更新tags表
             $this->tags_model->delete(array('topic_id'=>$tid));
             $this->tags_model->insert_tags($tags, $tid);
-            
+
             //特殊贴钩子（完成基本业务后调用）
             if(!empty($special_class)){
                 $method = 'edit';
@@ -280,7 +279,6 @@ class Biz_post extends CI_Model {
                 }
             }
         }
-        
         //得到当前正在使用的附件的id。初始化几个变量。$attachments $aids
         $aids = array();
         if(!empty($post['attachments'])){

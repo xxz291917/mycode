@@ -172,11 +172,12 @@ class Biz_Ask extends CI_Model {
         $ask_data['price'] = intval($post['price']);
         $ask_data['category_id'] = intval($post['category']);
         $is_update = $this->ask_model->update($ask_data,array('topic_id' => $tid));
-        
+
         //得到用户原来的扣减积分。
-        $ask = $this->ask_model->get_by_id(array('topic_id' => $tid));
+        $ask = $this->ask_model->get_by_id($tid);
+
         $old_price = !empty($ask['price'])?$ask['price']:0;
-        
+
         //从用户身上扣减分数(多退少补)
         $credits = array($this->ask_credit_type => $old_price - intval($post['price']));
         $is_update_credit = $this->users_extra_model->update_credits($credits, $this->user['id'], self::$ask_credit_action);

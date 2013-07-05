@@ -290,9 +290,9 @@ class Action extends MY_Controller {
         if (!$is_edit) {
             $this->message('您没有权限编辑帖子');
         }
-        
+
         //获取编辑的内容
-        if (is_numeric($post_id)) {
+        if (is_numeric($post_id) && !empty($post_id)) {
             $db_post = $this->posts_model->get_by_id($post_id);
         } else {
             $db_post = $this->posts_model->get_one(array('topic_id' => $topic_id, 'is_first' => '1'));
@@ -301,7 +301,7 @@ class Action extends MY_Controller {
             $this->message('参数错误，编辑的帖子不存在', 0, $forum_show_url);
         }
         $var['post'] = $db_post;
-        
+
         //通过了check校验
         if ($this->input->post('submit') && $post = $this->input->post(null,TRUE)) {
             if(!$this->biz_post->check_post($db_post['is_first']==1?'post':'reply', $topic['special'])){
