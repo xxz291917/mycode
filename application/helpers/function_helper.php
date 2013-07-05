@@ -133,19 +133,37 @@ if (!function_exists('highlight')) {
 
 }
 
+/**
+ * 根据用户id，得到用户的头像。
+ */
 if (!function_exists('user_icon')) {
-
     function user_icon($uid) {
-        return base_url('/images/default.png');
+        if(function_exists('avatar_url')){
+            $img = avatar_url($uid,'middle');
+        }
+        if(empty($img)){
+            $img = base_url('/images/default.png');
+        }
+        return $img;
     }
-
 }
 
+/**
+ * 根据用户id，得到用户的空间地址。
+ */
 if (!function_exists('user_url')) {
     function user_url($uid) {
-        return '#';
+        if(function_exists('get_key')){
+            $user_key = get_key($uid);
+        }
+        if(empty($user_key)){
+            $user_key = '';
+        }
+        $CI = &get_instance();
+        return $CI->config->item('user_url').$user_key;
     }
 }
+
 
 if (!function_exists('my_strtotime')) {
 

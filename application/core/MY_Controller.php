@@ -16,7 +16,7 @@ class Base_Controller extends CI_Controller {
         //aotoload.php中自动加载了$autoload['libraries'] = array('database');$autoload['helper'] = array('url','form');
         $this->load->model(array('users_model', 'groups_model', 'forums_model','users_extra_model'));
         $this->load->library(array('user_agent','encrypt'));
-        $this->load->helper('cookie');
+        $this->load->helper(array('cookie','common'));//common是彦粉写的接口函数类。
         $this->config->load('my_config');
         if(config_item('enable_cache')){
             $this->enable_cache = true;

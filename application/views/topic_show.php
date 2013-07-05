@@ -75,14 +75,14 @@ echo $page;?>
             <li><span>帖子：</span><?php echo $user['posts'];?></li>
           </ul>
           <div class="usFaceInfoBot">
-              <a href="<?=$this->config->item('user_url').$user['id']?>" class="icoUs1">资料</a>
-              <a href="<?=$this->config->item('user_url').$user['id']?>" class="icoUs2">串个门</a>
+              <a href="<?=user_url($user['id'])?>" class="icoUs1">资料</a>
+              <a href="<?=user_url($user['id'])?>" class="icoUs2">串个门</a>
               <a href="<?=base_url('index.php/action/follow/'.$user['id'])?>" class="icoUs3" target="ajax">加关注</a>
           </div>
           <i class="pa"></i> </div>
       </div>
     </div>
-    <div class="usName"><a href="<?=$this->config->item('user_url').$user['id']?>"><?php echo $user['username'];?></a></div>
+    <div class="usName"><a href="<?=user_url($user['id'])?>"><?php echo $user['username'];?></a></div>
     <ul class="usTip">
       <li><span class="fl">等级：</span><?php echo $user['stars_rank'];?></li>
       <li><span class="fl">积分：</span><?php echo $user['credits'];?></li>

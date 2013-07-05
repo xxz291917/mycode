@@ -72,14 +72,14 @@ echo $page;?>
             <li><span>帖子：</span><?php echo $user['posts'];?></li>
           </ul>
           <div class="usFaceInfoBot">
-              <a href="<?=$this->config->item('user_url').$user['id']?>" class="icoUs1">资料</a>
-              <a href="<?=$this->config->item('user_url').$user['id']?>" class="icoUs2">串个门</a>
+              <a href="<?=user_url($user['id'])?>" class="icoUs1">资料</a>
+              <a href="<?=user_url($user['id'])?>" class="icoUs2">串个门</a>
               <a href="<?=base_url('index.php/action/follow/'.$user['id'])?>" class="icoUs3" target="ajax">加关注</a>
           </div>
           <i class="pa"></i> </div>
       </div>
     </div>
-    <div class="usName"><a href="<?=$this->config->item('user_url').$user['id']?>"><?php echo $user['username'];?></a></div>
+    <div class="usName"><a href="<?=user_url($user['id'])?>"><?php echo $user['username'];?></a></div>
     <ul class="usTip">
       <li><span class="fl">等级：</span><?php echo $user['stars_rank'];?></li>
       <li><span class="fl">积分：</span><?php echo $user['credits'];?></li>
@@ -157,11 +157,11 @@ echo $page;?>
               <p class="thesis pr"><?=$first_post['debate']['affirm_point']?><span></span><i class="icoSj pa"></i></p>
               <div  class="thesisUs">
               <?php if(!empty($first_post['debate']['affirm_first'])){?>
-                <a href="<?= $this->config->item('user_url').$first_post['debate']['affirm_first']['author_id']?>">
+                <a href="<?= user_url($first_post['debate']['affirm_first']['author_id'])?>">
                     <img src="<?php echo user_icon($first_post['debate']['affirm_first']['author_id'])?>" alt="<?=$first_post['debate']['affirm_first']['author']?>">
                 </a>
                 <p>
-                    <a href="<?= $this->config->item('user_url').$first_post['debate']['affirm_first']['author_id']?>">
+                    <a href="<?= user_url($first_post['debate']['affirm_first']['author_id'])?>">
                       <?=$first_post['debate']['affirm_first']['author']?>
                     </a>：
                         <?php echo html_escape(utf8_substr($first_post['debate']['affirm_first']['content'],0,30))?> 
@@ -170,7 +170,7 @@ echo $page;?>
               </div>
               <ul>
               	<?php foreach($first_post['debate']['affirm_users'] as $user){?>
-                	<li><a href="<a href="<?= $this->config->item('user_url').$user['user_id']?>"><?=$user['username']?></a>">
+                	<li><a href="<a href="<?= user_url($user['user_id'])?>"><?=$user['username']?></a>">
                     <img src="<?php echo user_icon($user['user_id'])?>" alt="<?=$user['username']?>"></a></li>
                 <?php }?>
               </ul>
@@ -181,13 +181,13 @@ echo $page;?>
               <p class="thesis pr"><?=$first_post['debate']['negate_point']?><span></span><i class="icoSj pa"></i></p>
               <div  class="thesisUs">
               <?php if(!empty($first_post['debate']['negate_first'])){?>
-                <a href="<?= $this->config->item('user_url').$first_post['debate']['negate_first']['author_id']?>"><img src="<?php echo user_icon($first_post['debate']['negate_first']['author_id'])?>" alt="<?=$first_post['debate']['negate_first']['author']?>"></a>
-                <p><a href="<?= $this->config->item('user_url').$first_post['debate']['negate_first']['author_id']?>"><?=$first_post['debate']['negate_first']['author']?></a>：<?php echo html_escape(utf8_substr($first_post['debate']['negate_first']['content'],0,30))?> </p>
+                <a href="<?= user_url($first_post['debate']['negate_first']['author_id'])?>"><img src="<?php echo user_icon($first_post['debate']['negate_first']['author_id'])?>" alt="<?=$first_post['debate']['negate_first']['author']?>"></a>
+                <p><a href="<?= user_url($first_post['debate']['negate_first']['author_id'])?>"><?=$first_post['debate']['negate_first']['author']?></a>：<?php echo html_escape(utf8_substr($first_post['debate']['negate_first']['content'],0,30))?> </p>
               <?php }?>
               </div>
               <ul>
               	<?php foreach($first_post['debate']['negate_users'] as $user){?>
-                	<li><a href="<a href="<?= $this->config->item('user_url').$user['user_id']?>"><?=$user['username']?></a>">
+                	<li><a href="<a href="<?= user_url($user['user_id'])?>"><?=$user['username']?></a>">
                     <img src="<?php echo user_icon($topic['user_id'])?>" alt="<?=$user['username']?>"></a></li>
                 <?php }?>
               </ul>
@@ -257,14 +257,14 @@ echo $page;?>
             <li><span>帖子：</span><?php echo $user['posts'];?></li>
           </ul>
           <div class="usFaceInfoBot">
-              <a href="<?=$this->config->item('user_url').$user['id']?>" class="icoUs1">资料</a>
-              <a href="<?=$this->config->item('user_url').$user['id']?>" class="icoUs2">串个门</a>
+              <a href="<?=user_url($user['id'])?>" class="icoUs1">资料</a>
+              <a href="<?=user_url($user['id'])?>" class="icoUs2">串个门</a>
               <a href="<?=base_url('index.php/action/follow/'.$user['id'])?>" class="icoUs3" target="ajax">加关注</a>
           </div>
           <i class="pa"></i> </div>
       </div>
     </div>
-    <div class="usName"><a href="<?=$this->config->item('user_url').$user['id']?>"><?php echo $user['username'];?></a></div>
+    <div class="usName"><a href="<?=user_url($user['id'])?>"><?php echo $user['username'];?></a></div>
     <ul class="usTip">
       <li><span class="fl">等级：</span><?php echo $user['stars_rank'];?></li>
       <li><span class="fl">积分：</span><?php echo $user['credits'];?></li>
