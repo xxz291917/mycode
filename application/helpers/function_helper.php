@@ -166,7 +166,6 @@ if (!function_exists('user_url')) {
 
 
 if (!function_exists('my_strtotime')) {
-
     function my_strtotime($time) {
         if(empty($time)){
             return 0;
@@ -177,6 +176,5 @@ if (!function_exists('my_strtotime')) {
         }
         return $time + 3600*24-1;
     }
-
 }
 ?>

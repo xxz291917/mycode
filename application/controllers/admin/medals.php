@@ -92,7 +92,7 @@ class Medals extends Admin_Controller {
                 $this->message('参数错误，没找到用户！');
             }
             $log_data = $user_medal_data = array();
-            $expired_time = strtotime($award['expired_time']);
+            $expired_time = my_strtotime($award['expired_time']);
             if(!empty($expired_time) && $expired_time+(3600*24) <= $this->time){
                 $this->message('参数错误，过期时间不能小于当前时间！');
             }

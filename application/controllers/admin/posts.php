@@ -78,7 +78,7 @@ class Posts extends Admin_Controller {
             $where .= "AND post_time >= '{$post['start_time']}' ";
         }
         if (!empty($post['end_time'])) {
-            $post['end_time'] = strtotime(trim($post['end_time']));
+            $post['end_time'] = my_strtotime(trim($post['end_time']));
             $where .= "AND post_time <= '{$post['end_time']}' ";
         }
         return $where;

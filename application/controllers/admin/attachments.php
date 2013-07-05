@@ -73,7 +73,7 @@ class Attachments extends Admin_Controller {
             $where .= "AND a.upload_time >= '{$post['start_time']}' ";
         }
         if (!empty($post['end_time'])) {
-            $post['end_time'] = strtotime(trim($post['end_time']));
+            $post['end_time'] = my_strtotime(trim($post['end_time']));
             $where .= "AND a.upload_time <= '{$post['end_time']}' ";
         }
         return $where;

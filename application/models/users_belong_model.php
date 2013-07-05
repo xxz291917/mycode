@@ -17,7 +17,7 @@ class Users_belong_model extends MY_Model {
                 foreach ($data as $gid => $end_time) {
                     $insert_data[$gid][$this->id]=$uid;
                     $insert_data[$gid]['group_id']=$gid;
-                    $insert_data[$gid]['end_time']=strtotime($end_time);
+                    $insert_data[$gid]['end_time']=my_strtotime($end_time);
                 }
                 return $this->db->insert_batch($this->table, $insert_data); 
             }
