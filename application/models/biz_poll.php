@@ -121,7 +121,7 @@ class Biz_poll extends CI_Model {
                 $sum_vote += $option['votes'];
             }
             foreach ($first_post['options'] as $key => &$option) {
-                $option['percent'] = !empty($sum_vote)?round($option['votes'] / $sum_vote, 2):0;
+                $option['percent'] = !empty($sum_vote)?round($option['votes'] / $sum_vote, 2)*100:0;
             }
         }
         return $first_post;

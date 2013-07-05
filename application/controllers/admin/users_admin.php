@@ -108,6 +108,7 @@ class Users_admin extends Admin_Controller {
             }elseif($users['password']!=$users['repassword']){
                 $this->message('两次密码输入不一致！');
             }
+            $users['password'] = md5($users['password']);
             unset($users['submit'],$users['repassword']);
             $usersucc = $this->users_admin_model->insert($users);
             if ($usersucc) {

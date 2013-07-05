@@ -1,6 +1,6 @@
 <?php
 
-class Bbs extends MY_Controller {
+class Poll extends MY_Controller {
 
     function __construct() {
         parent::__construct();

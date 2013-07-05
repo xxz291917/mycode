@@ -51,7 +51,7 @@ echo $page;?>
         
   <div class="newsCotL">
     <div class="usFace pr">
-    <a href="#"><img src="<?php echo base_url(!empty($user['icon'])?$user['icon']:'images/default.png');?>" alt="头像"></a>
+    <a href="<?php echo user_url($user['id']);?>"><img src="<?php echo user_icon($user['id']);?>" alt="头像"></a>
     <span class="pa usFaceBg"></span>
       <span class="pa usFaceP"><?php echo $user['group']['name'];?></span>
       <i class="pa icoSj2"></i>
@@ -235,7 +235,7 @@ echo $page;?>
 <li class="clearfix">
   <div class="newsCotL"><!--user-->
     <div class="usFace pr">
-    <a href="#"><img src="<?php echo base_url(!empty($user['icon'])?$user['icon']:'images/default.png');?>" alt="头像"></a>
+    <a href="<?php echo user_url($user['id']);?>"><img src="<?php echo user_icon($user['id']);?>" alt="头像"></a>
     <span class="pa usFaceBg"></span>
     <!--usFaceBg为红色背景 usFaceBg2为绿色背景 usFaceBg3为黄色背景-->
       <span class="pa usFaceP"><?php echo $user['group']['name'];?></span>
