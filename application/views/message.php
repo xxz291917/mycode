@@ -1,3 +1,4 @@
+<div class="wrap">
 <dl class="col-dl error">
 	<dt>提示信息</dt>
 	<dd class="red"><?php echo $message ?></dd>
@@ -15,3 +16,4 @@
         <?php } ?>
 	</dd>
 </dl>
+</div>

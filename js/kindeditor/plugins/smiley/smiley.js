@@ -14,8 +14,8 @@ KindEditor.plugin('smiley', function(K) {
 		allowPreview = self.allowPreviewEmoticons === undefined ? true : self.allowPreviewEmoticons,
 		currentPageNum = 1;
 	self.clickToolbar(name, function() {
-		//ͨ��ajax��ȡ���ݿ��еı��顣
-		if(K.smileys==null){
+		//通过ajax获取数据库中的表情。
+		if(K.smileys==null && K.isArr.is_smilies==1){
 			$.ajax({
 				type: "POST",
 				async: false,
@@ -31,7 +31,16 @@ KindEditor.plugin('smiley', function(K) {
 			});*/
 		}
 		smileys = K.smileys;
-		if(!smileys) return;
+		if(!smileys) {
+                    menu = self.createMenu({
+                            name : name,
+                            beforeRemove : function() {
+                                    removeEvent();
+                            }
+                    });
+                    menu.div.append(K('<div class="ke-plugin-emoticons">无权限使用表情</div>'));
+                    return;
+                }
 		
 		function getJsonLength(jsonData){
 			var jsonLength = 0;

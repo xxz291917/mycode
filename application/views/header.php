@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta charset="utf-8">
-<title>论坛</title>
-<meta name="description" content="论坛">
-<meta name="keywords" content="论坛">
+<title><?php echo $seo['title']?></title>
+<meta name="description" content="<?php echo $seo['description']?>">
+<meta name="keywords" content="<?php echo $seo['keywords']?>">
 <link rel="stylesheet" href="<?=base_url()?>css/main.css">
 <!--[if IE]>
 <script src="js/html5.js"></script>

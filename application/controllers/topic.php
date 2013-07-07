@@ -96,6 +96,10 @@ class Topic extends MY_Controller {
         //最后更新topics点击数
         $this->topics_model->update_increment(array('views' => ':1'), array('id' => $id));
         
+        $var['seo']['title'] = $this->configs['seo_post_title'];
+        $var['seo']['description'] = $this->configs['seo_post_description'];
+        $var['seo']['keywords'] = $this->configs['seo_post_keywords'];
+        
         //展示模板
         $view_template = self::$post_view[$topic['special']];
         $this->view($view_template, $var);

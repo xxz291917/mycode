@@ -71,6 +71,16 @@ class MY_Controller extends Base_Controller {
         //初始化版块信息
         $this->forums = $this->forums_model->initialize();
         $this->configs = $this->config_model->get_config();
+        
+        $var['seo']['title'] = $this->configs['seo_index_title'];
+        $var['seo']['description'] = $this->configs['seo_index_description'];
+        $var['seo']['keywords'] = $this->configs['seo_index_keywords'];
+        $this->load->vars($var);
+        
+        //网站关闭
+        if($this->configs['closed']==1 && $this->user['group']['id'] != 1){
+            $this->message('网站维护中，暂时关闭！');
+        }
         //echo $this->agent->referrer();die;
     }
 

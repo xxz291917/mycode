@@ -438,6 +438,11 @@ class Biz_post extends CI_Model {
         $CI->message($message, $sucess, $redirect);
     }
     
+    /**
+     * 更新高亮时间。
+     * @param type $id
+     * @return int|boolean
+     */
     public function update_thdr($id) {
         $this->load->model('topics_endtime_model');
         $end_where = "topic_id = '$id' && (end_time !=0 and end_time <{$this->time})";

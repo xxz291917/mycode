@@ -303,7 +303,7 @@ class Forums_model extends MY_Model {
     public function handle_redirect($forums){
         $remain = array('parent_id','name','description','icon','display_order','create_user','create_user_id','create_time');
         foreach($forums as &$forum){
-            if($forum['redirect']!=0){
+            if(!empty($forum['redirect'])){
                 $redirect_forum = $forums[$forum['redirect']];
                 foreach($forum as $key=>$val){
                     if(!in_array($key, $remain)){

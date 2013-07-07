@@ -408,7 +408,21 @@ class Action extends MY_Controller {
      * "error" : 1,
      * "message" : "错误信息"
      */
-    public function do_upload() {
+    public function do_upload($forum_id = '') {
+        //检测权限
+        $forum_id = intval($forum_id);
+        if(empty($forum_id)){
+            $return = array('error' => 1, 'message' => '参数错误');
+            echo json_encode($return);
+            die;
+        }
+        $isupload = $this->biz_permission->check_base('upload', $forum_id);
+        if($isupload == 0){
+            $return = array('error' => 1, 'message' => '没有上传的权限。');
+            echo json_encode($return);
+            die;
+        }
+        
         $this->output->set_header('Content-type: text/html; charset=UTF-8');
         $gets = $this->input->get();
         $field_name = 'imgFile';

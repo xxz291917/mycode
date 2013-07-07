@@ -38,7 +38,8 @@
                 KindEditor.uploadImages={};
                 KindEditor.uploadFiles={};
         <?php }?>
-        KindEditor.isArr = {};
+        KindEditor.isArr = <?=$is_arr?>;
+        KindEditor.forum_id = '<?=$forum_id?>';
         KindEditor.hidden_token = '<input type="hidden" name="<?=$this->security->get_csrf_token_name()?>" value="<?=$this->security->get_csrf_hash()?>">';
     });
 </script>

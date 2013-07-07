@@ -4,14 +4,16 @@ $(function(){
 	KindEditor.uploadFiles={};
 	KindEditor.smileUrl = base_url+"index.php/action/get_smiley_json";
 	KindEditor.smileys=null;
-	$.ajax({
-		type: "GET",
-		url: KindEditor.smileUrl,
-		success: function(json){
-			KindEditor.smileys = json.data;
-		},
-		dataType: 'json',
-	});
+        if(KindEditor.isArr.is_smilies==1){
+            $.ajax({
+                    type: "GET",
+                    url: KindEditor.smileUrl,
+                    success: function(json){
+                            KindEditor.smileys = json.data;
+                    },
+                    dataType: 'json',
+            });
+        }
 	
 	KindEditor.lang({
 			hide : '插入隐藏内容',

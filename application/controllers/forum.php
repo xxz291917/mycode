@@ -77,6 +77,12 @@ class Forum extends MY_Controller {
         $var['topics'] = $topics;
         $var['page'] = $page_str;
         
+        $var['seo']['title'] = $this->configs['seo_topic_title'];
+        $var['seo']['description'] = $this->configs['seo_topic_description'];
+        $var['seo']['keywords'] = $this->configs['seo_topic_keywords'];
+//        $this->load->vars($var);
+        
+        
 //      var_dump($var['forums']);die;
         $this->view('forum_show',$var);
     }
