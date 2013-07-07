@@ -28,16 +28,23 @@ class Action extends MY_Controller {
         if (empty($forum) || $forum['type'] == 'group') {
             $this->message('参数错误，发布的版块不存在或者不是子版块', 0, $forum_show_url);
         }
+        
+        //检测权限。
+        $is_post = $this->biz_permission->check_base('post', $forum_id);
+        if (!$is_post) {
+            $message = '您没有权限发表帖子';
+            if($this->user['id']==0){
+                $message .= '请您<a href="">登录</a>。';
+            }
+            $this->message($message);
+        }
+        
         if ($this->input->post('submit') && $post = $this->input->post(null,TRUE)) {
             if(!$this->biz_post->check_post('post', $special)){
                 $errors = validation_errors();
                 $this->message(nl2br($errors), 0);
             }
-            //检测权限。
-            $is_post = $this->biz_permission->check_base('post', $forum_id);
-            if (!$is_post) {
-                $this->message('您没有权限发表帖子');
-            }
+            
             $is_post = $this->biz_permission->check_post_num();
             if (!$is_post) {
                 $this->message('您发帖太快或者是发帖数太多。');
