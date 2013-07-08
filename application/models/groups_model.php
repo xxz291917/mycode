@@ -216,7 +216,7 @@ class Groups_model extends MY_Model {
      */
     public function get_admin_permission($forum_id) {
         //need_cache
-        if(isset($this->admin_permission[$forum_id])){
+        if(isset($this->admin_permission[$forum_id]) && !empty($this->admin_permission[$forum_id])){
             return $this->admin_permission[$forum_id];
         }
         

@@ -404,20 +404,6 @@ class Biz_post extends CI_Model {
         $this->form_validation->set_error_delimiters('', '');
         return $this->form_validation->run();
     }
-
-    /**
-     * 得到某个版块的编辑器权限，返回数组。
-     * @param int $forum_id 版块id
-     * @return array
-     */
-    public function get_is($forum_id) {
-        $return = array();
-        $is_arr = array('is_bbcode', 'is_smilies', 'is_html', 'is_hide', 'is_media', 'is_anonymous', 'is_sign');
-        foreach ($is_arr as $key => $is) {
-            $return[$is] = $this->biz_permission->get_is($is, $forum_id);
-        }
-        return $return;
-    }
     
     public function get_quote_content($post){
         $maxlen = 30;
@@ -459,7 +445,7 @@ class Biz_post extends CI_Model {
         }
         return FALSE;
     }
-
+    
 }
 
 ?>

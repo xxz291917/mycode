@@ -27,9 +27,11 @@
         <li class="mainNavHome"><a href="<?=base_url()?>">首页</a></li>
         <li class="current"><a href="<?=base_url()?>">论坛</a></li>
         <li><a href="<?php echo $this->config->item('url_blog')?>" target="_blank">博客</a></li>
+        <!--
         <li><a href="<?php echo $this->config->item('url_blog')?>" target="_blank">专题</a></li>
         <li><a href="<?php echo $this->config->item('url_blog')?>" target="_blank">活动</a></li>
         <li><a href="<?php echo $this->config->item('url_download')?>" target="_blank">下载</a></li>
+        -->
       </ul>
       <div class="mainNavR">
         <?php if($this->user['id']>0){?>

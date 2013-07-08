@@ -73,7 +73,7 @@ class Action extends MY_Controller {
             $var['category_option'] = $category_option;
             
             //获取当前用户在此版块下的编辑器权限。（前台过过滤编辑器，重点是对于提交的内容会做相应的处理）
-            $is_arr = $this->biz_post->get_is($forum_id);
+            $is_arr = $this->biz_permission->get_edit_permission($forum_id);
             $var['is_arr'] = json_encode($is_arr);
             
             $var['special'] = $special;
@@ -184,7 +184,7 @@ class Action extends MY_Controller {
             }
             
             //获取当前用户在此版块下的编辑器权限。（前台过过滤编辑器，重点是对于提交的内容会做相应的处理）
-            $is_arr = $this->biz_post->get_is($forum_id);
+            $is_arr = $this->biz_permission->get_edit_permission($forum_id);
             $var['is_arr'] = json_encode($is_arr);
             
             $var['type'] = 'reply';
@@ -205,17 +205,19 @@ class Action extends MY_Controller {
             $this->message('参数错误，发布的主题不存在', 0, $forum_show_url);
         }
         
+        //检测权限。
+        $is_post = $this->biz_permission->check_base('reply', $topic['forum_id']);
+        if (!$is_post) {
+            $this->message('您没有权限回复帖子');
+        }
+        
         if ($this->input->post('submit') && $post = $this->input->post(null,TRUE)) {
             //检测字段
             if(!$this->biz_post->check_post('reply', $topic['special'])){
                 $errors = validation_errors();
                 $this->message(nl2br($errors), 0);
             }
-            //检测权限。
-            $is_post = $this->biz_permission->check_base('reply', $topic['forum_id']);
-            if (!$is_post) {
-                $this->message('您没有权限回复帖子');
-            }
+            
             $is_post = $this->biz_permission->check_post_num();
             if (!$is_post) {
                 $this->message('您发帖太快或者是发帖数太多。');
@@ -274,7 +276,7 @@ class Action extends MY_Controller {
                 }
             }
             //获取当前用户在此版块下的编辑器权限。（前台过过滤编辑器，重点是对于提交的内容会做相应的处理）
-            $is_arr = $this->biz_post->get_is($topic['forum_id']);
+            $is_arr = $this->biz_permission->get_edit_permission($topic['forum_id']);
             $var['is_arr'] = json_encode($is_arr);
             $var['forum_id'] = $topic['forum_id'];
             $var['special'] = $special;
@@ -396,7 +398,7 @@ class Action extends MY_Controller {
             $var['edit_data'] = $edit_data;
             
             //获取当前用户在此版块下的编辑器权限。（前台过过滤编辑器，重点是对于提交的内容会做相应的处理）
-            $is_arr = $this->biz_post->get_is($forum_id);
+            $is_arr = $this->biz_permission->get_edit_permission($forum_id);
             $var['is_arr'] = json_encode($is_arr);
             
             $var['type'] = 'edit';
@@ -783,7 +785,23 @@ class Action extends MY_Controller {
         }
     }
     
-    
+    /**
+     * 收藏帖子
+     * @param type $topic_id
+     */
+    public function collect($topic_id) {
+        $topic_id = intval($topic_id);
+        if(empty($topic_id)){
+            $this->message('参数错误！'); 
+        }
+        $data = $this->biz_user->collect($topic_id);
+        if (isset($data['succ']) && $data['succ'] > 0) {
+            $this->message('收藏帖子成功！',1);
+        } else {
+            $message = !empty($data['message'])?$data['message']:'收藏帖子失败！';
+            $this->message($message);
+        }
+    }
     
     
 }

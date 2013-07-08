@@ -96,9 +96,16 @@ class Topic extends MY_Controller {
         //最后更新topics点击数
         $this->topics_model->update_increment(array('views' => ':1'), array('id' => $id));
         
+        //得到header头信息
         $var['seo']['title'] = $this->configs['seo_post_title'];
         $var['seo']['description'] = $this->configs['seo_post_description'];
         $var['seo']['keywords'] = $this->configs['seo_post_keywords'];
+        
+        //得到当前用户对此帖子的管理权限
+        $manage_permission = $this->biz_permission->get_manage_permission($id);
+        $var['manage_permission'] = $manage_permission;
+        $base_permission = $this->biz_permission->get_base_permission($topic['forum_id']);
+        $var['base_permission'] = $base_permission;
         
         //展示模板
         $view_template = self::$post_view[$topic['special']];

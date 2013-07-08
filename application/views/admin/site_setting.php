@@ -41,10 +41,10 @@
   <tr>
     <th >关闭站点</th>
     <td><label>
-        <input type="radio"  name="closed" value="0" <?php echo my_set_radio('closed', 0, $data)?>/>
+        <input type="radio"  name="closed" value="1" <?php echo my_set_radio('closed', 1, $data)?>/>
         是</label>
       <label>
-        <input type="radio"  name="closed" value="1" <?php echo my_set_radio('closed', 1, $data)?>/>
+        <input type="radio"  name="closed" value="0" <?php echo my_set_radio('closed', 0, $data)?>/>
         否</label></td>
     <td> 暂时将站点关闭，其他人无法访问，但不影响管理员访问。</td>
   </tr>

@@ -15,18 +15,17 @@ $config['per_num'] = 10;
 $config['forum_icon'] = 'uploads/icon/forum/default.png';
 
 //用户个人空间链接地址
-$config['user_url'] = 'http://test.9tech.cn/hi/index.php/homepage/main/';
-
+$config['user_url'] = 'http://test.9tech.cn/me/index.php/homepage/main/';
 //关注接口地址
-$config['user_follow'] = 'http://test.9tech.cn/hi/index.php/follow/do_follow';
+$config['user_follow'] = 'http://test.9tech.cn/me/index.php/follow/do_follow';
 //获取用户粉丝数和关注数
-$config['user_get_fans'] = 'http://test.9tech.cn/hi/index.php/services/userinfo/get_fans_num/';
+$config['user_get_fans'] = 'http://test.9tech.cn/me/index.php/services/userinfo/get_fans_num/';
 //回复通知接口
-$config['user_notice'] = 'http://test.9tech.cn/hi/index.php/services/notice/do_publish';
-
+$config['user_notice'] = 'http://test.9tech.cn/me/index.php/services/notice/do_publish';
 //我的动态
-$config['user_feed'] = 'http://test.9tech.cn/hi/index.php/services/feed/do_publish';
+$config['user_feed'] = 'http://test.9tech.cn/me/index.php/services/feed/do_publish';
 //我的收藏
+$config['user_collect'] = 'http://test.9tech.cn/me/index.php/services/favorite/do_publish';
 
 //passport 注册
 $config['passport_register'] = 'http://test.9tech.cn/passport/register.php';
@@ -34,6 +33,7 @@ $config['passport_register'] = 'http://test.9tech.cn/passport/register.php';
 $config['passport_login'] = 'http://test.9tech.cn/passport/login.php';
 //passport 退出
 $config['passport_logout'] = 'http://test.9tech.cn/passport/logout.php';
+
 
 //博客地址
 $config['url_blog'] = 'http://test.9tech.cn/blog';

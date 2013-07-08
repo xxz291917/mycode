@@ -51,10 +51,6 @@ class Biz_permission extends CI_Model {
         $this->load->model(array('forums_model', 'topics_model', 'groups_admin_model', 'users_belong_model'));
     }
 
-//    public function init_uer_permission(){
-//        $permission = array();
-//    }
-
     /**
      * 返回某个用户对某个帖子的操作权限
      * @return type
@@ -68,6 +64,28 @@ class Biz_permission extends CI_Model {
         //获取管理权限
         $admin_permission = $this->groups_model->get_admin_permission($topic['forum_id']);
         return !empty($admin_permission[$action])?$admin_permission[$action]:false;
+    }
+    
+     /**
+     * 得到某个帖子，返回当前用户的管理权限，返回数组。
+     * @param int $topic_id 帖子id
+     * @return array
+     */
+    public function get_manage_permission($topic_id) {
+        $return = array();
+        $topic = $this->topics_model->get_by_id($topic_id);
+        $admin_permission = $this->groups_model->get_admin_permission($topic['forum_id']);
+        if(empty($topic)){
+            return $return;
+        }
+        foreach ($this->manage_arr as $action) {
+            if ($topic['author_id'] == $this->user['id'] && in_array($action, $this->owner_arr)) {
+                return true;
+            }
+            list($null, $man_action) = explode('_', $action);
+            $return[$man_action] = !empty($admin_permission[$action])?$admin_permission[$action]:false;
+        }
+        return $return;
     }
 
     /**
@@ -108,6 +126,21 @@ class Biz_permission extends CI_Model {
         return FALSE;
     }
 
+     /**
+     * 得到某个版块的所有基本权限，返回数组。
+     * @param int $forum_id 版块id
+     * @return array
+     */
+    public function get_base_permission($forum_id) {
+        $return = array();
+        $action_arr = array('report','visit','read','post','reply','upload','download');
+        foreach ($action_arr as $key => $action) {
+            $return[$action] = $this->check_base($action, $forum_id);
+        }
+        return $return;
+    }
+    
+    
     /**
      * 用户组的审核机制和版块自己的审核机制，取较严厉者。
      * @param type $forum_id
@@ -145,6 +178,20 @@ class Biz_permission extends CI_Model {
             }
         }
         return 0;
+    }
+    
+    /**
+     * 得到某个版块的编辑器权限，返回数组。
+     * @param int $forum_id 版块id
+     * @return array
+     */
+    public function get_edit_permission($forum_id) {
+        $return = array();
+        $is_arr = array('is_bbcode', 'is_smilies', 'is_html', 'is_hide', 'is_media', 'is_anonymous', 'is_sign');
+        foreach ($is_arr as $key => $is) {
+            $return[$is] = $this->get_is($is, $forum_id);
+        }
+        return $return;
     }
     
     /**

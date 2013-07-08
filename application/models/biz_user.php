@@ -108,20 +108,20 @@ class Biz_user extends CI_Model {
       msg：错误提示语 — succ为1是为空
       info：数组，需要返回的一些信息（请提供需要怎样的数据，默认为空）
      */
-    public function feed($type='post', $special=1, $user_id, $url, $title, $content, $create_date) {
+    public function feed($type = 'post', $special = 1, $user_id, $url, $title, $content, $create_date) {
         $url = trim($this->config->item('user_feed'));
         $types = array(
-            'post_1' => '301',//发表了帖子
-            'post_2' => '303',//发布了问题
-            'post_3' => '305',//发起了投票
-            'post_4' => '307',//发起了辩论
-            'reply_1' => '302',//回复了帖子
-            'reply_2' => '304',//回答了问题
-            'reply_3' => '306',//参与了投票
-            'reply_4' => '308',//参与了评论
+            'post_1' => '301', //发表了帖子
+            'post_2' => '303', //发布了问题
+            'post_3' => '305', //发起了投票
+            'post_4' => '307', //发起了辩论
+            'reply_1' => '302', //回复了帖子
+            'reply_2' => '304', //回答了问题
+            'reply_3' => '306', //参与了投票
+            'reply_4' => '308', //参与了评论
         );
         $post = array(
-            'type' => $types[$type.'_'.$special],
+            'type' => $types[$type . '_' . $special],
             'passport_user_id' => $user_id,
             'url' => $url,
             'title' => $title,
@@ -134,6 +134,38 @@ class Biz_user extends CI_Model {
             log_message('error', '同步回复出错。');
         }
         return $data;
+    }
+
+    /**
+     * url：http://hi.9tech.cn/index.php/services/favorite/do_publish
+      方式：post
+      数据：passport_user_id(passport 用户ID)
+      url(帖子/博客的url)
+      title（帖子/博客的标题）
+      返回结果：josn格式
+      succ:是否成功标志 — 1表示成功，0/负数表示失败/有错误
+      msg：错误提示语 — succ为1是为空
+      info：数组，需要返回的一些信息（请提供需要怎样的数据，默认为空）
+
+     * @param type $topic_id
+     */
+    public function collect($topic_id) {
+        $url = trim($this->config->item('user_collect'));
+        $topic = $this->topics_model->get_by_id($topic_id);
+        if (!empty($topic)) {
+            $collect_data['passport_user_id'] = $this->user['id'];
+            $collect_data['url'] = base_url('index.php/topic/show/'.$topic_id);
+            $collect_data['title'] = $topic['subject'];
+            $data = $this->biz_curl->my_fopen($url, $collect_data);
+            $data = json_decode($data, TRUE);
+            if (empty($data) || $data['succ'] <= 0) {
+                log_message('error', '用户加关注出错。');
+            }
+            return $data;
+        }else{
+            return FALSE;
+        }
+        
     }
 
 }

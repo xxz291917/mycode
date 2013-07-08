@@ -5,7 +5,9 @@
     
     <div class="siteTip">
         <span class="fr">
+        <?php if($this->user['id']>0){?>
             <a href="<?php echo base_url('/index.php/space/my_topic')?>">我的帖子</a>
+        <?php }?>
         </span>
         <em>今日:</em><?=$totals['today_posts']?><i>|</i><em>总帖子:</em><?=$totals['posts']?><i>|</i><em>会员:</em><?=$totals['users']?><i>|</i><em>欢迎新会员:</em><?=$last_user['username']?>
     </div>

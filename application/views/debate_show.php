@@ -27,6 +27,7 @@
         </div>
       </li>
       <li><a href="javascript:void(0);" onClick="location.href='<?php echo base_url('index.php/action/reply/'.$topic['id']);?>'">回复</a></li>
+      <?php if(!empty($manage_arr)){?>
       <li class="pr hasMenu"><a href="javascript:void(0);" class="icoMag">管理菜单</a>
         <div class="menuBox pa">
           <ul class="menuList">
@@ -36,7 +37,8 @@
             <?php }?>
           </ul>
         </div>
-      </li>
+       </li>
+      <?php }?>
     </ul>
     <?php empty($page) && $page = '';
 echo $page;?>
@@ -215,10 +217,20 @@ echo $page;?>
         </div>
         
         <ul class="newsBot pa">
+          <?php if($base_permission['report']){?>
           <li class="fl"><a href="<?php echo base_url('index.php/action/report/'.$first_post['id'])?>" target="dialog">举报</a></li>
+          <?php }?>
+          <li><a href="<?=base_url('index.php/action/collect/'.$topic['id'])?>" class="icoCollect" target="ajax">收藏</a></li>
+          <?php if($manage_permission['edit']){?>
           <li><a href="<?php echo base_url('index.php/action/edit/'.$first_post['topic_id'].'/'.$first_post['id'])?>" class="icoGrade">编辑</a></li>
+          <?php }?>
+          <?php if($base_permission['reply']){?>
           <li><a class="icoCite" href="<?php echo base_url('index.php/action/reply_dialog/'.$first_post['topic_id'].'/'.$first_post['id'])?>" target="dialog" width="464px" >引用</a></li>
+          <?php }?>
+          <?php if($base_permission['reply']){?>
           <li><a class="icoReplys" href="<?php echo base_url('index.php/action/reply_dialog/'.$first_post['topic_id'].'/')?>" target="dialog" width="464px" title="快速回复">回复</a></li>
+          <?php }?>
+          
         </ul>
       </div>
     </li>
@@ -310,10 +322,18 @@ echo $page;?>
         <div class="newsAD fsong"><i></i>本次大会更注难，并分享实战经验。为庆祝此次大会<cite>|</cite><a href="#">本次大会更注重交流与互难，并分享实</a><cite>|</cite><a href="#">本次大会更注重交流与互难，并分享实</a></div>
         -->
         <ul class="newsBot pa">
+          <?php if($base_permission['report']){?>
           <li class="fl"><a href="<?php echo base_url('index.php/action/report/'.$post['id'])?>" target="dialog">举报</a></li>
+          <?php }?>
+          <?php if($manage_permission['edit']){?>
           <li><a href="<?php echo base_url('index.php/action/edit/'.$post['topic_id'].'/'.$post['id'])?>" class="icoGrade">编辑</a></li>
+          <?php }?>
+          <?php if($base_permission['reply']){?>
           <li><a class="icoCite" href="<?php echo base_url('index.php/action/reply_dialog/'.$post['topic_id'].'/'.$post['id'])?>" target="dialog" width="464px" >引用</a></li>
+          <?php }?>
+          <?php if($base_permission['reply']){?>
           <li><a class="icoReplys" href="<?php echo base_url('index.php/action/reply_dialog/'.$post['topic_id'].'/')?>" target="dialog" width="464px" title="快速回复">回复</a></li>
+          <?php }?>
         </ul>
       </div>
     </li>
