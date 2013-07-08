@@ -108,7 +108,7 @@ class Biz_user extends CI_Model {
       msg：错误提示语 — succ为1是为空
       info：数组，需要返回的一些信息（请提供需要怎样的数据，默认为空）
      */
-    public function feed($type = 'post', $special = 1, $user_id, $url, $title, $content, $create_date) {
+    public function feed($type = 'post', $special = 1, $user_id, $this_url, $title, $content, $create_date) {
         $url = trim($this->config->item('user_feed'));
         $types = array(
             'post_1' => '301', //发表了帖子
@@ -123,7 +123,7 @@ class Biz_user extends CI_Model {
         $post = array(
             'type' => $types[$type . '_' . $special],
             'passport_user_id' => $user_id,
-            'url' => $url,
+            'url' => $this_url,
             'title' => $title,
             'body' => $content,
             'create_date' => $create_date,

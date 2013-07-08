@@ -1,6 +1,6 @@
 <div class="myInfo">
-    <a href="#"><img src="<?= base_url() ?>images/temp.jpg" alt="名称"></a>
-    <h4><a href="#">流温故知新</a><a href="#" class="icoSet"></a></h4>
+    <a href="#"><img src="<?php echo user_icon($this->user['id'])?>" alt="<?php echo $this->user['username']?>"></a>
+    <h4><a href="<?php echo user_url($this->user['id'])?>"><?php echo $this->user['username']?></a><a href="<?php echo $this->config->item('url_setting');?>" class="icoSet"></a></h4>
     <p>
         <span><strong>粉丝：</strong>55</span>
         <span><strong>关注：</strong>55</span>

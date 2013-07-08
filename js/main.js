@@ -43,6 +43,20 @@ $(document).ready(function() {
 	},function(){
 		$(this).removeClass('current');
 	});	
+	$('.subShow .icoNote').parent().hover(function() {
+		$(this).addClass('current');		
+		$(this).find('span').hide();
+	},function(){
+		$(this).removeClass('current');
+		$(this).find('span').show();
+	});	
+	$('.subShow .icoEmail').parent().hover(function() {
+		$(this).addClass('current');	
+		$(this).find('span').hide();	
+	},function(){
+		$(this).removeClass('current');
+		$(this).find('span').show();
+	});	
 	//正文页左侧头像隐藏层
 	$('.usFace').hover(function() {
 		$(this).find('.usFaceInfoBox').fadeIn();
@@ -138,8 +152,9 @@ $(document).ready(function() {
 			$('.listCotShow li ul:last').addClass('bordNo');
 		});
 	});
-        
-	/*//发布投票贴删除添加投票效果
+	
+	/*
+	//发布投票贴删除添加投票效果
 	$('.voteBoxL li span.btnCls').live('click',function() {
 		if( $('.voteBoxL li').length > 1 ) {
 			$(this).parent().remove();
@@ -150,7 +165,6 @@ $(document).ready(function() {
 		$('.voteBoxL li:last').clone().appendTo('ol').find('input').val('');
 	});
 	//发布投票模拟checkbox
-        
 	$('.btnUnCheck').toggle(	
 		function () {
 			$(this).parent().find('input').val('1');

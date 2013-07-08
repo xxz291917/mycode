@@ -45,7 +45,7 @@
           <li class="pr ml10">
               <a href="#" class="icoSet"></a>
             <ul class="pa">
-              <li><a href="#">账号设置</a></li>
+              <li><a href="<?php echo $this->config->item('url_setting');?>">账号设置</a></li>
               <li><a href="<?php echo $this->config->item('passport_logout')?>">退出</a></li>
             </ul>
           </li>

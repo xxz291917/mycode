@@ -58,6 +58,8 @@ class Space extends MY_Controller {
         if (!is_string($type)) {
             $type = "default";
         }
+        $var['stars_rank'] = $this->users_model->get_star_html($this->user['group']['stars']);
+        
         $search = $this->input->get(null, TRUE);
         $var['credit_name'] = $this->credit_name_model->get_credit_name();
 

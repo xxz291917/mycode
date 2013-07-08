@@ -107,6 +107,12 @@ a.searchBtn{ display:inline-block; width:25px; height:26px; margin:12px 0 0 0; b
 .logInfo li li{ display:block; float:none; height:40px; margin-left:0; font-size:12px;}
 .logInfo li li a{ display:block; float:none; width:101px; height:40px;padding-left:15px; border-bottom:1px solid #4B4B4B; line-height:40px; background:none;}
 .logInfo li li a:hover{ background:#3D3D3D;}
+
+.logInfo li.subShow li a{ width:101px;height:40px;} 
+.logInfo li.current a.icoNote{ background-color:#616161; background-position:15px -2028px;}
+.logInfo li.current a.icoEmail{ background-color:#616161; background-position:14px -2103px;}
+.logInfo li.current i{ padding-left:10px; font-weight:bold; color:#FFA81F;}
+
 .searchBox{ right:0; top:-50px; display:none; padding-bottom:5px; clear:both; overflow:hidden; _zoom:1;}
 .searchBox input{ float:left; width:390px; height:30px; padding-left:11px; border-width:1px; border-style:solid; border-color:#767676 #575757 #ADADAD #D1D1D1; border-radius:5px; background-color:#FFF; box-shadow:1px 2px 3px #BBB inset; font-size:14px; color:#999; line-height:30px; color:#999;}
 .searchBox button{ display:inline; float:left; width:85px; height:32px; margin:0 0 0 8px; border-top:1px solid #444;border-right:1px solid #393939;border-bottom:1px solid #444;border-left:1px solid #383838; border-radius:5px; background:#363636; box-shadow:2px 2px 2px #2B2B2B; text-align:center; line-height:32px; color:#FFF; font-weight:bold; letter-spacing:2px; font-size:14px; text-shadow:2px 2px 2px #151516;}
@@ -352,6 +358,7 @@ i.icoANo{ width:16px; height:16px; margin-left:6px; background-position:-19px -1
 .listCot .td2 strong{ padding-right:6px; font-weight:normal;}
 .listCot .td2 strong a{ color:#07C;}
 .listCot .td2 a{ color:#333;}
+.listCot .td2 a i{ display:inline; float:none; margin-top:0; font-style:italic;}
 .listCot .td4 img{ display:block; float:left; width:25px; height:25px; margin:6px 5px 0 0;}
 .listCot .tdSpan1,.listCot .tdSpan2{ display:block; height:16px; margin-top:3px;line-height:16px; overflow:hidden;}
 .listCot .tdSpan2{  margin-top:0;color:#999; }
@@ -560,7 +567,7 @@ dl.topToday dd img{ display:block; width:50px; height:50px; margin:8px 0 0 2px; 
 dl.topToday figcaption{ height:22px; line-height:22px; overflow:hidden;}
 .homeH2{ height:25px; padding-left:20px; background:#3D3D3D; line-height:25px;}
 .homeH2 a{ color:#FFF;}
-.homeList{ padding:8px 10px 25px 7px;  border-right:1px solid #CCC;border-left:1px solid #CCC; background:#E9EDF0; overflow:hidden;_zoom:1;}
+.homeList{ padding:8px 10px 25px 7px;  border-right:1px solid #CCC;border-left:1px solid #CCC; background:#F1F1F2; overflow:hidden;_zoom:1;}
 .lastLi{border:1px solid #CCC; border-top:none;}
 .homeList li{ display:inline; float:left; width:220px; height:60px; margin:18px 0 0 32px; padding-left:50px; border:1px solid #D0E5EF; border-radius:6px;background:#FFF; box-shadow:2px 2px 2px rgba(0,0,0,0.04);}
 .homeList li h3{ height:20px; padding-top:10px; line-height:20px; color:#E20000;}

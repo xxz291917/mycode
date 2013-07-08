@@ -2,11 +2,11 @@
 <div class="wrap bgWhite clearfix">
     <div class="col3">
         <ul class="usTip myRanks">
-            <li><h4><a href="#">流温故知新</a></h4><span class="myRank"><i class="icoSun"></i><i class="icoSun"></i><i class="icoMoon"></i><i class="icoStar"></i></span></li>
+            <li><h4><a href="<?php echo user_url($this->user['id']);?>"><?php echo $this->user['username'];?></a></h4><span class="myRank"><?php echo $stars_rank;?></span></li>
         </ul>
         <ul class="userInfo">
-            <li><span>积分：</span>998分</li>
-            <li><span>等级：</span>10级</li>
+            <li><span>积分：</span><?php echo $this->user['credits']?></li>
+            <li><span>会员组：</span>10级</li>
             <li><span>排名：</span>998名</li>
             <li><span>升级还需：</span>998分</li>
             <li><span>金子：</span>998两</li>
