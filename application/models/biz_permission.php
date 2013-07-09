@@ -212,10 +212,11 @@ class Biz_permission extends CI_Model {
         $is_perm = TRUE;
         if ($this->user['group']['max_post_num'] > 0) {
             $is_perm = $this->user['group']['max_post_num'] > $this->user['today_posts'];
-            if ($is_perm && $this->user['group']['min_pertime'] > 0) {
-                //获取最后发帖时间
-                $is_perm = $this->user['group']['min_pertime'] <= ($this->time - $this->user['last_post_time']);
-            }
+        }
+        if ($is_perm) {
+            //强制设定最小发帖间隔3秒钟。
+            $min_time = $this->user['group']['min_pertime']<3?3:$this->user['group']['min_pertime'];
+            $is_perm = $min_time <= ($this->time - $this->user['last_post_time']);
         }
         return $is_perm;
     }

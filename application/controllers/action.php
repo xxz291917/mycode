@@ -28,7 +28,9 @@ class Action extends MY_Controller {
         if (empty($forum) || $forum['type'] == 'group') {
             $this->message('参数错误，发布的版块不存在或者不是子版块', 0, $forum_show_url);
         }
-        
+        if ($this->user['id'] == 0) {
+            $this->message('您还未登录，请<a href="' . $this->config->item('passport_login') . '" target="_blank">登录</a>。');
+        }
         //检测权限。
         $is_post = $this->biz_permission->check_base('post', $forum_id);
         if (!$is_post) {
@@ -50,14 +52,14 @@ class Action extends MY_Controller {
                 $this->message('您发帖太快或者是发帖数太多。');
             }
             $post = array_merge($post, array('forum_id' => $forum_id, 'special' => $special));
-            if ($this->biz_post->post($post)) {
-                
+            if ($topic_id = $this->biz_post->post($post)) {
+
                     /* 用户动态 */
                 $title = $post['subject'];
                 $content = utf8_substr($post['content'], 0, 255);
+                $forum_show_url = base_url('index.php/topic/show/'.$topic_id);
                 $this->biz_user->feed('post',$special, $this->user['id'], $forum_show_url, $title, $content, $this->time);
                     /* 用户动态结束 */
-                
                 $this->message('发帖成功。', 0, $forum_show_url);
             } else {
                 $this->message('发帖失败。', 0, $forum_show_url);
@@ -120,16 +122,20 @@ class Action extends MY_Controller {
         if (empty($topic)) {
             $this->message('参数错误，发布的主题不存在', 0, $forum_show_url);
         }
+        if ($this->user['id'] == 0) {
+            $this->message('您还未登录，请<a href="' . $this->config->item('passport_login') . '" target="_blank">登录</a>。');
+        }
+        //检测权限。
+        $is_post = $this->biz_permission->check_base('reply', $topic['forum_id']);
+        if (!$is_post) {
+            $this->message('您没有权限回复帖子');
+        }
+        
         //通过了check校验
         if ($this->input->post('submit') && $post = $this->input->post(null,TRUE)) {
-            if(!$this->biz_post->check_post('reply', $topic['special'])){
+            if (!$this->biz_post->check_post('reply', $topic['special'])) {
                 $errors = validation_errors();
                 $this->message(nl2br($errors), 0);
-            }
-            //检测权限。
-            $is_post = $this->biz_permission->check_base('reply', $topic['forum_id']);
-            if (!$is_post) {
-                $this->message('您没有权限回复帖子');
             }
             $is_post = $this->biz_permission->check_post_num();
             if (!$is_post) {
@@ -139,7 +145,8 @@ class Action extends MY_Controller {
             $post = array_merge($post, array('topic_id' => $topic_id, 'post_id' => $post_id, 'forum_id' => $topic['forum_id'],'special'=>$topic['special'], 'topic_author_id' => $topic['author_id']));
             //完成回复。
             $forum_show_url = base_url('index.php/topic/position/'.$topic_id.'/last');
-            if ($this->biz_post->post($post, 'reply')) {
+            if ($post_id = $this->biz_post->post($post, 'reply')) {
+                $forum_show_url = base_url('index.php/topic/position/'.$topic_id.'/'.$post_id);
                 /* start */
                 $title = !empty($post['subject'])?$post['subject']:"re:".$topic['subject'];
                 $content = utf8_substr($post['content'], 0, 255);
@@ -205,6 +212,10 @@ class Action extends MY_Controller {
             $this->message('参数错误，发布的主题不存在', 0, $forum_show_url);
         }
         
+        if($this->user['id']==0){
+            $this->message('您还未登录，请<a href="'.$this->config->item('passport_login').'" target="_blank">登录</a>。');
+        }
+        
         //检测权限。
         $is_post = $this->biz_permission->check_base('reply', $topic['forum_id']);
         if (!$is_post) {
@@ -226,12 +237,14 @@ class Action extends MY_Controller {
             $post = array_merge($post, array('topic_id' => $topic_id, 'post_id' => $post_id, 'forum_id' => $topic['forum_id'],'special'=>$topic['special'], 'topic_author_id' => $topic['author_id']));
             //完成回复。
             $forum_show_url = base_url('index.php/topic/position/'.$topic_id.'/last');
-            if ($this->biz_post->post($post, 'reply')) {
+            if ($post_id = $this->biz_post->post($post, 'reply')) {
+                $forum_show_url = base_url('index.php/topic/position/'.$topic_id.'/'.$post_id);
                 /* start */
                 $title = empty($post['subject'])?$post['subject']:"re:".$topic['subject'];
                 $content = utf8_substr($post['content'], 0, 255);
                 $this->biz_user->publish('1', $topic_id, $this->user['id'], $topic['author_id'], $forum_show_url, $title, $content, $this->time);
                     /* 用户动态 */
+                                echo $topic['special'];die;
                 $this->biz_user->feed('reply',$topic['special'], $this->user['id'], $forum_show_url, $title, $content, $this->time);
                     /* 用户动态结束 */
                 /* end */
@@ -776,9 +789,12 @@ class Action extends MY_Controller {
         if(empty($user_id)){
             $this->message('参数错误！'); 
         }
+        if ($this->user['id'] == 0) {
+            $this->message('您还未登录，请<a href="' . $this->config->item('passport_login') . '" target="_blank">登录</a>。');
+        }
         $data = $this->biz_user->follow($user_id);
         if (isset($data['succ']) && $data['succ'] <= 0) {
-            $message = !empty($data['message'])?$data['message']:'关注失败！';
+            $message = !empty($data['msg'])?$data['msg']:'关注失败！';
             $this->message($message);
         } else {
             $this->message('关注成功！',1);

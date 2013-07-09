@@ -28,7 +28,7 @@ class Biz_user extends CI_Model {
         }
     }
 
-    /**
+    /** 关注
      * url：http://hi.9tech.cn/index.php/follow/do_follow
       方式：post
       数据：uid（被关注的人都passport_user_id）
@@ -50,7 +50,7 @@ class Biz_user extends CI_Model {
         return $data;
     }
 
-    /**
+    /** 通知
      * url：http://hi.9tech.cn/index.php/services/notice/do_publish
       方式：post
       数据：type(1bbs 2blog 3reply 4状态)
@@ -62,14 +62,14 @@ class Biz_user extends CI_Model {
       content（描述或评论内容等。bbs帖子body可以为空；blog的博文body为描述，博文的评论body为评论内容）
       create_date（动作产生的时间戳，可以为空，为空时是feed插入数据库的时间戳。例如发帖时间）
      */
-    public function publish($type, $obj_id, $from_passport_user_id, $to_passport_user_id, $url, $title, $content, $create_date) {
+    public function publish($type, $obj_id, $from_passport_user_id, $to_passport_user_id, $this_url, $title, $content, $create_date) {
         $url = trim($this->config->item('user_notice'));
         $post = array(
             'type' => $type,
             'obj_id' => $obj_id,
             'from_passport_user_id' => $from_passport_user_id,
             'to_passport_user_id' => $to_passport_user_id,
-            'url' => $url,
+            'url' => $this_url,
             'title' => $title,
             'content' => $content,
             'create_date' => $create_date,
@@ -82,7 +82,7 @@ class Biz_user extends CI_Model {
         return $data;
     }
 
-    /**
+    /** 动态
      * url：http://hi.9tech.cn/index.php/services/feed/do_publish
       数据：type（下面$types的key值，value为对应的情况。例如发表博客，type=201）
       //blog
@@ -136,7 +136,7 @@ class Biz_user extends CI_Model {
         return $data;
     }
 
-    /**
+    /** 收藏
      * url：http://hi.9tech.cn/index.php/services/favorite/do_publish
       方式：post
       数据：passport_user_id(passport 用户ID)
@@ -153,6 +153,7 @@ class Biz_user extends CI_Model {
         $url = trim($this->config->item('user_collect'));
         $topic = $this->topics_model->get_by_id($topic_id);
         if (!empty($topic)) {
+            $collect_data['type'] = 1;
             $collect_data['passport_user_id'] = $this->user['id'];
             $collect_data['url'] = base_url('index.php/topic/show/'.$topic_id);
             $collect_data['title'] = $topic['subject'];

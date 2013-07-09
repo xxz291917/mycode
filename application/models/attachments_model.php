@@ -19,9 +19,7 @@ class Attachments_model extends MY_Model {
         $query = $this->db->query($sql);
         return $query->result_array();
     }
-
-
-
+    
 //    /**
 //     * 获取上传附件列表   
 //     */

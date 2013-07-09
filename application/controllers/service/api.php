@@ -44,7 +44,7 @@ class api extends MY_Controller {
         if (!empty($data)) {
             foreach ($data as $key => $value) {
                 $info[$key]['title'] = $value['subject'];
-                $info[$key]['url'] = base_url('index.php/topic/show'.$value['id']);
+                $info[$key]['url'] = base_url('index.php/topic/show/'.$value['id']);
                 $info[$key]['dateline'] = $value['post_time'];
             }
         }

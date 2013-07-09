@@ -49,8 +49,8 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'root';
-$db['default']['password'] = '';
+$db['default']['username'] = 'u-bbs';
+$db['default']['password'] = 'EWYR7o2Lwdfcv45f678h';
 $db['default']['database'] = 'bbs';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
