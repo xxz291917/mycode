@@ -93,9 +93,11 @@ $(function(){
 			if(tagName=='A'){
 				var url = unescape($this.attr("href"));
 				var field = null;
+                                var ajaxFun = $.get;
 			}else if(tagName=='FORM'){
 				var url = unescape($this.attr("action"));
 				var field = $this.serializeArray();
+                                var ajaxFun = $.post;
 			}
 			
 			if ($("#"+rel).length > 0) {
@@ -104,13 +106,17 @@ $(function(){
 				var html = '<div id="'+rel+'" title="提示信息"></div>';
 				html = $(html);
 			}
-                        
-                        
-                        
-                        
-                        
-			html.load(url,field, function() {
-				//为一个表单添加ajax提交。
+                        $.Alert('正在努力……');
+                        ajaxFun(url, field,function(data){
+                            
+                            if(data.substr(0,1)=='{'){
+                                data = JSON.parse(data);
+                            }
+                            if(typeof data == 'object'){
+                                $.Alert(data.message);
+                            }else{
+                                html.html(data);
+                                //为一个表单添加ajax提交。
 				var form = $('#' + rel).find("form");
 				if(form.length>0){
 					form.submit(function() {
@@ -140,8 +146,9 @@ $(function(){
 						return false;
 					});
 				}
-			});
-			html.dialog(options);
+                                html.dialog(options);
+                            }
+                        });
 			event.preventDefault();
 			return false;
 		};
