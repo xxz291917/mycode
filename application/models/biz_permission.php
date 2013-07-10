@@ -160,9 +160,9 @@ class Biz_permission extends CI_Model {
      * @return int
      */
     public function get_is($type,$forum_id='') {
-        $types = array('bbcode', 'smilies', 'media', 'html','anonymous','hide','sign','permission');
-        if (in_array($type, $types)) {
-            $group_key = 'is_' . $type;
+        $types = array('is_bbcode', 'is_smilies', 'is_media', 'is_html', 'is_anonymous', 'is_hide', 'is_sign', 'is_permission');
+        $group_key = strpos($type,'is_')!==0 ? 'is_' . $type : $type;
+        if (in_array($group_key, $types)) {
             if ($this->user['group'][$group_key] == 1) {
                 if(!empty($forum_id)){
                     $forum = $this->forums_model->get_by_id($forum_id);

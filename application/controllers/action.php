@@ -194,6 +194,23 @@ class Action extends MY_Controller {
             $is_arr = $this->biz_permission->get_edit_permission($forum_id);
             $var['is_arr'] = json_encode($is_arr);
             
+            
+            //找出此用户，此主题下的,同类型草稿。
+            $where = array('user_id'=>$this->user['id'],'topic_id'=> $topic_id);
+            $this->load->model('drafts_model');
+            $draft = $this->drafts_model->get_one($where);
+            if(!empty($draft)){
+                $draft_tmp['subject'] = $draft['subject'];
+                $draft_tmp['content'] = $draft['content'];
+                $remain_data = $draft['remain_data'];
+                $remain_data = json_decode($remain_data, TRUE);
+                $draft_tmp = array_merge($draft_tmp,$remain_data);
+//                var_dump($draft_tmp);die;
+                $draft_tmp = json_encode($draft_tmp);
+                $var['draft'] = $draft_tmp;
+            }
+            
+            
             $var['type'] = 'reply';
             $var['forum_id'] = $forum_id;
             $var['special'] = $special;
