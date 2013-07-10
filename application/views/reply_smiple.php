@@ -31,7 +31,8 @@ var base_url = '<?=base_url()?>';
 $(function(){
         KindEditor.uploadImages={};
         KindEditor.uploadFiles={};
-        KindEditor.isArr = {};
+        KindEditor.isArr = <?=$is_arr?>;
+        KindEditor.forum_id = '<?=$forum_id?>';
         KindEditor.hidden_token = '<input type="hidden" name="<?=$this->security->get_csrf_token_name()?>" value="<?=$this->security->get_csrf_hash()?>">';
     });
 </script>

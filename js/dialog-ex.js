@@ -104,7 +104,11 @@ $(function(){
 				var html = '<div id="'+rel+'" title="提示信息"></div>';
 				html = $(html);
 			}
-
+                        
+                        
+                        
+                        
+                        
 			html.load(url,field, function() {
 				//为一个表单添加ajax提交。
 				var form = $('#' + rel).find("form");

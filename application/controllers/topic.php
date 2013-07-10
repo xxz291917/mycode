@@ -29,6 +29,7 @@ class Topic extends MY_Controller {
         }
         $topic['tags'] = array_filter(explode(',', $topic['tags']));
         
+        $var['forum_id'] = $topic['forum_id'];
         //如果是置顶，高亮，推荐精华。则获取时间。
         if($topic['top']>0 || $topic['highlight']!='' || $topic['digest']>0 || $topic['recommend']=1){
             //删除过期的设置
@@ -106,6 +107,10 @@ class Topic extends MY_Controller {
         $var['manage_permission'] = $manage_permission;
         $base_permission = $this->biz_permission->get_base_permission($topic['forum_id']);
         $var['base_permission'] = $base_permission;
+        
+        //获取当前用户在此版块下的编辑器权限。（前台过过滤编辑器，重点是对于提交的内容会做相应的处理）
+        $is_arr = $this->biz_permission->get_edit_permission($topic['forum_id']);
+        $var['is_arr'] = json_encode($is_arr);
         
         //展示模板
         $view_template = self::$post_view[$topic['special']];
