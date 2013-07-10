@@ -43,7 +43,7 @@ class Forum extends MY_Controller {
         $topic_categorys = $this->topics_category_model->key_list($topic_categorys);
         $var['topic_categorys'] = $topic_categorys;
         
-        $where = " forum_id = '$forum_id'";
+        $where = " forum_id = '$forum_id' AND status IN(1,4,5)";
         //按版块搜索
         $var['forum_id'] = $forum_id;
         //获取此版块下的版主
@@ -80,10 +80,7 @@ class Forum extends MY_Controller {
         $var['seo']['title'] = $this->configs['seo_topic_title'];
         $var['seo']['description'] = $this->configs['seo_topic_description'];
         $var['seo']['keywords'] = $this->configs['seo_topic_keywords'];
-//        $this->load->vars($var);
-        
-        
-//      var_dump($var['forums']);die;
+
         $this->view('forum_show',$var);
     }
 
@@ -106,10 +103,6 @@ class Forum extends MY_Controller {
         $var['forums'] = $forums;
         $this->view('forum_zone_show',$var);
     }
-
-
-
-
 
 
     public function show2($id) {

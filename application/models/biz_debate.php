@@ -118,7 +118,12 @@ class Biz_debate extends CI_Model {
         if (method_exists($this, 'append_first_post')) {
             $var['first_post'] = $this->append_first_post($var['first_post']);
         }
-
+        
+        if($topic['status'] !=5 && $this->time >= $var['first_post']['debate']['end_time']){
+            $this->load->model(array('topics_model'));
+            $this->topics_model->update(array('status'=>5),array('id'=>$id));
+        }
+        
         $count_sql = "SELECT count(*) num FROM posts p LEFT JOIN debate_posts d ON d.post_id=p.id  WHERE ";
         $list_sql = "SELECT p.*,d.stand,d.voters FROM posts p LEFT JOIN debate_posts d ON d.post_id=p.id  WHERE ";
 

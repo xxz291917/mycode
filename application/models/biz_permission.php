@@ -79,11 +79,12 @@ class Biz_permission extends CI_Model {
             return $return;
         }
         foreach ($this->manage_arr as $action) {
-            if ($topic['author_id'] == $this->user['id'] && in_array($action, $this->owner_arr)) {
-                return true;
-            }
             list($null, $man_action) = explode('_', $action);
-            $return[$man_action] = !empty($admin_permission[$action])?$admin_permission[$action]:false;
+            if ($topic['author_id'] == $this->user['id'] && in_array($action, $this->owner_arr)) {
+                $return[$man_action] = true;
+            }else{
+                $return[$man_action] = (!empty($admin_permission[$action]))?$admin_permission[$action]:false;
+            }
         }
         return $return;
     }

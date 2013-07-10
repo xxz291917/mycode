@@ -119,11 +119,20 @@ echo $page;?>
                  <li><strong>最佳辩手：</strong><?php echo $first_post['debate']['best_debater']?></li>
              </ul>
             <?php }?>
+            
+            <?php 
+			if($topic['status']!=5){?>
               <p class="tc fb">结束时间：<?php if(!empty($first_post['debate']['end_time'])){
                 echo date('Y-m-d H:i:s',$first_post['debate']['end_time']);
               }else{
-                echo '等待裁判判决';
-              }?>&nbsp;&nbsp;&nbsp;&nbsp;裁判：<?php echo $first_post['debate']['umpire']?></p>
+                echo '无时间限制';
+              }?>
+            <?php }else{?>
+              <p class="tc fb">辩论已结束或关闭
+            <?php }?>
+              
+              &nbsp;&nbsp;&nbsp;&nbsp;裁判：<?php echo $first_post['debate']['umpire']?></p>
+              
             <?php if($first_post['debate']['umpire'] == $this->user['username']){?>
               <a href="<?php echo base_url('index.php/action/debate_end/'.$first_post['topic_id']);?>" target="dialog">
                   <?php if($isend){
@@ -188,9 +197,10 @@ echo $page;?>
               <?php }?>
               </div>
               <ul>
-              	<?php foreach($first_post['debate']['negate_users'] as $user){?>
-                	<li><a href="<a href="<?= user_url($user['user_id'])?>"><?=$user['username']?></a>">
-                    <img src="<?php echo user_icon($topic['user_id'])?>" alt="<?=$user['username']?>"></a></li>
+              	<?php 
+				foreach($first_post['debate']['negate_users'] as $user){?>
+                	<li><a href="<?= user_url($user['user_id'])?>"><?=$user['username']?></a>
+                    <img src="<?php echo user_icon($user['user_id'])?>" alt="<?=$user['username']?>"></a></li>
                 <?php }?>
               </ul>
               <a href="<?php echo base_url('index.php/action/reply_dialog/'.$first_post['topic_id'].'/?stand=2')?>" target="dialog" width="464px" title="发表观点" class="postView">发表蓝方观点</a>
@@ -220,13 +230,16 @@ echo $page;?>
           <?php if($base_permission['report']){?>
           <li class="fl"><a href="<?php echo base_url('index.php/action/report/'.$first_post['id'])?>" target="dialog">举报</a></li>
           <?php }?>
+          
           <li><a href="<?=base_url('index.php/action/collect/'.$topic['id'])?>" class="icoCollect" target="ajax">收藏</a></li>
           <?php if($manage_permission['edit']){?>
           <li><a href="<?php echo base_url('index.php/action/edit/'.$first_post['topic_id'].'/'.$first_post['id'])?>" class="icoGrade">编辑</a></li>
           <?php }?>
+          
           <?php if($base_permission['reply']){?>
           <li><a class="icoCite" href="<?php echo base_url('index.php/action/reply_dialog/'.$first_post['topic_id'].'/'.$first_post['id'])?>" target="dialog" width="464px" >引用</a></li>
           <?php }?>
+          
           <?php if($base_permission['reply']){?>
           <li><a class="icoReplys" href="<?php echo base_url('index.php/action/reply_dialog/'.$first_post['topic_id'].'/')?>" target="dialog" width="464px" title="快速回复">回复</a></li>
           <?php }?>

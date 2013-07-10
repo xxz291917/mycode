@@ -14,7 +14,7 @@
   </div>
   <div class="viewpointLi">
     <label>选定裁判：</label>
-    <input type="text" tabindex="1" value="<?php echo set_value('umpire', ''); ?>" class="inp" id="umpire" name="umpire">
+    <input type="text" tabindex="1" value="<?php echo set_value('umpire', $this->user['username']); ?>" class="inp" id="umpire" name="umpire">
   </div>
   
 </li>

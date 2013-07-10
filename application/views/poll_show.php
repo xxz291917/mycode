@@ -120,7 +120,17 @@ echo $page;?>
                 }
             ?>投票，共有 <?=$first_post['voters']?> 名用户参与了投票  
             <?php if(0&&$first_post['is_visible']){?>（查看投票参与人）<?php }?></p>
-          <p>距离投票结束还有：<strong><?php echo time_span($this->time,$first_post['expire_time'],0);?></strong></p>
+          <p>
+          <?php
+          if(empty($first_post['expire_time']) || $this->time < $first_post['expire_time']){
+			$is_over = false;
+          	echo '距离投票结束还有：<strong>'. time_span($this->time,$first_post['expire_time'],0).'</strong>';
+          }else{
+			$is_over = true;
+          	echo '投票已于<strong>'. date('Y-m-d H:i:s',$first_post['expire_time']).'</strong> 结束，不能投票。';
+          }
+          ?>
+          </p>
           
         <?php
         $create_function = $first_post['is_multiple'] ? 'form_checkbox' : 'form_radio';
@@ -134,7 +144,7 @@ echo $page;?>
             );
             echo '<label>';
             echo '<span class="fl">';
-            echo $first_post['is_vote'] ? $create_function($data) : (($key+1).',');
+            echo ($first_post['is_vote'] && !$is_over) ? $create_function($data) : (($key+1).',');
             echo '</span>';
             echo '<p>'.$option['option'].'</p>';
             echo '</label>';

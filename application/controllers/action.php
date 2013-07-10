@@ -122,6 +122,14 @@ class Action extends MY_Controller {
         if (empty($topic)) {
             $this->message('参数错误，发布的主题不存在', 0, $forum_show_url);
         }
+        
+        //检测关闭帖子（允许回复的只有正常帖子和待审核帖子）。
+        if ($topic['status'] == 5) {
+            $this->message('帖子已经关闭，只允许作者自己或版主回复！');
+        }elseif(!in_array($topic['status'], array(1,4))){
+            $this->message('帖子不是正常状态，可能已经被删除。');
+        }
+        
         if ($this->user['id'] == 0) {
             $this->message('您还未登录，请<a href="' . $this->config->item('passport_login') . '" target="_blank">登录</a>。');
         }
