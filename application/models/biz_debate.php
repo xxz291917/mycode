@@ -124,6 +124,10 @@ class Biz_debate extends CI_Model {
 
         $stand = $this->input->get('stand', TRUE);
         $where = $stand !== false ? " d.stand = $stand " : '1';
+        
+        $author = $this->input->get('author', TRUE);
+        $where .= !empty($author) ? " AND p.author_id = '$author' " : '';
+        
         $where .= " AND p.topic_id = '$id' AND p.is_first != 1 AND (p.status =1 or p.status =4) ";
 
         $count_sql .= $where . "LIMIT 0,1";

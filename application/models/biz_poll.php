@@ -19,41 +19,45 @@ class Biz_poll extends CI_Model {
         $this->load->model(array('poll_model', 'poll_options_model', 'poll_voter_model'));
     }
 
-    public function init_show($topic,$id) {
-            $where = "topic_id = '$id' AND is_first = '1'";
-            $first_post = $this->posts_model->get_one($where);
-            $var['first_post'] = $this->posts_model->output_filter($first_post);
-            //特殊主题需要的其他变量
-            if (method_exists($this, 'append_first_post')) {
-                $var['first_post'] = $this->append_first_post($var['first_post']);
-            }
-        
-            $this->load->model('biz_pagination');
-            //获取本主题下的回复和分页
-            $where =  " is_first != 1 AND topic_id = '$id' AND status =1";
-            $per_num = $this->config->item('per_num');
-            $total_num = $this->posts_model->get_count($where);
-            //生成分页字符串
-            $base_url = current_url();
-            $page_obj = $this->biz_pagination->init_page($base_url, $total_num, $per_num);
-            $page_str = $page_obj->create_links();
-            $start = max(0, ($page_obj->cur_page - 1) * $per_num);
-            $posts = $this->posts_model->get_posts_list($where, '*', 'post_time', $start, $per_num);
-            //获取需要的用户信息
-            $uids = array($var['first_post']['author_id']);
-            foreach ($posts as $post) {
-                $uids[] = $post['author_id'];
-            }
-            $users = $this->users_model->get_userinfo_by_ids(array_unique($uids));
-            
-            //为前面获取的变量赋值到$var
-            $var['posts'] = $posts;
-            $var['users'] = $users;
-            $var['page'] = $page_str;
-            
-            return $var;
+    public function init_show($topic, $id) {
+        $where = "topic_id = '$id' AND is_first = '1'";
+        $first_post = $this->posts_model->get_one($where);
+        $var['first_post'] = $this->posts_model->output_filter($first_post);
+        //特殊主题需要的其他变量
+        if (method_exists($this, 'append_first_post')) {
+            $var['first_post'] = $this->append_first_post($var['first_post']);
+        }
+
+        $this->load->model('biz_pagination');
+        //获取本主题下的回复和分页
+        $where = " is_first != 1 AND topic_id = '$id' AND status =1";
+
+        $author = $this->input->get('author', TRUE);
+        $where .=!empty($author) ? " AND author_id = '$author' " : '';
+
+        $per_num = $this->config->item('per_num');
+        $total_num = $this->posts_model->get_count($where);
+        //生成分页字符串
+        $base_url = current_url();
+        $page_obj = $this->biz_pagination->init_page($base_url, $total_num, $per_num);
+        $page_str = $page_obj->create_links();
+        $start = max(0, ($page_obj->cur_page - 1) * $per_num);
+        $posts = $this->posts_model->get_posts_list($where, '*', 'post_time', $start, $per_num);
+        //获取需要的用户信息
+        $uids = array($var['first_post']['author_id']);
+        foreach ($posts as $post) {
+            $uids[] = $post['author_id'];
+        }
+        $users = $this->users_model->get_userinfo_by_ids(array_unique($uids));
+
+        //为前面获取的变量赋值到$var
+        $var['posts'] = $posts;
+        $var['users'] = $users;
+        $var['page'] = $page_str;
+
+        return $var;
     }
-    
+
     public function post($tid, $post) {
         if (empty($tid) || empty($post)) {
             return FALSE;
@@ -121,7 +125,7 @@ class Biz_poll extends CI_Model {
                 $sum_vote += $option['votes'];
             }
             foreach ($first_post['options'] as $key => &$option) {
-                $option['percent'] = !empty($sum_vote)?round($option['votes'] / $sum_vote, 2)*100:0;
+                $option['percent'] = !empty($sum_vote) ? round($option['votes'] / $sum_vote, 2) * 100 : 0;
             }
         }
         return $first_post;
@@ -139,15 +143,15 @@ class Biz_poll extends CI_Model {
         $options = empty($options) ? array() : $options;
         $post['options'] = $options;
     }
-    
-    public function init_edit($topic_id,$post_id){
+
+    public function init_edit($topic_id, $post_id) {
         //添加上poll表里的附加字段
         $poll = $this->poll_model->get_by_id($topic_id);
-        $poll['expire_time'] = ceil(($poll['expire_time']-$this->time)/(3600*24));
-        
-        $options = $this->poll_options_model->get_list(array('topic_id'=>$topic_id), '`option`,display_order');
+        $poll['expire_time'] = ceil(($poll['expire_time'] - $this->time) / (3600 * 24));
+
+        $options = $this->poll_options_model->get_list(array('topic_id' => $topic_id), '`option`,display_order');
         $poll['poll_option'] = array();
-        foreach($options as $option){
+        foreach ($options as $option) {
             $poll['poll_option'][] = $option['option'];
         }
         return $poll;
@@ -171,15 +175,15 @@ class Biz_poll extends CI_Model {
             $new_options = array();
             $new_options['display_order'] = $k;
             $new_options['option'] = html_escape($v);
-            if(isset($poll_options[$k])){
+            if (isset($poll_options[$k])) {
                 $this->poll_options_model->update($new_options, array('id' => $poll_options[$k]['id']));
-            }else{
+            } else {
                 $new_options['topic_id'] = $tid;
                 $this->poll_options_model->insert($new_options);
             }
         }
     }
-    
+
 }
 
 ?>

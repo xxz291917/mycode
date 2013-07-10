@@ -101,6 +101,10 @@ class Biz_Ask extends CI_Model {
         $list_sql = "SELECT p.*,a.supports,a.opposes FROM posts p LEFT JOIN ask_posts a ON a.post_id=p.id  WHERE ";
 
         $where = " p.topic_id = '$id' AND p.is_first != 1 AND p.status in (1,4)";
+        
+        $author = $this->input->get('author', TRUE);
+        $where .= !empty($author) ? " AND p.author_id = '$author' " : '';
+        
         $count_sql .= $where . " LIMIT 0,1";
         $query = $this->db->query($count_sql);
         $num = $query->row_array();

@@ -205,7 +205,6 @@ class Action extends MY_Controller {
                 $remain_data = $draft['remain_data'];
                 $remain_data = json_decode($remain_data, TRUE);
                 $draft_tmp = array_merge($draft_tmp,$remain_data);
-//                var_dump($draft_tmp);die;
                 $draft_tmp = json_encode($draft_tmp);
                 $var['draft'] = $draft_tmp;
             }
