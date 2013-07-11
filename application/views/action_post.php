@@ -64,12 +64,48 @@
         $attributes = array('id' => 'postform');
         echo form_open(current_url(), $attributes);
         ?>
+        
+        <?php if($type == 'post'){?>
+      <ul class="pubTag">
+        <li <?php if($special == 1){?> class="bordNone current" <?php }?> >
+		<?php if($special == 1){?>
+        发表帖子
+        <?php }else{?>
+        <a href="<?php echo base_url('index.php/action/post/'.$forum_id.'/1')?>">发表帖子</a>
+        <?php }?>
+        </li>
+        
+        <li <?php if($special == 2){?> class="bordNone current" <?php }?> >
+        <?php if($special == 2){?>
+        发起问答
+        <?php }else{?>
+        <a href="<?php echo base_url('index.php/action/post/'.$forum_id.'/2')?>">发起问答</a>
+        <?php }?>
+        </li>
+        
+        <li <?php if($special == 3){?> class="bordNone current" <?php }?> >
+		<?php if($special == 3){?>
+        发布投票
+        <?php }else{?>
+        <a href="<?php echo base_url('index.php/action/post/'.$forum_id.'/3')?>">发布投票</a>
+        <?php }?>
+        
+        </li>
+        
+        <li <?php if($special == 4){?> class="bordNone current" <?php }?> >
+        <?php if($special == 4){?>
+        发起辩论
+        <?php }else{?>
+        <a href="<?php echo base_url('index.php/action/post/'.$forum_id.'/4')?>">发起辩论</a>
+        <?php }?>
+        </li>
+      </ul>
+        <?php }else{?>
+        
         <h4>
             <?php
             $special_names = array(1 => '普通', 2 => '问答', 3 => '投票', 4 => '辩论');
-            if ($type == 'post') {
-                echo '发布' . $special_names[$special] . '帖';
-            } elseif ($type == 'edit') {
+            if ($type == 'edit') {
                 echo '编辑帖子';
                 if (empty($_POST)) {
                     $_POST = $edit_data;
@@ -79,6 +115,8 @@
             }
             ?>
         </h4>
+        <?php }?>
+        
         <ul class="pubQAForm">
             <li>
                 <?php if ($type == 'post' || ( $type == 'edit' && $post['is_first']==1)) { ?>

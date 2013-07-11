@@ -303,7 +303,7 @@ class Action extends MY_Controller {
                     $this->load->model('debate_posts_model');
                     $is_posted = $this->debate_posts_model->check_is_posted($topic_id);
                     if($is_posted){
-                        echo '您已经发表过观点！';die;
+                        $this->message('您已经发表过观点！', 0);
                     }
                     $_POST['stand'] = $stand;
                 }
@@ -551,6 +551,22 @@ class Action extends MY_Controller {
             return TRUE;
         }
     }
+    
+    /**
+     * 问答帖，校验积分用。
+     * @param type $price
+     * @return boolean
+     */
+    public function price_check($price) {
+        $this->load->model('biz_ask');
+        $ask_credit_type = $this->biz_ask->ask_credit_type;
+        if ($price > $this->user[$ask_credit_type]) {
+            $this->form_validation->set_message('price_check', '%s不能大于所拥有。');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
 
     /**
      * 帖子支持数
@@ -792,6 +808,11 @@ class Action extends MY_Controller {
         if(empty($debate)){
             $this->message('参数错误！');
         }
+        $topic = $this->topics_model->get_by_id(intval($topic_id));
+        if(empty($topic) || !in_array($topic['status'], array(1,4))){
+            $this->message('帖子已经关闭或者删除，不能投票！');
+        }
+        
         $debate['affirm_voterids'] = explode(',', $debate['affirm_voterids']);
         $debate['negate_voterids'] = explode(',', $debate['negate_voterids']);
         $users = ($debate['affirm_voterids']+$debate['negate_voterids']);

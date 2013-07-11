@@ -106,7 +106,7 @@ $(function(){
 				var html = '<div id="'+rel+'" title="提示信息"></div>';
 				html = $(html);
 			}
-                        $.Alert('正在努力……');
+                        //$.Alert('正在努力……');
                         ajaxFun(url, field,function(data){
                             
                             if(data.substr(0,1)=='{'){

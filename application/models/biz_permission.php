@@ -216,7 +216,7 @@ class Biz_permission extends CI_Model {
         }
         if ($is_perm) {
             //强制设定最小发帖间隔3秒钟。
-            $min_time = $this->user['group']['min_pertime']<3?3:$this->user['group']['min_pertime'];
+            $min_time = $this->user['group']['min_pertime']<10?10:$this->user['group']['min_pertime'];
             $is_perm = $min_time <= ($this->time - $this->user['last_post_time']);
         }
         return $is_perm;

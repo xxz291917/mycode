@@ -36,6 +36,7 @@
       <div class="mainNavR">
         <?php if($this->user['id']>0){?>
         <ul class="logInfo">
+          <!--li class="welTip">欢迎你，<a href="http://test.9tech.cn/me"><?php echo ''?></a></li>-->
           <li><a href="#" class="icoNote"></a></li>
           <li><a href="#" class="icoEmail"></a></li>
           <!--

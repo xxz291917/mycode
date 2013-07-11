@@ -45,13 +45,8 @@ class Biz_Ask extends CI_Model {
         }
     }
 
-    public function check_post($type = 'post') {
-//        $this->form_validation->set_rules('highlight[0]', '高亮颜色', 'required|color');
-//        $this->form_validation->set_rules('highlight[1]', '粗体', 'regex_match[/[01]/]');
-//        $this->form_validation->set_rules('highlight[2]', '斜体', 'regex_match[/[01]/]');
-//        $this->form_validation->set_rules('highlight[3]', '下划线', 'regex_match[/[01]/]');
-//        $this->form_validation->set_message('regex_match', '%s参数不正确。');
-//        $this->form_validation->set_message('color', '%s不是正确的颜色值。');
+    public function check_post($type) {
+        $this->form_validation->set_rules('price', '悬赏金钱', 'intval|greater_than[0]|callback_price_check');
     }
 
     public function reply($tid, $post, $pid) {
