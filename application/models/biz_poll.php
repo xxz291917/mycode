@@ -94,7 +94,7 @@ class Biz_poll extends CI_Model {
             }
             
             $this->form_validation->set_rules('poll_option[]', '选项', 'trim|required|max_length[100]');
-            $this->form_validation->set_rules('max_choices', '最多可选项', 'trim|greater_than[0]|less_than['.$num.']');
+            $this->form_validation->set_rules('max_choices', '最多可选项', 'trim|greater_than[0]|less_than['.($num-1).']');
             $this->form_validation->set_rules('expire_time', '投票有效天数', 'trim|is_natural|greater_than[0]');
             $this->form_validation->set_rules('is_visible', '', 'regex_match[/[01]/]');
             $this->form_validation->set_rules('is_overt', '', 'regex_match[/[01]/]');
