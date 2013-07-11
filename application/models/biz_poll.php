@@ -84,15 +84,22 @@ class Biz_poll extends CI_Model {
 
     public function check_post($type = 'post') {
         if ($type == 'post') {
+            $_POST['poll_option'] = array_filter($_POST['poll_option']);
+            $num = count($_POST['poll_option']);
+            $_CI = &get_instance();
+            if($num<=0){
+                $_CI->message('至少需要一个有内容的选项。');
+            }elseif($num>50){
+                $_CI->message('最多支持50个选项。');
+            }
+            
             $this->form_validation->set_rules('poll_option[]', '选项', 'trim|required|max_length[100]');
-            $this->form_validation->set_rules('max_choices', '选项个数', 'trim|is_natural_no_zero');
-            $this->form_validation->set_rules('expire_time', '投票有效天数', 'trim|is_natural');
+            $this->form_validation->set_rules('max_choices', '最多可选项', 'trim|greater_than[0]|less_than['.$num.']');
+            $this->form_validation->set_rules('expire_time', '投票有效天数', 'trim|is_natural|greater_than[0]');
             $this->form_validation->set_rules('is_visible', '', 'regex_match[/[01]/]');
             $this->form_validation->set_rules('is_overt', '', 'regex_match[/[01]/]');
 
-            $this->form_validation->set_message('is_visible', '%s参数不正确。');
-            $this->form_validation->set_message('is_overt', '%s参数不正确。');
-            $this->form_validation->set_message('max_choices', '%s必须是大于0的正整数');
+            $this->form_validation->set_message('less_than', '%s不能多于选项数。');
         }
     }
 
@@ -171,6 +178,11 @@ class Biz_poll extends CI_Model {
         $this->poll_model->update($poll_data, array('topic_id' => $tid));
         //完成poll_options表的数据
         $poll_options = $this->poll_options_model->get_list(array('topic_id' => $tid));
+        $post['poll_option'] = array_filter($post['poll_option']);
+        if(count($post['poll_option']) < count($poll_options)){
+            $_CI = &get_instance();
+            $_CI->message('编辑投票时，选项不能少于原来的项。');
+        }
         foreach ($post['poll_option'] as $k => $v) {
             $new_options = array();
             $new_options['display_order'] = $k;

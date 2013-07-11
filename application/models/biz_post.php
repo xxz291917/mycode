@@ -375,7 +375,7 @@ class Biz_post extends CI_Model {
             array(
                 'field' => 'content',
                 'label' => '帖子内容',
-                'rules' => 'trim|required|min_length[15]'
+                'rules' => 'trim|required|min_length[10]'
             ),
             array(
                 'field' => 'attachments[]',

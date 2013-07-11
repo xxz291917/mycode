@@ -157,7 +157,7 @@ echo $page;?>
             echo '</li>';
         }
         echo '</ol>';
-        if ($first_post['is_vote']) {
+        if ($first_post['is_vote'] && !$is_over) {
             echo form_submit(array('name'=>'submit','class'=>'mainCmtBtn'), '投票');
         }
         echo form_close();

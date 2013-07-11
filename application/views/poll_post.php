@@ -38,7 +38,7 @@
       </li>
       <li>
         <span>持续时间：</span>
-        <input type="text" class="inp" value="<?php echo set_value('expire_time', 0); ?>" name="expire_time">
+        <input type="text" class="inp" value="<?php echo set_value('expire_time', 1); ?>" name="expire_time">
         <label>天</label>
       </li>
       <li>
@@ -78,6 +78,15 @@ $(function(){
 		var html = '<li><input name="poll_option[]" class="inp" value=""><span class="btnCls">关闭</span></li>';
 		$(".voteBoxL ol").append(html);
 	});
+	
+	$('.btnCls').live('click',function() {
+		if( $('.voteBoxL li').length > 1 ) {
+			$(this).parent().remove();
+			return false;
+		}else{
+			$.Alert('至少需要保留一个');	
+		}
+	});	 
 	
 })
 

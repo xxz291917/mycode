@@ -21,7 +21,7 @@ $lang['is_unique'] 			= "%s必须包含一个唯一值";
 $lang['is_natural']			= "%s必须是一个自然数";
 $lang['is_natural_no_zero']	= "%s必须是一个大于零的自然数";
 $lang['decimal']			= "%s必须是一个小数";
-$lang['less_than']			= "%s必须是一个小玉%s的数字";
+$lang['less_than']			= "%s必须是一个小于%s的数字";
 $lang['greater_than']		= "%s必须是一个大于%s的数字";
 
 
