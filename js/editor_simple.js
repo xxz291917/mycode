@@ -51,7 +51,7 @@ $(function(){
 					base_url+'js/kindeditor/plugins/quote/quote.css',
 					],
 					useContextmenu:false,
-					uploadJson : base_url+'index.php/action/do_upload/',   //<<相对于kindeditor3.5.5\plugins\image\image.html 
+					uploadJson : base_url+'index.php/action/do_upload/'+(KindEditor.forum_id)+'/',   //<<相对于kindeditor3.5.5\plugins\image\image.html 
 					//fileManagerJson : '../../php/file_manager_json2.php',   //<<相对于kindeditor3.5.5\plugins\file_manager\file_manager.html 
 					allowFileManager : false,
 					afterUpload : function(url,data,name) {
@@ -92,7 +92,7 @@ $(function(){
 							'.text-align', '.color', '.background-color', '.font-size', '.font-family', '.font-weight',
 							'.font-style', '.text-decoration', '.vertical-align', '.background', '.border'
 						],
-						a : ['id', 'class', 'href', 'target', 'name'],
+						a : ['id', 'class', 'href', 'target', 'name','aid'],
 						embed : ['id', 'class', 'src', 'width', 'height', 'type', 'loop', 'autostart', 'quality', '.width', '.height', 'align', 'allowscriptaccess'],
 						img : ['id', 'class', 'src', 'width', 'height', 'border', 'alt', 'title', 'align', '.width', '.height', '.border','smileid','aid'],
 						'p,ol,ul,li,blockquote,h1,h2,h3,h4,h5,h6' : [

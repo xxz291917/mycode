@@ -7,7 +7,7 @@
 <meta name="keywords" content="<?php echo $seo['keywords']?>">
 <link rel="stylesheet" href="<?=base_url()?>css/main.css">
 <!--[if IE]>
-<script src="js/html5.js"></script>
+<script src="<?=base_url()?>js/html5.js"></script>
 <![endif]-->
 <link rel="stylesheet" type="text/css" href="<?=base_url()?>css/front_style.css" />
 <link rel="stylesheet" type="text/css" href="<?=base_url()?>js/jquery-ui/jquery-ui.min.css" />

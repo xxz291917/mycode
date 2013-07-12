@@ -178,7 +178,7 @@ echo $page;?>
           <li class="fl"><a href="<?php echo base_url('index.php/action/report/'.$first_post['id'])?>" target="dialog">举报</a></li>
           <?php }?>
           <li><a href="<?=base_url('index.php/action/collect/'.$topic['id'])?>" class="icoCollect" target="ajax">收藏</a></li>
-          <?php if($manage_permission['edit']){?>
+          <?php if($manage_permission['edit'] || $this->biz_permission->get_manage_permission_by_owner('edit',$first_post['author_id'])){?>
           <li><a href="<?php echo base_url('index.php/action/edit/'.$first_post['topic_id'].'/'.$first_post['id'])?>" class="icoGrade">编辑</a></li>
           <?php }?>
           <?php if($base_permission['reply']){?>
@@ -273,7 +273,7 @@ echo $page;?>
           <?php if($base_permission['report']){?>
           <li class="fl"><a href="<?php echo base_url('index.php/action/report/'.$post['id'])?>" target="dialog">举报</a></li>
           <?php } ?>
-          <?php if($manage_permission['edit']){?>
+          <?php if($manage_permission['edit'] || $this->biz_permission->get_manage_permission_by_owner('edit',$post['author_id'])){?>
           <li><a href="<?php echo base_url('index.php/action/edit/'.$post['topic_id'].'/'.$post['id'])?>" class="icoGrade">编辑</a></li>
           <?php } ?>
           <?php if($base_permission['reply']){?>

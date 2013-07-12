@@ -66,6 +66,20 @@ class Biz_permission extends CI_Model {
         return !empty($admin_permission[$action])?$admin_permission[$action]:false;
     }
     
+    
+    /**
+     * 返回某个用户对某个帖子的管理权限（其实就是用户组在某板块下的权限）
+     * @return type
+     */
+    public function check_manage_no_owner($topic_id, $action) {
+        $action = $this->get_full_action($action);
+        $topic = $this->topics_model->get_by_id($topic_id);
+        //获取管理权限
+        $admin_permission = $this->groups_model->get_admin_permission($topic['forum_id']);
+        return !empty($admin_permission[$action])?$admin_permission[$action]:false;
+    }
+    
+    
      /**
      * 得到某个帖子，返回当前用户的管理权限，返回数组。
      * @param int $topic_id 帖子id
@@ -89,6 +103,40 @@ class Biz_permission extends CI_Model {
         return $return;
     }
 
+    /**
+     * 得到某个帖子，返回当前用户的管理权限，不考虑是否是本帖子的拥有者（回帖使用）返回数组。
+     * @param int $topic_id 帖子id
+     * @return array
+     */
+    public function get_manage_permission_no_owner($topic_id) {
+        $return = array();
+        $topic = $this->topics_model->get_by_id($topic_id);
+        $admin_permission = $this->groups_model->get_admin_permission($topic['forum_id']);
+        if(empty($topic)){
+            return $return;
+        }
+        foreach ($this->manage_arr as $action) {
+            list($null, $man_action) = explode('_', $action);
+            $return[$man_action] = (!empty($admin_permission[$action]))?$admin_permission[$action]:false;
+        }
+        return $return;
+    }
+    
+    /**
+     * 得到所有者，是否拥有该权限
+     * @param type $action
+     * @return boolean
+     */
+    public function get_manage_permission_by_owner($action, $author_id) {
+        if ($author_id == $this->user['id']) {
+            $action = $this->get_full_action($action);
+            if (in_array($action, $this->owner_arr)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     /**
      * 传入版块id和动作,检测当前用户有没有相应的权限
      * @param int $forum_id 版块id

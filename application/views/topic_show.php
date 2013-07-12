@@ -166,7 +166,7 @@ echo $page;?>
           <?php }?>
           
           <!--li><a href="#" class="icoEdit">评分</a></li-->
-          <?php if($manage_permission['edit']){?>
+          <?php if($manage_permission['edit'] || $this->biz_permission->get_manage_permission_by_owner('edit',$post['author_id'])){?>
           <li><a href="<?php echo base_url('index.php/action/edit/'.$post['topic_id'].'/'.$post['id'])?>" class="icoGrade">编辑</a></li>
           <?php }?>
           

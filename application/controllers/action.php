@@ -337,21 +337,26 @@ class Action extends MY_Controller {
             $this->message('参数错误，发布的主题不存在', 0, $forum_show_url);
         }
         
-        //检测权限。
-        $is_edit = $this->biz_permission->check_manage($topic_id, 'edit');
-        if (!$is_edit) {
-            $this->message('您没有权限编辑帖子');
-        }
-
         //获取编辑的内容
         if (is_numeric($post_id) && !empty($post_id)) {
             $db_post = $this->posts_model->get_by_id($post_id);
         } else {
             $db_post = $this->posts_model->get_one(array('topic_id' => $topic_id, 'is_first' => '1'));
         }
+
         if (empty($db_post)) {
             $this->message('参数错误，编辑的帖子不存在', 0, $forum_show_url);
         }
+        
+        //检测权限。
+        $is_owner = $this->biz_permission->get_manage_permission_by_owner('edit',$db_post['author_id']);
+        if(!$is_owner){
+            $is_edit = $this->biz_permission->check_manage_no_owner($topic_id, 'edit');
+            if (!$is_edit) {
+                $this->message('您没有权限编辑帖子');
+            }
+        }
+
         $var['post'] = $db_post;
 
         //通过了check校验
@@ -489,7 +494,7 @@ class Action extends MY_Controller {
             $config['upload_path'] = './uploads/image';
             $config['allowed_types'] = 'gif|jpg|jpeg|png|bmp';
             $config['max_size'] = '1000';
-            $config['max_width'] = '0';
+            $config['max_width'] = '742';
             $config['max_height'] = '0';
         }
         $this->load->library('upload', $config);

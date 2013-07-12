@@ -103,7 +103,7 @@ class Topic extends MY_Controller {
         $var['seo']['keywords'] = $this->configs['seo_post_keywords'];
         
         //得到当前用户对此帖子的管理权限
-        $manage_permission = $this->biz_permission->get_manage_permission($id);
+        $manage_permission = $this->biz_permission->get_manage_permission_no_owner($id);
         $var['manage_permission'] = $manage_permission;
         $base_permission = $this->biz_permission->get_base_permission($topic['forum_id']);
         $var['base_permission'] = $base_permission;

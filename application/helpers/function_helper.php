@@ -164,6 +164,23 @@ if (!function_exists('user_url')) {
     }
 }
 
+/**
+ * 根据用户id，得到用户的空间地址。
+ */
+if (!function_exists('login_url')) {
+    function login_url($uid) {
+        $current_url = current_url();
+        if(empty($current_url)){
+            $current_url = base_url();
+        }
+        if(empty($user_key)){
+            $user_key = '';
+        }
+        $CI = &get_instance();
+        return $CI->config->item('user_url').$user_key;
+    }
+}
+
 
 if (!function_exists('my_strtotime')) {
     function my_strtotime($time) {
