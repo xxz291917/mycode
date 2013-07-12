@@ -85,7 +85,6 @@
                     <div class="menuBox pa">
                         <ul>
                             <li class="icoSj"></li>
-                            <li class="icoSj"></li>
                             <li><a href="<?php echo base_url('index.php/action/post/' . $forum_id . '/1'); ?>" class="ico1" target="_blank">发表帖子</a></li>
                             <li><a href="<?php echo base_url('index.php/action/post/' . $forum_id . '/2'); ?>" class="ico3" target="_blank">发布问答</a></li>
                             <li><a href="<?php echo base_url('index.php/action/post/' . $forum_id . '/3'); ?>" class="ico2" target="_blank">发起投票</a></li>
@@ -194,7 +193,6 @@ echo $page; ?>
                     <li class="pr hasMenu"><a href="javascript:void(0);" class="icoPost">发帖</a>
                         <div class="menuBox pa">
                             <ul>
-                                <li class="icoSj"></li>
                                 <li class="icoSj"></li>
                                 <li><a href="<?php echo base_url('index.php/action/post/' . $forum_id . '/1'); ?>" class="ico1" target="_blank">发表帖子</a></li>
                                 <li><a href="<?php echo base_url('index.php/action/post/' . $forum_id . '/2'); ?>" class="ico3" target="_blank">发布问答</a></li>

@@ -391,6 +391,7 @@ $(function(){
 			}else{
 				$.Alert(data.message);
 				html.dialog("close");
+				window.location.reload();
 			}
 		});
 	});
@@ -402,6 +403,7 @@ $(function(){
 			}else{
 				$.Alert(data.message);
 				html.dialog("close");
+				window.location.reload();
 			}
 		});
 	});

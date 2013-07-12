@@ -134,7 +134,7 @@ echo $page;?>
           
         <?php
         $create_function = $first_post['is_multiple'] ? 'form_checkbox' : 'form_radio';
-        echo form_open(base_url('index.php/poll/submit/' . $first_post['topic_id']), array('target' => 'ajax', 'refresh' => 'true'));
+        echo form_open(base_url('index.php/poll/submit/' . $first_post['topic_id']), array('target' => 'ajax', 'title'=>'投票', 'refresh' => 'true'));
         echo '<ol>';
         foreach ($first_post['options'] as $key => $option) {
             echo '<li>';

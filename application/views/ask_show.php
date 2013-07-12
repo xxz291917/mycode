@@ -303,7 +303,7 @@ echo $page;?>
           <li><a class="icoReplys" href="<?php echo base_url('index.php/action/reply_dialog/'.$post['topic_id'].'/')?>" target="dialog" width="464px" title="快速回复">回复</a></li>
           <?php }?>
 		  <?php if($this->user['id']==$topic['author_id'] && empty($first_post['best_answer'])){?>
-          <li><a confirm="确定选择这个帖子为最佳答案么？" href="<?php echo base_url('index.php/action/select_answer/'.$post['id'])?>" target="ajax" title="选为最佳答案" class="icoEdit">最佳答案</a></li>
+          <li><a confirm="确定选择这个帖子为最佳答案么？" href="<?php echo base_url('index.php/action/select_answer/'.$post['id'])?>" target="ajax" title="选为最佳答案" refresh="true" class="icoEdit">最佳答案</a></li>
           <?php }?>
         </ul>
       </div>

@@ -644,7 +644,7 @@ class Action extends MY_Controller {
         $this->load->model(array('ask_model','users_extra_model'));
         $post = $this->posts_model->get_by_id($post_id);
         $topic = $this->posts_model->get_by_id($post['topic_id']);
-        if($post['topic_id'] !== $this->user['id']){
+        if($topic['author_id'] !== $this->user['id']){
             $this->message('您不是帖子所有者，无权操作。');
         }
         $ask = $this->ask_model->get_by_id($post['topic_id']);
