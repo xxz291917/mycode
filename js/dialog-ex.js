@@ -105,7 +105,7 @@ $(function(){
 			}
 			ajaxFun(url, field,function(data){
 				if(data.substr(0,1)=='{'){
-					json_data = JSON.parse(data);
+					var json_data = JSON.parse(data);
 				}
 				if(typeof json_data == 'object'){
 					$.Alert(json_data.message);
