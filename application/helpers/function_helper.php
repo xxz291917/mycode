@@ -113,7 +113,7 @@ if (!function_exists('highlight')) {
                     break;
                 case 1:
                     if ($val) {
-                        $subject = '<i>' . $subject . '</i>';
+                        $subject = '<cite>' . $subject . '</cite>';
                     }
                     break;
                 case 2:

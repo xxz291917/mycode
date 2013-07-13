@@ -1,4 +1,9 @@
 <!--content-->
+<?php
+$top_class = array(1=>'icoTop1',2=>'icoTop2',3=>'icoTop3');
+$special_class = array(2=>'icoVote',3=>'icoCoin',4=>'icoVs');
+$post_class = array(0=>'icoRepNo',1=>'icoRep');
+?>
 <div class="wrap clearfix">
     <div class="myPos fsong">>
         <a href="<?php echo base_url(); ?>">论坛</a><?php
@@ -121,10 +126,6 @@ echo $page; ?>
                     </ul>
                 </div>
 <?php } ?>
-
-
-
-
       <ul class="listCot listCotShow">
                 <li class="listCotShowOrder">
                     <ul>
@@ -148,11 +149,12 @@ echo $page; ?>
                         } else {
                             $topic_category = false;
                         }
+                        $class = $top_class[$topic['top']];
                         ?>
                         
-						<li>
+			<li>
                             <ul>
-                                <i class="icoTop3"></i>
+                                <li class="td1"><i class="<?=$class?>"></i></li>
                                 <li class="td2">
                                     <strong>
         							<?php if (!empty($topic_category)) { ?>
@@ -195,12 +197,10 @@ echo $page; ?>
                             </ul>
                         </li>
 					<?php } ?>
-                    <div class="blkTit">版块主题</div>
-                <?php } ?>
+                        <div class="blkTit">版块主题</div>
+                <?php }?>
+           </ul>
       
-      
-
-
             <ul class="listCot listCotShow">
                 <?php if (!empty($topics)) { ?>
                     <?php
@@ -210,12 +210,17 @@ echo $page; ?>
                         } else {
                             $topic_category = false;
                         }
+                        if($topic['recommend'] > 0){
+                            $class = 'icoRecd';
+                        }elseif($topic['special'] > 1){
+                            $class = $special_class[$topic['special']];
+                        }else{
+                            $class = ($this->time-$topic['last_post_time']>3600*24)?$post_class[0]:$post_class[1];
+                        }
                         ?>
                         <li>
                             <ul>
-                                <li class="td1"></li>
-                                
-                                
+                                <li class="td1"><i class="<?=$class?>"></i></li>
                                 <li class="td2">
                                     <strong>
         							<?php if (!empty($topic_category)) { ?>

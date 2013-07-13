@@ -99,59 +99,59 @@ $(function(){
 				var field = $this.serializeArray();
                                 var ajaxFun = $.post;
 			}
-			
-			if ($("#"+rel).length > 0) {
-				var html = $("#"+rel);
-			} else {
-				var html = '<div id="'+rel+'" title="提示信息"></div>';
-				html = $(html);
+			if ($("#"+rel).length == 0) {
+				var html = '<div id="'+rel+'" style="display:none" title="提示信息"></div>';
+				$("body").append(html);
 			}
-                        //$.Alert('正在努力……');
-                        ajaxFun(url, field,function(data){
-                            
-                            if(data.substr(0,1)=='{'){
-                                data = JSON.parse(data);
-                            }
-                            if(typeof data == 'object'){
-                                $.Alert(data.message);
-                            }else{
-                                html.html(data);
-                                //为一个表单添加ajax提交。
-                                html.dialog(options);
-								
-								var form = $('#' + rel).find("form");
-								if(form.length>0){
-									form.submit(function() {
-										var action = form.attr('action'),
-											method = form.attr('method'),
-											fields = form.serialize(),
-											ajaxFun = method=='post'?$.post:$.get;
-										ajaxFun(action,fields,function(data){
-											if(data.redirect){
-												var options = {buttons: {
-													"确定": function() {
-															$(this).dialog("close");
-															window.location.href = data.redirect;
-														}
-												}};
-											}else{
-												var options = {};
+			ajaxFun(url, field,function(data){
+				if(data.substr(0,1)=='{'){
+					json_data = JSON.parse(data);
+				}
+				if(typeof json_data == 'object'){
+					$.Alert(json_data.message);
+				}else{
+					if ($("#"+rel).length > 0) {
+						var html = $("#"+rel);
+					} else {
+						return false;
+					}
+					html.html(data);
+					//为一个表单添加ajax提交。
+					html.dialog(options);
+					
+					var form = $('#' + rel).find("form");
+					if(form.length>0){
+						form.submit(function() {
+							var action = form.attr('action'),
+								method = form.attr('method'),
+								fields = form.serialize(),
+								ajaxFun = method=='post'?$.post:$.get;
+							ajaxFun(action,fields,function(data){
+								if(data.redirect){
+									var options = {buttons: {
+										"确定": function() {
+												$(this).dialog("close");
+												window.location.href = data.redirect;
 											}
-											
-											if(!data.success){
-												$.Alert(data.message,'',options);
-											}else{
-												$.Alert(data.message,'',options);
-												html.dialog("close");
-											}
-										},'json');
-										return false;
-									});
+									}};
+								}else{
+									var options = {};
 								}
 								
-								
-                            }
-                        });
+								if(!data.success){
+									$.Alert(data.message,'',options);
+								}else{
+									$.Alert(data.message,'',options);
+									html.dialog("close");
+								}
+							},'json');
+							return false;
+						});
+					}
+					
+				}
+			});
+			
 			event.preventDefault();
 			return false;
 		};

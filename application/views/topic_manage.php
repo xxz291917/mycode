@@ -152,22 +152,18 @@ empty($action_url) && $action_url = 'index.php/topic/manage/';
             dateFormat: 'yy-mm-dd'
         });
         <?php if ($action == 'highlight') { ?>
-
-		$(function() {
-		    $('#highlight_color').colorPicker({showHexField: false});
-		});
-
-        $(".dopt_a").click(
-		function () {
-			if($("#highlight_style_"+$(this).text()).val()==0){
-				$(this).addClass("cnt");
-				$("#highlight_style_"+$(this).text()).val(1);
-			}else{
-				$(this).removeClass("cnt");
-				$("#highlight_style_"+$(this).text()).val(0);
-			}
-		});
+            $('#highlight_color').colorPicker({showHexField: false});
+            $(".dopt_a").click(    
+                function () {
+                        if($("#highlight_style_"+$(this).text()).val()==0){
+                                $(this).addClass("cnt");
+                                $("#highlight_style_"+$(this).text()).val(1);
+                        }else{
+                                $(this).removeClass("cnt");
+                                $("#highlight_style_"+$(this).text()).val(0);
+                        }
+                }
+            );
         <?php } ?>
-        
     });
 </script>

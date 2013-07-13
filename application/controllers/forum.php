@@ -60,8 +60,8 @@ class Forum extends MY_Controller {
         $mannager = $this->users_model->get_user_by_names($mannager);
         $var['mannager'] = $mannager;
         //获取此版块下的推荐帖
-        $recommend_topics = $this->topics_model->get_list('forum_id = '.$forum_id.' AND recommend = 1');
-        $var['recommend_topics'] = $recommend_topics;
+        $top_topics = $this->topics_model->get_list('forum_id = '.$forum_id.' AND top > 0');
+        $var['top_topics'] = $top_topics;
 
         //分类搜索
         $category_id = intval($this->input->get('category_id'));
