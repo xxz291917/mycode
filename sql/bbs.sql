@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: 127.0.0.1
--- 生成日期: 2013 年 07 月 01 日 12:35
+-- 生成日期: 2013 年 07 月 13 日 11:28
 -- 服务器版本: 5.5.27
 -- PHP 版本: 5.4.7
 
@@ -49,7 +49,10 @@ INSERT INTO `ask` (`topic_id`, `price`, `best_answer`, `forum_id`, `category_id`
 (45, 20, 0, 11, 0, 0, 0, 0),
 (46, 0, 0, 11, 0, 0, 0, 0),
 (47, 0, 0, 11, 0, 0, 0, 0),
-(48, 4, 0, 11, 0, 0, 0, 0);
+(48, 4, 0, 11, 0, 0, 0, 0),
+(66, 0, 151, 11, 3, 1372767152, 1372767369, 3),
+(67, 6, 153, 11, 3, 1372769377, 1372769422, 2),
+(68, 5, 156, 11, 3, 1372829309, 1373016916, 3);
 
 -- --------------------------------------------------------
 
@@ -62,8 +65,23 @@ CREATE TABLE IF NOT EXISTS `ask_posts` (
   `post_id` int(11) unsigned NOT NULL COMMENT '回复posts的id',
   `user_id` int(10) unsigned NOT NULL COMMENT '回答者id',
   `supports` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '支持人数',
-  `opposes` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '反对人数'
+  `opposes` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '反对人数',
+  PRIMARY KEY (`post_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `ask_posts`
+--
+
+INSERT INTO `ask_posts` (`topic_id`, `post_id`, `user_id`, `supports`, `opposes`) VALUES
+(66, 149, 1, 6, 1),
+(66, 150, 1, 1, 7),
+(66, 151, 1, 66, 1),
+(67, 153, 1, 0, 1),
+(67, 154, 1, 1, 0),
+(68, 156, 1, 0, 1),
+(68, 157, 1, 1, 0),
+(68, 159, 14, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -119,7 +137,7 @@ CREATE TABLE IF NOT EXISTS `attachments_unused` (
   `is_thumb` tinyint(1) NOT NULL COMMENT '是否是缩率图',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='附件表' AUTO_INCREMENT=36 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='附件表' AUTO_INCREMENT=33 ;
 
 --
 -- 转存表中的数据 `attachments_unused`
@@ -141,7 +159,9 @@ INSERT INTO `attachments_unused` (`id`, `user_id`, `upload_time`, `size`, `exten
 (27, 1, 1372492445, 89.35, 'jpeg', '61fd3f0b4a6d2d34049d6315640e4518.jpeg', 'uploads/image/61fd3f0b4a6d2d34049d6315640e4518.jpeg', '7777', 1, 0),
 (28, 1, 1372492484, 10.54, 'jpg', '5805b8bf9137b710a5c89c0f07cbb243.jpg', 'uploads/image/5805b8bf9137b710a5c89c0f07cbb243.jpg', '', 1, 0),
 (29, 1, 1372492504, 89.35, 'jpeg', '3cbdcc48c28c05259ab7002c89e31013.jpeg', 'uploads/image/3cbdcc48c28c05259ab7002c89e31013.jpeg', '', 1, 0),
-(30, 1, 1372492884, 89.35, 'jpeg', '205fc0213277b0d045f6a7589ad1d3ec.jpeg', 'uploads/image/205fc0213277b0d045f6a7589ad1d3ec.jpeg', '55', 1, 0);
+(30, 1, 1372492884, 89.35, 'jpeg', '205fc0213277b0d045f6a7589ad1d3ec.jpeg', 'uploads/image/205fc0213277b0d045f6a7589ad1d3ec.jpeg', '55', 1, 0),
+(31, 1, 1372901225, 10.54, 'jpg', '203fb80e7bec54e75bf93cb4b9389b504fc26a06.jpg', 'uploads/image/3749c990dde58d54be86870695d6bfa1.jpg', '', 1, 0),
+(32, 0, 1373005909, 10.54, 'jpg', '203fb80e7bec54e75bf93cb4b9389b504fc26a06.jpg', 'uploads/image/1195c1d59683205293ac55252f94c5f0.jpg', '三十三', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -160,7 +180,7 @@ CREATE TABLE IF NOT EXISTS `config` (
 --
 
 INSERT INTO `config` (`name`, `value`) VALUES
-('closed', '1'),
+('closed', '0'),
 ('icp', 'dddd'),
 ('manager_email', 'xxz291917@163.com'),
 ('seo_index_description', ''),
@@ -192,7 +212,7 @@ CREATE TABLE IF NOT EXISTS `credit_log` (
   `time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '产生时间',
   PRIMARY KEY (`id`),
   KEY `idx_createduserid_createdtime` (`user_id`,`time`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='积分日志表' AUTO_INCREMENT=386 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='积分日志表' AUTO_INCREMENT=437 ;
 
 --
 -- 转存表中的数据 `credit_log`
@@ -583,7 +603,58 @@ INSERT INTO `credit_log` (`id`, `type`, `action`, `affect`, `description`, `user
 (382, 'extcredits3', 'reply', 4, '发表回复', 1, 'xxz291917', 1372670987),
 (383, 'extcredits1', 'reply', 4, '发表回复', 1, 'xxz291917', 1372671031),
 (384, 'extcredits2', 'reply', 4, '发表回复', 1, 'xxz291917', 1372671031),
-(385, 'extcredits3', 'reply', 4, '发表回复', 1, 'xxz291917', 1372671031);
+(385, 'extcredits3', 'reply', 4, '发表回复', 1, 'xxz291917', 1372671031),
+(386, 'extcredits1', 'post', 2, '发表主题', 1, 'xxz291917', 1372737971),
+(387, 'extcredits2', 'post', 3, '发表主题', 1, 'xxz291917', 1372737971),
+(388, 'extcredits3', 'post', 3, '发表主题', 1, 'xxz291917', 1372737971),
+(389, 'extcredits2', 'post', 2, '发表主题', 1, 'xxz291917', 1372744686),
+(390, 'extcredits1', 'post', 2, '发表主题', 1, 'xxz291917', 1372767152),
+(391, 'extcredits2', 'post', 3, '发表主题', 1, 'xxz291917', 1372767152),
+(392, 'extcredits3', 'post', 3, '发表主题', 1, 'xxz291917', 1372767152),
+(393, 'extcredits1', 'reply', 4, '发表回复', 1, 'xxz291917', 1372767301),
+(394, 'extcredits2', 'reply', 4, '发表回复', 1, 'xxz291917', 1372767301),
+(395, 'extcredits3', 'reply', 4, '发表回复', 1, 'xxz291917', 1372767301),
+(396, 'extcredits1', 'reply', 4, '发表回复', 1, 'xxz291917', 1372767310),
+(397, 'extcredits2', 'reply', 4, '发表回复', 1, 'xxz291917', 1372767310),
+(398, 'extcredits3', 'reply', 4, '发表回复', 1, 'xxz291917', 1372767310),
+(399, 'extcredits1', 'reply', 4, '发表回复', 1, 'xxz291917', 1372767369),
+(400, 'extcredits2', 'reply', 4, '发表回复', 1, 'xxz291917', 1372767369),
+(401, 'extcredits3', 'reply', 4, '发表回复', 1, 'xxz291917', 1372767369),
+(402, 'extcredits2', 'ask_action', -6, '发表问答扣减积分', 1, 'xxz291917', 1372769377),
+(403, 'extcredits1', 'post', 2, '发表主题', 1, 'xxz291917', 1372769377),
+(404, 'extcredits2', 'post', 3, '发表主题', 1, 'xxz291917', 1372769377),
+(405, 'extcredits3', 'post', 3, '发表主题', 1, 'xxz291917', 1372769377),
+(406, 'extcredits1', 'reply', 4, '发表回复', 1, 'xxz291917', 1372769397),
+(407, 'extcredits2', 'reply', 4, '发表回复', 1, 'xxz291917', 1372769397),
+(408, 'extcredits3', 'reply', 4, '发表回复', 1, 'xxz291917', 1372769397),
+(409, 'extcredits1', 'reply', 4, '发表回复', 1, 'xxz291917', 1372769422),
+(410, 'extcredits2', 'reply', 4, '发表回复', 1, 'xxz291917', 1372769422),
+(411, 'extcredits3', 'reply', 4, '发表回复', 1, 'xxz291917', 1372769422),
+(412, 'extcredits2', 'ask_action', -5, '发表问答扣减积分', 1, 'xxz291917', 1372829309),
+(413, 'extcredits1', 'post', 2, '发表主题', 1, 'xxz291917', 1372829309),
+(414, 'extcredits2', 'post', 3, '发表主题', 1, 'xxz291917', 1372829309),
+(415, 'extcredits3', 'post', 3, '发表主题', 1, 'xxz291917', 1372829309),
+(416, 'extcredits1', 'reply', 4, '发表回复', 1, 'xxz291917', 1372829324),
+(417, 'extcredits2', 'reply', 4, '发表回复', 1, 'xxz291917', 1372829324),
+(418, 'extcredits3', 'reply', 4, '发表回复', 1, 'xxz291917', 1372829324),
+(419, 'extcredits1', 'reply', 4, '发表回复', 1, 'xxz291917', 1372829339),
+(420, 'extcredits2', 'reply', 4, '发表回复', 1, 'xxz291917', 1372829339),
+(421, 'extcredits3', 'reply', 4, '发表回复', 1, 'xxz291917', 1372829339),
+(422, 'extcredits2', 'best_answer', 5, 'best_answer', 1, 'xxz291917', 1372829420),
+(423, 'extcredits2', 'best_answer', 5, 'best_answer', 1, 'xxz291917', 1372829438),
+(424, 'extcredits2', 'best_answer', 5, 'best_answer', 1, 'xxz291917', 1372829450),
+(425, 'extcredits1', 'reply', 2, '发表回复', 1, 'xxz291917', 1372906277),
+(426, 'extcredits2', 'reply', 2, '发表回复', 1, 'xxz291917', 1372906277),
+(427, 'extcredits3', 'reply', 3, '发表回复', 1, 'xxz291917', 1372906277),
+(428, 'extcredits1', 'reply', 4, '发表回复', 14, 'xxz291917', 1373016916),
+(429, 'extcredits2', 'reply', 4, '发表回复', 14, 'xxz291917', 1373016916),
+(430, 'extcredits3', 'reply', 4, '发表回复', 14, 'xxz291917', 1373016916),
+(431, 'extcredits1', 'post', 2, '发表主题', 14, 'xxz291917', 1373017055),
+(432, 'extcredits2', 'post', 3, '发表主题', 14, 'xxz291917', 1373017055),
+(433, 'extcredits3', 'post', 3, '发表主题', 14, 'xxz291917', 1373017055),
+(434, 'extcredits1', 'reply', 4, '发表回复', 14, 'xxz291917', 1373421779),
+(435, 'extcredits2', 'reply', 4, '发表回复', 14, 'xxz291917', 1373421779),
+(436, 'extcredits3', 'reply', 4, '发表回复', 14, 'xxz291917', 1373421779);
 
 -- --------------------------------------------------------
 
@@ -686,7 +757,8 @@ INSERT INTO `debate` (`topic_id`, `user_id`, `start_time`, `end_time`, `affirm_d
 (35, 1, 1370397845, 1371052800, 0, 0, 0, 0, 'xxz291917', 0, '', 'sdfsfd', 'fffff', '', '', '', 0, 0),
 (44, 1, 1370770112, 1370448000, 1, 0, 0, 0, 'xxz291917', 0, '', '学智测试2222', '学智测试辩论22244444', '', '', '', 1, 0),
 (49, 1, 1371972423, 1370966400, 0, 0, 0, 0, 'xxz291917', 0, '', '红星闪闪放光芒', '红星闪闪放光芒', '', '', '', 0, 0),
-(53, 1, 1372312851, 1371657600, 0, 1, 1, 0, 'xxz291917', 0, '', '红星闪闪放光', '红星闪闪放光芒', '', ',1', '', 0, 1);
+(53, 1, 1372312851, 1372850826, 0, 256, 151, 256, 'xxz291917', 1, 'xxz5291917', '红星闪闪放光', '红星闪闪放光芒', 'asdasdasdasdasd', ',1', '', 0, 1),
+(69, 14, 1373017055, 1374163199, 0, 1, 0, 0, 'xxz291917', 0, '', '红方观点红方观点红方观点红方观点红方观点红方观点红方观点', '蓝方观点蓝方观点蓝方观点蓝方观点蓝方观点', '', '', '', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -712,7 +784,8 @@ CREATE TABLE IF NOT EXISTS `debate_posts` (
 
 INSERT INTO `debate_posts` (`post_id`, `topic_id`, `user_id`, `stand`, `post_time`, `voters`) VALUES
 (90, 44, 1, 1, 1372304213, 1),
-(130, 53, 1, 0, 1372331740, 0);
+(130, 53, 1, 0, 1372331740, 0),
+(161, 69, 14, 2, 1373421779, 0);
 
 -- --------------------------------------------------------
 
@@ -781,6 +854,7 @@ CREATE TABLE IF NOT EXISTS `forums` (
   `seo_keywords` varchar(255) NOT NULL COMMENT 'seo关键字',
   `seo_description` varchar(255) NOT NULL COMMENT 'seo描述',
   `credit_setting` varchar(3000) NOT NULL COMMENT '积分设置（发帖，回复，加精……）',
+  `redirect` int(11) NOT NULL DEFAULT '0' COMMENT '可以重定向某个版块',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '显示状态 (1正常,0关闭)',
   PRIMARY KEY (`id`),
   KEY `forum` (`status`,`type`,`display_order`),
@@ -792,19 +866,19 @@ CREATE TABLE IF NOT EXISTS `forums` (
 -- 转存表中的数据 `forums`
 --
 
-INSERT INTO `forums` (`id`, `parent_id`, `type`, `name`, `description`, `icon`, `manager`, `display_order`, `create_user`, `create_user_id`, `create_time`, `allow_special`, `is_category`, `is_cat_necessary`, `is_anonymous`, `is_html`, `is_bbcode`, `is_smilies`, `is_media`, `check`, `allow_visit`, `allow_read`, `allow_post`, `allow_reply`, `allow_upload`, `allow_download`, `seo_title`, `seo_keywords`, `seo_description`, `credit_setting`, `status`) VALUES
-(1, 0, 'group', 'Flash RIA', '测试新分类', '', 'dsdff', 1, '', 0, 0, '', 0, 0, 0, 0, 0, 0, 0, 0, '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19', '1,2,3,4,6,7', '1,2,3,4,5,6', '1,2,3,4,5,9,10', '1,2,3', '1,2,3', '论坛seo', '', '', '{"post":{"extcredits1":"3","extcredits2":"4","extcredits3":"5"},"reply":{"extcredits1":"","extcredits2":"6","extcredits3":""},"digest":{"extcredits1":"","extcredits2":"7","extcredits3":""},"postattach":{"extcredits1":"","extcredits2":"8","extcredits3":""},"getattach":{"extcredits1":"","extcredits2":"","extcredits3":""},"daylogin":{"extcredits1":"","extcredits2":"","extcredits3":""},"search":{"extcredits1":"","extcredits2":"","extcredits3":""}}', 1),
-(2, 1, 'forum', 'Flex', '测试默认版块', '', 'xxz291917', 2, '', 0, 0, '1,2', 0, 0, 0, 1, 1, 0, 0, 0, '1,2,3,16,17,18,19,10,11,12,13,14,15', '1,2,3,16,17,18,19,10,11,12,13,14,15', '1,2,3,16,17,18,19,10,11,12,13,14,15', '1,2,3,16,17,18,19,10,11,12,13,14,15', '1,2,3,16,17,18,19,10,11,12,13,14,15', '1,2,3,16,17,18,19,10,11,12,13,14,15', '', '', '', '{"post":{"extcredits1":"3","extcredits2":"4","extcredits3":"6"},"reply":{"extcredits1":"2","extcredits2":"2","extcredits3":"3"},"digest":{"extcredits1":"","extcredits2":"","extcredits3":""},"postattach":{"extcredits1":"","extcredits2":"","extcredits3":""},"getattach":{"extcredits1":"0","extcredits2":"5","extcredits3":"4"},"daylogin":{"extcredits1":"","extcredits2":"","extcredits3":""},"search":{"extcredits1":"","extcredits2":"","extcredits3":""}}', 0),
-(4, 0, 'group', '口水天下', '测试版块内容哦测试版块内容哦测试版块内容哦测试版块内容哦测试版块内容哦测试版块内容哦测试版块内容哦', '', 'admin', 5, '', 0, 0, '2,3', 0, 0, 0, 1, 1, 1, 1, 2, '', '', '', '', '', '', '论坛seo', '论坛seo 论坛seo', '论坛seo论坛seo论坛seo论坛seo论坛seo论坛seo', '', 1),
-(6, 2, 'sub', '口水天下', '', '', '', 0, '', 0, 0, '', 0, 0, 0, 0, 0, 0, 0, 2, '1,2', '1,2', '1,2', '1,2', '1,2', '1,2', '', '', '', '{"post":{"extcredits1":"3","extcredits2":"5","extcredits3":"5"},"reply":{"extcredits1":"","extcredits2":"","extcredits3":""},"digest":{"extcredits1":"","extcredits2":"","extcredits3":""},"postattach":{"extcredits1":"","extcredits2":"","extcredits3":""},"getattach":{"extcredits1":"","extcredits2":"","extcredits3":""},"daylogin":{"extcredits1":"","extcredits2":"","extcredits3":""},"search":{"extcredits1":"","extcredits2":"","extcredits3":""}}', 1),
-(10, 0, 'group', '综合交流', '', '', '', 2, '', 0, 0, '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', 0),
-(11, 1, 'forum', 'ActionScript 3', 'ttt', 'uploads/icon/9c2d991ae95c6eab3af12bf7853e4691_s.jpg', 'xxz291917', 0, 'xxz291917', 1, 1367912803, '', 1, 0, 0, 0, 0, 0, 0, 2, '', '', '', '', '', '', '', '', '', '{"post":{"extcredits1":"2","extcredits2":"3","extcredits3":"3"},"reply":{"extcredits1":"4","extcredits2":"4","extcredits3":"4"},"digest":{"extcredits1":"4","extcredits2":"3","extcredits3":"3"},"postattach":{"extcredits1":"","extcredits2":"","extcredits3":""},"getattach":{"extcredits1":"","extcredits2":"","extcredits3":""},"daylogin":{"extcredits1":"","extcredits2":"","extcredits3":""},"search":{"extcredits1":"","extcredits2":"","extcredits3":""}}', 0),
-(12, 10, 'forum', '问答求助', '', '', '', 0, 'xxz291917', 1, 1368584217, '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', 0),
-(13, 1, 'forum', 'Flash 3D', '', '', '', 0, 'xxz291917', 1, 1371785369, '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', 0),
-(14, 10, 'forum', '新闻资讯', '', '', '', 0, 'xxz291917', 1, 1371785408, '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', 0),
-(15, 10, 'forum', '活动专区', '', '', '', 0, 'xxz291917', 1, 1371785408, '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', 0),
-(16, 4, 'forum', 'AIR', '', '', '', 0, 'xxz291917', 1, 1371785444, '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', 0),
-(17, 11, 'sub', 'sdfsdf', '士大夫', 'uploads/icon/30548c2b89bf24036297e69cfd81a985_s.jpg', '发士大夫', 0, 'xxz291917', 1, 1372663741, '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', 0);
+INSERT INTO `forums` (`id`, `parent_id`, `type`, `name`, `description`, `icon`, `manager`, `display_order`, `create_user`, `create_user_id`, `create_time`, `allow_special`, `is_category`, `is_cat_necessary`, `is_anonymous`, `is_html`, `is_bbcode`, `is_smilies`, `is_media`, `check`, `allow_visit`, `allow_read`, `allow_post`, `allow_reply`, `allow_upload`, `allow_download`, `seo_title`, `seo_keywords`, `seo_description`, `credit_setting`, `redirect`, `status`) VALUES
+(1, 0, 'group', 'Flash RIA', '测试新分类', '', 'dsdff', 1, '', 0, 0, '', 0, 0, 0, 0, 0, 0, 0, 0, '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19', '1,2,3,4,6,7', '1,2,3,4,5,6', '1,2,3,4,5,9,10', '1,2,3', '1,2,3', '论坛seo', '', '', '{"post":{"extcredits1":"3","extcredits2":"4","extcredits3":"5"},"reply":{"extcredits1":"","extcredits2":"6","extcredits3":""},"digest":{"extcredits1":"","extcredits2":"7","extcredits3":""},"postattach":{"extcredits1":"","extcredits2":"8","extcredits3":""},"getattach":{"extcredits1":"","extcredits2":"","extcredits3":""},"daylogin":{"extcredits1":"","extcredits2":"","extcredits3":""},"search":{"extcredits1":"","extcredits2":"","extcredits3":""}}', 0, 1),
+(2, 1, 'forum', 'Flex', '测试默认版块', '', 'xxz291917', 2, '', 0, 0, '1,2', 0, 0, 0, 1, 1, 0, 0, 0, '1,2,3,16,17,18,19,10,11,12,13,14,15', '1,2,3,16,17,18,19,10,11,12,13,14,15', '1,2,3,16,17,18,19,10,11,12,13,14,15', '1,2,3,16,17,18,19,10,11,12,13,14,15', '1,2,3,16,17,18,19,10,11,12,13,14,15', '1,2,3,16,17,18,19,10,11,12,13,14,15', '', '', '', '{"post":{"extcredits1":"3","extcredits2":"4","extcredits3":"6"},"reply":{"extcredits1":"2","extcredits2":"2","extcredits3":"3"},"digest":{"extcredits1":"","extcredits2":"","extcredits3":""},"postattach":{"extcredits1":"","extcredits2":"","extcredits3":""},"getattach":{"extcredits1":"0","extcredits2":"5","extcredits3":"4"},"daylogin":{"extcredits1":"","extcredits2":"","extcredits3":""},"search":{"extcredits1":"","extcredits2":"","extcredits3":""}}', 0, 0),
+(4, 0, 'group', '口水天下', '测试版块内容哦测试版块内容哦测试版块内容哦测试版块内容哦测试版块内容哦测试版块内容哦测试版块内容哦', '', 'admin', 5, '', 0, 0, '2,3', 0, 0, 0, 1, 1, 1, 1, 2, '', '', '', '', '', '', '论坛seo', '论坛seo 论坛seo', '论坛seo论坛seo论坛seo论坛seo论坛seo论坛seo', '', 0, 1),
+(6, 2, 'sub', '口水天下', '', '', '', 0, '', 0, 0, '', 0, 0, 0, 0, 0, 0, 0, 2, '1,2', '1,2', '1,2', '1,2', '1,2', '1,2', '', '', '', '{"post":{"extcredits1":"3","extcredits2":"5","extcredits3":"5"},"reply":{"extcredits1":"","extcredits2":"","extcredits3":""},"digest":{"extcredits1":"","extcredits2":"","extcredits3":""},"postattach":{"extcredits1":"","extcredits2":"","extcredits3":""},"getattach":{"extcredits1":"","extcredits2":"","extcredits3":""},"daylogin":{"extcredits1":"","extcredits2":"","extcredits3":""},"search":{"extcredits1":"","extcredits2":"","extcredits3":""}}', 0, 1),
+(10, 0, 'group', '综合交流', '', '', '', 2, '', 0, 0, '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', 0, 0),
+(11, 1, 'forum', 'ActionScript 3', 'ttt', 'uploads/icon/9c2d991ae95c6eab3af12bf7853e4691_s.jpg', 'xxz291917', 0, 'xxz291917', 1, 1367912803, '', 1, 0, 0, 0, 0, 0, 0, 2, '', '', '', '', '', '', '', '', '', '{"post":{"extcredits1":"2","extcredits2":"3","extcredits3":"3"},"reply":{"extcredits1":"4","extcredits2":"4","extcredits3":"4"},"digest":{"extcredits1":"4","extcredits2":"3","extcredits3":"3"},"postattach":{"extcredits1":"","extcredits2":"","extcredits3":""},"getattach":{"extcredits1":"","extcredits2":"","extcredits3":""},"daylogin":{"extcredits1":"","extcredits2":"","extcredits3":""},"search":{"extcredits1":"","extcredits2":"","extcredits3":""}}', 0, 0),
+(12, 10, 'forum', '问答求助', '', '', '', 0, 'xxz291917', 1, 1368584217, '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', 0, 0),
+(13, 1, 'forum', 'Flash 3D', '', '', '', 0, 'xxz291917', 1, 1371785369, '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', 0, 0),
+(14, 10, 'forum', '口水天下', '', '', '', 0, 'xxz291917', 1, 1371785408, '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', 4, 0),
+(15, 10, 'forum', '活动专区', '', '', '', 0, 'xxz291917', 1, 1371785408, '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', 0, 0),
+(16, 4, 'forum', 'AIR', '', '', '', 0, 'xxz291917', 1, 1371785444, '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', 0, 0),
+(17, 11, 'sub', 'sdfsdf', '士大夫', 'uploads/icon/30548c2b89bf24036297e69cfd81a985_s.jpg', '发士大夫', 0, 'xxz291917', 1, 1372663741, '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -829,12 +903,13 @@ CREATE TABLE IF NOT EXISTS `forums_statistics` (
 --
 
 INSERT INTO `forums_statistics` (`forum_id`, `posts`, `topics`, `today_posts`, `today_topics`, `last_post_id`, `last_post_time`, `last_author`) VALUES
-(2, 30, 14, 1, 2, 23, 1372670768, 'xxz291917'),
+(2, 31, 14, 1, 2, 23, 1372906277, 'xxz291917'),
 (6, 8, 5, 1, 1, 21, 1369452030, 'xxz291917'),
 (10, 1, 1, 1, 1, 15, 1368772328, 'xxz5291917'),
-(11, 59, 20, 4, 1, 63, 1372671031, 'xxz291917'),
+(11, 73, 25, 1, 2, 69, 1373421779, 'xxz291917'),
 (12, 37, 8, 2, 1, 61, 1372649054, 'xxz291917'),
-(13, 1, 1, 1, 1, 62, 1372665723, 'xxz291917');
+(13, 1, 1, 1, 1, 62, 1372665723, 'xxz291917'),
+(16, 1, 1, 1, 1, 65, 1372744686, 'xxz291917');
 
 -- --------------------------------------------------------
 
@@ -890,7 +965,7 @@ INSERT INTO `groups` (`id`, `type`, `name`, `icon`, `credits`, `stars`, `is_sign
 (9, 'member', '限制会员', 'uploads/icon/6099cf655da8573567bf4a069496863c_s.jpg', -99999, 0, 1, 0, 1, 1, 0, 0, 0, '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, ''),
 (10, 'member', '新手上路', '', 0, 1, 1, 1, 1, 1, 0, 0, 0, '2,3', 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, ''),
 (11, 'member', '注册会员', '', 50, 2, 1, 0, 1, 1, 0, 0, 0, '1,2', 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, ''),
-(12, 'member', '中级会员', '', 200, 3, 1, 0, 1, 1, 0, 0, 0, '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, ''),
+(12, 'member', '中级会员', '', 200, 3, 1, 1, 1, 1, 0, 0, 0, '', 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ''),
 (13, 'member', '高级会员', '', 500, 4, 1, 0, 1, 1, 0, 0, 0, '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, ''),
 (14, 'member', '金牌会员', '', 1000, 6, 1, 0, 1, 1, 0, 0, 0, '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, ''),
 (15, 'member', '论坛元老', '', 3000, 8, 1, 0, 1, 1, 0, 0, 0, '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, ''),
@@ -1176,7 +1251,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   KEY `forum_id` (`forum_id`),
   KEY `topic_id` (`topic_id`,`author_id`),
   KEY `post_time` (`topic_id`,`post_time`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=145 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=162 ;
 
 --
 -- 转存表中的数据 `posts`
@@ -1185,7 +1260,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
 INSERT INTO `posts` (`id`, `topic_id`, `forum_id`, `author`, `author_id`, `author_ip`, `post_time`, `subject`, `content`, `edit_user`, `edit_user_id`, `edit_time`, `attachment`, `check_status`, `is_first`, `is_report`, `is_bbcode`, `is_smilies`, `is_media`, `is_html`, `is_anonymous`, `is_hide`, `is_sign`, `position`, `status`) VALUES
 (1, 4, 2, 'xxz291917', 1, '127.0.0.1', 1368531409, '输入标题r', '填写帖子内容', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
 (2, 6, 2, 'xxz291917', 1, '127.0.0.1', 1368531645, '输入标题r', '填写帖子内容', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
-(6, 10, 2, 'xxz291917', 1, '127.0.0.1', 1368535793, '输入标题r', '填写帖子内容', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(6, 10, 2, 'xxz291917', 1, '127.0.0.1', 1368535793, '输入标题r', '填写帖子内容', 'xxz291917', 1, 1372818530, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
 (7, 7, 2, 'xxz291917', 1, '127.0.0.1', 1368583217, '夏学智测试', '今天的内容要新鲜哦\r\n<p class="MsoNormalCxSpFirst" style="margin-left:6.55pt;text-indent:36.0pt;">\r\n	<span style="font-family:&quot;">显式地把已<span>经</span>不再被引<span>用</span>的对象<span>赋</span>为</span><span> </span><span>nu</span><span>l</span><span>l</span>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="margin-left:6.55pt;text-indent:36.0pt;">\r\n	<span style="font-family:&quot;">不要频繁初<span>始</span>化对象</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="margin-left:6.55pt;text-indent:36.0pt;">\r\n	<span style="font-family:&quot;">除非必要，<span>否</span>则不要<span>在</span>循环内<span>初</span>始化对象</span><span> <span></span></span>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="margin-left:6.55pt;text-indent:36.0pt;">\r\n	<span style="font-family:&quot;">示例：</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="margin-left:6.55pt;text-indent:36.0pt;">\r\n	<span>f</span><span>o</span><span>r <span>(</span><span>$</span>i<span> </span>= <span>0</span>; <span>$</span>i<span> </span><span>&lt;</span><span>$</span><span>r</span><span>o</span><span>w</span>s;<span> </span><span>$i</span><span>++</span>)<span> </span>{</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="margin-left:36.0pt;text-indent:36.0pt;">\r\n	<span>$</span><span>c<span>o</span><span>mm</span><span>o</span><span>n</span><span>W</span><span>r</span><span>k</span><span>S</span><span>h</span>t<span> </span>= <span>n</span><span>e</span>w<span> </span><span>C</span><span>o</span><span>mm</span><span>o</span><span>n</span><span>W</span><span>r</span><span>k</span><span>S</span><span>h</span><span>t()</span>;</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="margin-left:36.0pt;text-indent:36.0pt;">\r\n	<span>…</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="text-indent:41.45pt;">\r\n	<span>}</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="text-indent:41.45pt;">\r\n	<span style="font-family:&quot;">应写成：</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="text-indent:40.35pt;">\r\n	<span>$</span><span>c<span>o</span><span>mm</span><span>o</span><span>n</span><span>W</span><span>r</span><span>k</span><span>S</span><span>h</span>t<span> </span>= <span>n</span><span>e</span>w<span> </span><span>C</span><span>o</span><span>mm</span><span>o</span><span>n</span><span>W</span><span>r</span><span>k</span><span>S</span><span>h</span><span>t()</span>;</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="text-indent:42.2pt;">\r\n	<span>f</span><span>o</span><span>r <span>(</span><span>$</span>i<span> </span>= <span>0</span>; <span>$</span>i<span> </span><span>&lt;</span><span>r</span><span>o</span><span>w</span>s;<span> </span><span>$i</span><span>++</span>)<span> </span>{</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="margin-left:30.55pt;text-indent:41.45pt;">\r\n	<span>…</span><b><span></span></b>\r\n</p>\r\n<p class="MsoNormalCxSpMiddle" style="text-indent:41.45pt;">\r\n	<span>}</span><b><span></span></b>\r\n</p>', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
 (8, 8, 2, 'xxz291917', 1, '127.0.0.1', 1368588882, '发帖测试123', '<table>\r\n	<tbody>\r\n		<tr>\r\n			<td class="c1 td1">\r\n				tid\r\n			</td>\r\n			<td class="c2 td1">\r\n				mediumint(8) unsigned\r\n			</td>\r\n			<td class="c3 td1">\r\n				&nbsp;0\r\n			</td>\r\n			<td class="c4 td1">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td1">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td1">\r\n				&nbsp;主题id\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td class="c1 td2">\r\n				overt\r\n			</td>\r\n			<td class="c2 td2">\r\n				tinyint(1)\r\n			</td>\r\n			<td class="c3 td2">\r\n				&nbsp;0\r\n			</td>\r\n			<td class="c4 td2">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td2">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td2">\r\n				&nbsp;是否公开投票参与人\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td class="c1 td1">\r\n				multiple\r\n			</td>\r\n			<td class="c2 td1">\r\n				tinyint(1)\r\n			</td>\r\n			<td class="c3 td1">\r\n				&nbsp;0\r\n			</td>\r\n			<td class="c4 td1">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td1">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td1">\r\n				&nbsp;是否多选\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td class="c1 td2">\r\n				visible\r\n			</td>\r\n			<td class="c2 td2">\r\n				tinyint(1)\r\n			</td>\r\n			<td class="c3 td2">\r\n				&nbsp;0\r\n			</td>\r\n			<td class="c4 td2">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td2">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td2">\r\n				&nbsp;是否投票后可见\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td class="c1 td1">\r\n				maxchoices\r\n			</td>\r\n			<td class="c2 td1">\r\n				tinyint(3) unsigned\r\n			</td>\r\n			<td class="c3 td1">\r\n				&nbsp;0\r\n			</td>\r\n			<td class="c4 td1">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td1">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td1">\r\n				&nbsp;最大可选项数\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td class="c1 td2">\r\n				expiration\r\n			</td>\r\n			<td class="c2 td2">\r\n				int(10) unsigned\r\n			</td>\r\n			<td class="c3 td2">\r\n				&nbsp;0\r\n			</td>\r\n			<td class="c4 td2">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td2">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td2">\r\n				&nbsp;过期时间\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td class="c1 td1">\r\n				pollpreview\r\n			</td>\r\n			<td class="c2 td1">\r\n				varchar(255)\r\n			</td>\r\n			<td class="c3 td1">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c4 td1">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td1">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td1">\r\n				&nbsp;选项内容前两项预览\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td class="c1 td2">\r\n				voters\r\n			</td>\r\n			<td class="c2 td2">\r\n				mediumint(8) unsigned\r\n			</td>\r\n			<td class="c3 td2">\r\n				&nbsp;0\r\n			</td>\r\n			<td class="c4 td2">\r\n				&nbsp;NO\r\n			</td>\r\n			<td class="c5 td2">\r\n				&nbsp;\r\n			</td>\r\n			<td class="c6 td2">\r\n				&nbsp;投票人数\r\n			</td>\r\n		</tr>\r\n	</tbody>\r\n</table>', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
 (9, 9, 2, 'xxz291917', 1, '127.0.0.1', 1368609926, '输入标题二二', '填写帖子内容污染物而', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
@@ -1300,7 +1375,7 @@ INSERT INTO `posts` (`id`, `topic_id`, `forum_id`, `author`, `author_id`, `autho
 (118, 44, 11, 'xxz291917', 1, '127.0.0.1', 1372297586, '', 'sdfsdfsdddddddddddddddddddddd', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 (119, 44, 11, 'xxz291917', 1, '127.0.0.1', 1372304277, '', '<blockquote class="blockquote">xxz291917 发表于 2013-06-09 20:46:01<br/>special&lt;strong&gt;speci……</blockquote>士大夫士大夫士大夫', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 4),
 (120, 44, 11, 'xxz291917', 1, '127.0.0.1', 1372312389, '', '<blockquote class="blockquote">xxz291917 发表于 2013-06-27 09:46:26<br/>sdfsdfsddddddddddddd……</blockquote>啊实打实的', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 3, 4),
-(121, 53, 11, 'xxz291917', 1, '127.0.0.1', 1372312851, '红星闪闪放光芒', '士大夫士大夫士大夫士大夫士大夫', 'xxz291917', 1, 1372315879, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 4),
+(121, 53, 11, 'xxz291917', 1, '127.0.0.1', 1372312851, '红星闪闪放光芒', '士大夫士大夫士大夫士大夫士大夫', 'xxz291917', 1, 1372842138, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 4),
 (122, 53, 11, 'xxz291917', 1, '127.0.0.1', 1372313414, '', '啊实打实的', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 4),
 (123, 53, 11, 'xxz291917', 1, '127.0.0.1', 1372313433, '', '士大夫发反反复复反反复复反反复复', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 3, 4),
 (124, 53, 11, 'xxz291917', 1, '127.0.0.1', 1372313467, '', '啊啊啊啊啊啊啊啊啊啊啊啊啊啊', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4, 4),
@@ -1317,13 +1392,50 @@ INSERT INTO `posts` (`id`, `topic_id`, `forum_id`, `author`, `author_id`, `autho
 (135, 59, 12, 'xxz291917', 1, '127.0.0.1', 1372411535, '人人人人5555人人人人人', '<p>\r\n	:L[attach]16[/attach]\r\n</p>\r\n<p>\r\n	sdfsdffffffffffffffffffffffffffffffffff\r\n</p>', 'xxz291917', 1, 1372479750, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
 (136, 60, 11, 'xxz291917', 1, '127.0.0.1', 1372491400, '44444444444444', '<p>\r\n	:loli哦i [attachimg]23[/attachimg] [attach]24[/attach]\r\n</p>\r\n<p>\r\n	阿斯达\r\n</p>\r\n<p>\r\n	<br />\r\n</p>\r\n<p>\r\n<pre class="codeprint brush:php;">phpinfo();\r\necho 123;</pre>\r\n</p>', 'xxz291917', 1, 1372493407, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
 (137, 61, 12, 'xxz291917', 1, '127.0.0.1', 1372645276, '添加一张图片附件，测试。', '添加一张图片附件，测试。添加一张图片附件，测试。添加一张图片附件，测试。添加一张图片附件，测试。添加一张图片附件，测试。添加一张图片附件，测试。添加一张图片附件，测试。添加一张图片附件，测试。添加一张图片附件，测试。添加一张图[attachimg]34[/attachimg]片附件，测试。添加一张图片附件，测试。', 'xxz291917', 1, 1372668844, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
-(138, 61, 12, 'xxz291917', 1, '127.0.0.1', 1372649054, '', '<a href="http://localhost/mycode/index.php/topic/show/61">标题大大大</a>', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+(138, 61, 12, 'xxz291917', 1, '127.0.0.1', 1372649054, '', '<a href="http://localhost/mycode/index.php/topic/show/61">标<em>题大大</em>大</a>', 'xxz291917', 1, 1372824623, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 (139, 62, 13, 'xxz291917', 1, '127.0.0.1', 1372665723, '去问去问去问去问', '按时打发士大夫阿斯顿发[attachimg]32[/attachimg]阿斯顿发阿斯顿发<br />', 'xxz291917', 1, 1372668761, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
 (140, 23, 2, 'xxz291917', 1, '127.0.0.1', 1372670768, '', '<blockquote class="blockquote">xxz291917 发表于 2013-05-28 19:21:02<br/>填写帖子内容:$:kiss::hands……</blockquote>士大夫士大夫撒', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 (141, 63, 11, 'xxz291917', 1, '127.0.0.1', 1372670946, 'xuezhi分类测试。', '丰东股份电饭锅:lol电饭锅', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
 (142, 63, 11, 'xxz291917', 1, '127.0.0.1', 1372670967, '', '[attachimg]35[/attachimg]', 'xxz291917', 1, 1372671024, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 4),
 (143, 63, 11, 'xxz291917', 1, '127.0.0.1', 1372670987, '', '<blockquote class="blockquote">xxz291917 发表于 2013-07-01 17:29:27<br/>士大夫士[attachimg]35[/a……</blockquote>士大夫士大夫', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 4),
-(144, 63, 11, 'xxz291917', 1, '127.0.0.1', 1372671031, '', '<blockquote class="blockquote">xxz291917 发表于 2013-07-01 17:29:27<br/>[attachimg]35[/attac……</blockquote>士大夫士大夫士大夫', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 3, 4);
+(144, 63, 11, 'xxz291917', 1, '127.0.0.1', 1372671031, '', '<blockquote class="blockquote">xxz291917 发表于 2013-07-01 17:29:27<br/>[attachimg]35[/attac……</blockquote>士大夫士大夫士大夫', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 3, 4),
+(145, 64, 11, 'xxz291917', 1, '127.0.0.1', 1372737971, 'adasd', 'asasddddddddddddddd', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(146, 65, 16, 'xxz291917', 1, '127.0.0.1', 1372744686, '$this-&gt;input-&gt;post()', 'sdfsdfffffffffffffffffffffffffffffffff', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1),
+(147, 66, 11, 'xxz291917', 1, '127.0.0.1', 1372767152, '空间和客户', '空间很快就会狂欢节', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(148, 66, 11, 'xxz291917', 1, '127.0.0.1', 1372767243, '', '反反复复反反复复凤飞飞', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 4),
+(149, 66, 11, 'xxz291917', 1, '127.0.0.1', 1372767301, '', '反反复复反反复复凤飞飞', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 4),
+(150, 66, 11, 'xxz291917', 1, '127.0.0.1', 1372767310, '', '大大大大大大大大大大大大', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 3, 4),
+(151, 66, 11, 'xxz291917', 1, '127.0.0.1', 1372767369, '', '空间考虑进口邻居', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 4, 4),
+(152, 67, 11, 'xxz291917', 1, '127.0.0.1', 1372769377, '问答帖子测试', '问答帖子测试问答帖子测试问答帖子测试问答帖子测试问答帖子测试问答帖子测试问答帖子测试问答帖子测试问答帖子测试问答帖子测试问答帖子测试问答帖子测试问答帖子测试问答帖子测试问答帖子测试问答帖子测试', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(153, 67, 11, 'xxz291917', 1, '127.0.0.1', 1372769397, '', '人同意让他一人', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 4),
+(154, 67, 11, 'xxz291917', 1, '127.0.0.1', 1372769422, '', '<blockquote class="blockquote">xxz291917 发表于 2013-07-02 20:49:37<br/>问答帖子测试问答帖子测试问答帖子测试问答……</blockquote>问答帖子测试', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 4),
+(155, 68, 11, 'xxz291917', 1, '127.0.0.1', 1372829309, 'dsasdasd', 'aaaaaaaaaaaaaaaaaaaaaaa', '', 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 4),
+(156, 68, 11, 'xxz291917', 1, '127.0.0.1', 1372829324, '', '<blockquote class="blockquote">xxz291917 发表于 2013-07-03 13:28:29<br/>aaaaaaaaaaaaaaaaaaaa</blockquote>asdasdasdasd', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 4),
+(157, 68, 11, 'xxz291917', 1, '127.0.0.1', 1372829339, '', 'asdasdasdasd', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 4),
+(158, 23, 2, 'xxz291917', 1, '127.0.0.1', 1372906277, '', '<blockquote class="blockquote">xxz291917 发表于 2013-05-29 10:46:45<br/>填写帖子内容</blockquote>啊实打实的', '', 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 1),
+(159, 68, 11, 'xxz291917', 14, '127.0.0.1', 1373016916, '', '士大夫士大夫士大夫', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 3, 4),
+(160, 69, 11, 'xxz291917', 14, '127.0.0.1', 1373017055, '学智测试辩论帖子', '<h5 class="fyahei cblue">\r\n 蓝方观点\r\n</h5>\r\n<h5 class="fyahei cblue">\r\n 蓝方观点\r\n</h5>\r\n<h5 class="fyahei cblue">\r\n 蓝方观点\r\n</h5>\r\n<h5 class="fyahei cblue">\r\n 蓝方观点\r\n</h5>\r\n<h5 class="fyahei cblue">\r\n 蓝方观点\r\n</h5>\r\n<h5 class="fyahei cblue">\r\n 蓝方观点\r\n</h5>\r\n<h5 class="fyahei cblue">\r\n 蓝方观点\r\n</h5>', 'xxz291917', 14, 1373017702, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 4),
+(161, 69, 11, 'xxz291917', 14, '127.0.0.1', 1373421779, '', 'sdfsdfsd', '', 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 4);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `posts_comment`
+--
+
+CREATE TABLE IF NOT EXISTS `posts_comment` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `topic_id` int(10) unsigned NOT NULL COMMENT '主题id',
+  `post_id` int(10) unsigned NOT NULL COMMENT '所属帖子id',
+  `username` varchar(50) NOT NULL COMMENT '作者名称',
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户id',
+  `comment` varchar(255) NOT NULL,
+  `time` int(10) unsigned NOT NULL,
+  `status` tinyint(1) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `post_id` (`post_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='帖子点评表' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1392,8 +1504,14 @@ CREATE TABLE IF NOT EXISTS `posts_supported` (
 --
 
 INSERT INTO `posts_supported` (`post_id`, `user_ids`) VALUES
-(89, '1'),
-(90, '1');
+(148, '1'),
+(149, '1'),
+(150, '1'),
+(151, '1'),
+(153, '1'),
+(154, '1'),
+(156, '1'),
+(157, '1');
 
 -- --------------------------------------------------------
 
@@ -1427,7 +1545,7 @@ CREATE TABLE IF NOT EXISTS `reports` (
   `operate_time` int(10) unsigned DEFAULT NULL COMMENT '处理状态（1未处理，2已经处理）',
   `status` tinyint(4) DEFAULT NULL COMMENT '记录是否已经处理的举报，1表示已处理，0表示未处理 ',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='帖子举报表' AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='帖子举报表' AUTO_INCREMENT=4 ;
 
 --
 -- 转存表中的数据 `reports`
@@ -1435,7 +1553,8 @@ CREATE TABLE IF NOT EXISTS `reports` (
 
 INSERT INTO `reports` (`id`, `topic_id`, `post_id`, `user_id`, `reason`, `time`, `operate_user`, `operate_time`, `status`) VALUES
 (1, 19, 45, 1, '[removed]alert&amp;#40;123&amp;#41;[removed]\r\n&lt;font color=&quot;red&quot;&gt;333333333&lt;/font&gt;', 1371263423, NULL, NULL, 0),
-(2, 44, 87, 1, 'mainCmtBtn', 1372304862, NULL, 1372304882, 1);
+(2, 44, 87, 1, 'mainCmtBtn', 1372304862, NULL, 1372304882, 1),
+(3, 67, 152, 1, '', 1372909354, NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -1583,7 +1702,7 @@ CREATE TABLE IF NOT EXISTS `tags` (
   PRIMARY KEY (`id`),
   KEY `tag` (`tag`,`topic_id`),
   KEY `topic_id` (`topic_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=123 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=133 ;
 
 --
 -- 转存表中的数据 `tags`
@@ -1592,11 +1711,13 @@ CREATE TABLE IF NOT EXISTS `tags` (
 INSERT INTO `tags` (`id`, `topic_id`, `tag`) VALUES
 (6, 41, '&lt;script&gt;alert('),
 (7, 42, '&lt;script&gt;alert('),
-(18, 53, '333'),
+(131, 53, '333'),
 (102, 60, '44'),
 (100, 60, '444'),
 (101, 60, '444444'),
+(125, 68, 'ads'),
 (51, 59, 'asd'),
+(126, 68, 'asd'),
 (3, 38, 'hongse'),
 (12, 48, 'hongse'),
 (5, 38, 'sdfsdf'),
@@ -1605,8 +1726,9 @@ INSERT INTO `tags` (`id`, `topic_id`, `tag`) VALUES
 (13, 48, 'sfsl'),
 (1, 38, 'test'),
 (10, 48, 'test'),
+(123, 65, '[removed]a'),
 (20, 13, '士大夫'),
-(19, 53, '士大夫'),
+(132, 53, '士大夫'),
 (50, 59, '士大夫'),
 (121, 63, '士大夫'),
 (21, 13, '士大夫士大夫'),
@@ -1621,7 +1743,8 @@ INSERT INTO `tags` (`id`, `topic_id`, `tag`) VALUES
 (118, 61, '添加一'),
 (2, 38, '白色'),
 (11, 48, '白色'),
-(39, 52, '试投票');
+(39, 52, '试投票'),
+(124, 67, '问答帖子测试');
 
 -- --------------------------------------------------------
 
@@ -1646,9 +1769,9 @@ CREATE TABLE IF NOT EXISTS `topics` (
   `supports` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '支持次数',
   `opposes` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '反对者人数',
   `top` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否置顶,置顶类型',
-  `highlight` varchar(30) NOT NULL DEFAULT '0' COMMENT '高亮样式用'',''分隔',
+  `highlight` varchar(30) NOT NULL COMMENT '高亮样式用'',''分隔',
   `digest` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否精华，精华类型',
-  `recommend` int(11) NOT NULL DEFAULT '0' COMMENT '推荐主题',
+  `recommend` tinyint(4) NOT NULL DEFAULT '0' COMMENT '推荐主题',
   `special` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '特殊主题（1正常，2问答，3投票）',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态（1正常，2删除，3屏蔽, 4待审核, 5关闭）',
   PRIMARY KEY (`id`),
@@ -1656,34 +1779,34 @@ CREATE TABLE IF NOT EXISTS `topics` (
   KEY `author_id` (`author_id`),
   KEY `last_post_time` (`last_post_time`),
   KEY `special` (`special`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=64 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=70 ;
 
 --
 -- 转存表中的数据 `topics`
 --
 
 INSERT INTO `topics` (`id`, `forum_id`, `category_id`, `author`, `author_id`, `post_time`, `subject`, `last_author`, `last_author_id`, `last_post_time`, `tags`, `views`, `replies`, `supports`, `opposes`, `top`, `highlight`, `digest`, `recommend`, `special`, `status`) VALUES
-(1, 6, 0, 'admin', 1, 0, 'xuezhiceshi', '', 0, 0, '', 4, 0, 0, 0, 0, '0', 0, 0, 0, 0),
-(6, 2, 0, 'xxz291917', 1, 1368531645, '输入标题r', '', 0, 0, '', 0, 0, 0, 0, 1, '0', 0, 0, 1, 1),
-(7, 2, 0, 'xxz291917', 1, 1368583217, '夏学智测试', '', 0, 0, '', 7, 0, 0, 0, 1, '0', 0, 0, 1, 3),
+(1, 6, 0, 'admin', 1, 0, 'xuezhiceshi', '', 0, 0, '', 8, 0, 0, 0, 0, '0', 0, 0, 0, 0),
+(6, 2, 0, 'xxz291917', 1, 1368531645, '输入标题r', '', 0, 0, '', 1, 0, 0, 0, 0, '0', 0, 0, 1, 1),
+(7, 2, 0, 'xxz291917', 1, 1368583217, '夏学智测试', '', 0, 0, '', 8, 0, 0, 0, 0, '0', 0, 0, 1, 3),
 (8, 2, 0, 'xxz291917', 1, 1368588882, '发帖测试123', 'xxz5291917', 2, 1368772292, '', 10, 2, 0, 0, 0, '0', 0, 0, 1, 1),
-(9, 2, 0, 'xxz291917', 1, 1368609926, '输入标题二二', 'xxz291917', 1, 1368702719, '', 7, 1, 0, 0, 1, '0', 0, 0, 1, 1),
-(10, 2, 0, 'xxz291917', 1, 1368610003, '输入标题二二', 'xxz5291917', 2, 1368774131, '', 120, 5, 0, 0, 0, '0', 0, 0, 1, 1),
-(11, 12, 0, 'xxz291917', 1, 1368611640, '$type == &#039;edit&#039;', 'xxz291917', 1, 1372316668, '', 190, 24, 0, 0, 0, '0', 0, 0, 1, 1),
-(12, 11, 0, 'xxz291917', 1, 1368612732, 'gdgdfgdgdfg', '', 0, 0, '', 15, 0, 0, 0, 0, '0', 1, 1, 1, 1),
-(13, 11, 0, 'xxz291917', 1, 1368696809, '输入标题大大大', 'xxz5291917', 2, 1337484852, '士大夫,士大夫士大夫', 395, 8, 0, 0, 2, '#2B65B7,0,1,1', 1, 1, 1, 5),
+(9, 2, 0, 'xxz291917', 1, 1368609926, '输入标题二二', 'xxz291917', 1, 1368702719, '', 9, 1, 0, 0, 1, '0', 0, 0, 1, 1),
+(10, 2, 0, 'xxz291917', 1, 1368610003, '输入标题r', 'xxz5291917', 2, 1368774131, '', 131, 5, 0, 0, 0, '#ff00ff,0,1,0', 0, 0, 1, 1),
+(11, 12, 0, 'xxz291917', 1, 1368611640, '$type == &#039;edit&#039;', 'xxz291917', 1, 1372316668, '', 191, 24, 0, 0, 0, '0', 0, 0, 1, 1),
+(12, 11, 0, 'xxz291917', 1, 1368612732, 'gdgdfgdgdfg', '', 0, 0, '', 16, 0, 0, 0, 0, '0', 1, 1, 1, 1),
+(13, 11, 0, 'xxz291917', 1, 1368696809, '输入标题大大大', 'xxz5291917', 2, 1337484852, '士大夫,士大夫士大夫', 421, 8, 0, 0, 0, '#ff00ff,1,1,1', 1, 1, 1, 5),
 (14, 6, 0, 'xxz291917', 1, 1368699427, '红星闪闪放光芒', 'xxz291917', 1, 1368701675, '', 6, 4, 0, 0, 0, '0', 0, 0, 1, 1),
 (15, 6, 0, 'xxz5291917', 2, 1368772328, '输入标题yy', '', 0, 0, '', 0, 0, 0, 0, 0, '0', 0, 0, 1, 1),
-(16, 12, 0, 'xxz5291917', 2, 1368774681, '输入标题凤飞飞', 'xxz291917', 1, 1371105016, '', 28, 2, 0, 0, 0, '0', 0, 0, 1, 1),
+(16, 12, 0, 'xxz5291917', 2, 1368774681, '输入标题凤飞飞', 'xxz291917', 1, 1371105016, '', 30, 2, 0, 0, 0, '0', 0, 0, 1, 1),
 (17, 6, 0, 'xxz291917', 1, 1369310155, '是否需要测试', '', 0, 0, '', 1, 0, 0, 0, 0, '', 0, 0, 1, 4),
 (18, 11, 0, 'xxz291917', 1, 1369310199, '电梯直达跳转到指定楼层', '', 0, 0, '', 3, 0, 0, 0, 0, '', 0, 0, 1, 4),
 (19, 6, 0, 'xxz291917', 1, 1369313698, '审核测试审核测试', '', 0, 0, '', 0, 0, 0, 0, 0, '', 0, 0, 1, 4),
 (20, 6, 0, 'xxz291917', 1, 1369314292, '士大夫士大夫士大夫似的', '', 0, 0, '', 0, 0, 0, 0, 0, '', 0, 0, 1, 4),
 (21, 6, 0, 'xxz291917', 1, 1369452030, '输入标题ddd', '', 0, 0, '', 1, 0, 0, 0, 0, '', 0, 0, 1, 4),
 (22, 11, 0, 'xxz291917', 1, 1369472789, '输入标题士大夫士大夫', 'xxz291917', 1, 1369714000, '', 38, 7, 0, 0, 0, '', 0, 0, 1, 4),
-(23, 2, 4, 'xxz291917', 1, 1369740062, '输入标题7777', 'xxz291917', 1, 1372670768, '', 12, 2, 0, 0, 0, '', 0, 0, 1, 1),
-(24, 11, 0, 'xxz291917', 1, 1369815311, '输入标题夸奖夸奖夸奖', 'xxz291917', 1, 1369818158, '', 5, 3, 0, 0, 0, '', 0, 0, 1, 4),
-(25, 11, 0, 'xxz291917', 1, 1369819307, 'hahhhhhhhh', 'xxz291917', 1, 1369979898, '', 49, 11, 0, 0, 0, '', 0, 0, 1, 4),
+(23, 2, 4, 'xxz291917', 1, 1369740062, '输入标题7777', 'xxz291917', 1, 1372906277, '', 15, 3, 0, 0, 0, '', 0, 0, 1, 1),
+(24, 11, 0, 'xxz291917', 1, 1369815311, '输入标题夸奖夸奖夸奖', 'xxz291917', 1, 1369818158, '', 9, 3, 0, 0, 0, '', 0, 0, 1, 4),
+(25, 11, 0, 'xxz291917', 1, 1369819307, 'hahhhhhhhh', 'xxz291917', 1, 1369979898, '', 50, 11, 0, 0, 0, '', 0, 0, 1, 4),
 (26, 2, 0, 'xxz291917', 1, 1370230068, '去问去问夫士大夫', '', 0, 0, '', 0, 0, 0, 0, 0, '', 0, 0, 3, 1),
 (27, 2, 0, 'xxz291917', 1, 1370230139, '去问去问夫士大夫', '', 0, 0, '', 0, 0, 0, 0, 0, '', 0, 0, 3, 1),
 (28, 2, 0, 'xxz291917', 1, 1370233072, '去问去问夫士大夫', '', 0, 0, '', 0, 0, 0, 0, 0, '', 0, 0, 3, 1),
@@ -1692,36 +1815,42 @@ INSERT INTO `topics` (`id`, `forum_id`, `category_id`, `author`, `author_id`, `p
 (31, 2, 0, 'xxz291917', 1, 1370319752, '辩论发帖测试', '', 0, 0, '', 0, 0, 0, 0, 0, '', 0, 0, 4, 1),
 (32, 2, 0, 'xxz291917', 1, 1370331322, '输入标题jhjhjh', '', 0, 0, '', 0, 0, 0, 0, 0, '', 0, 0, 3, 1),
 (33, 2, 0, 'xxz291917', 1, 1370335275, '输入标sdfsdfsdf', '', 0, 0, '', 0, 0, 0, 0, 0, '', 0, 0, 3, 1),
-(34, 2, 0, 'xxz291917', 1, 1370335370, '输入标sdfsdfsdf', 'xxz291917', 1, 1371097775, '', 157, 8, 0, 0, 0, '', 0, 0, 3, 1),
+(34, 2, 0, 'xxz291917', 1, 1370335370, '输入标sdfsdfsdf', 'xxz291917', 1, 1371097775, '', 158, 8, 0, 0, 0, '', 0, 0, 3, 1),
 (35, 2, 0, 'xxz291917', 1, 1370397845, 'test 白色,,hongse,,   sfsl  sdfsdf', '', 0, 0, '', 0, 0, 0, 0, 0, '', 0, 0, 4, 1),
 (36, 2, 0, 'xxz291917', 1, 1370398156, '输入标题士大夫士大夫', '', 0, 0, 'test,白色,hongse,sfsl,sdfsdf', 0, 0, 0, 0, 0, '', 0, 0, 1, 1),
 (37, 2, 0, 'xxz291917', 1, 1370418336, '士大夫士大夫标题', '', 0, 0, 'test,白色,hongse,sfsl,sdfsdf', 0, 0, 0, 0, 0, '', 0, 0, 1, 1),
 (38, 2, 0, 'xxz291917', 1, 1370418370, '士大夫士大夫标题', '', 0, 0, 'test,白色,hongse,sfsl,sdfsdf', 1, 0, 0, 0, 0, '', 0, 0, 1, 1),
-(39, 11, 0, 'xxz291917', 1, 1370585781, 'alert(123);', '', 0, 0, '', 1, 0, 0, 0, 0, '', 2, 1, 1, 4),
+(39, 16, 0, 'xxz291917', 1, 1370585781, 'alert(123);', '', 0, 0, '', 4, 0, 0, 0, 0, '', 2, 1, 1, 4),
 (40, 11, 0, 'xxz291917', 1, 1370586266, '&lt;script&gt;alert(123);&lt;/script&gt;', '', 0, 0, '', 4, 0, 0, 0, 0, '', 0, 0, 1, 4),
 (41, 2, 0, 'xxz291917', 1, 1370662753, '发表文旦扣减分', '', 0, 0, '&lt;script&gt;alert(123);&lt;/script&gt;', 0, 0, 0, 0, 0, '', 0, 0, 2, 1),
-(42, 2, 0, 'xxz291917', 1, 1370662947, '发表文旦扣减分', '', 0, 0, '&lt;script&gt;alert(123);&lt;/script&gt;', 1, 0, 0, 0, 0, '', 0, 0, 2, 1),
-(43, 2, 0, 'xxz291917', 1, 1370662983, 'vvvvvvvvvvvvv', '', 0, 0, '', 0, 0, 0, 0, 0, '', 0, 0, 2, 1),
-(44, 11, 0, 'xxz291917', 1, 1370770112, '看看我们的成绩', 'xxz291917', 1, 1372312389, '', 173, 6, 0, 0, 0, '', 0, 0, 4, 4),
+(42, 2, 0, 'xxz291917', 1, 1370662947, '发表文旦扣减分', '', 0, 0, '&lt;script&gt;alert(123);&lt;/script&gt;', 12, 0, 0, 0, 2, '', 0, 0, 2, 1),
+(43, 2, 0, 'xxz291917', 1, 1370662983, 'vvvvvvvvvvvvv', '', 0, 0, '', 1, 0, 0, 0, 0, '', 0, 0, 2, 1),
+(44, 11, 0, 'xxz291917', 1, 1370770112, '看看我们的成绩', 'xxz291917', 1, 1372312389, '', 174, 6, 0, 0, 0, '#ff00ff,1,0,0', 0, 0, 4, 4),
 (45, 11, 0, 'xxz291917', 1, 1370782056, '问答问答问答', '', 0, 0, '', 18, 0, 0, 0, 0, '', 0, 0, 2, 4),
 (46, 11, 0, 'xxz291917', 1, 1371702544, '人人人人人人人', '', 0, 0, '标签间请用''空格''或''逗号''隔开，最多可添加5个标签。', 0, 0, 0, 0, 0, '0', 0, 0, 2, 4),
 (47, 11, 0, 'xxz291917', 1, 1371726788, '输入问答概述', '', 0, 0, '标签间请用''空格''或''逗号''隔开，最多可添加5个标签。', 0, 0, 0, 0, 0, '0', 0, 0, 2, 4),
 (48, 11, 0, 'xxz291917', 1, 1371807011, '本版规则及说明,新手发帖前请花两分钟了解，谢谢', '', 0, 0, 'test,白色,hongse,sfsl,sdfsdf', 1, 0, 0, 0, 0, '0', 0, 1, 2, 4),
 (49, 11, 0, 'xxz291917', 1, 1371972423, '红星闪闪放光芒', '', 0, 0, '', 1, 0, 0, 0, 0, '0', 0, 0, 4, 4),
 (50, 11, 0, 'xxz291917', 1, 1371977989, '发布帖子333', '', 0, 0, '标签间请用''空格''或''逗号''隔开，最多可添加5个标签。', 1, 0, 0, 0, 0, '0', 0, 0, 3, 4),
-(51, 11, 0, 'xxz291917', 1, 1371978022, '发布帖子333', '', 0, 0, '标签间请用''空格''或''逗号''隔开，最多可添加5个标签。', 1, 0, 0, 0, 0, '0', 0, 0, 3, 4),
-(52, 11, 0, 'xxz291917', 1, 1372247353, '学智测试投票', '', 0, 0, '学智测,试投票', 18, 0, 0, 0, 0, '0', 0, 0, 3, 4),
-(53, 11, 0, 'xxz291917', 1, 1372312851, '红星闪闪放光芒', 'xxz291917', 1, 1372331494, '333,士大夫', 71, 5, 0, 0, 0, '0', 0, 0, 4, 4),
-(54, 12, 0, 'xxz291917', 1, 1372317871, 'xuezhi投票', 'xxz291917', 1, 1372320844, '', 38, 2, 0, 0, 0, '0', 0, 0, 3, 1),
+(51, 11, 0, 'xxz291917', 1, 1371978022, '发布帖子333', '', 0, 0, '标签间请用''空格''或''逗号''隔开，最多可添加5个标签。', 2, 0, 0, 0, 0, '0', 0, 0, 3, 4),
+(52, 11, 0, 'xxz291917', 1, 1372247353, '学智测试投票', '', 0, 0, '学智测,试投票', 19, 0, 0, 0, 0, '0', 0, 0, 3, 4),
+(53, 11, 0, 'xxz291917', 1, 1372312851, '红星闪闪放光芒', 'xxz291917', 1, 1372818603, '333,士大夫', 117, 5, 0, 0, 0, '0', 0, 0, 4, 5),
+(54, 12, 0, 'xxz291917', 1, 1372317871, 'xuezhi投票', 'xxz291917', 1, 1372320844, '', 39, 2, 0, 0, 0, '0', 0, 0, 3, 1),
 (55, 12, 0, 'xxz291917', 1, 1372405704, '输入标题人人', '', 0, 0, '', 0, 0, 0, 0, 0, '0', 0, 0, 1, 1),
 (56, 12, 0, 'xxz291917', 1, 1372409705, '输入标题人人', '', 0, 0, '', 0, 0, 0, 0, 0, '0', 0, 0, 1, 1),
 (57, 12, 0, 'xxz291917', 1, 1372409831, '士大夫士大夫', '', 0, 0, '', 3, 0, 0, 0, 0, '0', 0, 0, 1, 1),
 (58, 12, 0, 'xxz291917', 1, 1372411442, '55555555555', '', 0, 0, '', 2, 0, 0, 0, 0, '0', 0, 0, 1, 1),
 (59, 12, 0, 'xxz291917', 1, 1372411535, '人人人人5555人人人人人', '', 0, 0, '士大夫,asd', 15, 0, 0, 0, 0, '0', 0, 0, 1, 1),
 (60, 11, 0, 'xxz291917', 1, 1372491400, '44444444444444', '', 0, 0, '444,444444,44', 7, 0, 0, 0, 0, '0', 0, 0, 1, 4),
-(61, 12, 0, 'xxz291917', 1, 1372645276, '添加一张图片附件，测试。', 'xxz291917', 1, 1372649054, '添加一,张图片附件,测试。', 15, 1, 0, 0, 0, '0', 0, 0, 1, 1),
-(62, 13, 0, 'xxz291917', 1, 1372665723, '去问去问去问去问', '', 0, 0, '', 9, 0, 0, 0, 0, '0', 0, 0, 1, 1),
-(63, 11, 3, 'xxz291917', 1, 1372670946, 'xuezhi分类测试。', 'xxz291917', 1, 1372671031, '士大夫,大富贵', 7, 3, 0, 0, 0, '0', 0, 0, 1, 4);
+(61, 12, 0, 'xxz291917', 1, 1372645276, '添加一张图片附件，测试。', 'xxz291917', 1, 1372649054, '添加一,张图片附件,测试。', 32, 1, 0, 0, 2, '0', 0, 0, 1, 1),
+(62, 13, 0, 'xxz291917', 1, 1372665723, '去问去问去问去问', '', 0, 0, '', 17, 0, 0, 0, 0, '0', 0, 0, 1, 1),
+(63, 11, 3, 'xxz291917', 1, 1372670946, 'xuezhi分类测试。', 'xxz291917', 1, 1372671031, '士大夫,大富贵', 21, 3, 0, 0, 0, '0', 0, 0, 1, 4),
+(64, 11, 3, 'xxz291917', 1, 1372737971, 'adasd', '', 0, 1372737971, '', 6, 0, 0, 0, 0, '0', 0, 0, 1, 4),
+(65, 16, 0, 'xxz291917', 1, 1372744686, '$this-&gt;input-&gt;post()', '', 0, 1372744686, '[removed]a', 25, 0, 0, 0, 0, '0', 0, 0, 1, 1),
+(66, 11, 3, 'xxz291917', 1, 1372767152, '空间和客户', 'xxz291917', 1, 1372767369, '', 86, 7, 0, 0, 0, '', 0, 0, 2, 4),
+(67, 11, 3, 'xxz291917', 1, 1372769377, '问答帖子测试', 'xxz291917', 1, 1372769422, '问答帖子测试', 70, 4, 0, 0, 0, '', 0, 0, 2, 4),
+(68, 11, 3, 'xxz291917', 1, 1372829309, 'dsasdasd', 'xxz291917', 14, 1373016916, 'ads,asd', 20, 6, 0, 0, 0, '', 0, 0, 2, 4),
+(69, 11, 0, 'xxz291917', 14, 1373017055, '学智测试辩论帖子', 'xxz291917', 14, 1373421779, '', 7, 1, 0, 0, 0, '', 0, 0, 4, 4);
 
 -- --------------------------------------------------------
 
@@ -1762,24 +1891,25 @@ CREATE TABLE IF NOT EXISTS `topics_endtime` (
   `end_time` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `topic_id` (`topic_id`,`action`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='主题置顶、高亮、精华、推荐的有效时间表' AUTO_INCREMENT=27 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='主题置顶、高亮、精华、推荐的有效时间表' AUTO_INCREMENT=42 ;
 
 --
 -- 转存表中的数据 `topics_endtime`
 --
 
 INSERT INTO `topics_endtime` (`id`, `topic_id`, `action`, `end_time`) VALUES
-(2, 13, 'top', 1369864800),
-(10, 13, 'highlight', 1369864800),
 (13, 12, 'digest', 0),
 (14, 13, 'digest', 0),
-(17, 6, 'top', 1369864800),
-(18, 7, 'top', 1369864800),
 (21, 9, 'top', 0),
 (22, 8, 'top', 0),
 (24, 11, 'digest', 0),
 (25, 44, 'digest', 0),
-(26, 39, 'digest', 0);
+(26, 39, 'digest', 0),
+(27, 61, 'top', 0),
+(34, 42, 'top', 1373040000),
+(39, 13, 'highlight', 1374249599),
+(40, 44, 'highlight', 86399),
+(41, 10, 'highlight', 1374163199);
 
 -- --------------------------------------------------------
 
@@ -1799,7 +1929,7 @@ CREATE TABLE IF NOT EXISTS `topics_log` (
   PRIMARY KEY (`id`),
   KEY `topic_id` (`topic_id`,`time`),
   KEY `topic_id_2` (`topic_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='前台管理日志表' AUTO_INCREMENT=50 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='前台管理日志表' AUTO_INCREMENT=72 ;
 
 --
 -- 转存表中的数据 `topics_log`
@@ -1854,7 +1984,29 @@ INSERT INTO `topics_log` (`id`, `topic_id`, `user_id`, `username`, `time`, `acti
 (46, 44, 1, 'xxz291917', 1372304229, 'digest', '{"submit":"1","topic_id":"44","digest":"1","end_time":"","reason":""}', ''),
 (47, 44, 1, 'xxz291917', 1372670450, 'digest', '{"submit":"1","topic_id":"44","digest":"0","end_time":"","reason":""}', ''),
 (48, 39, 1, 'xxz291917', 1372670480, 'digest', '{"submit":"1","topic_id":"39","digest":"2","end_time":"","reason":""}', ''),
-(49, 63, 1, 'xxz291917', 1372671045, 'editcategory', '{"submit":"1","topic_id":"63","editcategory":"3","reason":""}', '');
+(49, 63, 1, 'xxz291917', 1372671045, 'editcategory', '{"submit":"1","topic_id":"63","editcategory":"3","reason":""}', ''),
+(50, 61, 1, 'xxz291917', 1372739088, 'top', '{"submit":"1","topic_id":"61","top":"2","end_time":"","reason":""}', ''),
+(51, 42, 1, 'xxz291917', 1372763709, 'top', '{"submit":"1","topic_id":"42","top":"2","end_time":"","reason":""}', ''),
+(52, 42, 1, 'xxz291917', 1372763749, 'top', '{"submit":"1","topic_id":"42","top":"3","end_time":"","reason":""}', ''),
+(53, 42, 1, 'xxz291917', 1372763922, 'top', '{"submit":"1","topic_id":"42","top":"2","end_time":"1372780800","reason":""}', ''),
+(54, 42, 1, 'xxz291917', 1372764080, 'top', '{"submit":"1","topic_id":"42","top":"2","end_time":"1372780800","reason":""}', ''),
+(55, 42, 1, 'xxz291917', 1372764110, 'top', '{"submit":"1","topic_id":"42","top":"2","end_time":"1372867200","reason":""}', ''),
+(56, 42, 1, 'xxz291917', 1372764119, 'top', '{"submit":"1","topic_id":"42","top":"2","end_time":"1372780800","reason":""}', ''),
+(57, 42, 1, 'xxz291917', 1372764136, 'top', '{"submit":"1","topic_id":"42","top":"2","end_time":"1372953600","reason":""}', ''),
+(58, 10, 1, 'xxz291917', 1372765126, 'highlight', '{"submit":"1","topic_id":"10","highlight":"#ff00ff,0,0,0","end_time":"1374076800","reason":"$highlight"}', '$highlight'),
+(59, 13, 1, 'xxz291917', 1372766123, 'highlight', '{"submit":"1","topic_id":"13","highlight":"#ff00ff,1,1,1","end_time":"","reason":""}', ''),
+(60, 13, 1, 'xxz291917', 1372766305, 'highlight', '{"submit":"1","topic_id":"13","highlight":"#ff00ff,0,1,1","end_time":"","reason":""}', ''),
+(61, 13, 1, 'xxz291917', 1372766352, 'highlight', '{"submit":"1","topic_id":"13","highlight":"#ff00ff,0,1,1","end_time":"1374163200","reason":""}', ''),
+(62, 13, 1, 'xxz291917', 1372766670, 'highlight', '{"submit":"1","topic_id":"13","highlight":"#ff00ff,1,1,1","end_time":"1374163200","reason":""}', ''),
+(63, 44, 1, 'xxz291917', 1372766735, 'highlight', '{"submit":"1","topic_id":"44","highlight":"#ff00ff,1,0,0","end_time":"","reason":""}', ''),
+(64, 53, 1, 'xxz291917', 1372818603, 'bump', '{"submit":"1","topic_id":"53","bump":"1","reason":""}', ''),
+(65, 10, 1, 'xxz291917', 1372819307, 'highlight', '{"submit":"1","topic_id":"10","highlight":"#ff00ff,0,1,0","end_time":"1374076800","reason":""}', ''),
+(66, 39, 1, 'xxz291917', 1372840419, 'move', '{"submit":"1","topic_id":"39","move":"6","reason":""}', ''),
+(67, 39, 1, 'xxz291917', 1372840551, 'move', '{"submit":"1","topic_id":"39","move":"16","reason":""}', ''),
+(68, 65, 1, 'xxz291917', 1372840941, 'highlight', '{"submit":"1","topic_id":"65","highlight":"#ffcc00,0,1,0","end_time":"","reason":"sdfsdfsdf"}', 'sdfsdfsdf'),
+(69, 65, 1, 'xxz291917', 1372841007, 'highlight', '{"submit":"1","topic_id":"65","highlight":"#00ffff,0,1,1","end_time":"","reason":""}', ''),
+(70, 65, 1, 'xxz291917', 1372841054, 'highlight', '{"submit":"1","topic_id":"65","highlight":"#008080,1,0,1","end_time":"1374854400","reason":""}', ''),
+(71, 65, 1, 'xxz291917', 1372841155, 'highlight', '{"submit":"1","topic_id":"65","highlight":"#008080,1,0,1","end_time":"","reason":""}', '');
 
 -- --------------------------------------------------------
 
@@ -1880,7 +2032,8 @@ INSERT INTO `topics_posted` (`user_id`, `topic_id`, `time`) VALUES
 (2, 8, 0),
 (2, 10, 0),
 (2, 11, 0),
-(2, 13, 0);
+(2, 13, 0),
+(14, 68, 1373016916);
 
 -- --------------------------------------------------------
 
@@ -1901,7 +2054,7 @@ CREATE TABLE IF NOT EXISTS `topics_views` (
 --
 
 CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户id',
+  `id` int(10) unsigned NOT NULL COMMENT '用户id',
   `email` varchar(80) NOT NULL COMMENT '用户邮箱',
   `username` varchar(20) NOT NULL COMMENT '用户名',
   `password` char(32) NOT NULL COMMENT '基本上不需要这个字段（passport登陆）',
@@ -1916,15 +2069,16 @@ CREATE TABLE IF NOT EXISTS `users` (
   `status` tinyint(3) unsigned NOT NULL COMMENT '用户状态（1正常，2删除，3锁定）',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='论坛用户表' AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='论坛用户表';
 
 --
 -- 转存表中的数据 `users`
 --
 
 INSERT INTO `users` (`id`, `email`, `username`, `password`, `credits`, `group_id`, `member_id`, `groups`, `icon`, `gender`, `signature`, `regdate`, `status`) VALUES
-(1, 'xxz291917@163.com', 'xxz291917', '', 2256, 1, 14, '2', '', 0, '<font color=''red''>签名测试22</font>', 1298763453, 1),
-(2, 'xxz5291917@163.com', 'xxz5291917', '', 202, 16, 12, '16', '', 1, '<font color=''green''>签名测试</font>', 1298543453, 1);
+(1, 'xxz291917@163.com', 'xxz2919172', '', 2509, 1, 14, '2', '', 0, '<font color=''red''>签名测试22</font>', 1298763453, 1),
+(2, 'xxz5291917@163.com', 'xxz5291917', '', 202, 16, 12, '16', '', 1, '<font color=''green''>签名测试</font>', 1298543453, 1),
+(14, 'xxz291917@163.com', 'xxz291917', '', 63, 1, 11, '', '', 0, '', 1372916951, 1);
 
 -- --------------------------------------------------------
 
@@ -1945,8 +2099,8 @@ CREATE TABLE IF NOT EXISTS `users_admin` (
 --
 
 INSERT INTO `users_admin` (`user_id`, `username`, `password`, `email`) VALUES
-(1, 'xxz291917', 'e3ceb5881a0a1fdaad01296d7554868d', 'xxz291917@163.com'),
-(2, 'xxz5291917', '111111', 'xxz291917@163.com');
+(2, 'xxz5291917', '96e79218965eb72c92a549dd5a330112', 'xxz291917@163.com'),
+(14, 'xxz291917', '96e79218965eb72c92a549dd5a330112', 'xxz291917@163.com');
 
 -- --------------------------------------------------------
 
@@ -2003,8 +2157,9 @@ CREATE TABLE IF NOT EXISTS `users_extra` (
 --
 
 INSERT INTO `users_extra` (`user_id`, `posts`, `digests`, `today_posts`, `today_uploads`, `last_login_time`, `last_login_ip`, `last_post_time`, `last_active_time`, `online_time`, `extcredits1`, `extcredits2`, `extcredits3`, `extcredits4`, `extcredits5`, `extcredits6`, `extcredits7`, `extcredits8`, `last_credit_affect_log`) VALUES
-(1, 123, 0, 8, 123, 1372661670, '127.0.0.1', 1372671031, 1372671889, 10220, 335, 280, 691, 0, 0, 0, 0, 0, ''),
-(2, 16, 0, 17, 16, 0, '', 1368774681, 1368774681, 0, 30, 39, 34, 0, 0, 0, 0, 0, '');
+(1, 136, 0, 1, 136, 1372914548, '127.0.0.1', 1372906277, 1372916431, 1884, 373, 328, 734, 0, 0, 0, 0, 0, ''),
+(2, 16, 0, 17, 16, 0, '', 1368774681, 1368774681, 0, 30, 39, 34, 0, 0, 0, 0, 0, ''),
+(14, 3, 0, 1, 3, 1373527521, '127.0.0.1', 1373421779, 1373533349, 5829, 10, 11, 11, 0, 0, 0, 0, 0, '');
 
 -- --------------------------------------------------------
 
