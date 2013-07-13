@@ -27,9 +27,24 @@ class Topic extends MY_Controller {
         if (empty($topic)) {
             $this->message('参数错误，主题不存在');
         }
+        
+        $forum = $this->forums_model->get_info_by_id($topic['forum_id']);
+        if (empty($forum)) {
+            $this->message('参数错误，帖子所属版块不存在');
+        }
+        //版块是否关闭
+        if($forum['status']==0){
+            $managers = explode(',', $forum['manager']);
+            if (!in_array($this->user['username'], $managers) && $this->user['group']['id'] != 1) {
+                $this->message('本帖子所属版论坛暂时关闭。');
+            }
+        }
+        $forum['allow_special'] = explode(',', $forum['allow_special']);
+        $var['forum'] = $forum;
+        $var['forum_id'] = $topic['forum_id'];
+        
         $topic['tags'] = array_filter(explode(',', $topic['tags']));
         
-        $var['forum_id'] = $topic['forum_id'];
         //如果是置顶，高亮，推荐精华。则获取时间。
         if($topic['top']>0 || $topic['highlight']!='' || $topic['digest']>0 || $topic['recommend']=1){
             //删除过期的设置

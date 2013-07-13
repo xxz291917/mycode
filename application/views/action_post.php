@@ -75,30 +75,35 @@
         <?php }?>
         </li>
         
-        <li <?php if($special == 2){?> class="bordNone current" <?php }?> >
-        <?php if($special == 2){?>
-        发起问答
-        <?php }else{?>
-        <a href="<?php echo base_url('index.php/action/post/'.$forum_id.'/2')?>">发起问答</a>
-        <?php }?>
-        </li>
-        
-        <li <?php if($special == 3){?> class="bordNone current" <?php }?> >
-		<?php if($special == 3){?>
-        发布投票
-        <?php }else{?>
-        <a href="<?php echo base_url('index.php/action/post/'.$forum_id.'/3')?>">发布投票</a>
+        <?php if(in_array(2,$forum['allow_special'])){?>
+            <li <?php if($special == 2){?> class="bordNone current" <?php }?> >
+            <?php if($special == 2){?>
+            发起问答
+            <?php }else{?>
+            <a href="<?php echo base_url('index.php/action/post/'.$forum_id.'/2')?>">发起问答</a>
+            <?php }?>
+            </li>
         <?php }?>
         
-        </li>
-        
-        <li <?php if($special == 4){?> class="bordNone current" <?php }?> >
-        <?php if($special == 4){?>
-        发起辩论
-        <?php }else{?>
-        <a href="<?php echo base_url('index.php/action/post/'.$forum_id.'/4')?>">发起辩论</a>
+        <?php if(in_array(3,$forum['allow_special'])){?>
+            <li <?php if($special == 3){?> class="bordNone current" <?php }?> >
+            <?php if($special == 3){?>
+            发布投票
+            <?php }else{?>
+            <a href="<?php echo base_url('index.php/action/post/'.$forum_id.'/3')?>">发布投票</a>
+            <?php }?>
+            </li>
         <?php }?>
-        </li>
+        
+        <?php if(in_array(4,$forum['allow_special'])){?>
+            <li <?php if($special == 4){?> class="bordNone current" <?php }?> >
+            <?php if($special == 4){?>
+            发起辩论
+            <?php }else{?>
+            <a href="<?php echo base_url('index.php/action/post/'.$forum_id.'/4')?>">发起辩论</a>
+            <?php }?>
+            </li>
+        <?php }?>
       </ul>
         <?php }else{?>
         

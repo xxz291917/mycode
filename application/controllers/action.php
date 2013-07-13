@@ -28,6 +28,20 @@ class Action extends MY_Controller {
         if (empty($forum) || $forum['type'] == 'group') {
             $this->message('参数错误，发布的版块不存在或者不是子版块', 0, $forum_show_url);
         }
+        
+        //是否关闭
+        if($forum['status']==0){
+            $managers = explode(',', $forum['manager']);
+            if (!in_array($this->user['username'], $managers) && $this->user['group']['id'] != 1) {
+                $this->message('本版论坛暂时关闭。');
+            }
+        }
+        $forum['allow_special'] = explode(',', $forum['allow_special']);
+        if($special>1 && !in_array($special, $forum['allow_special'])){
+            $this->message('本版块不允许发布此特殊主题帖。');
+        }
+        $var['forum'] = $forum;
+        
         if ($this->user['id'] == 0) {
             $this->message('您还未登录，请<a href="' . $this->config->item('passport_login') . '" target="_blank">登录</a>。');
         }

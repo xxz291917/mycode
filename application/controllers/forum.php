@@ -15,10 +15,19 @@ class Forum extends MY_Controller {
         if (empty($forum)) {
             $this->message('参数错误，版块不存在');
         }
+        //是否关闭
+        if($forum['status']==0){
+            $managers = explode(',', $forum['manager']);
+            if (!in_array($this->user['username'], $managers) && $this->user['group']['id'] != 1) {
+                $this->message('本版论坛暂时关闭。');
+            }
+        }
+        
         if($forum['parent_id']==0){//如果是分区，转向到分区展示页面。
             $this->zone_show($forum_id);
             return;
         }
+        $forum['allow_special'] = explode(',', $forum['allow_special']);
         $var['forum'] = $forum;
         
         //获取导航面包屑，论坛>综合交流>活动专区>现代程序员的工作环境

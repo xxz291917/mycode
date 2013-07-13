@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	/*顶部导航搜索菜单*/
+	//顶部导航搜索菜单
 	$('.searchBtn').click(function()  {
 		$('.nav').animate({
 			bottom:'-70px',
@@ -42,11 +42,21 @@ $(document).ready(function() {
 		$(this).addClass('current');		
 	},function(){
 		$(this).removeClass('current');
+	});		
+	$('.icoNote').parent().hover(function() {
+		$(this).addClass('subShow');
+		$(this).addClass('current');		
+		$(this).find('span').hide();
+	},function(){
+		$(this).removeClass('subShow');
+		$(this).removeClass('current');
+		$(this).find('span').show();
 	});	
 	$('.subShow .icoNote').parent().hover(function() {
 		$(this).addClass('current');		
 		$(this).find('span').hide();
 	},function(){
+		$(this).addClass('subShow');
 		$(this).removeClass('current');
 		$(this).find('span').show();
 	});	
@@ -56,7 +66,7 @@ $(document).ready(function() {
 	},function(){
 		$(this).removeClass('current');
 		$(this).find('span').show();
-	});	
+	});
 	//正文页左侧头像隐藏层
 	$('.usFace').hover(function() {
 		$(this).find('.usFaceInfoBox').fadeIn();

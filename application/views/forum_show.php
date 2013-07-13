@@ -86,9 +86,18 @@
                         <ul>
                             <li class="icoSj"></li>
                             <li><a href="<?php echo base_url('index.php/action/post/' . $forum_id . '/1'); ?>" class="ico1" target="_blank">发表帖子</a></li>
+                            
+							<?php if(in_array(2,$forum['allow_special'])){?>
                             <li><a href="<?php echo base_url('index.php/action/post/' . $forum_id . '/2'); ?>" class="ico3" target="_blank">发布问答</a></li>
+                            <?php }?>
+                            
+                            <?php if(in_array(3,$forum['allow_special'])){?>
                             <li><a href="<?php echo base_url('index.php/action/post/' . $forum_id . '/3'); ?>" class="ico2" target="_blank">发起投票</a></li>
+                            <?php }?>
+                            
+							<?php if(in_array(4,$forum['allow_special'])){?>
                             <li><a href="<?php echo base_url('index.php/action/post/' . $forum_id . '/4'); ?>" class="ico4" target="_blank">发起辩论</a></li>
+                        	<?php }?>
                         </ul>
                     </div>
                 </li>
@@ -112,7 +121,11 @@ echo $page; ?>
                     </ul>
                 </div>
 <?php } ?>
-            <ul class="listCot listCotShow">
+
+
+
+
+      <ul class="listCot listCotShow">
                 <li class="listCotShowOrder">
                     <ul>
                         <li class="td1">筛选：</li>
@@ -126,6 +139,69 @@ echo $page; ?>
                         <li class="td6">最后发表</li>
                     </ul>
                 </li>
+        
+                <?php if (!empty($top_topics)) { ?>
+                    <?php
+                    foreach ($top_topics as $topic) {
+                        if (!empty($topic['category_id'])) {
+                            $topic_category = $topic_categorys[$topic['category_id']];
+                        } else {
+                            $topic_category = false;
+                        }
+                        ?>
+                        
+						<li>
+                            <ul>
+                                <i class="icoTop3"></i>
+                                <li class="td2">
+                                    <strong>
+        							<?php if (!empty($topic_category)) { ?>
+                                            <a href="<?= $category_url . $topic_category['id'] ?>">[<?= $topic_category['name'] ?>]</a>
+        							<?php } else { ?>
+                                            [<?= '暂无分类' ?>]
+        							<?php } ?>
+                                    </strong>
+                                    <a href="<?= base_url() . 'index.php/topic/show/' . $topic['id'] ?>" title="<?= $topic['subject'] ?>">
+									<?php if(!empty($topic['highlight'])){
+										echo highlight($topic['highlight'],$topic['subject']);
+                                    }else{
+										echo 	$topic['subject'];
+									}?>
+                                    </a>
+                                </li>
+                                <li class="td4">
+                                    <a href="#"><img src="<?php echo user_icon($topic['author_id']) ?>" alt="<?= $topic['author'] ?>"></a>
+                                    <span class="tdSpan1"><a href="<?= user_url($topic['author_id']) ?>"><?= $topic['author'] ?></a></span>
+                                    <span class="tdSpan2"><?php echo time_span($topic['post_time'], '', 3600 * 24, '前'); ?></span>
+                                </li>
+                                <li class="td5">
+                                    <span class="tdSpan1"><a href="<?= base_url() . 'index.php/action/reply/' . $topic['id'] ?>"><?= $topic['replies'] ?></a></span>
+                                    <span class="tdSpan2"><?= $topic['views'] ?></span>
+                                </li>
+                                <li class="td6">
+                                    <span class="tdSpan1">
+                                        <?php if(!empty($topic['last_author'])){?>
+                                        <a href="<?= user_url($topic['last_author_id']) ?>"><?= $topic['last_author'] ?></a>
+                                        <?php }else{?>
+                                        无
+                                        <?php }?>
+                                    </span>
+                                    <span class="tdSpan2">
+                                        <?php if(!empty($topic['last_post_time'])){?>
+                                        <?php echo time_span($topic['last_post_time'], '', 3600 * 24, '前'); ?>
+                                        <?php }?>
+                                    </span>
+                                </li>
+                            </ul>
+                        </li>
+					<?php } ?>
+                    <div class="blkTit">版块主题</div>
+                <?php } ?>
+      
+      
+
+
+            <ul class="listCot listCotShow">
                 <?php if (!empty($topics)) { ?>
                     <?php
                     foreach ($topics as $topic) {
@@ -138,13 +214,15 @@ echo $page; ?>
                         <li>
                             <ul>
                                 <li class="td1"></li>
+                                
+                                
                                 <li class="td2">
                                     <strong>
-        <?php if (!empty($topic_category)) { ?>
+        							<?php if (!empty($topic_category)) { ?>
                                             <a href="<?= $category_url . $topic_category['id'] ?>">[<?= $topic_category['name'] ?>]</a>
-        <?php } else { ?>
+        							<?php } else { ?>
                                             [<?= '暂无分类' ?>]
-        <?php } ?>
+        							<?php } ?>
                                     </strong>
                                     <a href="<?= base_url() . 'index.php/topic/show/' . $topic['id'] ?>" title="<?= $topic['subject'] ?>">
 									<?php if(!empty($topic['highlight'])){
@@ -186,6 +264,7 @@ echo $page; ?>
             </ul>
 
         </div>
+        
         <div class="menuPage clearfix">
 
 <?php if (!empty($forum_id)) { ?>
@@ -194,10 +273,19 @@ echo $page; ?>
                         <div class="menuBox pa">
                             <ul>
                                 <li class="icoSj"></li>
-                                <li><a href="<?php echo base_url('index.php/action/post/' . $forum_id . '/1'); ?>" class="ico1" target="_blank">发表帖子</a></li>
-                                <li><a href="<?php echo base_url('index.php/action/post/' . $forum_id . '/2'); ?>" class="ico3" target="_blank">发布问答</a></li>
-                                <li><a href="<?php echo base_url('index.php/action/post/' . $forum_id . '/3'); ?>" class="ico2" target="_blank">发起投票</a></li>
-                                <li><a href="<?php echo base_url('index.php/action/post/' . $forum_id . '/4'); ?>" class="ico4" target="_blank">发起辩论</a></li>
+                            <li><a href="<?php echo base_url('index.php/action/post/' . $forum_id . '/1'); ?>" class="ico1" target="_blank">发表帖子</a></li>
+                            
+							<?php if(in_array(2,$forum['allow_special'])){?>
+                            <li><a href="<?php echo base_url('index.php/action/post/' . $forum_id . '/2'); ?>" class="ico3" target="_blank">发布问答</a></li>
+                            <?php }?>
+                            
+                            <?php if(in_array(3,$forum['allow_special'])){?>
+                            <li><a href="<?php echo base_url('index.php/action/post/' . $forum_id . '/3'); ?>" class="ico2" target="_blank">发起投票</a></li>
+                            <?php }?>
+                            
+							<?php if(in_array(4,$forum['allow_special'])){?>
+                            <li><a href="<?php echo base_url('index.php/action/post/' . $forum_id . '/4'); ?>" class="ico4" target="_blank">发起辩论</a></li>
+                        	<?php }?>
                             </ul>
                         </div>
                     </li>
