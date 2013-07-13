@@ -143,21 +143,32 @@ echo $page;?>
           </div>
         </article>
           
-          <?php if($post['is_first']==1 && !empty($related_posts)){?>
+          <?php if($post['is_first']==1){?>
         <?php if(!empty($topic['log'])){?>
         <div class="tcTop">本主题由<a href="<?php echo user_url($topic['log']['user_id'])?>"><?php echo $topic['log']['username'];?></a>于 <?php echo time_span($topic['log']['time'],'','','前');?>  <em><?php echo $topic['log']['action_name'];?></em></div>
         <?php }?>
-          
-          <div class="related">
-          <h3>相关帖子</h3>
-          <ul>
-            <?php foreach ($related_posts as $key => $related) {?>
-              <li><a href="<?php echo base_url('index.php/topic/show/'.$related['id'])?>" title="<?php echo $related['subject'];?>"><?php echo $related['subject'];?></a></li>
-            <?php }?>
-          </ul>
-          </div>
+                <?php if (!empty($related_posts)) { ?>
+                    <div class="related">
+                        <h3>相关帖子</h3>
+                        <ul>
+                            <?php foreach ($related_posts as $key => $related) { ?>
+                                <li><a href="<?php echo base_url('index.php/topic/show/' . $related['id']) ?>" title="<?php echo $related['subject']; ?>"><?php echo $related['subject']; ?></a></li>
+                            <?php } ?>
+                        </ul>
+                    </div>
+                <?php } ?>
           <?php }?>
-          
+
+        <?php if (!empty($comments[$post['id']])) { ?>
+        <div class="cmtCot">
+          <span class="btnCmt">点评</span>
+          <?php foreach($comments[$post['id']] as $comment){?>
+          <a href="<?php echo user_url($comment['user_id'])?>"><img src="<?php echo user_icon($comment['user_id'])?>" alt="<?php echo $comment['username']?>"></a>
+          <div class="cmtCotR"><a href="<?php echo user_url($comment['user_id'])?>"><?php echo $comment['username']?></a><?php echo $comment['comment'];?><span><em>发表于：</em><?php echo time_span($comment['time'], '', '', '前');?></span></div>
+          <?php } ?>
+        </div>
+        <?php } ?>
+        
         <?php if($post['is_first']==1 && !empty($topic['tags'])){?>
             <div class="myTag pr">
             <!--a href="#">Photoshop</a>,-->
@@ -180,6 +191,7 @@ echo $page;?>
           <?php }?>
           
           <?php if($base_permission['reply']){?>
+          <li><a class="icoEdit" href="<?php echo base_url('index.php/action/comment/'.$post['topic_id'].'/'.$post['id'])?>" target="dialog" width="464px">点评</a></li>
           <li><a class="icoCite" href="<?php echo base_url('index.php/action/reply_dialog/'.$post['topic_id'].'/'.$post['id'])?>" target="dialog" width="464px" >引用</a></li>
           <?php }?>
           

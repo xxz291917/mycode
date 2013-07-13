@@ -90,6 +90,31 @@ class Topic extends MY_Controller {
         $special_var = call_user_func_array(array($cls, $func), $args);
         $var = array_merge($var, $special_var);
         
+
+        //获取回复的点评
+        if(!empty($var['posts'])){
+            $view_comment_num = 5;
+            $comments = array();
+            $few_comment_ids = array();
+            $this->load->model('posts_comment_model');
+            foreach($var['posts'] as $post){
+                if($post['comment']>0){
+                    if($post['comment']<=$view_comment_num){
+                        $few_comment_ids[] = $post['id'];
+                    }else{
+                        $comments[$post['id']] = $this->posts_comment_model->get_list(array('post_id'=>$post['id']),'*','time desc',0,$view_comment_num);
+                    }
+                }
+            }
+            if(!empty($few_comment_ids)){
+               $few_comments = $this->posts_comment_model->get_few_list($few_comment_ids);
+               if(!empty($few_comments)){
+                   $comments = $comments + $few_comments;
+               }
+            }
+            $var['comments'] = $comments;
+        }
+        
         //如果是特殊帖子回复需要做相应的处理。
         empty($topic['special']) && $topic['special'] = 1;
         $special = $topic['special'];

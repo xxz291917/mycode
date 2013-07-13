@@ -32,7 +32,7 @@ class Users_model extends MY_Model {
         $passport_user = $this->user_lib->getUser();
         //$userInfo = $this->user_lib->getUserInfo(14,1);
 //        var_dump($user);
-        $user_id = !empty($passport_user['id'])?$passport_user['id']:0;
+        $user_id = !empty($passport_user['id'])?$passport_user['id']:1;
         //否则从passport获取登录信息。
 //        if(empty($user)){
 //            $user_id = '1';

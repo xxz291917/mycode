@@ -42,9 +42,6 @@ class Biz_post extends CI_Model {
             }
             $users = $this->users_model->get_userinfo_by_ids(array_unique(array_filter($uids)));
             
-            
-            
-            
             //为前面获取的变量赋值到$var
             $var['posts'] = $posts;
             $var['users'] = $users;

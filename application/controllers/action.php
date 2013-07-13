@@ -889,6 +889,49 @@ class Action extends MY_Controller {
         }
     }
     
+    /**
+     * 点评回复
+     * @param type $topic_id
+     * @param type $post_id
+     */
+    public function comment($topic_id,$post_id) {
+        if(empty($topic_id) || empty($post_id)){
+            $this->message('参数错误！');
+        }
+        $topic = $this->topics_model->get_by_id($topic_id);
+        if(empty($topic)){
+            $this->message('主题id错误！');
+        }
+        //检测权限（暂时等同于回复权限）。
+        if (!$this->biz_permission->check_base('reply', $topic['forum_id'])) {
+            $this->message('没有权限。', 0);
+        }
+        
+        if ($this->input->post('submit')) {
+            $this->load->model('posts_comment_model');
+            $comment = $this->input->post(null,TRUE);
+            $insert_data = array(
+                'topic_id'=>$topic_id,
+                'post_id'=>$post_id,
+                'username'=>$this->user['username'],
+                'user_id'=>$this->user['id'],
+                'comment'=>html_escape($comment['comment']),
+                'time'=>$this->time,
+                'status'=>1,
+            );
+            if($this->posts_comment_model->insert($insert_data)){
+                $this->posts_model->update_increment(array('comment'=>':1'), array('id'=>$post_id));
+                $this->message('点评完成！', 1);
+            }else{
+                $this->message('点评失败！');
+            }
+        } else {
+            $var['topic_id'] = $topic_id;
+            $var['post_id'] = $post_id;
+            $this->load->view('comment', $var);
+        }
+        
+    }
     
 }
 
