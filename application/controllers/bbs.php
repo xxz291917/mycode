@@ -12,7 +12,7 @@ class Bbs extends MY_Controller {
      */
     public function index() {
         //获取所有版块
-        $forums = $this->forums_model->get_forums();
+        $forums = $this->forums_model->get_forums(0);
         $forums = $this->forums_statistics_model->append_to_forums($forums);
         $forums = $this->forums_model->handle_redirect($forums);//处理redirect
         $var['forums'] = $this->forums_model->get_format_forums($forums);

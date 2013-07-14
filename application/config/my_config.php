@@ -8,7 +8,7 @@
 $config['enable_profiler'] = FALSE;//是否开启profiler。
 
 $config['enable_cache'] = TRUE;
-$config['cache_time'] = 6*5;
+$config['cache_time'] = 2*5;
 
 $config['per_num'] = 10;
 //默认的版块图标

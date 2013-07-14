@@ -74,7 +74,7 @@ echo $page;?>
             <li class="usUid"><span>UID：</span><?php echo $user['id'];?></li>
             <li><span>注册时间：</span><?php echo date('Y-m-d H:i:s',$user['regdate']);?></li>
             <li><span>在线时间：</span><?php echo $user['online_time']?></li>
-            <li><span>最后登录：</span><?php echo date('Y-m-d H:i:s',$user['last_login_time']);?></li>
+            <li><span>最后登录：</span><?php echo empty($user['last_login_time'])?0:date('Y-m-d H:i:s',$user['last_login_time']);?></li>
         	<?php foreach ($credit_name as $key => $val) {
                 echo "<li><span>{$val['view_name']}：</span>{$user[$key]} {$val['unit']}</li>";
             }
@@ -282,7 +282,7 @@ echo $page;?>
             <li class="usUid"><span>UID：</span><?php echo $user['id'];?></li>
             <li><span>注册时间：</span><?php echo date('Y-m-d H:i:s',$user['regdate']);?></li>
             <li><span>在线时间：</span><?php echo $user['online_time']?></li>
-            <li><span>最后登录：</span><?php echo date('Y-m-d H:i:s',$user['last_login_time']);?></li>
+            <li><span>最后登录：</span><?php echo empty($user['last_login_time'])?0:date('Y-m-d H:i:s',$user['last_login_time']);?></li>
         	<?php foreach ($credit_name as $key => $val) {
                 echo "<li><span>{$val['view_name']}：</span>{$user[$key]} {$val['unit']}</li>";
             }

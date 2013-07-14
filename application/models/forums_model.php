@@ -52,15 +52,14 @@ class Forums_model extends MY_Model {
         return $option;
     }
     
-    public function get_forums() {
+    public function get_forums($closed = 1) {
         if($this->enable_cache){
-            $cache_key = "get_forums";
+            $cache_key = "get_forums".$closed;
             $this->forums = $this->cache->get($cache_key);
         }
         if (empty($this->forums)) {
-            $this->db->order_by("display_order");
-            $query = $this->db->get($this->table);
-            $this->forums = $query->result_array();
+            $where = $closed ? 1 : array('status' => 1);
+            $this->forums = $this->get_list($where,'*','display_order');
             if ($this->enable_cache) {
                 $this->cache->save($cache_key, $this->forums, config_item('cache_time'));
             }

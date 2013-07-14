@@ -26,10 +26,10 @@
           <input type="checkbox" value="2" name="allow_special[]" <?php echo my_set_checkbox('allow_special', '2',$data); ?> class="checkbox">
           问答主题</li>
         <li>
-          <input type="checkbox" value="3" name="allow_special[]" <?php echo my_set_checkbox('allow_special', '1',$data); ?> class="checkbox">
+          <input type="checkbox" value="3" name="allow_special[]" <?php echo my_set_checkbox('allow_special', '3',$data); ?> class="checkbox">
           投票主题</li>
         <li>
-          <input type="checkbox" value="4" name="allow_special[]" <?php echo my_set_checkbox('allow_special', '3',$data); ?> class="checkbox">
+          <input type="checkbox" value="4" name="allow_special[]" <?php echo my_set_checkbox('allow_special', '4',$data); ?> class="checkbox">
           辩论主题</li>
       </ul></td>
     <td></td>

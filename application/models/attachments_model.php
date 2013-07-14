@@ -14,6 +14,9 @@ class Attachments_model extends MY_Model {
     }
     
     public function get_images($post_ids) {
+        if(empty($post_ids)){
+            return array();
+        }
         $post_ids = join(',', $post_ids);
         $sql = "select min(upload_time) upload_time,post_id,filename,path,description from attachments where post_id in($post_ids) and is_image=1 group by post_id";
         $query = $this->db->query($sql);
