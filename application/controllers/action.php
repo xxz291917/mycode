@@ -933,6 +933,35 @@ class Action extends MY_Controller {
         
     }
     
+    /**
+     * 点评删除
+     * @param type $topic_id
+     * @param type $post_id
+     */
+    public function comment_del($comment_id) {
+        if(empty($comment_id)){
+            $this->message('参数错误！');
+        }
+        $this->load->model('posts_comment_model');
+        $comment = $this->posts_comment_model->get_by_id($comment_id);
+        if(empty($comment)){
+            $this->message('评论id错误！');
+        }
+        //检测权限（暂时等同于回复权限）。
+        if($this->user['id']!=$comment['user_id']){
+            if (!$this->biz_permission->check_manage_no_owner($comment['topic_id'], 'edit') ){
+                $this->message('没有操作权限。', 0);
+            }
+        }
+        if($this->posts_comment_model->update(array('status'=>2),array('id'=>$comment_id))){
+            $this->posts_model->update_increment(array('comment'=>':-1'), array('id'=>$comment['post_id']));
+            $this->message('操作完成！', 1);
+        }else{
+            $this->message('操作失败！');
+        }
+    }
+    
+    
 }
 
 ?>
