@@ -32,6 +32,7 @@ class import extends MY_Controller {
             'forums_model',
             'forums_statistics_model',
             'posts_supported_model',
+            'attachments_model',
         ));
 
         $dz_config['hostname'] = "10.127.64.234";
@@ -205,6 +206,7 @@ class import extends MY_Controller {
                 //获取下面的所有posts
                 $this->topic_post($row);
                 //获取下面的所有附件
+                $this->attachment($row);
                 //获取处理特殊帖子回复。
                 if ($specail > 1) {
                     $funs = array(2 => 'ask', 3 => 'poll', 4 => 'debate');
@@ -280,6 +282,52 @@ class import extends MY_Controller {
             }
         }
     }
+
+    public function attachment($row) {
+        //获取poll_options表的数据总数
+        $where = "tid = {$row['tid']}";
+        $sql = "SELECT * num FROM {$this->pre}forum_attachment WHERE $where";
+        $query = $this->dzdb->query($sql);
+        $attachments = $query->result_array();
+        if (empty($attachments)) {
+            return FALSE;
+        }
+        $attach_data = array();
+        foreach ($attachments as $k => $v) {
+            $attach_data[$v['aid']]['id'] = $v['aid'];
+            $attach_data[$v['aid']]['downloads'] = $v['downloads'];
+        }
+        $subtable = 'forum_attachment_'.($row['tid']%10);
+        $where = "tid = {$row['tid']}";
+        $sql = "SELECT * num FROM {$this->pre}$subtable WHERE $where";
+        $query = $this->dzdb->query($sql);
+        $attachments = $query->result_array();
+        if (empty($attachments)) {
+            return FALSE;
+        }
+        foreach ($attachments as $k => $v) {
+            $attach_data[$v['aid']]['topic_id'] = $v['tid'];
+            $attach_data[$v['aid']]['post_id'] = $v['pid'];
+            $attach_data[$v['aid']]['user_id'] = $v['uid'];
+            $attach_data[$v['aid']]['upload_time'] = $v['dateline'];
+            $attach_data[$v['aid']]['size'] = $v['filesize'];
+            $attach_data[$v['aid']]['extension'] = $v['dateline'];
+            $attach_data[$v['aid']]['filename'] = $v['filename'];
+            
+            $new_v = 'uploads/old/' . $v['attachment'];
+            $this->get_file($v['attachment'], $new_v,'forum');
+            $attach_data[$v['aid']]['path'] = $new_v;
+            $attach_data[$v['aid']]['description'] = $v['description'];
+            $attach_data[$v['aid']]['is_image'] = $v['isimage'];
+            $attach_data[$v['aid']]['is_thumb'] = $v['thumb'];
+            $attach_data[$v['aid']]['is_remote'] = $v['remote'];
+            $attach_data[$v['aid']]['status'] = 1;
+            //$attach_data[$v['aid']]['width'] = $v['width'];
+        }
+        return $this->attachments_model->insert_batch($attach_data);
+        
+    }
+
 
     private function handle_content($content) {
         //code<pre class="codeprint brush:javascript;">sfsdfsdfsdf</pre>
@@ -536,8 +584,8 @@ class import extends MY_Controller {
         return file_put_contents($filename, json_encode($data));
     }
 
-    public function get_file($from, $to) {
-        $old_path = 'http://bbs.9ria.com/data/attachment/common/';
+    public function get_file($from, $to, $dir='common') {
+        $old_path = 'http://bbs.9ria.com/data/attachment/'.$dir.'/';
         $new_path = FCPATH;
         $this->load->model('biz_curl');
         $content = $this->biz_curl->my_fopen($old_path . $from);
