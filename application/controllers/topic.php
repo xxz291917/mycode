@@ -97,7 +97,8 @@ class Topic extends MY_Controller {
             $comments = array();
             $few_comment_ids = array();
             $this->load->model('posts_comment_model');
-            foreach($var['posts'] as $post){
+            foreach($var['posts'] as &$post){
+                $post['content'] = nl2br($post['content']);
                 if($post['comment']>0){
                     if($post['comment']<=$view_comment_num){
                         $few_comment_ids[] = $post['id'];

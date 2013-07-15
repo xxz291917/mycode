@@ -1,0 +1,126 @@
+a:3:{s:4:"time";i:1373886654;s:3:"ttl";i:10;s:4:"data";a:26:{s:2:"id";s:7:"1938055";s:8:"topic_id";s:6:"225458";s:8:"forum_id";s:3:"293";s:6:"author";s:10:"songweilin";s:9:"author_id";s:6:"346496";s:9:"author_ip";s:14:"111.196.210.32";s:9:"post_time";s:10:"1373295393";s:7:"subject";s:36:"Android---UI篇---Button（按钮）";s:7:"content";s:5933:"<span style='font-family:宋体'><span>　　Button，就是按钮，是android中应用最多的组件之一，Button有两种用法，一种是XML中配置，另一种是在程序中直接使用</span></span>
+
+<span style='font-family:宋体'><span>　　在XML布局文件里，会遇到如下一些单位</span></span><span style='font-family:宋体'><span>
+</span></span>
+<span style='font-family:宋体'><span>　　px：是屏幕的像素点</span></span>
+
+<span style='font-family:宋体'><span>　　in：英寸</span></span>
+
+<span style='font-family:宋体'><span>　　mm：毫米</span></span>
+
+<span style='font-family:宋体'><span>　　pt：磅，1/72 英寸</span></span>
+
+<span style='font-family:宋体'><span>　　dp：一个基于density的抽象单位，如果一个160dpi的屏幕，1dp</span></span><span style='font-family:宋体'><span>=1px</span></span><span style='font-family:宋体'><span>
+</span></span>
+<span style='font-family:宋体'><span>　　dip：等同于dp</span></span>
+
+<span style='font-family:宋体'><span>　　sp：同dp相似，但还会根据用户的字体大小偏好来缩放。</span></span>
+
+<span style='font-family:宋体'><span>　　建议使用sp作为文本的单位，其它用dip</span></span>
+<span style='font-family:宋体'><span>
+</span></span>
+<span style='font-family:宋体'><span>　　例1：在XML中布局，这样来设置控件以后修改起来会更方便，也符合了MVC模式</span></span>
+<span style='font-family:宋体'><span>
+</span></span>
+<span style='font-family:宋体'><span>　　main.xml布局文件</span></span>
+<pre class="codeprint brush:javascript;">　　
+　　 
+　　android:orientation="vertical"
+　　android:layout_width="fill_parent"
+　　android:layout_height="fill_parent"
+　　>
+　　 
+　　android:layout_width="fill_parent"
+　　android:layout_height="wrap_content"
+　　android:text="这是个Button示例"
+　　/>
+　　 
+　　android:layout_width="fill_parent"------充满父控件
+　　android:layout_height="wrap_content"------充满内容
+　　android:id="@+id/button1"----设置button的ID
+　　android:text="按钮一" ------设置按钮的文本显示信息，也可以用string
+　　/>
+　　 
+　　android:layout_width="150dip"---按钮二的宽度
+　　android:layout_height="30dip"---按钮二的高度
+　　android:background="#aa00aa"---设置按钮背景颜色
+　　android:textColor="#00aa00"---设置按钮二里的文本颜色
+　　android:layout_gravity="center"---设置控件居中显示，注意：android:gravity="center"表是文本在控件中居中显示
+　　android:id="@+id/button2"
+　　android:text="按钮二"
+　　/></pre>
+
+<span style='font-family:宋体'><span>　　</span></span>
+<span style='font-family:宋体'><span>　　TestButton.java源代码package org.loulijun.button;</span></span>
+<span style='font-family:宋体'><span>
+</span></span>
+<pre class="codeprint brush:javascript;">　　import android.app.Activity;
+　　import android.os.Bundle;
+　　import android.view.Gravity;
+　　import android.view.View;
+　　import android.widget.Button;
+　　import android.widget.Toast;
+　　public class TestButton extends Activity {
+　　/** Called when the activity is first created. */
+　　private Button btn1,btn2;
+　　@Override
+　　public void onCreate(Bundle savedInstanceState) {
+　　super.onCreate(savedInstanceState);
+　　setContentView(R.layout.main);
+　　btn1=(Button)findViewById(R.id.button1);---获得父控件id
+　　btn2=(Button)findViewById(R.id.button2);
+　　//为控件设置监听，当点击了按钮一，就弹出一个提示，当点击按钮二，退出程序
+　　btn1.setOnClickListener(new Button.OnClickListener()
+　　{
+　　@Override
+　　public void onClick(View arg0) {
+　　// TODO Auto-generated method stub
+　　Toast toast=Toast.makeText(TestButton.this, 
+"你点击了按钮"+btn1.getText().toString(), Toast.LENGTH_SHORT);
+　　toast.setGravity(Gravity.TOP,0,150);
+　　toast.show();
+　　}
+　　});
+　　btn2.setOnClickListener(new Button.OnClickListener()
+　　{
+　　@Override
+　　public void onClick(View v) {
+　　// TODO Auto-generated method stub
+　　TestButton.this.finish();
+　　}
+　　});
+　　}
+　　}
+　　复制代码</pre>
+<span style='font-family:宋体'><span>    运行结果：</span></span>
+<span style='font-family:宋体'><span>　　</span></span>
+<div style='text-align:center'>[attach]165786[/attach]</div>
+<span style='font-family:宋体'><span>　　</span></span>
+<div style='text-align:center'>[attach]165787[/attach]</div>
+
+<span style='font-family:宋体'><span>　　当然，也可以直接在程序中使用相应的方法来这是Button的相应属性</span></span>
+
+<pre class="codeprint brush:javascript;">　　public class TestButton extends Activity{
+　　private Button btn1,btn2;
+　　public void onCreate(Bundle savedInstanceState)
+　　{
+　　super.onCreate(savedInstanceState);
+　　setContentView(R.layout.main);
+　　btn1=(Button)findViewById(R.id.button1);
+　　btn2=(Button)findViewById(R.id.button2);
+　　btn1.setWidth(150);--设置按钮宽度，当然也可以用setHeight()来设置高度
+　　btn2.setWidth(100);
+　　btn1.setText("按钮一");---设置按钮文本显示信息
+　　btn2.setText("安妮二");
+　　btn1.setTextColor(Color.GREEN);---设置按钮内文本颜色
+　　btn2.setTextColor(Color.RED);
+　　btn1.setTextSize(30);---设置按钮内文本大小
+　　btn2.setTextSize(20);
+　　btn2.setBackgroundColor(Color.RED);---设置按钮背景颜色
+　　}
+　　}
+　　复制代码</pre>
+
+<span style='font-family:宋体'><span>原文链接：<a href='http://www.apkbus.com/android-14278-1-4.html'>http://www.apkbus.com/android-14278-1-4.html</a></span></span>
+
+";s:9:"edit_user";s:0:"";s:12:"edit_user_id";s:1:"0";s:9:"edit_time";s:1:"0";s:10:"attachment";s:1:"2";s:12:"check_status";s:1:"0";s:8:"is_first";s:1:"1";s:9:"is_report";s:1:"0";s:9:"is_bbcode";s:1:"1";s:10:"is_smilies";s:1:"1";s:8:"is_media";s:1:"0";s:7:"is_html";s:1:"0";s:12:"is_anonymous";s:1:"0";s:7:"is_hide";s:1:"0";s:7:"is_sign";s:1:"1";s:7:"comment";s:1:"0";s:8:"position";s:1:"0";s:6:"status";s:1:"1";}}

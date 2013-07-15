@@ -1,0 +1,28 @@
+a:3:{s:4:"time";i:1373887213;s:3:"ttl";i:10;s:4:"data";a:26:{s:2:"id";s:7:"1937717";s:8:"topic_id";s:6:"225422";s:8:"forum_id";s:2:"42";s:6:"author";s:6:"Nestor";s:9:"author_id";s:6:"107509";s:9:"author_ip";s:15:"171.216.105.101";s:9:"post_time";s:10:"1373282800";s:7:"subject";s:36:"Starling的ATF2048上传要多久？";s:7:"content";s:1161:"如题，请问在ios上 2048x2048的ATF 正常上传要多久？
+[table=144]
+  [tr]  [td=72]尺寸[/td]  [td=72]2048x2048[/td] [/tr]
+ [tr]  [td]设备[/td]  [td]iPhone4[/td] [/tr]
+ [tr]  [td]加载方式[/td]  [td]Starling自带的AssetManager[/td] [/tr]
+ [tr]  [td]大小[/td]  [td]1.48M[/td] [/tr]
+[/table]
+
+这个是我的测试环境，用PNG大概要6秒左右， 
+
+1.atf  命令 png2atf -i test.png -o test.atf  这种命令生成的ATF 大概 8秒左右 有点坑啊
+大小和png一样
+2. atf  命令png2atf -c -i test.png -o test.atf 加c了以后 要4秒左右
+大小14M
+3.atf 命令png2atf -c p -n 0,0 -i test.png -o test.atf 这个要3秒左右
+大小2M
+
+请问高手正常ATF上传是怎样的？
+
+我们游戏 我本来想每次销毁原来的场景彻底释放，以减少显存，但是如果上传速度跟不上，那用户体验就太苦逼了
+
+有的人说 只需要1秒以内，甚至 几十ms，是不是我的命令写的不对？
+
+麻烦详细说下，银子不对，说的详细的再加，如果能顺带说下Andriod上的情况，就太谢谢了！
+
+{:5_308:}{:5_308:}{:5_308:}{:5_308:}{:5_308:}{:5_308:}
+
+";s:9:"edit_user";s:0:"";s:12:"edit_user_id";s:1:"0";s:9:"edit_time";s:1:"0";s:10:"attachment";s:1:"0";s:12:"check_status";s:1:"0";s:8:"is_first";s:1:"1";s:9:"is_report";s:1:"0";s:9:"is_bbcode";s:1:"1";s:10:"is_smilies";s:1:"1";s:8:"is_media";s:1:"0";s:7:"is_html";s:1:"0";s:12:"is_anonymous";s:1:"0";s:7:"is_hide";s:1:"0";s:7:"is_sign";s:1:"1";s:7:"comment";s:1:"0";s:8:"position";s:1:"0";s:6:"status";s:1:"1";}}

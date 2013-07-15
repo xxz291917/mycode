@@ -49,11 +49,13 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'u-bbs';
-$db['default']['password'] = 'EWYR7o2Lwdfcv45f678h';
-//$db['default']['hostname'] = "10.127.64.234";
+//$db['default']['username'] = 'u-bbs';
+//$db['default']['password'] = 'EWYR7o2Lwdfcv45f678h';
 $db['default']['username'] = "root";
 $db['default']['password'] = "";
+//$db['default']['hostname'] = "10.127.64.234";
+//$db['default']['username'] = "client";
+//$db['default']['password'] = "sskWDE638DE8fhgo2Lw34e";
 $db['default']['database'] = 'bbs';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';

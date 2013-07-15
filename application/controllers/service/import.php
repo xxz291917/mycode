@@ -2,11 +2,13 @@
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
+
 set_time_limit(0);
 
 class import extends MY_Controller {
 
     private $dzdb;
+    private $BBCodeParser = null;
 
     function __construct() {
         parent::__construct();
@@ -31,7 +33,7 @@ class import extends MY_Controller {
             'forums_statistics_model',
             'posts_supported_model',
         ));
-        
+
         $dz_config['hostname'] = "10.127.64.234";
         $dz_config['username'] = "client";
         $dz_config['password'] = "sskWDE638DE8fhgo2Lw34e";
@@ -117,13 +119,13 @@ class import extends MY_Controller {
                     $redirect = current_url();
                     $this->message('处理成功:' . $endid, 1, $redirect);
                 } else {
-                    echo '处理完成:' . $endid;
-                    die;
+                    $this->message('处理完成：' . $endid);
                 }
             } else {
-                echo '处理失败:' . $endid;
-                die;
+                $this->message('处理失败：' . $endid);
             }
+        } else {
+            $this->message('未搜到记录，当前处理到：' . $endid);
         }
     }
 
@@ -135,8 +137,7 @@ class import extends MY_Controller {
             $num = 0;
         }
         if ($num >= $maxnum) {
-            echo '全部完成';
-            die;
+            $this->message('全部完成：' . $num);
         }
         $endnum = ($num + 5) >= $maxnum ? $maxnum : $num + 5;
         $table = 'forum_thread';
@@ -217,9 +218,11 @@ class import extends MY_Controller {
                 $redirect = current_url();
                 $this->message('处理成功:' . $endnum, 1, $redirect);
             } else {
-                echo '处理完成:' . $endnum;
-                die;
+                $this->message('处理完成：' . $endnum);
             }
+        } else {
+            $this->set_data('topics', array('num' => $endnum));
+            $this->message('未搜到记录，当前处理到：' . $endnum);
         }
     }
 
@@ -262,28 +265,28 @@ class import extends MY_Controller {
                 $posts_data[$k]['is_anonymous'] = $v['anonymous'];
                 $posts_data[$k]['is_sign'] = $v['usesig'];
                 $posts_data[$k]['comment'] = $v['comment'];
-                $posts_data[$k]['position'] = empty($v['position'])?0:$v['position'];
+                $posts_data[$k]['position'] = empty($v['position']) ? 0 : $v['position'];
                 $posts_data[$k]['status'] = 1;
-                
-                if($row['special'] == 3){
+
+                if ($row['special'] == 3) {
                     $ask_data[$k]['topic_id'] = $v['tid'];
                     $ask_data[$k]['post_id'] = $v['pid'];
                     $ask_data[$k]['user_id'] = $v['authorid'];
                 }
             }
             $this->posts_model->insert_batch($posts_data);
-            if($row['special'] == 3){
+            if ($row['special'] == 3) {
                 $this->ask_posts_model->insert_batch($ask_data);
-             }
+            }
         }
     }
 
-    private function handle_content($content){
+    private function handle_content($content) {
         //code<pre class="codeprint brush:javascript;">sfsdfsdfsdf</pre>
         $content = preg_replace('/\[code\](.*?)\[\/code\]/is', '<pre class="codeprint brush:javascript;">\1</pre>', $content);
+        $content = $this->bbcode($content);
         return $content;
     }
-
 
     public function ask_topic($row) {
         $ask_data['topic_id'] = $row['tid'];
@@ -412,7 +415,7 @@ class import extends MY_Controller {
             $debate_data[$k]['stand'] = $v['stand'];
             $debate_data[$k]['post_time'] = $v['dateline'];
             $debate_data[$k]['voters'] = $v['voters'];
-            
+
             $supported_data[$k]['post_id'] = $v['pid'];
             $supported_data[$k]['user_ids'] = preg_replace('/\s+/', ',', $v['voterids']);
         }
@@ -424,8 +427,7 @@ class import extends MY_Controller {
         //全部导入
         $data = $this->get_data('forums');
         if (!empty($data)) {
-            echo '已经全部完成，不要重复导入';
-            die;
+            $this->message('已经全部完成，不要重复导入');
         }
         //清空当前论坛数据。
         $this->db->empty_table('forums');
@@ -497,7 +499,7 @@ class import extends MY_Controller {
             $r2 = $this->forums_statistics_model->insert_batch($batch2);
             if ($r1 && $r2) {
                 $this->set_data('forums', 'ok');
-                $this->message('处理完成');
+                $this->message('处理完成', 1);
             } else {
                 $this->message('处理失败');
             }
@@ -518,8 +520,7 @@ class import extends MY_Controller {
         $this->db->empty_table('attachments');
         $this->message('数据表已经清空');
     }
-    
-    
+
     public function get_data($action) {
         $filename = $this->dir . $action;
         if (file_exists($filename)) {
@@ -543,7 +544,7 @@ class import extends MY_Controller {
         if (!empty($content)) {
             $new_file = $new_path . $to;
             $filedir = dirname($new_file);
-            file::forcemkdir($filedir);
+            $this->forcemkdir($filedir);
             return file_put_contents($new_file, $content);
         } else {
             return false;
@@ -555,6 +556,20 @@ class import extends MY_Controller {
             $this->forcemkdir(dirname($path));
             mkdir($path, 0777);
         }
+    }
+
+    public function bbcode($str) {
+        if (empty($this->BBCodeParser)) {
+            $BBCode_path = FCPATH . APPPATH . 'third_party/bbcode/';
+            include $BBCode_path . 'BBCodeParser2.php';
+            $config = parse_ini_file($BBCode_path . 'BBCodeParser2.ini', true);
+            $options = $config['HTML_BBCodeParser2'];
+            $this->BBCodeParser = new HTML_BBCodeParser2($options);
+        }
+        $this->BBCodeParser->setText($str);
+        $this->BBCodeParser->parse();
+        $parsed = $this->BBCodeParser->getParsed();
+        return $parsed;
     }
 
 }

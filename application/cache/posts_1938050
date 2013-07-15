@@ -1,0 +1,93 @@
+a:3:{s:4:"time";i:1373886632;s:3:"ttl";i:10;s:4:"data";a:26:{s:2:"id";s:7:"1938050";s:8:"topic_id";s:6:"225456";s:8:"forum_id";s:3:"293";s:6:"author";s:10:"songweilin";s:9:"author_id";s:6:"346496";s:9:"author_ip";s:14:"111.196.210.32";s:9:"post_time";s:10:"1373295159";s:7:"subject";s:45:"Android 实现书籍翻页效果----升级篇";s:7:"content";s:4458:"<div>
+ <span><span>　　自从之前发布了《Android 实现书籍翻页效果----完结篇 》之后，收到了很多朋友给我留言，前段时间由于事情较多，博客写得太匆忙很多细节地方没有描述清楚。所以不少人对其中的地方有不少不明白之处，也有不少人对其中出现的Bug进行了反馈。今天终于找出了段时间对这段时间的一些问题做个简单的总结。</span></span> 
+</div>
+<div>
+ <span><span> </span></span> 
+</div>
+<div>
+ <span><span>　　之前给出的例子只是能使书籍进行简单的拖拽，没有实现翻页的动画效果，很多人希望我能加上这一个，所以首先我们就来说说这个翻页的动画。</span></span> 
+</div>
+<div>
+ <span><span> </span></span> 
+</div>
+<div>
+ <span><span>　　其实翻页的动画很容易实现，只要在Touch抬起后不断的刷新mTouch.x ， mTouch.y 的值就行了， 你可以使用handler，thread，也可以使用Scroller，我个人比较喜欢Scroller，这个比较简单。</span></span> 
+</div>
+<div>
+ <span><span> </span></span> 
+</div>
+<div>
+ <span><span>　　新添两个函数：</span></span> 
+</div>
+<pre class="codeprint brush:javascript;">private void startAnimation(int delayMillis) { 
+　　int dx, dy;
+　　// dx 水平方向滑动的距离，负值会使滚动向左滚动
+　　// dy 垂直方向滑动的距离，负值会使滚动向上滚动
+　　if (mCornerX &gt; 0) {
+　　dx = -(int) (mWidth + mTouch.x);
+　　} else {
+　　dx = (int) (mWidth - mTouch.x + mWidth);
+　　}
+　　if (mCornerY &gt; 0) {
+　　dy = (int) (mHeight - mTouch.y);
+　　} else {
+　　dy = (int) (1 - mTouch.y); // 防止mTouch.y最终变为0
+　　}
+　　mScroller.startScroll((int) mTouch.x, (int) mTouch.y, dx, dy,
+　　delayMillis);
+　　}
+　　public void computeScroll() {
+　　super.computeScroll();
+　　if (mScroller.computeScrollOffset()) {
+　　float x = mScroller.getCurrX();
+　　float y = mScroller.getCurrY();
+　　mTouch.x = x;
+　　mTouch.y = y;
+　　postInvalidate();
+　　}
+　　}
+　　复制代码接着在按下抬起时调用就行了
+　　if (event.getAction() == MotionEvent.ACTION_UP) {
+　　if (canDragOver()) { //判断是否可以翻页
+　　startAnimation(1200);
+　　} else {
+　　mTouch.x = mCornerX - 0.09f; //如果不能翻页就让mTouch返回没有静止时的状态
+　　mTouch.y = mCornerY - 0.09f; // - 0.09f是防止mTouch = 800 或mTouch= 0 
+要不在这些值时会出现BUG
+　　}
+　　还需要修改的地方是calcPoints() 这个函数，之前为了防止一个bug出现，添加了if (mBezierStart1.x &lt; 0 || 
+mBezierStart1.x &gt; mWidth) 
+{这个判断，但是在翻页动画时mTouch.x会小于0(从右向左翻时)或者mTouch.x&gt;mWidth(从左往右)这时并不需要在进入这个函数进行处理，所以要在这个情况时将其屏蔽，改为：
+　　if (mTouch.x &gt; 0 &amp;&amp; mTouch.x &lt; mWidth) {
+　　if (mBezierStart1.x &lt; 0 || mBezierStart1.x &gt; mWidth) {
+　　……}
+　　}</pre>
+<div>
+ <span><span>　　经过上边的修改就可以完成动画效果了。</span></span> 
+</div>
+<div>
+ <span><span> </span></span> 
+</div>
+<div>
+ <span><span>　　还有的童鞋想将这个做成一个电子书阅读器，但是不知道如何将txt中的内容转换为翻页所需的图片，并在翻页后进行切换。所以我新添加了一个简单的类BookPageFactory，用来读取SD卡中的一个txt，并将读取的内容转换为一个bitmap用于显示。哈哈，这个只是一个功能很小的类，只是给大家做个演示，起到抛砖引玉的作用。大家请根据自己所需的功能酌情修改。</span></span> 
+</div>
+<div>
+ <span><span> </span></span> 
+</div>
+<div>
+ <span><span>　　源码附带的是一个简单的带翻页动画的电子书阅读器，大家测试时请将test.txt放于SD卡根目录下：</span></span> 
+</div>
+<div>
+ <span><span>　</span></span> 
+</div>
+<pre class="codeprint brush:javascript;">　pagefactory.openbook("/sdcard/test.txt");</pre>
+<div>
+ <span><span>　　新的界面截图：</span></span> 
+</div>
+<div>
+ <span><span>　　</span></span> 
+</div>
+<span> 
+<div>
+</div>
+</span><span><span>原文链接：<a href="http://www.apkbus.com/android-52351-1-4.html">http://www.apkbus.com/android-52351-1-4.html</a></span></span>";s:9:"edit_user";s:6:"黑羽";s:12:"edit_user_id";s:1:"1";s:9:"edit_time";s:10:"1373886561";s:10:"attachment";s:1:"0";s:12:"check_status";s:1:"0";s:8:"is_first";s:1:"1";s:9:"is_report";s:1:"0";s:9:"is_bbcode";s:1:"1";s:10:"is_smilies";s:1:"0";s:8:"is_media";s:1:"0";s:7:"is_html";s:1:"0";s:12:"is_anonymous";s:1:"0";s:7:"is_hide";s:1:"0";s:7:"is_sign";s:1:"1";s:7:"comment";s:1:"0";s:8:"position";s:1:"0";s:6:"status";s:1:"1";}}
