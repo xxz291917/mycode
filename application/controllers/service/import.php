@@ -8,7 +8,7 @@ set_time_limit(0);
 class import extends MY_Controller {
 
     private $dzdb;
-    private $BBCodeParser = null;
+    private $BBCode = null;
 
     function __construct() {
         parent::__construct();
@@ -131,6 +131,7 @@ class import extends MY_Controller {
     }
 
     public function topics($maxnum = 0) {
+
         $data = $this->get_data('topics');
         if (!empty($data['num'])) {
             $num = $data['num'];
@@ -144,16 +145,48 @@ class import extends MY_Controller {
         $table = 'forum_thread';
 
         //一周内的帖子。
-        $oldtime = $this->time - 3600 * 24 * 7;
+        $oldtime = $this->time - 3600 * 24 * 10;
         $where = "dateline > $oldtime AND dateline < $this->time";
 
         $sql = "SELECT * FROM $this->pre$table WHERE $where ORDER BY tid limit $num,5";
         $query = $this->dzdb->query($sql);
         $rows = $query->result_array();
 
-        $specials = array(0 => '1', 1 => '3', 3 => '2', 5 => '4'); //1,poll，3，ask，5，debate
         if (!empty($rows)) {
-            $field1 = array(
+            foreach ($rows as $key => $row) {
+                $this->get_topic($row);
+            }
+
+            $this->set_data('topics', array('num' => $endnum));
+            if ($endnum < $maxnum) {
+                $redirect = current_url();
+                $this->message('处理成功:' . $endnum, 1, $redirect);
+            } else {
+                $this->message('处理完成：' . $endnum);
+            }
+        } else {
+            $this->set_data('topics', array('num' => $endnum));
+            $this->message('未搜到记录，当前处理到：' . $endnum);
+        }
+    }
+
+    public function topic_id($id) {
+        //一周内的帖子。
+        $table = 'forum_thread';
+        $sql = "SELECT * FROM $this->pre$table WHERE tid=$id";
+        $query = $this->dzdb->query($sql);
+        $row = $query->row_array();
+        if (!empty($row)) {
+            $this->get_topic($row);
+            $this->message('处理完成');
+        } else {
+            $this->message('未搜到记录，当前处理到');
+        }
+    }
+
+    private function get_topic($row) {
+        $specials = array(0 => '1', 1 => '3', 3 => '2', 5 => '4'); //1,poll，3，ask，5，debate
+        $field1 = array(
                 'tid' => 'id',
                 'fid' => 'forum_id',
                 'typeid' => 'category_id',
@@ -172,59 +205,45 @@ class import extends MY_Controller {
                 'special' => 'special',
                 'closed' => 'status'
             );
-            foreach ($rows as $key => $row) {
-                $batch1 = array();
-                foreach ($row as $k => $v) {
-                    if (!empty($field1[$k])) {
-                        if (isset($batch1[$field1[$k]]))
-                            continue;
-                        if ($k == 'special') {
-                            if (array_key_exists($v, $specials)) {
-                                $v = $specials[$v];
-                            } else {
-                                break;
-                            }
-                        } elseif ('closed' == $k) {
-                            if (!empty($v)) {
-                                $v = 5;
-                            } else {
-                                $v = 1;
-                            }
-                        }
-                        $batch1[$field1[$k]] = $v;
+        $batch1 = array();
+        foreach ($row as $k => $v) {
+            if (!empty($field1[$k])) {
+                if (isset($batch1[$field1[$k]]))
+                    continue;
+                if ($k == 'special') {
+                    if (array_key_exists($v, $specials)) {
+                        $v = $specials[$v];
+                    } else {
+                        break;
+                    }
+                } elseif ('closed' == $k) {
+                    if (!empty($v)) {
+                        $v = 5;
+                    } else {
+                        $v = 1;
                     }
                 }
-                //把主题插入数据库。
-                $r1 = $this->topics_model->insert($batch1);
-                $specail = $specials[$row['special']];
-                //获取处理特殊帖子主题。
-                if ($specail > 1) {
-                    $funs = array(2 => 'ask', 3 => 'poll', 4 => 'debate');
-                    $method = $funs[$specail] . '_topic';
-                    $this->$method($row);
-                }
-                //获取下面的所有posts
-                $this->topic_post($row);
-                //获取下面的所有附件
-                $this->attachment($row);
-                //获取处理特殊帖子回复。
-                if ($specail > 1) {
-                    $funs = array(2 => 'ask', 3 => 'poll', 4 => 'debate');
-                    $method = $funs[$specail] . '_post';
-                    $this->$method($row);
-                }
+                $batch1[$field1[$k]] = $v;
             }
-
-            $this->set_data('topics', array('num' => $endnum));
-            if ($endnum < $maxnum) {
-                $redirect = current_url();
-                $this->message('处理成功:' . $endnum, 1, $redirect);
-            } else {
-                $this->message('处理完成：' . $endnum);
-            }
-        } else {
-            $this->set_data('topics', array('num' => $endnum));
-            $this->message('未搜到记录，当前处理到：' . $endnum);
+        }
+        //把主题插入数据库。
+        $r1 = $this->topics_model->insert($batch1);
+        $specail = $specials[$row['special']];
+        //获取处理特殊帖子主题。
+        if ($specail > 1) {
+            $funs = array(2 => 'ask', 3 => 'poll', 4 => 'debate');
+            $method = $funs[$specail] . '_topic';
+            $this->$method($row);
+        }
+        //获取下面的所有posts
+        $this->topic_post($row);
+        //获取下面的所有附件
+        $this->attachment($row);
+        //获取处理特殊帖子回复。
+        if ($specail > 1) {
+            $funs = array(2 => 'ask', 3 => 'poll', 4 => 'debate');
+            $method = $funs[$specail] . '_post';
+            $this->$method($row);
         }
     }
 
@@ -240,7 +259,7 @@ class import extends MY_Controller {
         $query = $this->dzdb->query($sql);
         $num = $query->row_array();
         $num = $num['num'];
-        for ($i = 0; $i <= $num; $i+=5) {
+        for ($i = 0, $j = 0; $i <= $num; $i+=5) {
             $sql = "SELECT * FROM {$this->pre}forum_post WHERE $where limit $i,5";
             $query = $this->dzdb->query($sql);
             $posts = $query->result_array();
@@ -267,7 +286,7 @@ class import extends MY_Controller {
                 $posts_data[$k]['is_anonymous'] = $v['anonymous'];
                 $posts_data[$k]['is_sign'] = $v['usesig'];
                 $posts_data[$k]['comment'] = $v['comment'];
-                $posts_data[$k]['position'] = empty($v['position']) ? 0 : $v['position'];
+                $posts_data[$k]['position'] = $j;
                 $posts_data[$k]['status'] = 1;
 
                 if ($row['special'] == 3) {
@@ -275,6 +294,7 @@ class import extends MY_Controller {
                     $ask_data[$k]['post_id'] = $v['pid'];
                     $ask_data[$k]['user_id'] = $v['authorid'];
                 }
+                $j++;
             }
             $this->posts_model->insert_batch($posts_data);
             if ($row['special'] == 3) {
@@ -286,7 +306,7 @@ class import extends MY_Controller {
     public function attachment($row) {
         //获取poll_options表的数据总数
         $where = "tid = {$row['tid']}";
-        $sql = "SELECT * num FROM {$this->pre}forum_attachment WHERE $where";
+        $sql = "SELECT * FROM {$this->pre}forum_attachment WHERE $where";
         $query = $this->dzdb->query($sql);
         $attachments = $query->result_array();
         if (empty($attachments)) {
@@ -297,9 +317,10 @@ class import extends MY_Controller {
             $attach_data[$v['aid']]['id'] = $v['aid'];
             $attach_data[$v['aid']]['downloads'] = $v['downloads'];
         }
-        $subtable = 'forum_attachment_'.($row['tid']%10);
+//        var_dump($attach_data);die;
+        $subtable = 'forum_attachment_' . ($row['tid'] % 10);
         $where = "tid = {$row['tid']}";
-        $sql = "SELECT * num FROM {$this->pre}$subtable WHERE $where";
+        $sql = "SELECT * FROM {$this->pre}$subtable WHERE $where";
         $query = $this->dzdb->query($sql);
         $attachments = $query->result_array();
         if (empty($attachments)) {
@@ -313,9 +334,9 @@ class import extends MY_Controller {
             $attach_data[$v['aid']]['size'] = $v['filesize'];
             $attach_data[$v['aid']]['extension'] = $v['dateline'];
             $attach_data[$v['aid']]['filename'] = $v['filename'];
-            
+
             $new_v = 'uploads/old/' . $v['attachment'];
-            $this->get_file($v['attachment'], $new_v,'forum');
+            $this->get_file($v['attachment'], $new_v, 'forum');
             $attach_data[$v['aid']]['path'] = $new_v;
             $attach_data[$v['aid']]['description'] = $v['description'];
             $attach_data[$v['aid']]['is_image'] = $v['isimage'];
@@ -325,15 +346,21 @@ class import extends MY_Controller {
             //$attach_data[$v['aid']]['width'] = $v['width'];
         }
         return $this->attachments_model->insert_batch($attach_data);
-        
     }
-
 
     private function handle_content($content) {
         //code<pre class="codeprint brush:javascript;">sfsdfsdfsdf</pre>
-        $content = preg_replace('/\[code\](.*?)\[\/code\]/is', '<pre class="codeprint brush:javascript;">\1</pre>', $content);
+        $content = preg_replace('/\[code\](.*?)\[\/code\]/ies', "\$this->codedisp('\\1')", $content);
+        $content = preg_replace('/\[quote\](.*?)\[\/quote\]/is', '<blockquote class="blockquote">\1</blockquote>', $content);
         $content = $this->bbcode($content);
+        $content = str_replace('<::>', "\n", $content);
         return $content;
+    }
+
+    private function codedisp($code) {
+        $code = preg_replace("/\n\r|\n|\r/", '<::>', $code);
+        $code = '<pre class="codeprint brush:javascript;">' . $code . '</pre>';
+        return $code;
     }
 
     public function ask_topic($row) {
@@ -584,8 +611,8 @@ class import extends MY_Controller {
         return file_put_contents($filename, json_encode($data));
     }
 
-    public function get_file($from, $to, $dir='common') {
-        $old_path = 'http://bbs.9ria.com/data/attachment/'.$dir.'/';
+    public function get_file($from, $to, $dir = 'common') {
+        $old_path = 'http://bbs.9ria.com/data/attachment/' . $dir . '/';
         $new_path = FCPATH;
         $this->load->model('biz_curl');
         $content = $this->biz_curl->my_fopen($old_path . $from);
@@ -607,16 +634,12 @@ class import extends MY_Controller {
     }
 
     public function bbcode($str) {
-        if (empty($this->BBCodeParser)) {
-            $BBCode_path = FCPATH . APPPATH . 'third_party/bbcode/';
-            include $BBCode_path . 'BBCodeParser2.php';
-            $config = parse_ini_file($BBCode_path . 'BBCodeParser2.ini', true);
-            $options = $config['HTML_BBCodeParser2'];
-            $this->BBCodeParser = new HTML_BBCodeParser2($options);
+        if (empty($this->BBCode)) {
+            $BBCode_path = FCPATH . APPPATH . 'third_party/';
+            include_once $BBCode_path . 'dz_bbcode/function_discuzcode.php';
+            $this->BBCode = TRUE;
         }
-        $this->BBCodeParser->setText($str);
-        $this->BBCodeParser->parse();
-        $parsed = $this->BBCodeParser->getParsed();
+        $parsed = discuzcode($str);
         return $parsed;
     }
 

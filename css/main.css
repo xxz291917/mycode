@@ -249,6 +249,8 @@ a.searchBtn{ display:inline-block; width:25px; height:26px; margin:12px 0 0 0; b
 .cmtCot{ padding:0  20px; overflow:hidden;}
 .btnCmt{ display:block; width:310px; height:28px; margin:0 0 11px 0; padding-left:18px; border-radius:4px 0 0 4px; background-color:#FEF9CF; background-position:right -1070px; line-height:28px; color:#900200; font-weight:bold;}
 .cmtCot img{ display:inline; float:left; width:24px; height:24px; margin-right:9px;}
+.cmtCot dd{ padding-top:5px; overflow:hidden; _zoom:1;}
+.cmtCot .btnDel{ float:right; margin:0 3px 0 10px; font-weight:normal;}
 .cmtCotR{ float:right; width:710px; padding-top:1px; line-height:22px;}
 .cmtCotR span{ padding-left:10px; color:#999;}
 .cmtCotR a{ font-weight:bold;}

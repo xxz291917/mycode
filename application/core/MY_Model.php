@@ -129,7 +129,7 @@ class MY_Model extends CI_Model {
         return $num['num'];
     }
 
-    public function get_list($where = '', $field = '*', $orderby = '', $limit = 0, $length = 100) {
+    public function get_list($where = '', $field = '*', $orderby = '', $limit = 0, $length = 1000) {
         $where = $this->create_where($where);
         $sql = "SELECT $field FROM $this->table $where ";
         if (!empty($orderby)) {

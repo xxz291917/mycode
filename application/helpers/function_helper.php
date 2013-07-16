@@ -30,7 +30,7 @@ if (!function_exists('time_span')) {
         }
 
         if ($first_time >= $second_time) {
-            return '';
+            return '1 秒';
         } else {
             $first_time = $second_time - $first_time;
         }

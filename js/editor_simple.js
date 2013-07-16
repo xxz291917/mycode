@@ -123,11 +123,17 @@ $(function(){
 			}
 			//处理上传的图片，变为code
 			if(KindEditor.uploadImages!=null){
-				str = str.replace(/<img[^>]+aid=(["']?)(\d+)(\1)[^>]*>/ig, "[attachimg]$2[/attachimg]");
+				str = str.replace(/<img[^>]+aid=(["']?)(\d+)(\1)[^>]*>/ig, function($0,$1,$2){
+												KindEditor.uploadImages[$2] = $0;
+												return "[attachimg]"+$2+"[/attachimg]";
+											});
 			}
 			//处理上传的附件，变为code
 			if(KindEditor.uploadFiles!=null){
-				str = str.replace(/<a[^>]+aid=(["']?)(\d+)(\1)[^>]*>[^>]*<\/a>/ig, "[attach]$2[/attach]");
+				str = str.replace(/<a[^>]+aid=(["']?)(\d+)(\1)[^>]*>[^>]*<\/a>/ig, function($0,$1,$2){
+												KindEditor.uploadFiles[$2] = $0;
+												return "[attach]"+$2+"[/attach]";
+											});
 			}
 			return str;
 		}
@@ -143,17 +149,17 @@ $(function(){
 			//bbcode图片，变为html
 			str = str.replace(/\[attachimg\](\d+)\[\/attachimg\]/g, function($0,$1,$2){
 												if(typeof KindEditor.uploadImages[$1] == "undefined"){
-													return '';
+													return $0;
 												}else{
-													return KindEditor.uploadImages[$1]
+													return KindEditor.uploadImages[$1];
 												}
 											});
 			//bbcode附件，变为html
 			str = str.replace(/\[attach\](\d+)\[\/attach\]/g, function($0,$1,$2){
 												if(typeof(KindEditor.uploadFiles[$1]) == "undefined"){
-													return '';
+													return $0;
 												}else{
-													return KindEditor.uploadFiles[$1]
+													return KindEditor.uploadFiles[$1];
 												}
 											});
 			return str;

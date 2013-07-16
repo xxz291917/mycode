@@ -98,12 +98,11 @@ class Topic extends MY_Controller {
             $few_comment_ids = array();
             $this->load->model('posts_comment_model');
             foreach($var['posts'] as &$post){
-                $post['content'] = nl2br($post['content']);
                 if($post['comment']>0){
                     if($post['comment']<=$view_comment_num){
                         $few_comment_ids[] = $post['id'];
                     }else{
-                        $comments[$post['id']] = $this->posts_comment_model->get_list(array('post_id'=>$post['id']),'*','time desc',0,$view_comment_num);
+                        $comments[$post['id']] = $this->posts_comment_model->get_list(array('post_id'=>$post['id'],'status'=>1),'*','time desc',0,$view_comment_num);
                     }
                 }
             }

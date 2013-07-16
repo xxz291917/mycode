@@ -13,7 +13,7 @@ class Posts_comment_model extends MY_Model {
         }else{
             $return_data = array();
             $post_ids = join(',', array_unique($post_ids));
-            $comments = $this->get_list('post_id in('.$post_ids.')', '*','time desc');
+            $comments = $this->get_list('post_id in('.$post_ids.') AND status=1 ', '*','time desc');
             foreach ($comments as $comment){
                 $return_data[$comment['post_id']][] = $comment;
             }

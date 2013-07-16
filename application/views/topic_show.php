@@ -105,7 +105,6 @@ echo $page;?>
     </ul>
   </div>
   
-
       <div class="newsCotR pr">
       <?php if($post['is_first']!=1){?>
           <div class="tr myState">
@@ -161,11 +160,19 @@ echo $page;?>
 
         <?php if (!empty($comments[$post['id']])) { ?>
         <div class="cmtCot">
-          <span class="btnCmt">点评</span>
-          <?php foreach($comments[$post['id']] as $comment){?>
-          <a href="<?php echo user_url($comment['user_id'])?>"><img src="<?php echo user_icon($comment['user_id'])?>" alt="<?php echo $comment['username']?>"></a>
-          <div class="cmtCotR"><a href="<?php echo user_url($comment['user_id'])?>"><?php echo $comment['username']?></a><?php echo $comment['comment'];?><span><em>发表于：</em><?php echo time_span($comment['time'], '', '', '前');?></span></div>
-          <?php } ?>
+		<dl>
+            <dt><span class="btnCmt">点评</span></dt>
+            <?php foreach($comments[$post['id']] as $comment){?>
+            <dd>
+              <a href="<?php echo user_url($comment['user_id'])?>"><img src="<?php echo user_icon($comment['user_id'])?>" alt="<?php echo $comment['username']?>"></a>
+              <div class="cmtCotR"><a href="<?php echo user_url($comment['user_id'])?>"><?php echo $comment['username']?></a> <?php echo $comment['comment'];?><span><em>发表于：</em><?php echo time_span($comment['time'], '', '', '前');?></span>
+              
+              <a href="<?php echo base_url('index.php/action/comment_del/'.$comment['id'])?>" target="ajax" class="btnDel">删除</a>
+              
+              </div>
+            </dd>
+			<?php } ?>
+          </dl>
         </div>
         <?php } ?>
         
