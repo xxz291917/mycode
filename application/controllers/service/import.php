@@ -131,7 +131,6 @@ class import extends MY_Controller {
     }
 
     public function topics($maxnum = 0) {
-
         $data = $this->get_data('topics');
         if (!empty($data['num'])) {
             $num = $data['num'];
@@ -171,7 +170,6 @@ class import extends MY_Controller {
     }
 
     public function topic_id($id) {
-        //一周内的帖子。
         $table = 'forum_thread';
         $sql = "SELECT * FROM $this->pre$table WHERE tid=$id";
         $query = $this->dzdb->query($sql);
@@ -260,7 +258,7 @@ class import extends MY_Controller {
         $num = $query->row_array();
         $num = $num['num'];
         for ($i = 0, $j = 0; $i <= $num; $i+=5) {
-            $sql = "SELECT * FROM {$this->pre}forum_post WHERE $where limit $i,5";
+            $sql = "SELECT * FROM {$this->pre}forum_post WHERE $where limit $i,10";
             $query = $this->dzdb->query($sql);
             $posts = $query->result_array();
             if (empty($posts)) {
@@ -276,7 +274,14 @@ class import extends MY_Controller {
                 $posts_data[$k]['author_ip'] = $v['useip'];
                 $posts_data[$k]['post_time'] = $v['dateline'];
                 $posts_data[$k]['subject'] = $v['subject'];
-                $posts_data[$k]['content'] = $this->handle_content($v['message']);
+                if($v['attachment']==2){
+                    $sql = "SELECT aid FROM {$this->pre}forum_attachment WHERE pid = {$v['pid']}";
+                    $query = $this->dzdb->query($sql);
+                    $aids = $query->result_array();
+                }else{
+                    $aids = null;
+                }
+                $posts_data[$k]['content'] = $this->handle_content($v['message'],$aids);
                 $posts_data[$k]['attachment'] = $v['attachment'];
                 $posts_data[$k]['is_first'] = $v['first'];
                 $posts_data[$k]['is_report'] = 0;
@@ -343,15 +348,24 @@ class import extends MY_Controller {
             $attach_data[$v['aid']]['is_thumb'] = $v['thumb'];
             $attach_data[$v['aid']]['is_remote'] = $v['remote'];
             $attach_data[$v['aid']]['status'] = 1;
-            //$attach_data[$v['aid']]['width'] = $v['width'];
+            $attach_data[$v['aid']]['width'] = $v['width'];
         }
         return $this->attachments_model->insert_batch($attach_data);
     }
 
-    private function handle_content($content) {
+    private function handle_content($content,$aids) {
         //code<pre class="codeprint brush:javascript;">sfsdfsdfsdf</pre>
         $content = preg_replace('/\[code\](.*?)\[\/code\]/ies', "\$this->codedisp('\\1')", $content);
         $content = preg_replace('/\[quote\](.*?)\[\/quote\]/is', '<blockquote class="blockquote">\1</blockquote>', $content);
+        if(!empty($aids)){
+            $replace = array();
+            $search = array();
+            foreach ($aids as $key => $aid) {
+                $search[] = "[attach]{$aid['aid']}[/attach]";
+                $replace[] = "[attachimg]{$aid['aid']}[/attachimg]";
+            }
+            $content = str_replace($search, $replace, $content);
+        }
         $content = $this->bbcode($content);
         $content = str_replace('<::>', "\n", $content);
         return $content;
