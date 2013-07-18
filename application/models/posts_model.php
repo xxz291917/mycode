@@ -111,7 +111,16 @@ class Posts_model extends MY_Model {
             } elseif ('attachimg' == $type) {
                 $src = base_url($attachment['path']);
                 $title = $attachment['description'];
-                $html = '<img src="' . $src . '" aid="'.$aid.'" title="' . $title . '" alt="' . $title . '" />';
+                $width = $attachment['width'];
+                $height = $attachment['height'];
+                $wh_str = '';
+                if(!empty($width)){
+                    $wh_str .= 'width="'.$width.'" ';
+                }
+                if(!empty($height)){
+                    $wh_str .=  'height="'.$height.'"';
+                }
+                $html = '<img '.$wh_str.' src="' . $src . '" aid="'.$aid.'" title="' . $title . '" alt="' . $title . '" />';
             }
             return $html;
         } else {

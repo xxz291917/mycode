@@ -2,6 +2,8 @@
 
 class User_lib {
 
+    public $passport_url = 'http://passport.9ria.com/';
+    
     function getUser() {
 		if(!isset($_COOKIE['token'])){
 			return ;
@@ -9,7 +11,7 @@ class User_lib {
 		session_start();
 		$token = $_COOKIE['token'];
 		$user = array();
-		$result = file_get_contents('http://test.9tech.cn/passport/interface/getUser.php?token='.$token);
+		$result = file_get_contents($this->passport_url.'/interface/getUser.php?token='.$token);
 		if(strlen(trim($result)) > 0){
 			$result = json_decode($result,true);
 			$user['id'] = $result[0]['LtUserID'];
@@ -35,9 +37,9 @@ class User_lib {
     		if(!is_numeric($user_str) or $user_str < 1){
 	    		return $user;
 	    	}
-    		$result = file_get_contents('http://test.9tech.cn/passport/interface/getUserInfo.php?user_id='.$user_str);
+    		$result = file_get_contents($this->passport_url.'/interface/getUserInfo.php?user_id='.$user_str);
     	}elseif($type == 2){
-    		$result = file_get_contents('http://test.9tech.cn/passport/interface/getUserInfo.php?user_name='.$user_str);
+    		$result = file_get_contents($this->passport_url.'/interface/getUserInfo.php?user_name='.$user_str);
     	}
     	
 		if(strlen(trim($result)) > 0){
