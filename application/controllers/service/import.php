@@ -9,6 +9,7 @@ class import extends MY_Controller {
 
     private $dzdb;
     private $BBCode = null;
+    private $forum_new;
 
     function __construct() {
         parent::__construct();
@@ -50,6 +51,8 @@ class import extends MY_Controller {
         $this->dir = FCPATH . 'sql/';
         $this->pre = 'pre_';
         $this->dzdb = $this->load->database($dz_config, TRUE);
+        
+        $this->forum_new();
     }
 
     public function users($maxid = 0) {
@@ -184,24 +187,24 @@ class import extends MY_Controller {
     private function get_topic($row) {
         $specials = array(0 => '1', 1 => '3', 3 => '2', 5 => '4'); //1,poll，3，ask，5，debate
         $field1 = array(
-                'tid' => 'id',
-                'fid' => 'forum_id',
-                'typeid' => 'category_id',
-                'author' => 'author',
-                'authorid' => 'author_id',
-                'subject' => 'subject',
-                'dateline' => 'post_time',
-                'lastpost' => 'last_post_time',
-                'lastposter' => 'last_author',
-                'views' => 'views',
-                'replies' => 'replies',
-                'highlight' => 'forum_id',
-                'digest' => 'digest',
-                'recommend_add' => 'supports',
-                'recommend_sub' => 'opposes',
-                'special' => 'special',
-                'closed' => 'status'
-            );
+            'tid' => 'id',
+            'fid' => 'forum_id',
+            'typeid' => 'category_id',
+            'author' => 'author',
+            'authorid' => 'author_id',
+            'subject' => 'subject',
+            'dateline' => 'post_time',
+            'lastpost' => 'last_post_time',
+            'lastposter' => 'last_author',
+            'views' => 'views',
+            'replies' => 'replies',
+            'highlight' => 'forum_id',
+            'digest' => 'digest',
+            'recommend_add' => 'supports',
+            'recommend_sub' => 'opposes',
+            'special' => 'special',
+            'closed' => 'status'
+        );
         $batch1 = array();
         foreach ($row as $k => $v) {
             if (!empty($field1[$k])) {
@@ -218,6 +221,12 @@ class import extends MY_Controller {
                         $v = 5;
                     } else {
                         $v = 1;
+                    }
+                }elseif(('forum_id' == $k)){
+                    if(empty($this->forum_new[$v])){
+                        return TRUE;
+                    }else{
+                        $v = $this->forum_new[$v];
                     }
                 }
                 $batch1[$field1[$k]] = $v;
@@ -250,8 +259,8 @@ class import extends MY_Controller {
      * @return type
      */
     public function topic_post($row) {
-        $invisible = array('-1'=>2);
-        $status = array('1'=>4);
+        $invisible = array('-1' => 2);
+        $status = array('1' => 4);
         //获取poll_options表的数据总数
         $where = "tid = {$row['tid']}";
         $sql = "SELECT count(*) num FROM {$this->pre}forum_post WHERE $where";
@@ -269,20 +278,23 @@ class import extends MY_Controller {
             foreach ($posts as $k => $v) {
                 $posts_data[$k]['id'] = $v['pid'];
                 $posts_data[$k]['topic_id'] = $v['tid'];
-                $posts_data[$k]['forum_id'] = $v['fid'];
+                if(empty($this->forum_new[$v['fid']])){
+                    break;
+                }
+                $posts_data[$k]['forum_id'] = $this->forum_new[$v['fid']];
                 $posts_data[$k]['author'] = $v['author'];
                 $posts_data[$k]['author_id'] = $v['authorid'];
                 $posts_data[$k]['author_ip'] = $v['useip'];
                 $posts_data[$k]['post_time'] = $v['dateline'];
                 $posts_data[$k]['subject'] = $v['subject'];
-                if($v['attachment']==2){
+                if ($v['attachment'] == 2) {
                     $sql = "SELECT aid FROM {$this->pre}forum_attachment WHERE pid = {$v['pid']}";
                     $query = $this->dzdb->query($sql);
                     $aids = $query->result_array();
-                }else{
+                } else {
                     $aids = null;
                 }
-                $posts_data[$k]['content'] = $this->handle_content($v['message'],$aids);
+                $posts_data[$k]['content'] = $this->handle_content($v['message'], $aids);
                 $posts_data[$k]['attachment'] = $v['attachment'];
                 $posts_data[$k]['is_first'] = $v['first'];
                 $posts_data[$k]['is_report'] = 0;
@@ -293,11 +305,11 @@ class import extends MY_Controller {
                 $posts_data[$k]['is_sign'] = $v['usesig'];
                 $posts_data[$k]['comment'] = $v['comment'];
                 $posts_data[$k]['position'] = $j;
-                if(isset($invisible[$v['invisible']])){
+                if (isset($invisible[$v['invisible']])) {
                     $s = $invisible[$v['invisible']];
-                }elseif(isset($status[$v['status']])){
+                } elseif (isset($status[$v['status']])) {
                     $s = $status[$v['status']];
-                }else{
+                } else {
                     $s = 1;
                 }
                 $posts_data[$k]['status'] = $s;
@@ -361,11 +373,11 @@ class import extends MY_Controller {
         return $this->attachments_model->insert_batch($attach_data);
     }
 
-    private function handle_content($content,$aids) {
+    private function handle_content($content, $aids) {
         //code<pre class="codeprint brush:javascript;">sfsdfsdfsdf</pre>
         $content = preg_replace('/\[code\](.*?)\[\/code\]/ies', "\$this->codedisp('\\1')", $content);
         $content = preg_replace('/\[quote\](.*?)\[\/quote\]/is', '<blockquote class="blockquote">\1</blockquote>', $content);
-        if(!empty($aids)){
+        if (!empty($aids)) {
             $replace = array();
             $search = array();
             foreach ($aids as $key => $aid) {
@@ -665,6 +677,94 @@ class import extends MY_Controller {
         return $parsed;
     }
 
+    private function forum_new() {
+        $this->forum_new = array(
+            '277' => '1',
+            '279' => '2',
+            '286' => '3',
+            '278' => '8',
+            '283' => '9',
+            '284' => '11',
+            '285' => '12',
+            '280' => '14',
+            '281' => '21',
+            '265' => '22',
+            '270' => '23',
+            '267' => '25',
+            '268' => '2',
+            '274' => '26',
+            '266' => '29',
+            '273' => '34',
+            '271' => '36',
+            '272' => '38',
+            '275' => '4',
+            '276' => '43',
+            '255' => '49',
+            '261' => '50',
+            '264' => '52',
+            '256' => '61',
+            '258' => '62',
+            '260' => '63',
+            '257' => '64',
+            '259' => '65',
+            '287' => '80',
+            '289' => '82',
+            '288' => '81',
+            '292' => '95',
+            '288' => '100',
+            '308' => '123',
+            '299' => '121',
+            '302' => '138',
+            '301' => '140',
+            '3' => '145',
+            '42' => '146',
+            '43' => '147',
+            '60' => '148',
+            '14' => '149',
+            '53' => '150',
+            '4' => '151',
+            '5' => '152',
+            '18' => '153',
+            '33' => '154',
+            '54' => '155',
+            '20' => '156',
+            '57' => '157',
+            '58' => '158',
+            '51' => '159',
+            '52' => '160',
+            '68' => '161',
+            '73' => '162',
+            '61' => '163',
+            '55' => '164',
+            '312' => '165',
+            '27' => '166',
+            '64' => '167',
+            '59' => '168',
+            '56' => '169',
+            '21' => '170',
+            '29' => '171',
+            '17' => '172',
+            '74' => '173',
+            '28' => '174',
+            '8' => '175',
+            '10' => '176',
+            '9' => '177',
+            '46' => '178',
+            '7' => '179',
+            '63' => '180',
+            '19' => '181',
+            '11' => '182',
+            '75' => '183',
+            '47' => '184',
+            '44' => '185',
+            '25' => '186',
+            '49' => '187',
+            '12' => '188',
+            '254' => '189',
+            '66' => '190',
+        );
+    }
+    
 }
 
 ?>
