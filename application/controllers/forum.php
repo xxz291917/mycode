@@ -15,6 +15,11 @@ class Forum extends MY_Controller {
         if (empty($forum)) {
             $this->message('参数错误，版块不存在');
         }
+        
+        if(!empty($forum['redirect_url'])){
+            redirect($forum['redirect_url']);die;
+        }
+        
         //是否关闭
         if($forum['status']==0){
             $managers = explode(',', $forum['manager']);
