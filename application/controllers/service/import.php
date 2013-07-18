@@ -155,7 +155,6 @@ class import extends MY_Controller {
             foreach ($rows as $key => $row) {
                 $this->get_topic($row);
             }
-
             $this->set_data('topics', array('num' => $endnum));
             if ($endnum < $maxnum) {
                 $redirect = current_url();
@@ -251,13 +250,15 @@ class import extends MY_Controller {
      * @return type
      */
     public function topic_post($row) {
+        $invisible = array('-1'=>2);
+        $status = array('1'=>4);
         //获取poll_options表的数据总数
         $where = "tid = {$row['tid']}";
         $sql = "SELECT count(*) num FROM {$this->pre}forum_post WHERE $where";
         $query = $this->dzdb->query($sql);
         $num = $query->row_array();
         $num = $num['num'];
-        for ($i = 0, $j = 0; $i <= $num; $i+=5) {
+        for ($i = 0, $j = 0; $i <= $num; $i+=10) {
             $sql = "SELECT * FROM {$this->pre}forum_post WHERE $where limit $i,10";
             $query = $this->dzdb->query($sql);
             $posts = $query->result_array();
@@ -292,7 +293,14 @@ class import extends MY_Controller {
                 $posts_data[$k]['is_sign'] = $v['usesig'];
                 $posts_data[$k]['comment'] = $v['comment'];
                 $posts_data[$k]['position'] = $j;
-                $posts_data[$k]['status'] = 1;
+                if(isset($invisible[$v['invisible']])){
+                    $s = $invisible[$v['invisible']];
+                }elseif(isset($status[$v['status']])){
+                    $s = $status[$v['status']];
+                }else{
+                    $s = 1;
+                }
+                $posts_data[$k]['status'] = $s;
 
                 if ($row['special'] == 3) {
                     $ask_data[$k]['topic_id'] = $v['tid'];

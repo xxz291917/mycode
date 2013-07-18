@@ -115,6 +115,7 @@ class Posts_model extends MY_Model {
                 $height = $attachment['height'];
                 $wh_str = '';
                 if(!empty($width)){
+                    $width = $width>742?742:$width;
                     $wh_str .= 'width="'.$width.'" ';
                 }
                 if(!empty($height)){

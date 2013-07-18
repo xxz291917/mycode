@@ -508,7 +508,7 @@ class Action extends MY_Controller {
             $config['upload_path'] = './uploads/image';
             $config['allowed_types'] = 'gif|jpg|jpeg|png|bmp';
             $config['max_size'] = '1000';
-            $config['max_width'] = '742';
+            $config['max_width'] = '1000';
             $config['max_height'] = '0';
         }
         $this->load->library('upload', $config);
