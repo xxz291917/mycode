@@ -11,7 +11,7 @@
         </span>
         <em>今日:</em><?=$totals['today_posts']?><i>|</i><em>总帖子:</em><?=$totals['posts']?><i>|</i><em>会员:</em><?=$totals['users']?><i>|</i><em>欢迎新会员:</em><?=$last_user['username']?>
     </div>
-    <div class="hTop">    
+    <div class="hTop">
         <div id="lunbo">
             <div id="lunbo_bg"></div> 
             <div id="lunbo_info"></div>
@@ -77,12 +77,26 @@
         <h2 class="homeH2"><a href="<?php echo base_url('index.php/forum/show/'.$forum['id'])?>"><?=$forum['name']?></a></h2>
         
         <ul class="homeList  <?php if($key+1==$num){?>lastLi<?php }?>  ">
-            <?php foreach ($forum['sub'] as $key => $sub) {?>
+            <?php foreach ($forum['sub'] as $key => $sub) {
+				if($sub['no_index']!=1){
+				?>
             <li class="pr">
                 <h3><a href="<?=base_url()?>index.php/forum/show/<?=$sub['id']?>"><?=$sub['name']?></a><?php echo !empty($sub['today_posts'])?$sub['today_posts']:0?></h3>
                 <p><strong>主题：</strong><?= !empty($sub['topics'])?$sub['topics']:0;?>,<strong> 帖数：</strong><?php echo !empty($sub['posts'])?$sub['posts']:0?></p>
                 <a href="<?=base_url()?>index.php/forum/show/<?=$sub['id']?>"><img src="<?php echo base_url().my_set_value('icon',$sub,$this->config->item('forum_icon'))?>" class="pa" alt="图标"></a>
             </li>
+            <?php } ?>
+				<?php if(!empty($sub['sub'])){ foreach ($sub['sub'] as $key => $lite_sub) {
+					if($lite_sub['no_index']==1){
+						continue;
+					}
+					?>
+                <li class="pr">
+                    <h3><a href="<?=base_url()?>index.php/forum/show/<?=$lite_sub['id']?>"><?=$lite_sub['name']?></a><?php echo !empty($lite_sub['today_posts'])?$lite_sub['today_posts']:0?></h3>
+                    <p><strong>主题：</strong><?= !empty($lite_sub['topics'])?$lite_sub['topics']:0;?>,<strong> 帖数：</strong><?php echo !empty($lite_sub['posts'])?$lite_sub['posts']:0?></p>
+                    <a href="<?=base_url()?>index.php/forum/show/<?=$lite_sub['id']?>"><img src="<?php echo base_url().my_set_value('icon',$lite_sub,$this->config->item('forum_icon'))?>" class="pa" alt="图标"></a>
+                </li>
+                <?php }}?>
             <?php }?>
         </ul>
     <?php }?>

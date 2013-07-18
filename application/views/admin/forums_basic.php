@@ -49,9 +49,24 @@
     <td >支持HTML代码<br/></td>
   </tr>
   <tr>
-    <th >版块重定向</th>
+    <th >版块重定向版块</th>
     <td><input type="text" class="inp_txt" value="<?php echo my_set_value('redirect', $data)?>" name="redirect"></td>
     <td >此版块将不能再发布帖子，将转向到重定向版块。<br/></td>
+  </tr>
+  <tr>
+    <th >是否显示到首页</th>
+    <td><label>
+        <input type="radio"  name="no_index" value="0" <?php echo my_set_radio('no_index', 0, $data)?>/>
+        是</label>
+      <label>
+        <input type="radio"  name="no_index" value="1" <?php echo my_set_radio('no_index', 1, $data)?>/>
+        否</label></td>
+    <td> 暂时将站点关闭，其他人无法访问，但不影响管理员访问。</td>
+  </tr>
+  <tr>
+    <th >版块重定向URL</th>
+    <td><input type="text" class="inp_txt" value="<?php echo my_set_value('redirect_url', $data)?>" name="redirect_url"></td>
+    <td >此版块将不能再发布帖子，将转向到新的URL。<br/></td>
   </tr>
   <tr>
     <th >关闭版块</th>
