@@ -4,7 +4,7 @@ class Forum extends MY_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model(array('biz_index', 'forums_statistics_model', 'biz_pagination'));
+        $this->load->model(array('biz_index', 'forums_statistics_model', 'biz_pagination','posts_model'));
     }
 
     public function show($forum_id) {
@@ -115,6 +115,45 @@ class Forum extends MY_Controller {
             }
         }
         $var['forums'] = $forums;
+        
+        //获取总用户数
+        $totals['users'] = $this->users_model->get_count();
+        $var['totals'] = $totals;
+        //获取最后用户
+        $last_user = $this->users_model->get_one(1, 'id,username', 'regdate desc');
+        $var['last_user'] = $last_user;
+        
+        //获取最新帖子
+        $new_topics = $this->topics_model->get_list('status in(1,4,5)', 'id,subject', 'post_time desc',0,8);
+        $var['new_topics'] = $new_topics;
+        //获取最新回复的topic_id
+        $last_post_topics = $this->topics_model->get_list('status in(1,4,5)', 'id,subject', 'last_post_time desc',0,8);
+        $var['last_post_topics'] = $last_post_topics;
+        //获取带图片的最新帖子
+        $last_image_topics = $this->posts_model->get_list('is_first =1 AND attachment=2 AND status in (1,4,5)', 'id,topic_id,subject', 'post_time desc',0,10);
+        $post_ids = array();
+        foreach ($last_image_topics as $key => $topic) {
+            $post_ids[] = $topic['id'];
+        }
+        $last_images = $this->attachments_model->get_images($post_ids);
+        $last_images = $this->attachments_model->key_list($last_images,'post_id');
+        foreach ($last_image_topics as $key => &$topic) {
+            if(!empty($last_images[$topic['id']])){
+                $topic += $last_images[$topic['id']];
+            }
+        }
+
+        $var['last_image_topics'] = $last_image_topics;
+        
+        //今日发帖量用户排行
+        $uses = $this->users_extra_model->get_list(1, 'user_id', 'today_posts desc',0,14);
+        $user_ids =array();
+        foreach ($uses as $key => $user) {
+            $user_ids[] = $user['user_id'];
+        }
+        $posts_users = $this->users_model->get_names_by_ids($user_ids);
+        $var['posts_users'] = $posts_users;
+        
         $this->view('forum_zone_show',$var);
     }
 

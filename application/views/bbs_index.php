@@ -26,7 +26,7 @@
                 <?php foreach ($last_image_topics as $key => $topic) {
 					if(empty($topic['path'])){continue;}
 					?>
-                <a href="<?php echo base_url('index.php/topic/show/'.$topic['topic_id'])?>" target="_blank"><img src="<?php echo $topic['path']?>" title="<?php echo $topic['subject']?>" alt="<?php echo $topic['description']?>" /></a>
+                <a href="<?php echo base_url('index.php/topic/show/'.$topic['topic_id'])?>" target="_blank"><img src="<?php echo base_url().$topic['path']?>" title="<?php echo $topic['subject']?>" alt="<?php echo $topic['description']?>" /></a>
                 <?php }?>
             </div>
         </div>    

@@ -37,13 +37,13 @@ class Bbs extends MY_Controller {
         $var['last_user'] = $last_user;
         
         //获取最新帖子
-        $new_topics = $this->topics_model->get_list(1, 'id,subject', 'post_time desc',0,8);
+        $new_topics = $this->topics_model->get_list('status in(1,4,5)', 'id,subject', 'post_time desc',0,8);
         $var['new_topics'] = $new_topics;
         //获取最新回复的topic_id
-        $last_post_topics = $this->topics_model->get_list('1', 'id,subject', 'last_post_time desc',0,8);
+        $last_post_topics = $this->topics_model->get_list('status in(1,4,5)', 'id,subject', 'last_post_time desc',0,8);
         $var['last_post_topics'] = $last_post_topics;
         //获取带图片的最新帖子
-        $last_image_topics = $this->posts_model->get_list('is_first =1 AND attachment=1 AND status = 1', 'id,topic_id,subject', 'post_time desc',0,10);
+        $last_image_topics = $this->posts_model->get_list('is_first =1 AND attachment=2 AND status in (1,4,5)', 'id,topic_id,subject', 'post_time desc',0,10);
         $post_ids = array();
         foreach ($last_image_topics as $key => $topic) {
             $post_ids[] = $topic['id'];

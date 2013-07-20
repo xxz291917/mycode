@@ -205,7 +205,7 @@ echo $page; ?>
                 <?php if (!empty($topics)) { ?>
                     <?php
                     foreach ($topics as $topic) {
-                        if (!empty($topic['category_id'])) {
+                        if (!empty($topic['category_id']) && isset($topic_categorys[$topic['category_id']])) {
                             $topic_category = $topic_categorys[$topic['category_id']];
                         } else {
                             $topic_category = false;

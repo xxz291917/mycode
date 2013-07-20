@@ -147,7 +147,7 @@ class import extends MY_Controller {
         $table = 'forum_thread';
 
         //一周内的帖子。
-        $oldtime = $this->time - 3600 * 24 * 10;
+        $oldtime = $this->time - 3600 * 24 * 20;
         $where = "dateline > $oldtime AND dateline < $this->time";
 
         $sql = "SELECT * FROM $this->pre$table WHERE $where ORDER BY tid limit $num,5";
@@ -156,6 +156,9 @@ class import extends MY_Controller {
 
         if (!empty($rows)) {
             foreach ($rows as $key => $row) {
+                if(empty($this->forum_new[$row['fid']])){
+                    continue;
+                }
                 $this->get_topic($row);
             }
             $this->set_data('topics', array('num' => $endnum));
@@ -186,54 +189,49 @@ class import extends MY_Controller {
 
     private function get_topic($row) {
         $specials = array(0 => '1', 1 => '3', 3 => '2', 5 => '4'); //1,poll，3，ask，5，debate
-        $field1 = array(
-            'tid' => 'id',
-            'fid' => 'forum_id',
-            'typeid' => 'category_id',
-            'author' => 'author',
-            'authorid' => 'author_id',
-            'subject' => 'subject',
-            'dateline' => 'post_time',
-            'lastpost' => 'last_post_time',
-            'lastposter' => 'last_author',
-            'views' => 'views',
-            'replies' => 'replies',
-            'highlight' => 'forum_id',
-            'digest' => 'digest',
-            'recommend_add' => 'supports',
-            'recommend_sub' => 'opposes',
-            'special' => 'special',
-            'closed' => 'status'
-        );
         $batch1 = array();
-        foreach ($row as $k => $v) {
-            if (!empty($field1[$k])) {
-                if (isset($batch1[$field1[$k]]))
-                    continue;
-                if ($k == 'special') {
-                    if (array_key_exists($v, $specials)) {
-                        $v = $specials[$v];
-                    } else {
-                        break;
-                    }
-                } elseif ('closed' == $k) {
-                    if (!empty($v)) {
-                        $v = 5;
-                    } else {
-                        $v = 1;
-                    }
-                }elseif(('forum_id' == $k)){
-                    if(empty($this->forum_new[$v])){
-                        return TRUE;
-                    }else{
-                        $v = $this->forum_new[$v];
-                    }
-                }
-                $batch1[$field1[$k]] = $v;
-            }
+        $batch1['id'] = $row['tid'];
+        if(empty($this->forum_new[$row['fid']])){
+            return TRUE;
+        }else{
+            $fid = $this->forum_new[$row['fid']];
         }
+        $batch1['forum_id'] = $fid;
+        $batch1['category_id'] = $row['typeid'];
+        $batch1['author'] = $row['author'];
+        $batch1['author_id'] = $row['authorid'];
+        $batch1['subject'] = $row['subject'];
+        $batch1['post_time'] = $row['dateline'];
+        $batch1['last_post_time'] = $row['lastpost'];
+        $batch1['last_author'] = $row['lastposter'];
+        $batch1['views'] = $row['views'];
+        $batch1['replies'] = $row['replies'];
+        $batch1['digest'] = $row['digest'];
+        $batch1['supports'] = $row['recommend_add'];
+        $batch1['opposes'] = $row['recommend_sub'];
+        if (array_key_exists($row['special'], $specials)) {
+            $special = $specials[$row['special']];
+        } else {
+            return TRUE;
+        }
+        $batch1['special'] = $special;
+        $top = 0;
+        $status = 1;
+        if(empty($row['displayorder'])){
+            $status = 1;
+        }elseif($row['displayorder']>0){
+            $top = $row['displayorder'];
+        }elseif($row['displayorder']==-1 || $row['displayorder']==-2){
+            $statusArr = array('-1'=>'2','-2'=>'4');
+            $status = $statusArr[$row['displayorder']];
+        }elseif(!empty($row['closed'])) {
+            $status = 5;
+        }
+        $batch1['status'] = $status;
+        $batch1['top'] = $top;
         //把主题插入数据库。
         $r1 = $this->topics_model->insert($batch1);
+        $this->forums_statistics_model->update_increment(array('topics'=>':1'),array('forum_id'=>$fid));
         $specail = $specials[$row['special']];
         //获取处理特殊帖子主题。
         if ($specail > 1) {
@@ -322,6 +320,8 @@ class import extends MY_Controller {
                 $j++;
             }
             $this->posts_model->insert_batch($posts_data);
+            $num = count($posts_data);
+            $this->forums_statistics_model->update_increment(array('posts'=>':'.$num),array('forum_id'=>$posts_data[0]['forum_id']));
             if ($row['special'] == 3) {
                 $this->ask_posts_model->insert_batch($ask_data);
             }
@@ -533,6 +533,7 @@ class import extends MY_Controller {
     }
 
     public function forums() {
+        return true;//暂时关闭此功能。
         //全部导入
         $data = $this->get_data('forums');
         if (!empty($data)) {
@@ -614,8 +615,25 @@ class import extends MY_Controller {
             }
         }
     }
+    
+    public function forums_statistics(){
+        $forums = $this->forums_model->get_list(1);
+        $batch = array();
+        foreach ($forums as $key => $value) {
+            $batch[$key]['forum_id'] = $value['id'];
+        }
+        $r2 = $this->forums_statistics_model->insert_batch($batch);
+        if ($r2) {
+            $this->message('处理完成', 1);
+        } else {
+            $this->message('处理失败');
+        }
+    }
 
+    
     public function empty_topics() {
+        return FALSE;
+        
         $this->db->empty_table('topics');
         $this->db->empty_table('posts');
         $this->db->empty_table('ask');
@@ -648,10 +666,13 @@ class import extends MY_Controller {
     public function get_file($from, $to, $dir = 'common') {
         $old_path = 'http://bbs.9ria.com/data/attachment/' . $dir . '/';
         $new_path = FCPATH;
+        $new_file = $new_path . $to;
+        if(file_exists($new_file)){
+            return TRUE;
+        }
         $this->load->model('biz_curl');
         $content = $this->biz_curl->my_fopen($old_path . $from);
         if (!empty($content)) {
-            $new_file = $new_path . $to;
             $filedir = dirname($new_file);
             $this->forcemkdir($filedir);
             return file_put_contents($new_file, $content);
@@ -676,7 +697,55 @@ class import extends MY_Controller {
         $parsed = discuzcode($str);
         return $parsed;
     }
+    
+    public function delete_id($tid) {
+        $this->topics_model->delete(array('id'=>$tid));
+        $this->posts_model->delete(array('topic_id'=>$tid));
+        $this->ask_model->delete(array('topic_id'=>$tid));
+        $this->poll_model->delete(array('topic_id'=>$tid));
+        $this->debate_model->delete(array('topic_id'=>$tid));
+        $this->attachments_model->delete(array('topic_id'=>$tid));
+        $this->message('删除完成！');
+    }
 
+    public function groups() {
+        //全部导入
+        $data = $this->get_data('groups');
+        if (!empty($data)) {
+            $this->message('已经全部完成，不要重复导入');
+        }
+        //清空当前论坛数据。
+        $this->db->empty_table('groups');
+        $sql = "SELECT * FROM {$this->pre}common_usergroup WHERE 1";
+        $query = $this->dzdb->query($sql);
+        $rows = $query->result_array();
+        if (!empty($rows)) {
+            $batch = array();
+            foreach ($rows as $key => $row) {
+                $batch[$key]['id'] = $row['groupid'];
+                $batch[$key]['type'] = $row['type'];
+                $batch[$key]['name'] = $row['grouptitle'];
+                $batch[$key]['credits'] = $row['creditslower'];
+                $batch[$key]['stars'] = $row['stars'];
+                $batch[$key]['is_sign'] = 1;
+                $batch[$key]['is_anonymous'] = 1;
+                $batch[$key]['is_html'] = 1;
+                $batch[$key]['is_bbcode'] = 1;
+                $batch[$key]['is_smilies'] = 1;
+                $batch[$key]['is_visit'] = 1;
+                $batch[$key]['is_post'] = 1;
+                $batch[$key]['is_upload'] = 1;
+            }
+            $r1 = $this->groups_model->insert_batch($batch);
+            if ($r1) {
+                $this->set_data('groups', 'ok');
+                $this->message('处理完成', 1);
+            } else {
+                $this->message('处理失败');
+            }
+        }
+    }
+    
     private function forum_new() {
         $this->forum_new = array(
             '277' => '1',

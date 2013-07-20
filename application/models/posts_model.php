@@ -44,7 +44,9 @@ class Posts_model extends MY_Model {
             $value['content'] = $this->smiley2html($value['content']);
         }
         //过滤is_html
-        
+        if (!$value['is_html']) {
+            //$value['content'] = htmlspecialchars($value['content']);
+        }
         //过滤is_hide
         if($value['is_first'] && $value['is_hide']){
             $value = $this->hide2html($value);
