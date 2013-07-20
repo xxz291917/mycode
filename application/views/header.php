@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -17,53 +20,100 @@
 <link href="<?=base_url()?>js/syntaxhighlighter/styles/shThemeEclipse.css" type="text/css" rel="Stylesheet" />
 </head>
 <body>
+
 <a id="returnTop"  href="#top"></a> 
 <!--header-->
-<div class="navBox pr">
-  <div class="nav pa">
-    <div class="navWrap pr">
-      <h1 class="pa"><a href="http://test.9tech.cn">9Tech开发者社区</a></h1>
-      <ul class="mainNav">
-        <li class="mainNavHome"><a href="<?=base_url()?>">首页</a></li>
-        <li class="current"><a href="<?=base_url()?>">论坛</a></li>
-        <li><a href="<?php echo $this->config->item('url_blog')?>" target="_blank">博客</a></li>
-        <!--
-        <li><a href="<?php echo $this->config->item('url_blog')?>" target="_blank">专题</a></li>
-        <li><a href="<?php echo $this->config->item('url_blog')?>" target="_blank">活动</a></li>
-        <li><a href="<?php echo $this->config->item('url_download')?>" target="_blank">下载</a></li>
-        -->
-      </ul>
-      <div class="mainNavR">
+<div class="nav">
+  <div class="navWrap clearfix">
+    <ul class="mainNav">
+      <li class="icoHome"><a href="<?=base_url()?>">首页</a></li>
+      <li class="pr"><a href="<?=base_url()?>" class="icoDown">论坛</a>
+        <ul class="pa">
+          <li><a href="<?php echo base_url('/html5')?>">HTML5</a></li>
+          <li><a href="<?php echo base_url('/ios')?>">IOS</a></li>
+          <li><a href="<?php echo base_url('/android')?>">Android</a></li>
+          <li><a href="<?php echo base_url('/unity3d')?>">Unity3d</a></li>
+          <li><a href="<?php echo base_url('/cocos2d')?>">Cocos2d-x</a></li>
+          <li><a href="<?php echo base_url('/flash')?>">Flash</a></li>
+        </ul>
+      </li>
+      <!--li><a href="#">资讯</a></li-->
+      <li><a href="<?php echo $this->config->item('url_blog')?>" target="_blank">博客</a></li>
+      <!--li><a href="#">专题</a></li>
+      <li><a href="#">天地行</a></li>
+      <li><a href="#">招聘</a></li>
+      <li><a href="#">下载</a></li-->
+    </ul>
+    
         <?php if($this->user['id']>0){?>
-        <ul class="logInfo">
-          <!--li class="welTip">欢迎你，<a href="http://test.9tech.cn/me"><?php echo ''?></a></li>-->
-          <li><a href="#" class="icoNote"></a></li>
-          <li><a href="#" class="icoEmail"></a></li>
-          <!--
-          <li class="pr subShow"><a href="#" class="icoNote pa"><span>99+</span></a></li>
-          <li class="pr subShow"><a href="#" class="icoEmail pa"><span>12</span></a></li>
-          -->
-          <li class="pr ml10">
-              <a href="#" class="icoSet"></a>
+    	<ul class="logInfo">
+          <li class="welTip">欢迎你，<a href="<?php echo user_url($this->user['id'])?>"><?php echo $this->user['username']?></a></li>
+          <li class="icoBlog"><a href="<?php echo $this->config->item('url_blog')?>index.php/article/article_list/view/V/uid/18/uname/<?php echo $this->user['username']?>">blog</a></li>
+          <li class="pr"><a href="#" class="icoNote pa"></a>
             <ul class="pa">
-              <li><a href="<?php echo $this->config->item('url_setting');?>">账号设置</a></li>
+              <li><a href="<?php echo $this->config->item('url_setting')?>index.php/letter/reply/get_list">查看回复<i></i></a></li>
+              <li><a href="<?php echo $this->config->item('url_setting')?>index.php/letter/message/index">查看留言<i></i></a></li>
+            </ul>
+          </li>
+          <li class="pr"><a href="<?php echo $this->config->item('url_setting')?>index.php/letter/letter_user/get_list" class="icoEmail"></a></li>
+              <!--li class="pr subShow"><a href="#" class="icoNote pa"><span>99+</span></a>
+                <ul class="pa">
+                  <li><a href="#">给我的回复<i>6</i></a></li>
+                  <li><a href="#">申请加好友<i>8</i></a></li>
+                </ul>
+              </li>
+              <li class="pr subShow"><a href="#" class="icoEmail pa"><span>12</span></a>
+                <ul class="pa">
+                  <li><a href="#">给我的回复<i>26</i></a></li>
+                  <li><a href="#">申请加好友<i>99+</i></a></li>
+                </ul>
+              </li-->
+          <li class="pr"><a href="#" class="icoSet"></a>
+            <ul class="pa">
+              <li><a href="<?php echo $this->config->item('url_setting')?>index.php/user_info/modify/">管理中心</a></li>
+              <li><a href="<?php echo base_url('index.php/space/my_topic')?>">帖子管理</a></li>
               <li><a href="<?php echo $this->config->item('passport_logout')?>">退出</a></li>
             </ul>
           </li>
-          <li class="welTip"><a href="<?php echo user_url($this->user['id'])?>"><img src="<?php echo user_icon($this->user['id'])?>" alt="<?php echo $this->user['username']?>" title="<?php echo $this->user['username']?>"></a></li>
         </ul>
         <?php }else{?>
           <ul class="logInfo">
               <li class="fsong"><a href="<?php echo $this->config->item('passport_login')?>">登录</a>|<a href="<?php echo $this->config->item('passport_register')?>">注册</a></li>
           </ul>
         <?php }?>
-        <!--a href="javascript:void(0);" class="searchBtn fr">搜索</a-->
-      </div>
-      <div class="searchBox pa">
-        <input type="tel" value="请输入关键字" class="inpTxt">
-        <button>搜索</button>
-        <a class="searchCls"></a>
-      </div>
-    </div>
   </div>
 </div>
+
+<div class="header wrap">
+  <h1><a href="<?php echo base_url();?>">9Tech开发者社区</a></h1>
+  <div class="search">
+
+      <input type="text" id="" name="" maxlength="" value="" class="" autocomplete="off" placeholder="请输入关键字">
+      <button>搜索</button>
+
+  </div>
+</div>
+
+<div class="subNav wrap">
+  <ul>
+    <li><a href="<?php echo base_url()?>">首页</a></li>
+    <li><a href="<?php echo base_url()?>">论坛</a></li>
+	<li><a href="<?php echo base_url('/html5')?>">HTML5</a></li>
+    <li><a href="<?php echo base_url('/ios')?>">IOS</a></li>
+    <li><a href="<?php echo base_url('/android')?>">Android</a></li>
+    <li><a href="<?php echo base_url('/unity3d')?>">Unity3d</a></li>
+    <li><a href="<?php echo base_url('/cocos2d')?>">Cocos2d-x</a></li>
+    <li><a href="<?php echo base_url('/flash')?>">Flash</a></li>
+  </ul>
+</div>
+<script>
+$(function(){
+	$('.icoDown').parent().hover(function() {
+$(this).addClass('current');
+$(this).addClass('bgmainNav'); 
+},function(){
+$(this).removeClass('current');
+$(this).removeClass('bgmainNav'); 
+});
+	});
+</script>

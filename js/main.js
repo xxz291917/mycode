@@ -1,42 +1,4 @@
-$(document).ready(function() {
-	//顶部导航搜索菜单
-	$('.searchBtn').click(function()  {
-		$('.nav').animate({
-			bottom:'-70px',
-			paddingTop:'71px',
-			backgroundPosition:'(0 -208px)'
-		},300);
-		$('.nav h1').animate({
-			top:'-60px',
-			width:'156px',
-			height:'54px'
-		},300);
-		$('.nav h1 a').animate({
-			width:'156px',
-			height:'54px',
-			backgroundPosition:'(0 -240px)'
-		},300);
-		$('.searchBox').fadeIn('slow');
-		$('.searchBox input').focus();
-	});
-	$('.searchCls').click(function() {
-		$('.nav').animate({
-			bottom:0,
-			paddingTop:0,
-			backgroundPosition:'(0 -279px)'
-		},300);
-		$('.nav h1').animate({
-			top:'4px',
-			width:'117px',
-			height:'40px'
-		},300);
-		$('.nav h1 a').animate({
-			width:'117px',
-			height:'40px',
-			backgroundPosition:'(0 0)'
-		},300);
-		$('.searchBox').fadeOut('slow');
-	});
+$(document).ready(function() {	
 	//顶部导航下拉菜单
 	$('.icoSet').parent().hover(function() {
 		$(this).addClass('current');		
@@ -66,6 +28,14 @@ $(document).ready(function() {
 	},function(){
 		$(this).removeClass('current');
 		$(this).find('span').show();
+	});
+	//论坛下拉菜单
+	$('.icoDown').parent().hover(function() {
+		$(this).addClass('current');
+		$(this).addClass('bgmainNav');			
+	},function(){
+		$(this).removeClass('current');
+		$(this).removeClass('bgmainNav');	
 	});
 	//正文页左侧头像隐藏层
 	$('.usFace').hover(function() {

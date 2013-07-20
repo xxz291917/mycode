@@ -69,57 +69,57 @@ table{border-collapse:collapse;border-spacing:0}
 .content{overflow:hidden}
 .col1{float:left;width:170px;}
 .col2{float:left;width:790px}
-.logInfo a.icoNote,.logInfo a.icoEmail,.logInfo a.icoSet,.nav,a.searchBtn,.searchCls,
-/*头部背景*/
 .myPos,.pagenum a.btnPre,.pagenum a.btnNext,a.icoPost,a.icoMag,.hasMenu a,.icoSj,.usFaceInfo i,.usFaceInfoBot a,.usTip span.myRank i,.usIco a,.icoHonour span,.icoSj2,.newsTip .icoEye,.newsTip .icoMsg2,.newsTip .icoMsg a,.showHide,.downloadUrl,.newsBot a,.btnCmt,.newsAD i,.icoReply,.btnGrade,.leftNav dt a,.leftNavCtrl,.boardInfoTop span.fr a,.noticeShow i,a.icoSecurity,.tags li,.listCot i,.voteBoxL .btnCls,.voteBoxL .btnAddVote,.btnUnCheck,.btnCheck,.btnLRed,.btnLBlue,.debateTit .btnUp,.debateTit .btnUp2,.myTag i,.myInfo a.icoSet,.myMsg li a,.tagACot i,.tblList li.td5,.qaTop i,.qaBorLi dd,.bestA,.bestA i,.btnDig span,.logInfo .icoBlog a{background:url(../images/bbs.png) no-repeat}/*背景*/
-/*header*/
-.navBox{ z-index:2; height:49px;}
-.navWrap{ z-index:2; width:960px; margin:0 auto;}
-.nav{left:0; border:0; width:100%; height:49px; background-color:#2B2B2B; background-position:0 -279px; background-repeat:repeat-x;}
-.nav h1{ left:0; top:4px; display:inline; float:left; width:117px; height:40px; overflow:hidden;}
-.nav h1 a{ display:inline-block; width:117px; height:40px; background:url(../images/logo.png); line-height:34em; overflow:hidden;}
-.nav .mainNav{ float:left; height:47px; padding-left:127px; font-weight:bold;}
-.nav a{ color:#FFF;}
-.nav .mainNav li{ float:left; padding-right:0; border-left:1px solid #676767; line-height:47px; font-size:14px;}
-.nav .mainNav a{ display:inline-block; height:47px; padding:0 24px; text-decoration:none; text-shadow:1px 1px 0 #151516;}
-.nav .mainNav .mainNavHome{ border:none;}
-.nav .mainNav li a:hover,.nav .mainNav li.current a{ background:#676767;}
-.mainNavR{ float:right;}
-a.searchBtn{ display:inline-block; width:25px; height:26px; margin:12px 0 0 0; background-position:0 -49px; line-height:47em; overflow:hidden;}
-.logInfo{ display:inline; float:right; height:47px; margin-left:21px; border-left:2px solid #4B4B4B;}
+/*nav*/
+.logInfo a.icoNote,.logInfo a.icoEmail,.logInfo a.icoSet,.pagenum a.btnPre,.pagenum a.btnNext,.mainNav li.icoHome,.logInfo .icoBlog a,.mainNav .icoDown,.search button{background:url(../images/bbs.png) no-repeat}/*头部背景*/
+.nav{height:30px;background:#3F3A39;line-height:30px;color:#FFF;font-size:14px}
+.mainNav{float:left; padding-left:28px;}
+.mainNav li{float:left;padding:0 11px}
+.mainNav li.icoHome{ padding-left:23px; background-position:0 -13px;}
+.nav a{color:#FFF}
+.mainNav li.current a{font-weight:bold}
+.logInfo{ display:inline; float:right; margin-right:52px;}
 .logInfo .fsong{ width:auto;color:#AAA}
-.logInfo .fsong a{margin:0 10px; line-height:50px; font-size:14px;}
-.logInfo li{ display:inline;float:left; width:36px;margin-left:1px;}
-.logInfo li.welTip{ width:auto; padding:8px 0 0 0;}
-.logInfo li.welTip img{ display:block; width:31px; height:31px;}
-.logInfo .icoBlog a{ display:block; width:16px; height:16px; margin:16px 0 0 10px; background-position:-42px -1546px; line-height:16em; overflow:hidden;}
-.logInfo a.icoNote{ display:inline-block; float:left; width:18px; height:16px; margin:16px 0 0 9px; background-position:0 -2044px; overflow:hidden;}
-.logInfo a.icoEmail{ display:inline-block; float:left; width:18px; height:14px; margin:17px 0 0 10px; background-position:0 -2120px; overflow:hidden;}
-.logInfo li span{ display:none; width:36px;height:20px; margin-top:40px;background:#FFA81F; color:#3D3D3D; text-align:center; line-height:20px; font-size:14px;}
-.logInfo li.subShow{ height:47px;background:#FFA81F;}
+.logInfo .fsong a{margin:0 10px}
+.logInfo li{ z-index:2; display:inline;float:left; width:36px; height:30px; margin-left:1px;}
+.logInfo li.welTip{ width:auto; padding-right:0;}
+.logInfo .icoBlog a{ display:block; width:16px; height:16px; margin:7px 0 0 10px; background-position:-42px -1546px; line-height:16em; overflow:hidden;}
+.logInfo a.icoNote{ display:inline-block; float:left; width:18px; height:16px; margin:7px 0 0 9px; background-position:0 -2044px; overflow:hidden;}
+.logInfo a.icoEmail{ display:inline-block; float:left; width:18px; height:14px; margin:8px 0 0 9px; background-position:0 -2120px; overflow:hidden;}
+.logInfo li span{ display:none; width:36px;height:20px; margin-top:25px;background:#FFA81F; color:#3D3D3D; text-align:center; line-height:20px;}
+.logInfo li.subShow{ height:30px;background:#FFA81F;}
 .logInfo li.subShow span{ display:block;}
-.logInfo li.subShow a{ cursor:pointer; width:36px; height:66px; margin:0; text-decoration:none;}
-.logInfo li.subShow a.icoNote{left:0; top:0; background-color:#FFA81F;background-position:9px -2245px;}
-.logInfo li.subShow a.icoEmail{ left:0; top:0;background-color:#FFA81F;background-position:8px -2320px;}
-.logInfo a.icoSet{ display:inline-block; float:left; width:36px; height:47px; margin:0; background-position:10px -2171px;text-align:left;}
-.logInfo li ul{ right:0; top:47px; clear:both; display:none; width:116px; background:#616161;}
+.logInfo li.subShow a{ cursor:pointer; width:36px; height:45px; margin:0; text-decoration:none;}
+.logInfo li.subShow a.icoNote{left:0; top:0; background-color:#FFA81F;background-position:9px -2254px;}
+.logInfo li.subShow a.icoEmail{ left:0; top:0;background-color:#FFA81F;background-position:9px -2329px;}
+.logInfo a.icoSet{ display:inline-block; float:left; width:36px; height:30px; margin:0; background-position:9px -2180px;text-align:left;}
+.logInfo li ul{ right:0; top:30px; clear:both; display:none; width:116px; background:#616161;}
 .logInfo li.current ul{ display:block;}
 .logInfo li.current a.icoSet{ background-color:#616161; }
 .logInfo li li{ display:block; float:none; height:40px; margin-left:0; font-size:12px;}
 .logInfo li li a{ display:block; float:none; width:101px; height:40px;padding-left:15px; border-bottom:1px solid #4B4B4B; line-height:40px; background:none;}
 .logInfo li li a:hover{ background:#3D3D3D;}
 .logInfo li.subShow li a{ width:101px;height:40px;} 
-.logInfo li.current a.icoNote{ background-color:#616161; background-position:9px -2028px;}
-.logInfo li.current a.icoEmail{ background-color:#616161; background-position:8px -2103px;}
+.logInfo li.current a.icoNote{ background-color:#616161; background-position:9px -2037px;}
+.logInfo li.current a.icoEmail{ background-color:#616161; background-position:9px -2112px;}
 .logInfo li.current i{ padding-left:10px; font-weight:bold; color:#FFA81F;}
-.searchBox{ right:0; top:-50px; display:none; padding-bottom:5px; clear:both; overflow:hidden; _zoom:1;}
-.searchBox input{ float:left; width:390px; height:30px; padding-left:11px; border-width:1px; border-style:solid; border-color:#767676 #575757 #ADADAD #D1D1D1; border-radius:5px; background-color:#FFF; box-shadow:1px 2px 3px #BBB inset; font-size:14px; color:#999; line-height:30px; color:#999;}
-.searchBox button{ display:inline; float:left; width:85px; height:32px; margin:0 0 0 8px; border-top:1px solid #444;border-right:1px solid #393939;border-bottom:1px solid #444;border-left:1px solid #383838; border-radius:5px; background:#363636; box-shadow:2px 2px 2px #2B2B2B; text-align:center; line-height:32px; color:#FFF; font-weight:bold; letter-spacing:2px; font-size:14px; text-shadow:2px 2px 2px #151516;}
-.searchBox button:hover{ border-color:#686868 #505050 #4A4A4A #515151; background-color:#4E4E4E;}
-.searchBox button:active{border-color:#3E3E3E #2A2A2A #252525 #282828; background-color:#292929;}
-.searchCls{ cursor:pointer; display:inline-block; float:left; width:31px; height:31px; margin:0 0 0 8px; background-position:0 -129px;}
-.searchCls:hover{ filter:alpha(opacity=80);-moz-opacity:0.8; opacity:0.8;}
-.searchCls:active{ filter:alpha(opacity=100);-moz-opacity:1; opacity:1;}
+.mainNav .icoDown{ padding-right:14px; background-position:right -53px;}
+.mainNav li ul{ display:none;}
+.bgmainNav{background:#616161;}
+.mainNav li.current ul{left:0; top:30px; display:block; width:106px; background:#616161;}
+.mainNav li.current li{ display:block; float:none; height:32px; padding:0; line-height:32px;}
+.mainNav li.current li a{ display:block; height:32px; padding-left:11px;font-weight:normal; font-size:12px;}
+.mainNav li.current li a:hover{ background:#4E4E4E; box-shadow:2px 2px 0 #393939 inset}
+/*header*/
+.header{ height:81px; overflow:hidden;}
+.header h1{ float:left; width:156px;}
+.header h1 a{ display:block; float:left; width:148px; height:59px; margin-top:16px; background:url(../images/logo.png); line-height:59em; overflow:hidden;}
+.search{ float:right; padding-top:31px;}
+.search input{ float:left; width:209px; height:30px; padding:0 17px; border:2px solid #CCC; border-right:none; border-radius:4px 0 0 4px; line-height:30px;}
+.search button{ float:left; width:36px; height:34px; border:0 none; background-position:0 -81px; line-height:34em; overflow:hidden;}
+.subNav{ height:36px; border-bottom:1px solid #515252; background:#3D3D3D; overflow:hidden; line-height:36px; font-weight:bold;}
+.subNav li{ display:inline; float:left; height:36px; margin-right:-1px; border-left:1px solid #525252; font-size:14px;}
+.subNav li a{ display:inline-block;height:36px; padding:0 20px; color:#FFF;}
 /*content*/
 .myPos{ height:30px; margin:19px 0 15px; padding-left:22px; background-position:0 -335px; line-height:30px; color:#999;}
 .myPos a{ margin:0 6px;}
@@ -572,27 +572,27 @@ a.postView:active{border-color:#C83C00 #BF3300 #BF3300 #C83C00; background:#E652
 #lunbo ul li.on {background:#900 !important}
 #lunbo_list a{position:absolute;}
 .topList{ display:inline; float:left; width:322px; margin-left:10px; overflow:hidden;}
-.topList h2{ height:23px; background:#E6F4FB; line-height:23px; text-align:center;}
+.topList h2{ height:23px; background:#FAFAFC; line-height:23px; text-align:center;}
 .topList ol{ padding:4px 8px 0;}
 .topList li{ height:20px; line-height:20px; overflow:hidden;}
 .topList i{ display:inline-block; float:left; width:11px; height:11px; margin:5px 10px 0 0; border-radius:2px; background:#E6F4FB;line-height:12px;color:#878F93; text-align:center; font-weight:bold; -webkit-text-size-adjust:none;font-size:8px; overflow:hidden;}
 .topList i.topC{background:#FFB533; color:#FFF;}
 .topList li a{ color:#333;}
-dl.topToday{ clear:both; float:left; width:100%; height:82px; margin-top:15px; background:#E6F4FB; overflow:hidden;}
+dl.topToday{ clear:both; float:left; width:100%; height:82px; margin-top:15px; background:#FAFAFC; overflow:hidden;}
 dl.topToday dt{ display:inline; float:left; width:16px;height:74px; margin-right:8px; padding:8px 0 0 5px; border-right:2px solid #FFF; line-height:16px;}
 dl.topToday dd{ display:inline; float:left; width:60px;height:82px; margin-left:4px; text-align:center;}
 dl.topToday dd img{ display:block; width:50px; height:50px; margin:8px 0 0 2px; border-radius:6px; box-shadow:2px 2px 2px rgba(0,0,0,0.1);}
 dl.topToday figcaption{ height:22px; line-height:22px; overflow:hidden;}
-.homeH2{ height:25px; padding-left:20px; background:#3D3D3D; line-height:25px;}
+.homeH2{ height:30px; margin-top:13px; padding-left:20px; background:#3D3D3D;box-shadow:1px 0 2px #CBCBCC; line-height:30px;}
 .homeH2 a{ color:#FFF;}
-.homeList{ padding:8px 10px 25px 7px;  border-right:1px solid #CCC;border-left:1px solid #CCC; background:#F1F1F2; overflow:hidden;_zoom:1;}
+.homeList{ padding:0 10px 34px 7px;  border-right:1px solid #CCC;border-bottom:1px solid #BEBFC0; background:#FFF; box-shadow:1px 1px 2px #CBCBCC; overflow:hidden;_zoom:1;}
 .lastLi{border:1px solid #CCC; border-top:none;}
-.homeList li{ display:inline; float:left; width:220px; height:60px; margin:18px 0 0 32px; padding-left:50px; border:1px solid #D0E5EF; border-radius:6px;background:#FFF; box-shadow:2px 2px 2px rgba(0,0,0,0.04);}
-.homeList li h3{ height:20px; padding-top:10px; line-height:20px; color:#E20000;}
+.homeList li{ display:inline; float:left; width:230px; height:60px; margin:18px 0 0 16px; padding-left:63px; background:#FFF; }
+.homeList li h3{ height:20px; padding-top:10px; line-height:20px; color:#E20000; font-size:14px;}
 .homeList li h3 a{ margin-right:13px;}
 .homeList li p{ line-height:20px; color:#777;}
 .homeList li p strong{ font-weight:normal;}
-.homeList li img{ left:13px; top:13px; display:block; width:25px; height:25px;}
+.homeList li img{ left:0; top:13px; display:block; width:50px; height:50px;}
 /*问答帖*/
 .qaTop{ float:left; height:33px; margin-top:10px; padding:0 10px; border:1px dashed #FFB238; border-radius:4px; background:#FFFDF5; line-height:33px; color:#848484;}
 .qaTop i{ display:inline-block; float:left; margin:9px 6px 0 0;}

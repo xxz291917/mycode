@@ -108,13 +108,16 @@ class Forum extends MY_Controller {
         }
         $forums = $this->forums_model->get_forums();
         $forums = $this->forums_statistics_model->append_to_forums($forums);
+        $forums = $this->forums_model->handle_redirect($forums);//处理redirect
         $forums = $this->forums_model->get_format_forums($forums);
+        
         foreach ($forums as $key => $forum) {
-            if($forum['id']!=$forum_id){
-                unset($forums[$key]);
+            if($forum['id']==$forum_id){
+                $this_forum = $forum['sub'];
+                break;
             }
         }
-        $var['forums'] = $forums;
+        $var['forums'] = $this_forum;
         
         //获取总用户数
         $totals['users'] = $this->users_model->get_count();

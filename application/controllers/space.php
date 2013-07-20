@@ -45,7 +45,7 @@ class Space extends MY_Controller {
         //根据分页符读取列表
         $var['my_posted'] = $this->topics_posted_model->get_list($start, $per_num);
         $var['page'] = $page_str;
-        $var['menu'] = 0;
+        $var['menu'] = 3;
         $this->view('space_topic_list', $var);
     }
 

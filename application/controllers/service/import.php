@@ -175,6 +175,7 @@ class import extends MY_Controller {
     }
 
     public function topic_id($id) {
+        $this->delete_id($id);
         $table = 'forum_thread';
         $sql = "SELECT * FROM $this->pre$table WHERE tid=$id";
         $query = $this->dzdb->query($sql);
@@ -266,7 +267,7 @@ class import extends MY_Controller {
         $num = $query->row_array();
         $num = $num['num'];
         for ($i = 0, $j = 0; $i <= $num; $i+=10) {
-            $sql = "SELECT * FROM {$this->pre}forum_post WHERE $where limit $i,10";
+            $sql = "SELECT * FROM {$this->pre}forum_post WHERE $where ORDER BY pid limit $i,10";
             $query = $this->dzdb->query($sql);
             $posts = $query->result_array();
             if (empty($posts)) {
@@ -705,7 +706,7 @@ class import extends MY_Controller {
         $this->poll_model->delete(array('topic_id'=>$tid));
         $this->debate_model->delete(array('topic_id'=>$tid));
         $this->attachments_model->delete(array('topic_id'=>$tid));
-        $this->message('删除完成！');
+//        $this->message('删除完成！');
     }
 
     public function groups() {
