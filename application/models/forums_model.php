@@ -314,6 +314,19 @@ class Forums_model extends MY_Model {
         return $forums;
     }
     
+    public function get_sub_forums_by_id($forum_id, $forums) {
+        if (empty($forum_id)) {
+            return $forums;
+        }
+        foreach ($forums as $key => $forum) {
+            if ($forum['id'] == $forum_id) {
+                return $forum;
+            } elseif (!empty($forum['sub'])) {
+                return $this->get_sub_forums_by_id($forum_id, $forum['sub']);
+            }
+        }
+    }
+    
 }
 
 ?>

@@ -26,12 +26,12 @@
       <li class="icoHome"><a href="<?=base_url()?>">首页</a></li>
       <li class="pr"><a href="<?=base_url()?>" class="icoDown">论坛</a>
         <ul class="pa">
-          <li><a href="<?php echo base_url('/html5')?>">HTML5</a></li>
-          <li><a href="<?php echo base_url('/ios')?>">IOS</a></li>
-          <li><a href="<?php echo base_url('/android')?>">Android</a></li>
-          <li><a href="<?php echo base_url('/unity3d')?>">Unity3d</a></li>
-          <li><a href="<?php echo base_url('/cocos2d')?>">Cocos2d-x</a></li>
-          <li><a href="<?php echo base_url('/flash')?>">Flash</a></li>
+            <li><a href="<?php echo base_url('/html5')?>">HTML5开发</a></li>
+            <li><a href="<?php echo base_url('/android')?>">Android开发论坛</a></li>
+            <li><a href="<?php echo base_url('/ios')?>">ios开发论坛</a></li>
+            <li><a href="<?php echo base_url('/flash')?>">Flash开发</a></li>
+            <li><a href="<?php echo base_url('/unity3d')?>">Unity3d</a></li>
+            <li><a href="<?php echo base_url('/cocos2d')?>">Cocos2d-X</a></li>
         </ul>
       </li>
       <!--li><a href="#">资讯</a></li-->
@@ -93,24 +93,23 @@
 
 <div class="subNav wrap">
   <ul>
-    <li><a href="<?php echo base_url()?>">首页</a></li>
-    <li><a href="<?php echo base_url()?>">论坛</a></li>
-	<li><a href="<?php echo base_url('/html5')?>">HTML5</a></li>
-    <li><a href="<?php echo base_url('/ios')?>">IOS</a></li>
-    <li><a href="<?php echo base_url('/android')?>">Android</a></li>
+    <li><a href="<?php echo base_url()?>">论坛首页</a></li>
+    <li><a href="<?php echo base_url('/html5')?>">HTML5开发</a></li>
+    <li><a href="<?php echo base_url('/android')?>">Android开发论坛</a></li>
+    <li><a href="<?php echo base_url('/ios')?>">ios开发论坛</a></li>
+    <li><a href="<?php echo base_url('/flash')?>">Flash开发</a></li>
     <li><a href="<?php echo base_url('/unity3d')?>">Unity3d</a></li>
-    <li><a href="<?php echo base_url('/cocos2d')?>">Cocos2d-x</a></li>
-    <li><a href="<?php echo base_url('/flash')?>">Flash</a></li>
+    <li><a href="<?php echo base_url('/cocos2d')?>">Cocos2d-X</a></li>
   </ul>
 </div>
 <script>
 $(function(){
 	$('.icoDown').parent().hover(function() {
-$(this).addClass('current');
-$(this).addClass('bgmainNav'); 
-},function(){
-$(this).removeClass('current');
-$(this).removeClass('bgmainNav'); 
-});
+            $(this).addClass('current');
+            $(this).addClass('bgmainNav'); 
+            },function(){
+            $(this).removeClass('current');
+            $(this).removeClass('bgmainNav'); 
+            });
 	});
 </script>

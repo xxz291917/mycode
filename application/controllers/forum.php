@@ -41,7 +41,10 @@ class Forum extends MY_Controller {
         
         //版块导航
         $forums = $this->forums_model->get_forums(0);
-        $var['forums'] = $this->forums_model->get_format_forums($forums);
+        $forums = $this->forums_model->get_format_forums($forums);
+        $forums = $this->forums_model->get_sub_forums_by_id($forum_id,$forums);
+        
+        $var['forums'] = $forums;
 //        $sub_forums = $this->forums_model->get_sub_forums($forum_id);
 //        $var['sub_forums'] = $sub_forums;
         
