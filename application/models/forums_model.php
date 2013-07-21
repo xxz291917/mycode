@@ -67,6 +67,11 @@ class Forums_model extends MY_Model {
         return $this->forums;
     }
     
+    /**
+     * 获取传入id的子版块，只一层。
+     * @param type $id
+     * @return type
+     */
     public function get_sub_forums($id){
         return $this->get_list(array('parent_id'=>$id),'*', '', 0, 100);
     }
@@ -314,17 +319,47 @@ class Forums_model extends MY_Model {
         return $forums;
     }
     
+    /**
+     * 获取传入id的层次结构的版块信息。
+     * @param type $forum_id
+     * @param type $forums
+     * @return type
+     */
     public function get_sub_forums_by_id($forum_id, $forums) {
+        $sub_forums = array();
         if (empty($forum_id)) {
             return $forums;
         }
         foreach ($forums as $key => $forum) {
             if ($forum['id'] == $forum_id) {
-                return $forum;
+                return $forum['sub'];
             } elseif (!empty($forum['sub'])) {
-                return $this->get_sub_forums_by_id($forum_id, $forum['sub']);
+                $sub_forums =  $this->get_sub_forums_by_id($forum_id, $forum['sub']);
+                if(!empty($sub_forums)){
+                    return $sub_forums;
+                }
             }
         }
+    }
+    
+    /**
+     * 获取传入id的所有子id，循环递归多层。
+     * @param type $forum_id
+     * @param type $forums
+     * @return type
+     */
+    public function get_all_ids($forums) {
+        static $ids = array();
+        if(empty($forums)){
+            return '';
+        }
+        foreach ($forums as $key => $forum) {
+            $ids[] = $forum['id'];
+            if (!empty($forum['sub'])) {
+                $this->get_all_ids($forum['sub']);
+            }
+        }
+        return $ids;
     }
     
 }

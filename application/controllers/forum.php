@@ -32,18 +32,22 @@ class Forum extends MY_Controller {
             $this->zone_show($forum_id);
             return;
         }
+        
         $forum['allow_special'] = explode(',', $forum['allow_special']);
         $var['forum'] = $forum;
         
         //获取导航面包屑，论坛>综合交流>活动专区>现代程序员的工作环境
         $nav = $this->forums_model->get_nav_forums($forum_id);
         $var['nav'] = $nav;
-        
+        //得到第一个分类id
+        foreach ($nav as $key => $value) {
+            $first_id = $key;
+            break;
+        }
         //版块导航
         $forums = $this->forums_model->get_forums(0);
         $forums = $this->forums_model->get_format_forums($forums);
-        $forums = $this->forums_model->get_sub_forums_by_id($forum_id,$forums);
-        
+        $forums = $this->forums_model->get_sub_forums_by_id($first_id,$forums);
         $var['forums'] = $forums;
 //        $sub_forums = $this->forums_model->get_sub_forums($forum_id);
 //        $var['sub_forums'] = $sub_forums;
@@ -114,14 +118,9 @@ class Forum extends MY_Controller {
         $forums = $this->forums_statistics_model->append_to_forums($forums);
         $forums = $this->forums_model->handle_redirect($forums);//处理redirect
         $forums = $this->forums_model->get_format_forums($forums);
+        $forums = $this->forums_model->get_sub_forums_by_id($forum_id,$forums);
         
-        foreach ($forums as $key => $forum) {
-            if($forum['id']==$forum_id){
-                $this_forum = $forum['sub'];
-                break;
-            }
-        }
-        $var['forums'] = $this_forum;
+        $var['forums'] = $forums;
         
         //获取总用户数
         $totals['users'] = $this->users_model->get_count();
@@ -130,14 +129,17 @@ class Forum extends MY_Controller {
         $last_user = $this->users_model->get_one(1, 'id,username', 'regdate desc');
         $var['last_user'] = $last_user;
         
+        //得到本版块下的所有子版块的id
+        $ids = $this->forums_model->get_all_ids($forums);
+        $ids = join(',', $ids);
         //获取最新帖子
-        $new_topics = $this->topics_model->get_list('status in(1,4,5)', 'id,subject', 'post_time desc',0,8);
+        $new_topics = $this->topics_model->get_list('forum_id in ('.$ids.') AND status in(1,4,5)', 'id,subject', 'post_time desc',0,8);
         $var['new_topics'] = $new_topics;
         //获取最新回复的topic_id
-        $last_post_topics = $this->topics_model->get_list('status in(1,4,5)', 'id,subject', 'last_post_time desc',0,8);
+        $last_post_topics = $this->topics_model->get_list(' forum_id in ('.$ids.') AND status in(1,4,5)', 'id,subject', 'last_post_time desc',0,8);
         $var['last_post_topics'] = $last_post_topics;
         //获取带图片的最新帖子
-        $last_image_topics = $this->posts_model->get_list('is_first =1 AND attachment=2 AND status in (1,4,5)', 'id,topic_id,subject', 'post_time desc',0,10);
+        $last_image_topics = $this->posts_model->get_list(' forum_id in ('.$ids.') AND is_first =1 AND attachment=2 AND status in (1,4,5)', 'id,topic_id,subject', 'post_time desc',0,10);
         $post_ids = array();
         foreach ($last_image_topics as $key => $topic) {
             $post_ids[] = $topic['id'];
