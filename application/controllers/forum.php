@@ -106,6 +106,7 @@ class Forum extends MY_Controller {
         if (empty($forum)) {
             $this->message('参数错误，版块不存在');
         }
+        $var['forum'] = $forum;
         $forums = $this->forums_model->get_forums();
         $forums = $this->forums_statistics_model->append_to_forums($forums);
         $forums = $this->forums_model->handle_redirect($forums);//处理redirect

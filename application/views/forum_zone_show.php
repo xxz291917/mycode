@@ -1,6 +1,6 @@
 <!--content-->
 <div class="wrap clearfix">                                                                    
-    <div class="myPos fsong">><a href="<?php echo base_url();?>">论坛</a></div>
+    <div class="myPos fsong">><a href="<?php echo base_url();?>">论坛</a>><a href="<?php echo current_url();?>"><?php echo $forum['name']?></a></div>
 
     
 <div class="hTop">

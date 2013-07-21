@@ -1,7 +1,7 @@
 <?php
 list($forum_name) = explode('/',trim($_SERVER['REQUEST_URI'],'/'));
 $forum_name = strtolower($forum_name);
-$site_url = 'test2.9tech.cn';
+$site_url = 'bbs1.9ria.com';
 $forum_ids = array(
 	'html5'=>'191',
 	'flash'=>'192',
@@ -12,8 +12,8 @@ $forum_ids = array(
 	);
 
 if(!isset($forum_ids[$forum_name])){
-	echo 'url£¬³ö´í';die;
+	echo 'urlï¼Œå‡ºé”™';die;
 }
 $get_url = 'http://' . $site_url . '/index.php/forum/show/' . $forum_ids[$forum_name];
-echo file_get_contents($get_url);
-?>
+$content = file_get_contents($get_url);
+echo $content;die;
