@@ -69,6 +69,7 @@
     foreach ($forums as $key => $forum) {?>
         <h2 class="homeH2"><a href="<?php echo base_url('index.php/forum/show/'.$forum['id'])?>"><?=$forum['name']?></a></h2>
         
+        <?php if(!empty($forum['sub'])){?>
         <ul class="homeList lastLi">
             <?php foreach ($forum['sub'] as $key => $sub) {?>
             <li class="pr">
@@ -78,5 +79,6 @@
             </li>
             <?php }?>
         </ul>
+        <?php }?>
     <?php }?>
 </div>
