@@ -17,9 +17,7 @@
 <link href="<?=base_url()?>js/syntaxhighlighter/styles/shThemeEclipse.css" type="text/css" rel="Stylesheet" />
 </head>
 <body>
-
-<a id="returnTop"  href="#top"></a> 
-<!--header-->
+<a id="returnTop"  href="#top"></a>
 <div class="nav">
   <div class="navWrap clearfix">
     <ul class="mainNav">
@@ -28,7 +26,7 @@
         <ul class="pa">
             <li><a href="<?php echo base_url('/html5')?>">HTML5开发</a></li>
             <li><a href="<?php echo base_url('/android')?>">Android开发论坛</a></li>
-            <li><a href="<?php echo base_url('/ios')?>">ios开发论坛</a></li>
+            <li><a href="<?php echo base_url('/ios')?>">iOS开发论坛</a></li>
             <li><a href="<?php echo base_url('/flash')?>">Flash开发</a></li>
             <li><a href="<?php echo base_url('/unity3d')?>">Unity3d</a></li>
             <li><a href="<?php echo base_url('/cocos2d')?>">Cocos2d-X</a></li>
@@ -44,8 +42,8 @@
     
         <?php if($this->user['id']>0){?>
     	<ul class="logInfo">
-          <li class="welTip">欢迎你，<a href="<?php echo user_url($this->user['id'])?>"><?php echo $this->user['username']?></a></li>
-          <li class="icoBlog"><a href="<?php echo $this->config->item('url_blog')?>index.php/article/article_list/view/V/uid/18/uname/<?php echo $this->user['username']?>">blog</a></li>
+          <li class="welTip"><a href="<?php echo user_url($this->user['id'])?>"><?php echo $this->user['username']?></a></li>
+          <li class="icoBlog"><a href="<?php echo $this->config->item('url_blog')?>index.php/article/article_list/view/V/uid/<?php echo $this->user['id']?>/uname/<?php echo $this->user['username']?>">blog</a></li>
           <li class="pr"><a href="#" class="icoNote pa"></a>
             <ul class="pa">
               <li><a href="<?php echo $this->config->item('url_setting')?>index.php/letter/reply/get_list">查看回复<i></i></a></li>
@@ -96,7 +94,7 @@
     <li><a href="<?php echo base_url()?>">论坛首页</a></li>
     <li><a href="<?php echo base_url('/html5')?>">HTML5开发</a></li>
     <li><a href="<?php echo base_url('/android')?>">Android开发论坛</a></li>
-    <li><a href="<?php echo base_url('/ios')?>">ios开发论坛</a></li>
+    <li><a href="<?php echo base_url('/ios')?>">iOS开发论坛</a></li>
     <li><a href="<?php echo base_url('/flash')?>">Flash开发</a></li>
     <li><a href="<?php echo base_url('/unity3d')?>">Unity3d</a></li>
     <li><a href="<?php echo base_url('/cocos2d')?>">Cocos2d-X</a></li>

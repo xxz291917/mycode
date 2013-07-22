@@ -51,7 +51,7 @@ class Users_model extends MY_Model {
             if(empty($user)){
                 $insert_data['id'] = $passport_user['id'];
                 $insert_data['username'] = $passport_user['name'];
-                $insert_data['email'] = $passport_user['email'];
+                $insert_data['email'] = !empty($passport_user['email'])?$passport_user['email']:'';
                 $insert_data['regdate'] = $passport_user['register_date'];
                 $insert_data['member_id'] = 10;
                 $insert_data['status'] = 1;
