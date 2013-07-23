@@ -22,7 +22,7 @@
   <div class="navWrap clearfix">
     <ul class="mainNav">
       <li class="icoHome"><a href="<?=base_url()?>">首页</a></li>
-      <li class="pr"><a href="<?=base_url()?>" class="icoDown">论坛</a>
+      <li class="pr"><a href="<?=base_url()?>" class="icoDowns">论坛</a>
         <ul class="pa">
             <li><a href="<?php echo base_url('/html5')?>">HTML5开发</a></li>
             <li><a href="<?php echo base_url('/android')?>">Android开发论坛</a></li>
@@ -102,7 +102,7 @@
 </div>
 <script>
 $(function(){
-	$('.icoDown').parent().hover(function() {
+	$('.icoDowns').parent().hover(function() {
             $(this).addClass('current');
             $(this).addClass('bgmainNav'); 
             },function(){

@@ -264,7 +264,7 @@ echo $page; ?>
                         </li>
     <?php } ?>
 <?php } else { ?>
-                    <li>没有符合条件的帖子。</li>
+                   <p class="p10">没有符合条件的帖子。</p>
             <?php } ?>
             </ul>
 

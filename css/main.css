@@ -293,13 +293,13 @@ table{border-collapse:collapse;border-spacing:0}
 .leftNav dt{ font-weight:bold;}
 .leftNav a{ display:inline-block; width:140px; padding-left:10px; color:#333; text-decoration:none; outline:none;}
 .leftNav dt{ padding-left:10px;}
-.leftNav dt,.leftNav dt a{ height:30px; background-color:#EDEDED; background-position:131px -1243px; box-shadow:0 0 2px rgba(0,0,0,0.1) inset; line-height:30px; font-size:14px;}
-.leftNav dt a{ margin-left:-10px;}
+.leftNav dt,.leftNav dt a{ height:30px; background-color:#EDEDED; background-position:131px -1243px; box-shadow:0 0 2px rgba(0,0,0,0.1) inset; line-height:30px; font-size:14px; overflow:hidden;}
+.leftNav dt a{ width:130px; margin-left:-10px; padding-right:10px;}
 .clsLeftNav dt a{ background-position:131px -1273px;}
 .clsLeftNav dd{ display:none;}
 .leftNav dt a:hover{ background-color:#E6E6E6; box-shadow:0 0 2px rgba(0,0,0,0.2) inset;}
 .leftNav dt a:active{ background-color:#E2E2E2; box-shadow:0 0 2px rgba(0,0,0,0.3) inset;}
-.leftNav dd a{ width:130px;height:25px; margin-bottom:2px;  padding-left:20px; line-height:25px;}
+.leftNav dd a{ width:120px;height:25px; margin-bottom:2px;  padding-left:20px; padding-right:10px; line-height:25px; overflow:hidden;}
 .leftNav dd a:hover{ background:#F0F0F0; font-weight:bold;}
 .leftNav dd a:active,.leftNav dd.current a{ background:#E8E8E8; font-weight:bold;}
 .leftNavCtrl{ cursor:pointer; right:5px; top:180px; width:10px; height:89px; background-position:0 -1322px;}
