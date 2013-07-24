@@ -362,6 +362,17 @@ class Forums_model extends MY_Model {
         return $ids;
     }
     
+    public function get_union_ids($topic_union){
+        $forums = $this->get_forums();
+        $union_ids = array();
+        foreach ($forums as $forum) {
+            if(!empty($forum['topic_union']) && $forum['topic_union'] == $topic_union){
+                $union_ids[] = $forum['id'];
+            }
+        }
+        return $union_ids;
+    }
+    
 }
 
 ?>

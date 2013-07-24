@@ -58,18 +58,12 @@ class Forum extends MY_Controller {
         $var['category_url'] = current_url() . (!empty($forum_id) ? "?forum_id=$forum_id&category_id=" : "?category_id=");
         
         //如果是跳转到了某个板块，则外皮不变，内容是获取此板块下的内容。
-        if (!empty($forum['redirect'])) {
-            $forum_id = $forum['redirect'];
-            $forum = $this->forums_model->get_info_by_id($forum_id);
-            if (empty($forum)) {
-                $this->message('参数错误，重新向的版块不存在');
-            }else{
-                $forum['allow_special'] = explode(',', $forum['allow_special']);
-                $var['forum']['allow_special'] = $forum['allow_special'];
-                $var['forum']['today_posts'] = $forum['today_posts'];
-                $var['forum']['topics'] = $forum['topics'];
-                $var['forum']['id'] = $forum['id'];
-            }
+        if (!empty($forum['topic_union'])) {
+            //得到其他相同topic_union的帖子的id。
+            $union_ids = $this->forums_model->get_union_ids($forum['topic_union']);
+            $union_ids = join(',', $union_ids);
+        }else{
+            $union_ids = $forum_id;
         }
         
         //按版块搜索
@@ -77,12 +71,12 @@ class Forum extends MY_Controller {
         
         //获取分类
         $this->load->model('topics_category_model');
-        $category_where = "forum_id=$forum_id";
+        $category_where = "forum_id IN ($union_ids) ";
         $topic_categorys = $this->topics_category_model->get_list($category_where, '*', 'display_order');
         $topic_categorys = $this->topics_category_model->key_list($topic_categorys);
         $var['topic_categorys'] = $topic_categorys;
 
-        $where = " forum_id = '$forum_id' AND status IN(1,4,5)";
+        $where = " forum_id IN ($union_ids) AND status IN(1,4,5)";
         
         //获取此版块下的版主
         $mannager = array_filter(explode(',', $forum['manager']));

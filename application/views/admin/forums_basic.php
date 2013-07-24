@@ -49,9 +49,9 @@
     <td >支持HTML代码<br/></td>
   </tr>
   <tr>
-    <th >版块重定向其他版块</th>
-    <td><input type="text" class="inp_txt" value="<?php echo my_set_value('redirect', $data)?>" name="redirect"></td>
-    <td >此版块的展示内容和发布的帖子，都将转向到重定向的版块。<br/></td>
+    <th >版块内容汇总标识符</th>
+    <td><input type="text" class="inp_txt" value="<?php echo my_set_value('topic_union', $data)?>" name="topic_union"></td>
+    <td >此版块的内容将汇总其他此标识的版块的帖子。<br/></td>
   </tr>
   <tr>
     <th >版块重定向的问答汇总版块id</th>
