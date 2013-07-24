@@ -1,7 +1,7 @@
 <!--content-->
 <?php
 $top_class = array(1=>'icoTop1',2=>'icoTop2',3=>'icoTop3');
-$special_class = array(2=>'icoVote',3=>'icoCoin',4=>'icoVs');
+$special_class = array(2=>'icoCoin',3=>'icoVote',4=>'icoVs');
 $post_class = array(0=>'icoRepNo',1=>'icoRep');
 ?>
 <div class="wrap clearfix">
@@ -23,22 +23,9 @@ $post_class = array(0=>'icoRepNo',1=>'icoRep');
         }
         ?>
     </div>
-    <div class="col1 pr"> 
-        <nav class="leftNav">
-      <?php foreach($forums as $subforum){?>
-      <dl>
-        <dt><a href="javascript:void(0);"><?php echo $subforum['name']; ?></a></dt>
-        	<?php 
-			if(!empty($subforum['sub'])){
-			foreach($subforum['sub'] as $sub){?>
-        		<dd><a href="<?php echo base_url('index.php/forum/show/'.$sub['id']);?>"><?php echo $sub['name']; ?></a></dd>
-        	<?php }}?>
-      </dl>
-      <?php }?>
-
-        </nav>
-        <span class="leftNavCtrl pa"></span>
-    </div>
+    
+<?php $this->load->view('forum_left');?>
+    
     <div class="col2">
         <div class="boardInfo">
 
@@ -92,7 +79,7 @@ $post_class = array(0=>'icoRepNo',1=>'icoRep');
                             <li class="icoSj"></li>
                             <li><a href="<?php echo base_url('index.php/action/post/' . $forum_id . '/1'); ?>" class="ico1" target="_blank">发表帖子</a></li>
                             
-							<?php if(in_array(2,$forum['allow_special'])){?>
+			    <?php if(in_array(2,$forum['allow_special'])){?>
                             <li><a href="<?php echo base_url('index.php/action/post/' . $forum_id . '/2'); ?>" class="ico3" target="_blank">发布问答</a></li>
                             <?php }?>
                             
@@ -100,9 +87,9 @@ $post_class = array(0=>'icoRepNo',1=>'icoRep');
                             <li><a href="<?php echo base_url('index.php/action/post/' . $forum_id . '/3'); ?>" class="ico2" target="_blank">发起投票</a></li>
                             <?php }?>
                             
-							<?php if(in_array(4,$forum['allow_special'])){?>
+                            <?php if(in_array(4,$forum['allow_special'])){?>
                             <li><a href="<?php echo base_url('index.php/action/post/' . $forum_id . '/4'); ?>" class="ico4" target="_blank">发起辩论</a></li>
-                        	<?php }?>
+                            <?php }?>
                         </ul>
                     </div>
                 </li>

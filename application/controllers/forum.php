@@ -56,13 +56,24 @@ class Forum extends MY_Controller {
         $order_url = preg_replace('/.(order|per_page)=[^&]+/', '', my_current_url());
         $var['order_url'] = $order_url . (strpos($order_url, '?') ? '&' : '?') . 'order=';
         $var['category_url'] = current_url() . (!empty($forum_id) ? "?forum_id=$forum_id&category_id=" : "?category_id=");
-        //按版块搜索
-        $var['forum_id'] = $forum_id;
         
-        //如果是跳转到了某个板块，则内容是获取此板块下的内容。
+        //如果是跳转到了某个板块，则外皮不变，内容是获取此板块下的内容。
         if (!empty($forum['redirect'])) {
             $forum_id = $forum['redirect'];
+            $forum = $this->forums_model->get_info_by_id($forum_id);
+            if (empty($forum)) {
+                $this->message('参数错误，重新向的版块不存在');
+            }else{
+                $forum['allow_special'] = explode(',', $forum['allow_special']);
+                $var['forum']['allow_special'] = $forum['allow_special'];
+                $var['forum']['today_posts'] = $forum['today_posts'];
+                $var['forum']['topics'] = $forum['topics'];
+                $var['forum']['id'] = $forum['id'];
+            }
         }
+        
+        //按版块搜索
+        $var['forum_id'] = $forum_id;
         
         //获取分类
         $this->load->model('topics_category_model');

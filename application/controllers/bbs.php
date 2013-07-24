@@ -77,18 +77,31 @@ class Bbs extends MY_Controller {
         
         //获取导航面包屑，论坛>综合交流>活动专区>现代程序员的工作环境
         if(!empty($forum_id)){
+            //获取导航面包屑，论坛>综合交流>活动专区>现代程序员的工作环境
             $nav = $this->forums_model->get_nav_forums($forum_id);
             $var['nav'] = $nav;
+            //得到第一个分类id
+            foreach ($nav as $key => $value) {
+                $first_id = $key;
+                break;
+            }
         }
+        
         //左侧版块导航
         $forums = $this->forums_model->get_forums();
-        $var['forums'] = $this->forums_model->get_format_forums($forums);
+        $forums = $this->forums_model->get_format_forums($forums);
+        if(!empty($first_id)){
+            $forums = $this->forums_model->get_sub_forums_by_id($first_id, $forums);
+        }
+        $var['forums'] = $forums;
+        
         //初始化页面中需要的链接。
         $type_url = preg_replace('/.(type|per_page)=[^&]+/','',my_current_url());
         $order_url = preg_replace('/.(order|per_page)=[^&]+/','',my_current_url());
         $var['type_url'] = $type_url.(strpos($type_url, '?')?'&':'?').'type=';
         $var['order_url'] = $order_url.(strpos($order_url, '?')?'&':'?').'order=';
         $var['category_url'] = current_url().(!empty($forum_id)?"?forum_id=$forum_id&category_id=":"?category_id=");
+        
         //获取分类
         $this->load->model('topics_category_model');
         $category_where = empty($forum_id)?"":"forum_id=$forum_id";
@@ -172,6 +185,143 @@ class Bbs extends MY_Controller {
 //        var_dump($var['forums']);die;
         $this->view('ask_index',$var);
     }
+    
+    /**
+     * 问答首页
+     */
+    public function ask_show($forum_id) {
+        $this->load->model(array('ask_model','biz_pagination'));
+        
+        if (empty($forum_id) || !is_numeric($forum_id)) {
+            $this->message('参数错误，请指定要展示的版块！');
+        }
+        $forum = $this->forums_model->get_info_by_id($forum_id);
+        if (empty($forum)) {
+            $this->message('参数错误，版块不存在');
+        }
+        //是否关闭
+        if ($forum['status'] == 0) {
+            $managers = explode(',', $forum['manager']);
+            if (!in_array($this->user['username'], $managers) && $this->user['group']['id'] != 1) {
+                $this->message('本版论坛暂时关闭。');
+            }
+        }
+        //获取导航面包屑，论坛>综合交流>活动专区>现代程序员的工作环境
+        $nav = $this->forums_model->get_nav_forums($forum_id);
+        $var['nav'] = $nav;
+        //得到第一个分类id
+        foreach ($nav as $key => $value) {
+            $first_id = $key;
+            break;
+        }
+
+        //左侧版块导航
+        $forums = $this->forums_model->get_forums();
+        $forums = $this->forums_model->get_format_forums($forums);
+        $forums = $this->forums_model->get_sub_forums_by_id($first_id, $forums);
+        $var['forums'] = $forums;
+        
+        //如果是跳转到了某个板块，则外皮不变，内容是获取此板块下的内容。
+        if (!empty($forum['redirect_ask_id'])) {
+            $forum_id = $forum['redirect_ask_id'];
+            $forum = $this->forums_model->get_info_by_id($forum_id);
+            if (empty($forum)) {
+                $this->message('参数错误，重新向的版块不存在');
+            }else{
+                //$forum['allow_special'] = explode(',', $forum['allow_special']);
+                //$var['forum']['allow_special'] = $forum['allow_special'];
+                $var['forum']['today_posts'] = $forum['today_posts'];
+                $var['forum']['topics'] = $forum['topics'];
+                //$var['forum']['id'] = $forum['id'];
+                //得到本版块下的所有子版块的id
+            }
+        }
+        $forums = $this->forums_model->get_sub_forums_by_id($forum_id, $forums);
+        $ids = $this->forums_model->get_all_ids($forums);
+        $ids = join(',', $ids);
+        
+        //初始化页面中需要的链接。
+        $type_url = preg_replace('/.(type|per_page)=[^&]+/','',my_current_url());
+        $order_url = preg_replace('/.(order|per_page)=[^&]+/','',my_current_url());
+        $var['type_url'] = $type_url.(strpos($type_url, '?')?'&':'?').'type=';
+        $var['order_url'] = $order_url.(strpos($order_url, '?')?'&':'?').'order=';
+        $var['category_url'] = current_url().(!empty($forum_id)?"?forum_id=$forum_id&category_id=":"?category_id=");
+        
+        //获取分类
+        $this->load->model('topics_category_model');
+        $category_where = empty($forum_id)?"":"forum_id in($ids)";
+        $topic_categorys = $this->topics_category_model->get_list($category_where,'*','display_order');
+        $topic_categorys = $this->topics_category_model->key_list($topic_categorys);
+        $var['topic_categorys'] = $topic_categorys;
+        
+        $where = '1';
+        //按版块搜索
+        $var['forum_id'] = $forum_id;
+        //获取此版块的基本信息
+        $current_forum = $this->forums_model->get_info_by_id($forum_id);
+        //获取此版块下的版主
+        //$mannager = array_filter(explode(',', $current_forum['manager']));
+        //$mannager = $this->users_model->get_user_by_names($mannager);
+        $var['current_forum'] = $current_forum;
+        //$var['mannager'] = $mannager;
+        //获取此版块下的推荐帖
+        $recommend_topics = $this->topics_model->get_list('recommend = 1 AND special =2');
+        $var['recommend_topics'] = $recommend_topics;
+        //生成按版块搜索条件
+        $where .= " AND forum_id in ($ids)";
+
+        //分类搜索
+        $category_id = intval($this->input->get('category_id'));
+        if(!empty($category_id)){
+            $where .= " AND category_id = '$category_id'";
+        }
+        //已解决、待解决、零回答
+        $type = intval($this->input->get('type'));
+        $var['type'] = $type;
+        switch ($type) {
+            case 1://已解决
+                $where .= " AND best_answer = 0";
+                break;
+            case 2://待解决
+                $where .= " AND best_answer != 0";
+                break;
+            case 3://零回答
+                $where .= " AND replies = 0";
+                break;
+        }
+        $per_num = $this->config->item('per_num');
+        $total_num = $this->ask_model->get_count($where);
+        //生成分页字符串
+        $base_url = page_url();
+        $page_obj = $this->biz_pagination->init_page($base_url, $total_num, $per_num);
+        $page_str = $page_obj->create_links();
+        $start = max(0, ($page_obj->cur_page - 1) * $per_num);
+        //添加排序高赏金、最新发布、最后回复
+        $order = trim($this->input->get('order',TRUE));
+        $order = in_array($order,array('post_time','price','last_post_time'))?$order:'last_post_time';
+        $topics = $this->ask_model->get_list($where, '*', $order.' DESC', $start, $per_num);
+        if(!empty($topics)){
+            //获取需要的主题其他信息
+            $tids = array();
+            foreach ($topics as $topic) {
+                $tids[] = $topic['topic_id'];
+            }
+            $full_topics = $this->topics_model->get_list('id in('.  join(',',array_unique($tids)).')');
+            $full_topics = $this->topics_model->key_list($full_topics);
+            
+            foreach ($topics as $key => &$topic) {
+                $topic = array_merge($topic,$full_topics[$topic['topic_id']]);
+            }
+        }
+        //为前面获取的变量赋值到$var
+        $var['topics'] = $topics;
+        $var['page'] = $page_str;
+        
+//        var_dump($var['forums']);die;
+        $this->view('bbs_ask_index',$var);
+    }
+    
+    
 
 }
 

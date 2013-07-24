@@ -49,9 +49,19 @@
     <td >支持HTML代码<br/></td>
   </tr>
   <tr>
-    <th >版块重定向版块</th>
+    <th >版块重定向其他版块</th>
     <td><input type="text" class="inp_txt" value="<?php echo my_set_value('redirect', $data)?>" name="redirect"></td>
-    <td >此版块将不能再发布帖子，将转向到重定向版块。<br/></td>
+    <td >此版块的展示内容和发布的帖子，都将转向到重定向的版块。<br/></td>
+  </tr>
+  <tr>
+    <th >版块重定向的问答汇总版块id</th>
+    <td><input type="text" class="inp_txt" value="<?php echo my_set_value('redirect_ask_id', $data)?>" name="redirect_ask_id"></td>
+    <td >此版块的展示内容转向到重定向的问答汇总版块，发布的帖子还在原版块。<br/></td>
+  </tr>
+  <tr>
+    <th >版块重定向URL</th>
+    <td><input type="text" class="inp_txt" value="<?php echo my_set_value('redirect_url', $data)?>" name="redirect_url"></td>
+    <td >此版块将不能再发布帖子，点击将转向到新的URL。<br/></td>
   </tr>
   <tr>
     <th >是否显示到首页</th>
@@ -61,12 +71,7 @@
       <label>
         <input type="radio"  name="no_index" value="1" <?php echo my_set_radio('no_index', 1, $data)?>/>
         否</label></td>
-    <td> 暂时将站点关闭，其他人无法访问，但不影响管理员访问。</td>
-  </tr>
-  <tr>
-    <th >版块重定向URL</th>
-    <td><input type="text" class="inp_txt" value="<?php echo my_set_value('redirect_url', $data)?>" name="redirect_url"></td>
-    <td >此版块将不能再发布帖子，将转向到新的URL。<br/></td>
+    <td> 因为版块太多，此选项设定此版块是否显示到首页（只对二级和三级版块有效）</td>
   </tr>
   <tr>
     <th >关闭版块</th>
