@@ -88,11 +88,15 @@ class Bbs extends MY_Controller {
         }
         
         //左侧版块导航
+//        $forums = $this->forums_model->get_forums();
+//        $forums = $this->forums_model->get_format_forums($forums);
+//        if(!empty($first_id)){
+//            $forums = $this->forums_model->get_sub_forums_by_id($first_id, $forums);
+//        }
+        //左侧版块导航，只展示分版和下面的问答版。
         $forums = $this->forums_model->get_forums();
         $forums = $this->forums_model->get_format_forums($forums);
-        if(!empty($first_id)){
-            $forums = $this->forums_model->get_sub_forums_by_id($first_id, $forums);
-        }
+        $forums = $this->forums_model->get_ask_forums($forums);
         $var['forums'] = $forums;
         
         //初始化页面中需要的链接。
@@ -218,9 +222,9 @@ class Bbs extends MY_Controller {
         //左侧版块导航
         $forums = $this->forums_model->get_forums();
         $forums = $this->forums_model->get_format_forums($forums);
-        $forums = $this->forums_model->get_sub_forums_by_id($first_id, $forums);
-        $var['forums'] = $forums;
+        $var['forums'] = $this->forums_model->get_sub_forums_by_id($first_id, $forums);
         
+        //var_dump($first_id);die;
         //如果是跳转到了某个板块，则外皮不变，内容是获取此板块下的内容。
         if (!empty($forum['redirect_ask_id'])) {
             $forum_id = $forum['redirect_ask_id'];

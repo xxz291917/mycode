@@ -373,6 +373,37 @@ class Forums_model extends MY_Model {
         return $union_ids;
     }
     
+    public function get_ask_forums($forums){
+        $ask_forums = array();
+        foreach ($forums as $forum) {
+            $tem_arr = array();
+            if(!empty($forum['sub'])){
+                foreach ($forum['sub'] as $value) {
+                    if(!empty($value['sub'])){
+                        foreach ($value['sub'] as $val) {
+                            if(!empty($val['redirect_ask_id'])){
+                                unset($val['sub']);
+                                $tem_arr[] = $val;
+                            }
+                        }
+                    }
+                    if(!empty($value['redirect_ask_id'])){
+                        unset($value['sub']);
+                        $tem_arr[] = $value;
+                    }
+                }
+            }
+            if(!empty($tem_arr)){
+                unset($forum['sub']);
+                $forum['sub'] = $tem_arr;
+                $ask_forums[] = $forum;
+            }
+        }
+        return $ask_forums;
+    }
+    
+
+    
 }
 
 ?>
